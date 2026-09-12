@@ -1,0 +1,792 @@
+{
+ "id": "gerenciamento-de-projetos",
+ "nome": "Gerenciamento de Projetos",
+ "periodo": 1,
+ "cor": "#22c55e",
+ "sigla": "GP",
+ "resumos": [
+  {
+   "tema": "Fundamentos e Ciclo de Vida do Projeto",
+   "html": "<p><b>Projeto</b> (PMBOK) é um <b>esforço temporário</b> empreendido para criar um produto, serviço ou resultado <b>exclusivo</b>. As duas palavras-chave são justamente essas: temporário (tem início e fim definidos) e exclusivo (o resultado é singular). O oposto é a <b>operação</b>: contínua e repetitiva.</p><p><b>Gerenciamento de projetos</b> é a aplicação de conhecimentos, habilidades, ferramentas e técnicas às atividades do projeto para atender aos seus requisitos.</p><p><b>Os 5 grupos de processos:</b> <b>Iniciação</b> (autorizar o projeto — termo de abertura) → <b>Planejamento</b> (definir escopo, prazo, custo e como tudo será feito) → <b>Execução</b> (realizar o trabalho) → <b>Monitoramento e controle</b> (acompanha em paralelo, do começo ao fim) → <b>Encerramento</b> (formalizar a aceitação e registrar lições aprendidas).</p><p><b>As 10 áreas de conhecimento:</b> Integração, Escopo, Cronograma (Tempo), Custos, Qualidade, Recursos, Comunicações, Riscos, Aquisições e Partes Interessadas.</p><p><b>Termo de Abertura (Project Charter):</b> o documento que <b>autoriza formalmente</b> o projeto e dá ao gerente autoridade para aplicar recursos. É a saída da iniciação.</p><p><b>A tripla restrição:</b> <b>escopo, tempo e custo</b>, com a <b>qualidade</b> no centro. Mexer em um vértice afeta os outros — cortar prazo sem mexer em escopo exige mais custo, e assim por diante.</p><p><b>Stakeholders (partes interessadas):</b> todos os que afetam ou são afetados pelo projeto — patrocinador, cliente, equipe, usuários, fornecedores, órgãos reguladores. Devem ser identificados no início e classificados por <b>poder x interesse</b>.</p><p><b>PMO</b> (Project Management Office): estrutura que padroniza a governança de projetos, podendo ser de suporte, de controle ou diretivo.</p>"
+  },
+  {
+   "tema": "Escopo e EAP",
+   "html": "<p><b>Escopo do produto:</b> as características e funções do que será entregue. <b>Escopo do projeto:</b> o trabalho que precisa ser feito para entregar isso.</p><p><b>Processos do escopo:</b> planejar o gerenciamento → coletar requisitos → definir o escopo → criar a EAP → validar o escopo → controlar o escopo.</p><p><b>EAP / WBS</b> (Estrutura Analítica do Projeto / Work Breakdown Structure): a decomposição hierárquica do trabalho total em partes menores e mais gerenciáveis. É <b>orientada a entregas</b>, não a atividades — cada nó é um substantivo, um produto, e não um verbo.</p><ul><li><b>Pacote de trabalho</b> — o nível mais baixo da EAP, aquele que já permite estimar custo e duração com confiança</li><li><b>Regra dos 100%</b> — a EAP deve conter <b>todo</b> o trabalho do projeto, e apenas ele. A soma dos filhos é exatamente o pai; o que não está na EAP não faz parte do projeto</li><li><b>Dicionário da EAP</b> — detalha cada pacote: descrição, critérios de aceitação, responsável, recursos</li></ul><p>A EAP permite estimar tempo e alocar pessoas a cada tarefa, e é a base para o cronograma, o orçamento e o controle.</p><p><b>Declaração de escopo:</b> descreve o que está incluído e — igualmente importante — <b>o que está excluído</b>, com premissas e restrições.</p><p><b>Scope creep</b> (aumento não controlado do escopo): a adição gradual de funcionalidades sem ajuste de prazo, custo ou recursos. É uma das principais causas de fracasso, e o antídoto é o <b>controle integrado de mudanças</b>: toda mudança passa por solicitação formal, análise de impacto e aprovação.</p><p><b>Validar o escopo</b> é obter a aceitação formal das entregas pelo cliente — diferente de <b>controlar a qualidade</b>, que é verificar se a entrega atende às especificações técnicas.</p>"
+  },
+  {
+   "tema": "Gerenciamento do Tempo e Cronograma",
+   "html": "<p><b>Processos:</b> definir as atividades → sequenciá-las → estimar durações → desenvolver o cronograma → controlar o cronograma.</p><p><b>Diagrama de rede</b> — mostra as dependências entre atividades. Tipos: <b>Término-Início (TI)</b>, a mais comum (a próxima só começa quando a anterior termina); Início-Início; Término-Término; Início-Término.</p><p><b>Caminho crítico (CPM):</b> a <b>sequência mais longa</b> de atividades dependentes do projeto — e portanto a que determina a <b>duração mínima</b>. As atividades do caminho crítico têm <b>folga zero</b>: qualquer atraso nelas atrasa o projeto inteiro. Pode haver mais de um caminho crítico.</p><p><b>Folga (float):</b> quanto uma atividade pode atrasar sem afetar o projeto. <b>Folga total</b> = sem atrasar o término do projeto; <b>folga livre</b> = sem atrasar a atividade seguinte.</p><p><b>Estimativa de três pontos (PERT):</b> combina o otimista (O), o mais provável (M) e o pessimista (P).</p><pre>Distribuição Beta:      (O + 4M + P) / 6\nDistribuição Triangular: (O + M + P) / 3</pre><p><b>Técnicas de compressão do cronograma:</b></p><ul><li><b>Crashing</b> (compressão) — acrescentar recursos às atividades do caminho crítico. Encurta o prazo <b>aumentando o custo</b>.</li><li><b>Fast tracking</b> (paralelismo) — executar em paralelo atividades que seriam sequenciais. Não aumenta o custo diretamente, mas <b>aumenta o risco</b> e o retrabalho.</li></ul><p><b>Gráfico de Gantt:</b> barras horizontais em uma linha do tempo — o formato mais usado para comunicar o cronograma. <b>Marcos (milestones)</b> são eventos de duração zero que sinalizam pontos importantes.</p>"
+  },
+  {
+   "tema": "Custos, Aquisições e Contratos",
+   "html": "<p><b>Processos de custo:</b> planejar o gerenciamento → estimar os custos → determinar o orçamento → controlar os custos.</p><p><b>Tipos de estimativa</b>, da menos para a mais precisa: <b>análoga</b> (por analogia com projetos passados — rápida e barata, menos precisa), <b>paramétrica</b> (relação estatística: R$/m², horas/ponto de função), <b>bottom-up</b> (soma as estimativas de cada pacote de trabalho — a mais precisa e a mais cara de fazer) e <b>três pontos</b>.</p><p><b>Linha de base dos custos</b> = orçamento aprovado distribuído no tempo, incluindo a <b>reserva de contingência</b> (para riscos conhecidos). O <b>orçamento total</b> soma ainda a <b>reserva gerencial</b> (para riscos desconhecidos, fora do controle do gerente).</p><p><b>Gerenciamento do Valor Agregado (EVM)</b> — as três medidas base:</p><ul><li><b>VP / PV</b> — Valor Planejado: quanto de trabalho estava previsto até agora</li><li><b>VA / EV</b> — Valor Agregado: quanto de trabalho foi realmente entregue, medido em valor</li><li><b>CR / AC</b> — Custo Real: quanto foi efetivamente gasto</li></ul><pre>Variação de prazo   VP(SV) = VA − VP\nVariação de custo   VC(CV) = VA − CR\nÍndice de prazo    IDP(SPI) = VA / VP\nÍndice de custo    IDC(CPI) = VA / CR</pre><p><b>Regra de leitura:</b> índice &gt; 1 ou variação positiva = bom (adiantado / abaixo do orçamento); &lt; 1 ou negativa = ruim.</p><p><b>Tipos de contrato:</b></p><ul><li><b>Preço fixo</b> — valor fechado. <b>Risco maior para o fornecedor</b>; exige escopo bem definido.</li><li><b>Custos reembolsáveis</b> — o comprador paga os custos mais uma remuneração. <b>Risco maior para o comprador</b>; usado quando o escopo é incerto.</li><li><b>Por tempo e material (T&M)</b> — híbrido, cobrado por hora ou unidade. Bom para contratações pequenas ou de duração indefinida.</li></ul><p><b>Processos de aquisição:</b> planejar → conduzir (selecionar fornecedores) → controlar as aquisições.</p>"
+  },
+  {
+   "tema": "Riscos",
+   "html": "<p><b>Risco</b> é um evento ou condição <b>incerta</b> que, se ocorrer, tem efeito em ao menos um objetivo do projeto. Note: risco pode ser <b>negativo (ameaça)</b> ou <b>positivo (oportunidade)</b>.</p><p><b>Processos:</b> planejar o gerenciamento → identificar os riscos → análise qualitativa → análise quantitativa → planejar as respostas → implementar as respostas → monitorar os riscos.</p><p><b>Análise qualitativa:</b> classifica os riscos por <b>probabilidade × impacto</b>, priorizando com uma matriz. É rápida e subjetiva. <b>Análise quantitativa:</b> atribui valores numéricos ao efeito — simulação de Monte Carlo, árvore de decisão, valor monetário esperado (<b>VME = probabilidade × impacto financeiro</b>).</p><p><b>Respostas a ameaças:</b></p><ul><li><b>Prevenir/eliminar</b> — mudar o plano para eliminar a causa (a probabilidade vai a zero)</li><li><b>Transferir</b> — passar o impacto a terceiros: seguro, garantia, terceirização</li><li><b>Mitigar</b> — reduzir a probabilidade ou o impacto a um nível aceitável</li><li><b>Aceitar</b> — não agir; ativa (com reserva de contingência) ou passiva</li><li><b>Escalar</b> — o risco está fora da alçada do projeto e sobe para a organização</li></ul><p><b>Respostas a oportunidades:</b> explorar (garantir que ocorra), compartilhar (parceria com quem melhor a aproveita), melhorar (aumentar probabilidade/impacto), aceitar e escalar.</p><p><b>Registro de riscos:</b> o documento vivo com cada risco identificado, sua análise, o responsável (<b>dono do risco</b>) e a resposta planejada. <b>Riscos residuais</b> permanecem após as respostas; <b>riscos secundários</b> surgem como consequência de uma resposta.</p>"
+  },
+  {
+   "tema": "Equipe, Comunicação e Liderança",
+   "html": "<p><b>Modelo de Tuckman</b> — as fases de desenvolvimento de uma equipe: <b>formação</b> (as pessoas se conhecem, são educadas e dependentes do líder) → <b>conflito/tormenta</b> (surgem divergências sobre papéis e abordagens) → <b>normatização</b> (o grupo estabelece normas e passa a colaborar) → <b>desempenho</b> (a equipe é interdependente e produtiva) → <b>encerramento</b> (dispersão ao fim do projeto).</p><p><b>Matriz RACI</b> — define papéis por atividade: <b>R</b>esponsável (executa), <b>A</b>provador/<i>Accountable</i> (presta contas — <b>só um por atividade</b>), <b>C</b>onsultado (dá opinião, comunicação de mão dupla) e <b>I</b>nformado (é avisado, mão única).</p><p><b>Canais de comunicação:</b> <code>n(n−1)/2</code>, onde n é o número de pessoas. Com 10 pessoas são 45 canais; com 11, saltam para 55 — é o custo real de aumentar a equipe.</p><p><b>Tipos de comunicação:</b> interativa (reunião, telefone — mais eficaz para assuntos complexos), ativa/push (e-mail, relatório — enviada, sem garantia de leitura) e passiva/pull (portal, repositório — o interessado busca).</p><p><b>Estilos de liderança:</b> autocrático (o líder decide sozinho), democrático/participativo (decide com a equipe), liberal/laissez-faire (delega amplamente) e <b>situacional</b> (adapta o estilo ao nível de maturidade e competência de cada liderado).</p><p><b>Motivação:</b> a <b>pirâmide de Maslow</b> (fisiológicas, segurança, sociais, estima, autorrealização — as de baixo antes das de cima); a <b>teoria dos dois fatores de Herzberg</b>, que separa os <b>higiênicos</b> (salário, condições de trabalho, políticas — sua ausência desmotiva, mas sua presença não motiva) dos <b>motivacionais</b> (reconhecimento, realização, crescimento, responsabilidade); e a <b>Teoria X e Y de McGregor</b> (X: as pessoas evitam o trabalho e precisam de controle; Y: buscam responsabilidade e se automotivam).</p><p><b>Conflitos:</b> as técnicas de resolução são confronto/solução de problemas (a melhor — ataca a causa raiz), colaboração, compromisso (cada lado cede um pouco), suavização (enfatiza o que há em comum), retirada (adia — a pior, pois só posterga) e imposição.</p>"
+  },
+  {
+   "tema": "Métodos Ágeis e Encerramento",
+   "html": "<p><b>Preditivo (cascata)</b> — escopo definido no início, entrega no fim, mudanças caras e controladas. Adequado quando os requisitos são estáveis e bem conhecidos.</p><p><b>Ágil</b> — escopo evolui, entregas incrementais em ciclos curtos, mudanças bem-vindas. Adequado quando há alta incerteza.</p><p><b>Manifesto Ágil (2001) — os 4 valores:</b> indivíduos e interações <b>mais que</b> processos e ferramentas; software em funcionamento <b>mais que</b> documentação abrangente; colaboração com o cliente <b>mais que</b> negociação de contratos; responder a mudanças <b>mais que</b> seguir um plano. O manifesto reconhece valor nos itens da direita, mas valoriza mais os da esquerda.</p><p><b>Scrum</b> — papéis: <b>Product Owner</b> (dono do produto, prioriza o backlog e representa o negócio), <b>Scrum Master</b> (facilitador, remove impedimentos, protege o processo — não é chefe) e <b>Time de Desenvolvimento</b> (auto-organizável e multifuncional). Artefatos: <b>Product Backlog</b>, <b>Sprint Backlog</b> e <b>Incremento</b>. Eventos: <b>Sprint</b> (o ciclo, de 1 a 4 semanas), Planning, <b>Daily</b> (15 min), Review (mostra o incremento aos stakeholders) e <b>Retrospective</b> (melhora o processo da equipe).</p><p><b>Kanban</b> — fluxo contínuo, quadro visual com colunas e <b>limite de WIP</b> (trabalho em progresso) para reduzir o tempo de ciclo. Não tem papéis nem iterações obrigatórias.</p><p><b>Encerramento do projeto:</b> obter a aceitação formal das entregas, encerrar contratos e aquisições, liberar recursos e a equipe, arquivar os documentos e — o mais negligenciado — registrar as <b>lições aprendidas</b>. Elas alimentam os <b>ativos de processos organizacionais</b>, e é isso que faz a organização melhorar de um projeto para o outro. O projeto deve ser formalmente encerrado mesmo quando é cancelado.</p>"
+  }
+ ],
+ "colas": [
+  {
+   "titulo": "O que é projeto — a definição que cai",
+   "mnemonico": "Mnemônico: TEMPORÁRIO e EXCLUSIVO. Se é contínuo e repetitivo, é operação, não projeto.",
+   "pontos": [
+    "Projeto: esforço temporário para criar produto, serviço ou resultado exclusivo.",
+    "5 grupos de processos: Iniciação, Planejamento, Execução, Monitoramento e controle, Encerramento.",
+    "Monitoramento e controle corre em PARALELO, do começo ao fim.",
+    "Termo de Abertura (Project Charter) AUTORIZA o projeto e dá autoridade ao gerente.",
+    "Tripla restrição: escopo, tempo e custo — com a qualidade no centro."
+   ]
+  },
+  {
+   "titulo": "EAP — a regra dos 100%",
+   "mnemonico": "Mnemônico: a EAP é orientada a ENTREGAS (substantivos), não a atividades (verbos).",
+   "pontos": [
+    "Regra dos 100%: a EAP contém TODO o trabalho do projeto e SÓ ele.",
+    "O que não está na EAP não faz parte do projeto.",
+    "Pacote de trabalho = nível mais baixo, onde já dá para estimar custo e duração.",
+    "Dicionário da EAP detalha cada pacote.",
+    "Scope creep = escopo crescendo sem ajustar prazo e custo. Antídoto: controle integrado de mudanças."
+   ]
+  },
+  {
+   "titulo": "Caminho crítico e compressão",
+   "mnemonico": "Mnemônico: caminho crítico é o MAIS LONGO e tem folga ZERO. Crashing custa DINHEIRO; fast tracking custa RISCO.",
+   "pontos": [
+    "Caminho crítico: sequência mais longa; determina a duração mínima do projeto.",
+    "Atividade do caminho crítico tem folga zero — atrasou ela, atrasou o projeto.",
+    "Crashing: põe mais recursos. Encurta o prazo AUMENTANDO O CUSTO.",
+    "Fast tracking: paraleliza o que era sequencial. AUMENTA O RISCO e o retrabalho.",
+    "PERT beta: (O + 4M + P) / 6.   Triangular: (O + M + P) / 3."
+   ]
+  },
+  {
+   "titulo": "Valor Agregado (EVM)",
+   "mnemonico": "Mnemônico: índice MAIOR QUE 1 é bom. Custo usa CR; prazo usa VP. O VA está sempre na frente da conta.",
+   "pontos": [
+    "VP = planejado | VA = entregue (em valor) | CR = gasto de verdade.",
+    "VC (custo) = VA − CR.   VP/SV (prazo) = VA − VP.",
+    "IDC (CPI) = VA / CR.   IDP (SPI) = VA / VP.",
+    "> 1 = adiantado ou abaixo do orçamento. < 1 = atrasado ou estourando.",
+    "Contingência = riscos conhecidos (entra na linha de base). Gerencial = desconhecidos (fora dela)."
+   ]
+  },
+  {
+   "titulo": "Respostas a riscos",
+   "mnemonico": "Mnemônico ameaças: \"PTMA\" → Prevenir, Transferir, Mitigar, Aceitar (+ Escalar).",
+   "pontos": [
+    "Prevenir: elimina a causa, probabilidade vai a ZERO.",
+    "Transferir: passa o impacto a terceiro — seguro, garantia, terceirização.",
+    "Mitigar: REDUZ probabilidade ou impacto (não elimina).",
+    "Aceitar: não age; ativa (com reserva) ou passiva.",
+    "Oportunidades: explorar, compartilhar, melhorar, aceitar, escalar.",
+    "VME = probabilidade × impacto financeiro."
+   ]
+  },
+  {
+   "titulo": "Equipe e comunicação",
+   "mnemonico": "Mnemônico Tuckman: \"Formar, Tormentar, Normatizar, Desempenhar, Encerrar\".",
+   "pontos": [
+    "Canais de comunicação = n(n−1)/2. Com 10 pessoas, 45 canais.",
+    "RACI: só pode haver UM 'A' (Accountable) por atividade.",
+    "Herzberg: higiênicos (salário, condições) evitam insatisfação mas NÃO motivam.",
+    "Herzberg: motivacionais (reconhecimento, realização, crescimento) é que motivam.",
+    "Conflito: confronto/solução de problemas é a MELHOR técnica; retirada é a pior."
+   ]
+  },
+  {
+   "titulo": "Scrum em uma cola",
+   "mnemonico": "Mnemônico: 3 papéis, 3 artefatos, 5 eventos.",
+   "pontos": [
+    "Papéis: Product Owner (prioriza), Scrum Master (facilita e remove impedimentos), Time.",
+    "Scrum Master NÃO é chefe do time nem gerente do projeto.",
+    "Artefatos: Product Backlog, Sprint Backlog, Incremento.",
+    "Eventos: Sprint (1-4 semanas), Planning, Daily (15 min), Review, Retrospective.",
+    "Review mostra o incremento ao cliente; Retrospective melhora o PROCESSO da equipe."
+   ]
+  }
+ ],
+ "flashcards": [
+  {
+   "tema": "Fundamentos e Ciclo de Vida do Projeto",
+   "p": "Qual a definição de projeto segundo o PMBOK?",
+   "r": "Um esforço temporário empreendido para criar um produto, serviço ou resultado exclusivo. As duas palavras-chave são temporário (início e fim definidos) e exclusivo (resultado singular)."
+  },
+  {
+   "tema": "Fundamentos e Ciclo de Vida do Projeto",
+   "p": "Qual a diferença entre projeto e operação?",
+   "r": "O projeto é temporário e gera algo exclusivo; a operação é contínua e repetitiva, mantendo o negócio funcionando."
+  },
+  {
+   "tema": "Fundamentos e Ciclo de Vida do Projeto",
+   "p": "Quais são os 5 grupos de processos do gerenciamento de projetos?",
+   "r": "Iniciação, Planejamento, Execução, Monitoramento e Controle, e Encerramento. Monitoramento e controle acontece em paralelo aos demais, do começo ao fim."
+  },
+  {
+   "tema": "Fundamentos e Ciclo de Vida do Projeto",
+   "p": "Qual documento autoriza formalmente o início de um projeto?",
+   "r": "O Termo de Abertura (Project Charter). Ele autoriza o projeto e confere ao gerente autoridade para aplicar recursos organizacionais."
+  },
+  {
+   "tema": "Fundamentos e Ciclo de Vida do Projeto",
+   "p": "O que é a tripla restrição?",
+   "r": "Escopo, tempo e custo, com a qualidade no centro. Alterar um vértice inevitavelmente afeta os outros."
+  },
+  {
+   "tema": "Fundamentos e Ciclo de Vida do Projeto",
+   "p": "Quem são os stakeholders de um projeto?",
+   "r": "Todos os que afetam ou são afetados pelo projeto: patrocinador, cliente, equipe, usuários, fornecedores e órgãos reguladores. São identificados no início e classificados por poder x interesse."
+  },
+  {
+   "tema": "Escopo e EAP",
+   "p": "Qual a diferença entre escopo do produto e escopo do projeto?",
+   "r": "Escopo do produto são as características e funções do que será entregue. Escopo do projeto é o trabalho necessário para entregar esse produto."
+  },
+  {
+   "tema": "Escopo e EAP",
+   "p": "O que é a EAP e a que ela é orientada?",
+   "r": "A Estrutura Analítica do Projeto é a decomposição hierárquica do trabalho total em partes menores e gerenciáveis. É orientada a ENTREGAS (substantivos), não a atividades (verbos)."
+  },
+  {
+   "tema": "Escopo e EAP",
+   "p": "O que diz a regra dos 100% da EAP?",
+   "r": "A EAP deve conter todo o trabalho do projeto e apenas ele: a soma dos elementos-filhos é exatamente o elemento-pai. O que não está na EAP não faz parte do projeto."
+  },
+  {
+   "tema": "Escopo e EAP",
+   "p": "O que é um pacote de trabalho?",
+   "r": "O nível mais baixo da EAP — aquele em que já é possível estimar custo e duração com confiança e atribuir um responsável."
+  },
+  {
+   "tema": "Escopo e EAP",
+   "p": "O que é scope creep e como combatê-lo?",
+   "r": "O aumento não controlado do escopo: funcionalidades vão sendo acrescentadas sem ajuste de prazo, custo ou recursos. O antídoto é o controle integrado de mudanças — toda mudança passa por solicitação formal, análise de impacto e aprovação."
+  },
+  {
+   "tema": "Escopo e EAP",
+   "p": "Qual a diferença entre validar o escopo e controlar a qualidade?",
+   "r": "Validar o escopo é obter a aceitação formal das entregas pelo cliente. Controlar a qualidade é verificar internamente se a entrega atende às especificações técnicas — vem antes."
+  },
+  {
+   "tema": "Gerenciamento do Tempo e Cronograma",
+   "p": "O que é o caminho crítico?",
+   "r": "A sequência mais longa de atividades dependentes do projeto — e portanto a que determina sua duração mínima. Suas atividades têm folga zero."
+  },
+  {
+   "tema": "Gerenciamento do Tempo e Cronograma",
+   "p": "O que acontece se uma atividade do caminho crítico atrasar?",
+   "r": "O projeto inteiro atrasa na mesma medida, porque essas atividades têm folga zero — não há margem para absorver o atraso."
+  },
+  {
+   "tema": "Gerenciamento do Tempo e Cronograma",
+   "p": "Qual a diferença entre crashing e fast tracking?",
+   "r": "Crashing acrescenta recursos às atividades do caminho crítico: encurta o prazo aumentando o CUSTO. Fast tracking paraleliza atividades antes sequenciais: não eleva o custo diretamente, mas aumenta o RISCO e o retrabalho."
+  },
+  {
+   "tema": "Gerenciamento do Tempo e Cronograma",
+   "p": "Qual a fórmula PERT da distribuição beta?",
+   "r": "(O + 4M + P) / 6, onde O é o otimista, M o mais provável e P o pessimista. A distribuição triangular é a média simples: (O + M + P) / 3."
+  },
+  {
+   "tema": "Gerenciamento do Tempo e Cronograma",
+   "p": "O que é folga total e folga livre?",
+   "r": "Folga total: quanto a atividade pode atrasar sem atrasar o término do projeto. Folga livre: quanto pode atrasar sem atrasar a atividade imediatamente seguinte."
+  },
+  {
+   "tema": "Gerenciamento do Tempo e Cronograma",
+   "p": "O que é um marco (milestone)?",
+   "r": "Um evento significativo do projeto com duração zero — não consome tempo nem recursos, apenas sinaliza que um ponto importante foi atingido."
+  },
+  {
+   "tema": "Custos, Aquisições e Contratos",
+   "p": "Qual tipo de estimativa de custo é o mais preciso e por quê?",
+   "r": "A bottom-up: estima cada pacote de trabalho individualmente e soma. É a mais precisa justamente por ser detalhada — e por isso a mais cara e demorada de elaborar."
+  },
+  {
+   "tema": "Custos, Aquisições e Contratos",
+   "p": "Qual a diferença entre reserva de contingência e reserva gerencial?",
+   "r": "A contingência cobre riscos conhecidos e entra na linha de base dos custos, sob controle do gerente. A gerencial cobre riscos desconhecidos, fica fora da linha de base e exige aprovação da alta administração."
+  },
+  {
+   "tema": "Custos, Aquisições e Contratos",
+   "p": "O que significam VP, VA e CR no EVM?",
+   "r": "VP (Valor Planejado): quanto de trabalho estava previsto até agora. VA (Valor Agregado): quanto de trabalho foi realmente entregue, medido em valor. CR (Custo Real): quanto foi efetivamente gasto."
+  },
+  {
+   "tema": "Custos, Aquisições e Contratos",
+   "p": "Como se calculam as variações de custo e de prazo?",
+   "r": "Variação de custo VC = VA − CR. Variação de prazo VP(SV) = VA − VP. Positivo é bom; negativo indica estouro de custo ou atraso."
+  },
+  {
+   "tema": "Custos, Aquisições e Contratos",
+   "p": "Como se interpreta um IDC (CPI) de 0,85?",
+   "r": "IDC = VA / CR. Sendo menor que 1, o projeto está gastando mais do que o valor que entrega — está acima do orçamento. Acima de 1 seria economia."
+  },
+  {
+   "tema": "Custos, Aquisições e Contratos",
+   "p": "Em qual tipo de contrato o risco é maior para o fornecedor?",
+   "r": "No de preço fixo: o valor está fechado, então qualquer custo acima do previsto sai do bolso do fornecedor. Exige escopo bem definido. Nos contratos de custos reembolsáveis o risco maior é do comprador."
+  },
+  {
+   "tema": "Riscos",
+   "p": "O que é risco em gerenciamento de projetos?",
+   "r": "Um evento ou condição incerta que, se ocorrer, tem efeito em ao menos um objetivo do projeto. Pode ser negativo (ameaça) ou positivo (oportunidade)."
+  },
+  {
+   "tema": "Riscos",
+   "p": "Qual a diferença entre análise qualitativa e quantitativa de riscos?",
+   "r": "A qualitativa prioriza os riscos por probabilidade x impacto usando uma matriz — rápida e subjetiva. A quantitativa atribui valores numéricos ao efeito, com Monte Carlo, árvore de decisão e valor monetário esperado."
+  },
+  {
+   "tema": "Riscos",
+   "p": "Quais são as respostas possíveis a uma ameaça?",
+   "r": "Prevenir/eliminar (a probabilidade vai a zero), transferir (passar o impacto a terceiros — seguro, terceirização), mitigar (reduzir probabilidade ou impacto), aceitar (ativa com reserva, ou passiva) e escalar."
+  },
+  {
+   "tema": "Riscos",
+   "p": "Qual a diferença entre mitigar e prevenir um risco?",
+   "r": "Prevenir elimina a causa: a probabilidade vai a zero. Mitigar apenas reduz a probabilidade ou o impacto a um nível aceitável — o risco continua existindo."
+  },
+  {
+   "tema": "Riscos",
+   "p": "Como se calcula o Valor Monetário Esperado (VME)?",
+   "r": "VME = probabilidade × impacto financeiro. Um risco de 20% de chance com impacto de R$ 50.000 tem VME de R$ 10.000."
+  },
+  {
+   "tema": "Riscos",
+   "p": "O que são riscos residuais e riscos secundários?",
+   "r": "Residuais permanecem depois de aplicadas as respostas planejadas. Secundários são novos riscos que surgem justamente como consequência da implementação de uma resposta."
+  },
+  {
+   "tema": "Equipe, Comunicação e Liderança",
+   "p": "Quais são as fases do modelo de Tuckman?",
+   "r": "Formação, conflito (tormenta), normatização, desempenho e encerramento. A fase de conflito é natural e necessária — não é sinal de fracasso."
+  },
+  {
+   "tema": "Equipe, Comunicação e Liderança",
+   "p": "O que significa cada letra da matriz RACI?",
+   "r": "Responsável (executa), Accountable/Aprovador (presta contas — só um por atividade), Consultado (dá opinião, comunicação de mão dupla) e Informado (é avisado, mão única)."
+  },
+  {
+   "tema": "Equipe, Comunicação e Liderança",
+   "p": "Como se calcula o número de canais de comunicação?",
+   "r": "n(n−1)/2, onde n é o número de pessoas. Com 10 pessoas são 45 canais; acrescentar uma pessoa leva a 55 — o crescimento é quadrático."
+  },
+  {
+   "tema": "Equipe, Comunicação e Liderança",
+   "p": "O que diz a teoria dos dois fatores de Herzberg?",
+   "r": "Os fatores higiênicos (salário, condições de trabalho, políticas) evitam a insatisfação, mas não motivam. Os fatores motivacionais (reconhecimento, realização, crescimento, responsabilidade) é que geram motivação real."
+  },
+  {
+   "tema": "Equipe, Comunicação e Liderança",
+   "p": "Qual é a melhor técnica de resolução de conflitos e qual é a pior?",
+   "r": "A melhor é o confronto / solução de problemas, que ataca a causa raiz e produz solução duradoura. A pior é a retirada (afastamento), que apenas adia o problema."
+  },
+  {
+   "tema": "Equipe, Comunicação e Liderança",
+   "p": "O que caracteriza a liderança situacional?",
+   "r": "O líder adapta seu estilo — de mais diretivo a mais delegador — conforme o nível de maturidade e competência de cada liderado para aquela tarefa específica."
+  },
+  {
+   "tema": "Métodos Ágeis e Encerramento",
+   "p": "Quais são os quatro valores do Manifesto Ágil?",
+   "r": "Indivíduos e interações mais que processos e ferramentas; software em funcionamento mais que documentação abrangente; colaboração com o cliente mais que negociação de contratos; responder a mudanças mais que seguir um plano."
+  },
+  {
+   "tema": "Métodos Ágeis e Encerramento",
+   "p": "Quais são os três papéis do Scrum?",
+   "r": "Product Owner (prioriza o backlog e representa o negócio), Scrum Master (facilita, remove impedimentos e protege o processo — não é chefe) e o Time de Desenvolvimento (auto-organizável e multifuncional)."
+  },
+  {
+   "tema": "Métodos Ágeis e Encerramento",
+   "p": "Qual a diferença entre Sprint Review e Sprint Retrospective?",
+   "r": "A Review mostra o incremento pronto aos stakeholders e discute o PRODUTO. A Retrospective é interna à equipe e discute o PROCESSO — o que melhorar na forma de trabalhar."
+  },
+  {
+   "tema": "Métodos Ágeis e Encerramento",
+   "p": "O que é o limite de WIP no Kanban?",
+   "r": "O limite de trabalho em progresso: a quantidade máxima de itens permitida em cada coluna. Serve para evitar que a equipe comece muitas coisas e termine poucas, reduzindo o tempo de ciclo."
+  },
+  {
+   "tema": "Métodos Ágeis e Encerramento",
+   "p": "Por que registrar lições aprendidas é importante?",
+   "r": "Porque elas alimentam os ativos de processos organizacionais e permitem que a organização melhore de um projeto para o outro — é o que impede repetir os mesmos erros."
+  },
+  {
+   "tema": "Métodos Ágeis e Encerramento",
+   "p": "Um projeto cancelado precisa passar pelo encerramento formal?",
+   "r": "Sim. Mesmo cancelado, é preciso encerrar contratos, liberar recursos, arquivar documentos e registrar as lições aprendidas — inclusive sobre o motivo do cancelamento."
+  }
+ ],
+ "questoes": [
+  {
+   "tema": "Fundamentos e Ciclo de Vida do Projeto",
+   "q": "Segundo o PMBOK, projeto é:",
+   "op": [
+    "Um conjunto de tarefas repetitivas executadas continuamente",
+    "Um esforço temporário empreendido para criar um produto, serviço ou resultado exclusivo",
+    "Qualquer atividade realizada por uma equipe multidisciplinar",
+    "O processo de manutenção de um sistema em produção"
+   ],
+   "r": 1,
+   "exp": "As duas palavras-chave são temporário (início e fim definidos) e exclusivo (resultado singular). O que é contínuo e repetitivo é operação."
+  },
+  {
+   "tema": "Fundamentos e Ciclo de Vida do Projeto",
+   "q": "Qual grupo de processos ocorre em PARALELO a todos os demais?",
+   "op": [
+    "Iniciação",
+    "Planejamento",
+    "Encerramento",
+    "Monitoramento e controle"
+   ],
+   "r": 3,
+   "exp": "Monitoramento e controle acompanha o projeto do começo ao fim, comparando o realizado com o planejado e disparando ações corretivas."
+  },
+  {
+   "tema": "Fundamentos e Ciclo de Vida do Projeto",
+   "q": "Qual documento autoriza formalmente o projeto e dá autoridade ao gerente?",
+   "op": [
+    "O termo de abertura (Project Charter)",
+    "A EAP",
+    "A declaração de escopo",
+    "O plano de gerenciamento do projeto"
+   ],
+   "r": 0,
+   "exp": "O termo de abertura é a saída da iniciação: autoriza formalmente a existência do projeto e confere ao gerente autoridade para aplicar recursos organizacionais."
+  },
+  {
+   "tema": "Fundamentos e Ciclo de Vida do Projeto",
+   "q": "Quantas são as áreas de conhecimento do PMBOK?",
+   "op": [
+    "5",
+    "7",
+    "10",
+    "12"
+   ],
+   "r": 2,
+   "exp": "São 10: Integração, Escopo, Cronograma, Custos, Qualidade, Recursos, Comunicações, Riscos, Aquisições e Partes Interessadas. Os grupos de PROCESSOS é que são 5."
+  },
+  {
+   "tema": "Escopo e EAP",
+   "q": "A EAP é orientada a:",
+   "op": [
+    "Atividades, descritas por verbos no infinitivo",
+    "Recursos humanos alocados",
+    "Entregas, descritas por substantivos",
+    "Marcos do cronograma"
+   ],
+   "r": 2,
+   "exp": "A EAP decompõe ENTREGAS — cada nó é um produto ou resultado, não uma ação. O detalhamento em atividades vem depois, no gerenciamento do cronograma."
+  },
+  {
+   "tema": "Escopo e EAP",
+   "q": "O que estabelece a regra dos 100% na construção da EAP?",
+   "op": [
+    "Que 100% da equipe deve participar da elaboração",
+    "Que cada pacote deve ter 100% de seu custo estimado",
+    "Que o projeto deve estar 100% planejado antes de começar",
+    "Que a EAP deve conter todo o trabalho do projeto e apenas ele"
+   ],
+   "r": 3,
+   "exp": "A soma dos elementos-filhos equivale exatamente ao elemento-pai. Consequência prática: o que não está na EAP não faz parte do projeto."
+  },
+  {
+   "tema": "Escopo e EAP",
+   "q": "O nível mais baixo da EAP, no qual já é possível estimar custo e duração com confiança, chama-se:",
+   "op": [
+    "Pacote de trabalho",
+    "Marco",
+    "Atividade",
+    "Entrega principal"
+   ],
+   "r": 0,
+   "exp": "O pacote de trabalho é a menor unidade da EAP; a partir dele se estimam custos e durações e se atribuem responsáveis."
+  },
+  {
+   "tema": "Escopo e EAP",
+   "q": "Durante um projeto, o cliente vai pedindo pequenas funcionalidades extras que são aceitas sem revisão de prazo ou orçamento. Isso é:",
+   "op": [
+    "Elaboração progressiva",
+    "Scope creep",
+    "Fast tracking",
+    "Validação de escopo"
+   ],
+   "r": 1,
+   "exp": "Scope creep é o aumento não controlado do escopo. A elaboração progressiva é o detalhamento legítimo e planejado; a diferença está no controle formal de mudanças."
+  },
+  {
+   "tema": "Escopo e EAP",
+   "q": "Qual a diferença entre validar o escopo e controlar a qualidade?",
+   "op": [
+    "Validar é a aceitação formal pelo cliente; controlar a qualidade é a verificação técnica interna",
+    "São o mesmo processo com nomes diferentes",
+    "Validar é feito pela equipe técnica; controlar a qualidade, pelo patrocinador",
+    "Validar ocorre na iniciação; controlar a qualidade, no encerramento"
+   ],
+   "r": 0,
+   "exp": "Controlar a qualidade verifica se a entrega atende às especificações — e vem antes. Validar o escopo é obter a aceitação formal do cliente sobre as entregas concluídas."
+  },
+  {
+   "tema": "Gerenciamento do Tempo e Cronograma",
+   "q": "O caminho crítico de um projeto é:",
+   "op": [
+    "A sequência mais longa de atividades dependentes, que determina a duração mínima",
+    "A sequência de atividades mais caras",
+    "O conjunto de atividades com maior risco associado",
+    "A ordem em que as entregas são aprovadas pelo cliente"
+   ],
+   "r": 0,
+   "exp": "Sendo o caminho mais longo, ele define quanto tempo o projeto leva no mínimo. Suas atividades têm folga zero."
+  },
+  {
+   "tema": "Gerenciamento do Tempo e Cronograma",
+   "q": "Qual é a folga das atividades do caminho crítico?",
+   "op": [
+    "Igual à duração da atividade",
+    "Sempre 10% do prazo total",
+    "Varia conforme os recursos alocados",
+    "Zero"
+   ],
+   "r": 3,
+   "exp": "Folga zero é justamente o que define o caminho crítico: qualquer atraso nessas atividades atrasa o projeto inteiro."
+  },
+  {
+   "tema": "Gerenciamento do Tempo e Cronograma",
+   "q": "O gerente decide alocar mais desenvolvedores às atividades do caminho crítico para entregar antes. Essa técnica é:",
+   "op": [
+    "Fast tracking",
+    "Nivelamento de recursos",
+    "Crashing",
+    "Análise de reservas"
+   ],
+   "r": 2,
+   "exp": "Crashing é acrescentar recursos para encurtar a duração — quase sempre aumentando o custo. Fast tracking seria executar em paralelo atividades antes sequenciais."
+  },
+  {
+   "tema": "Gerenciamento do Tempo e Cronograma",
+   "q": "Qual é o principal efeito colateral do fast tracking?",
+   "op": [
+    "Aumento direto do custo do projeto",
+    "Redução da qualidade das entregas por contrato",
+    "Aumento do risco e da probabilidade de retrabalho",
+    "Perda da aceitação formal do cliente"
+   ],
+   "r": 2,
+   "exp": "Ao antecipar atividades que dependiam de outras ainda incompletas, aumenta a chance de precisar refazer trabalho. Quem eleva diretamente o custo é o crashing."
+  },
+  {
+   "tema": "Gerenciamento do Tempo e Cronograma",
+   "q": "Uma atividade tem estimativa otimista de 4 dias, mais provável de 6 e pessimista de 14. Qual a duração pela distribuição beta (PERT)?",
+   "op": [
+    "6 dias",
+    "7 dias",
+    "8 dias",
+    "9 dias"
+   ],
+   "r": 1,
+   "exp": "(O + 4M + P)/6 = (4 + 24 + 14)/6 = 42/6 = 7 dias. Pela triangular seria (4+6+14)/3 = 8 dias."
+  },
+  {
+   "tema": "Custos, Aquisições e Contratos",
+   "q": "Qual técnica de estimativa de custos é a mais precisa?",
+   "op": [
+    "Análoga",
+    "Bottom-up",
+    "Paramétrica",
+    "Julgamento especializado isolado"
+   ],
+   "r": 1,
+   "exp": "A bottom-up estima cada pacote de trabalho e soma — a mais precisa e também a mais cara e demorada. A análoga é a mais rápida e menos precisa."
+  },
+  {
+   "tema": "Custos, Aquisições e Contratos",
+   "q": "A reserva destinada a riscos DESCONHECIDOS, que fica fora da linha de base dos custos, é a:",
+   "op": [
+    "Reserva de contingência",
+    "Reserva técnica",
+    "Margem de lucro",
+    "Reserva gerencial"
+   ],
+   "r": 3,
+   "exp": "A gerencial cobre o imprevisível e exige aprovação da alta administração. A de contingência cobre riscos identificados e faz parte da linha de base."
+  },
+  {
+   "tema": "Custos, Aquisições e Contratos",
+   "q": "Em um projeto, VA = 80.000, VP = 100.000 e CR = 90.000. O que se conclui?",
+   "op": [
+    "Adiantado e abaixo do orçamento",
+    "Atrasado, porém abaixo do orçamento",
+    "No prazo e no orçamento",
+    "Atrasado e acima do orçamento"
+   ],
+   "r": 3,
+   "exp": "VC = VA − CR = −10.000 (gastou mais do que entregou). SV = VA − VP = −20.000 (entregou menos do que planejava). Ambos negativos: atrasado e estourando o orçamento."
+  },
+  {
+   "tema": "Custos, Aquisições e Contratos",
+   "q": "Um IDP (SPI) de 1,15 indica que o projeto está:",
+   "op": [
+    "Atrasado",
+    "Adiantado em relação ao cronograma",
+    "Acima do orçamento",
+    "Abaixo do orçamento"
+   ],
+   "r": 1,
+   "exp": "IDP = VA / VP. Acima de 1 significa que se entregou mais valor do que o planejado para o período — o projeto está adiantado. Custo é medido pelo IDC."
+  },
+  {
+   "tema": "Custos, Aquisições e Contratos",
+   "q": "Em qual tipo de contrato o risco financeiro é maior para o FORNECEDOR?",
+   "op": [
+    "Preço fixo",
+    "Custos reembolsáveis",
+    "Tempo e material",
+    "Custo mais remuneração concedida"
+   ],
+   "r": 0,
+   "exp": "No preço fixo o valor está fechado: se os custos superarem o previsto, o prejuízo é do fornecedor. Por isso exige escopo muito bem definido."
+  },
+  {
+   "tema": "Riscos",
+   "q": "Segundo o PMBOK, um risco pode ser:",
+   "op": [
+    "Apenas negativo, pois representa uma ameaça",
+    "Negativo (ameaça) ou positivo (oportunidade)",
+    "Apenas financeiro",
+    "Somente aquele previsto no plano inicial"
+   ],
+   "r": 1,
+   "exp": "Risco é um evento incerto que afeta objetivos do projeto — o efeito pode ser negativo (ameaça) ou positivo (oportunidade), e ambas devem ser gerenciadas."
+  },
+  {
+   "tema": "Riscos",
+   "q": "Contratar um seguro contra um risco identificado é um exemplo de qual estratégia?",
+   "op": [
+    "Prevenir",
+    "Mitigar",
+    "Aceitar",
+    "Transferir"
+   ],
+   "r": 3,
+   "exp": "Transferir passa o impacto (não o risco em si) a um terceiro — seguro, garantia contratual ou terceirização."
+  },
+  {
+   "tema": "Riscos",
+   "q": "Qual a diferença entre prevenir e mitigar um risco?",
+   "op": [
+    "Prevenir reduz o impacto; mitigar reduz a probabilidade",
+    "Prevenir elimina a causa e zera a probabilidade; mitigar apenas reduz probabilidade ou impacto",
+    "São sinônimos no PMBOK",
+    "Prevenir se aplica a oportunidades; mitigar, a ameaças"
+   ],
+   "r": 1,
+   "exp": "Prevenir muda o plano para que o risco não possa ocorrer. Mitigar reduz a exposição, mas o risco continua existindo."
+  },
+  {
+   "tema": "Riscos",
+   "q": "Um risco tem 30% de probabilidade e impacto financeiro de R$ 200.000. Qual o Valor Monetário Esperado?",
+   "op": [
+    "R$ 60.000",
+    "R$ 30.000",
+    "R$ 200.000",
+    "R$ 600.000"
+   ],
+   "r": 0,
+   "exp": "VME = probabilidade × impacto = 0,30 × 200.000 = R$ 60.000."
+  },
+  {
+   "tema": "Riscos",
+   "q": "Riscos que surgem como consequência direta da implementação de uma resposta a risco são chamados de:",
+   "op": [
+    "Riscos secundários",
+    "Riscos residuais",
+    "Riscos escalados",
+    "Riscos aceitos"
+   ],
+   "r": 0,
+   "exp": "Secundários são criados pela própria resposta. Residuais são os que permanecem depois de aplicadas as respostas, em nível considerado aceitável."
+  },
+  {
+   "tema": "Equipe, Comunicação e Liderança",
+   "q": "Na sequência do modelo de Tuckman, qual fase vem logo depois da formação?",
+   "op": [
+    "Normatização",
+    "Desempenho",
+    "Conflito (tormenta)",
+    "Encerramento"
+   ],
+   "r": 2,
+   "exp": "Formação → conflito → normatização → desempenho → encerramento. A fase de conflito é natural e necessária: é quando papéis e abordagens são disputados."
+  },
+  {
+   "tema": "Equipe, Comunicação e Liderança",
+   "q": "Na matriz RACI, quantas pessoas podem ser 'A' (Accountable) por atividade?",
+   "op": [
+    "Nenhuma",
+    "No máximo três",
+    "Apenas uma",
+    "Quantas forem necessárias"
+   ],
+   "r": 2,
+   "exp": "Só pode haver um Accountable por atividade — é quem presta contas pelo resultado. Vários podem ser Responsáveis (executores), Consultados ou Informados."
+  },
+  {
+   "tema": "Equipe, Comunicação e Liderança",
+   "q": "Uma equipe tem 10 pessoas. Quantos canais de comunicação existem?",
+   "op": [
+    "10",
+    "45",
+    "90",
+    "100"
+   ],
+   "r": 1,
+   "exp": "n(n−1)/2 = 10×9/2 = 45. Ao acrescentar a 11ª pessoa saltam para 55 — o crescimento é quadrático, e é por isso que equipes grandes comunicam-se pior."
+  },
+  {
+   "tema": "Equipe, Comunicação e Liderança",
+   "q": "Segundo Herzberg, o salário é classificado como:",
+   "op": [
+    "Fator motivacional, pois é o que mais estimula o desempenho",
+    "Fator de autorrealização",
+    "Fator irrelevante para a satisfação no trabalho",
+    "Fator higiênico: sua ausência gera insatisfação, mas sua presença não motiva"
+   ],
+   "r": 3,
+   "exp": "Higiênicos (salário, condições de trabalho, políticas) evitam insatisfação. A motivação vem dos fatores motivacionais: reconhecimento, realização, crescimento e responsabilidade."
+  },
+  {
+   "tema": "Equipe, Comunicação e Liderança",
+   "q": "Qual técnica de resolução de conflitos é considerada a mais eficaz e duradoura?",
+   "op": [
+    "Retirada (afastamento)",
+    "Imposição",
+    "Suavização",
+    "Confronto / solução de problemas"
+   ],
+   "r": 3,
+   "exp": "O confronto ataca a causa raiz e produz solução duradoura com ganho para ambos os lados. A retirada é a pior — apenas adia o conflito."
+  },
+  {
+   "tema": "Equipe, Comunicação e Liderança",
+   "q": "O que caracteriza a liderança situacional?",
+   "op": [
+    "O líder mantém sempre o mesmo estilo, por coerência",
+    "As decisões são sempre tomadas por votação da equipe",
+    "O líder adapta o estilo ao nível de maturidade e competência de cada liderado",
+    "O líder delega integralmente e não acompanha"
+   ],
+   "r": 2,
+   "exp": "Na liderança situacional não existe estilo certo universal: com um liderado novato o líder é mais diretivo; com um experiente, mais delegador."
+  },
+  {
+   "tema": "Métodos Ágeis e Encerramento",
+   "q": "Segundo o Manifesto Ágil, valoriza-se:",
+   "op": [
+    "Processos e ferramentas mais que indivíduos e interações",
+    "Documentação abrangente mais que software em funcionamento",
+    "Negociação de contratos mais que colaboração com o cliente",
+    "Responder a mudanças mais que seguir um plano"
+   ],
+   "r": 3,
+   "exp": "Os quatro valores privilegiam sempre o item da esquerda. O manifesto reconhece valor nos da direita, mas valoriza mais os da esquerda."
+  },
+  {
+   "tema": "Métodos Ágeis e Encerramento",
+   "q": "Qual é o papel do Scrum Master?",
+   "op": [
+    "Chefiar o time de desenvolvimento e distribuir as tarefas",
+    "Priorizar o backlog do produto e representar o cliente",
+    "Facilitar o processo, remover impedimentos e proteger a equipe",
+    "Aprovar formalmente as entregas em nome do patrocinador"
+   ],
+   "r": 2,
+   "exp": "O Scrum Master é facilitador e servo-líder — não é chefe do time nem gerente de projeto. Priorizar o backlog é papel do Product Owner."
+  },
+  {
+   "tema": "Métodos Ágeis e Encerramento",
+   "q": "Qual evento do Scrum é dedicado a melhorar o PROCESSO de trabalho da equipe?",
+   "op": [
+    "Sprint Planning",
+    "Daily Scrum",
+    "Sprint Retrospective",
+    "Sprint Review"
+   ],
+   "r": 2,
+   "exp": "A Retrospective é interna e trata de como a equipe trabalha. A Review apresenta o incremento aos stakeholders e trata do produto."
+  },
+  {
+   "tema": "Métodos Ágeis e Encerramento",
+   "q": "Qual a função do limite de WIP no Kanban?",
+   "op": [
+    "Definir o número máximo de pessoas na equipe",
+    "Limitar a quantidade de trabalho em progresso, reduzindo o tempo de ciclo",
+    "Estabelecer a duração fixa de cada iteração",
+    "Determinar quantos itens entram no backlog"
+   ],
+   "r": 1,
+   "exp": "Limitar o trabalho em progresso força a equipe a terminar antes de começar coisas novas, reduzindo o tempo de ciclo e expondo gargalos."
+  },
+  {
+   "tema": "Métodos Ágeis e Encerramento",
+   "q": "Qual atividade do encerramento tem maior valor para os projetos FUTUROS da organização?",
+   "op": [
+    "Liberar os recursos e a equipe",
+    "Encerrar os contratos com fornecedores",
+    "Registrar as lições aprendidas",
+    "Emitir o relatório final de custos"
+   ],
+   "r": 2,
+   "exp": "As lições aprendidas alimentam os ativos de processos organizacionais — é o que faz a organização melhorar de um projeto para o outro em vez de repetir os mesmos erros."
+  },
+  {
+   "tema": "Métodos Ágeis e Encerramento",
+   "q": "Um projeto foi cancelado na metade. O que deve ser feito?",
+   "op": [
+    "Realizar o encerramento formal, incluindo o registro das lições aprendidas",
+    "Nada, pois o encerramento formal só se aplica a projetos concluídos",
+    "Apenas arquivar os documentos, sem encerrar contratos",
+    "Transferir o escopo restante para outro projeto automaticamente"
+   ],
+   "r": 0,
+   "exp": "Mesmo cancelado o projeto passa pelo encerramento: encerrar contratos, liberar recursos, arquivar documentos e registrar as lições — inclusive sobre o motivo do cancelamento."
+  },
+  {
+   "tema": "Fundamentos e Ciclo de Vida do Projeto",
+   "q": "O patrocinador exige antecipar a entrega em um mês, sem retirar nada do escopo. À luz da tripla restrição, qual é a consequência esperada?",
+   "op": [
+    "Será preciso elevar o custo, alocando mais recursos, sob pena de comprometer a qualidade",
+    "O custo diminui, porque o projeto passa a durar menos tempo",
+    "Nada precisa mudar, pois escopo, tempo e custo são dimensões independentes",
+    "O escopo se reduz automaticamente, sem necessidade de decisão do gerente"
+   ],
+   "r": 0,
+   "exp": "Escopo, tempo e custo estão amarrados, com a qualidade no centro: mexer em um vértice afeta os demais. Manter o escopo e cortar o prazo obriga a aumentar recursos, e portanto o custo, ou a qualidade cai. O erro frequente é supor que menos tempo significa menos custo."
+  }
+ ],
+ "discursivas": [
+  {
+   "tema": "Escopo e EAP",
+   "q": "Explique o que é a EAP, a regra dos 100% e por que ela é considerada a base do planejamento.",
+   "r": "A EAP (Estrutura Analítica do Projeto, ou WBS) é a decomposição hierárquica do trabalho total do projeto em partes progressivamente menores e mais gerenciáveis. Ela é orientada a entregas, e não a atividades: cada elemento representa um produto ou resultado — um substantivo — e não uma ação. O nível mais baixo é o pacote de trabalho, ponto em que já é possível estimar custo e duração com confiança e atribuir um responsável. A regra dos 100% estabelece que a EAP deve conter todo o trabalho do projeto e apenas ele: a soma dos elementos-filhos equivale exatamente ao elemento-pai, sem sobras nem excessos. A consequência prática é decisiva — o que não está na EAP não faz parte do projeto, e essa fronteira é o que permite recusar pedidos que configurariam scope creep. A EAP é a base do planejamento porque tudo o que vem depois depende dela: as atividades são derivadas dos pacotes de trabalho e dão origem ao cronograma; os custos são estimados por pacote e somados para formar o orçamento; a matriz de responsabilidades atribui donos a cada pacote; os riscos são identificados olhando cada ramo; e o controle do progresso mede a conclusão de pacotes. Sem uma EAP bem construída, estimativas de prazo e custo viram chute, e não há critério objetivo para dizer se o projeto terminou."
+  },
+  {
+   "tema": "Custos, Aquisições e Contratos",
+   "q": "Explique o Gerenciamento do Valor Agregado e interprete um projeto com VA = 80.000, VP = 100.000 e CR = 90.000.",
+   "r": "O Gerenciamento do Valor Agregado (EVM) integra escopo, prazo e custo em um único conjunto de medidas, permitindo responder objetivamente onde o projeto está. Ele parte de três valores. O Valor Planejado (VP) é o valor do trabalho que estava previsto para estar concluído até a data de medição. O Valor Agregado (VA) é o valor do trabalho efetivamente concluído, medido pelo orçamento previsto para ele — é a medida do que foi entregue, não do que foi gasto. O Custo Real (CR) é o que efetivamente se gastou para produzir esse trabalho. A partir deles calculam-se a variação de prazo SV = VA − VP e a variação de custo CV = VA − CR, além dos índices IDP (SPI) = VA / VP e IDC (CPI) = VA / CR. A regra de leitura é simples: variação positiva ou índice acima de 1 é bom; negativa ou abaixo de 1 é ruim. No caso apresentado: SV = 80.000 − 100.000 = −20.000, e IDP = 80.000/100.000 = 0,80, o que significa que o projeto entregou apenas 80% do trabalho previsto para o período, estando atrasado. CV = 80.000 − 90.000 = −10.000, e IDC = 80.000/90.000 = 0,89, o que significa que para cada real gasto o projeto entregou 89 centavos de valor, estando acima do orçamento. O diagnóstico, portanto, é o pior cenário possível: o projeto está simultaneamente atrasado e estourando o orçamento, e mantidas as condições atuais o custo final tende a superar o orçado em cerca de 12%."
+  },
+  {
+   "tema": "Riscos",
+   "q": "Descreva as estratégias de resposta a ameaças e dê um exemplo de cada uma em um projeto de software.",
+   "r": "São cinco as estratégias de resposta a ameaças. Prevenir (ou eliminar) significa alterar o plano do projeto para remover completamente a causa do risco, levando sua probabilidade a zero — por exemplo, ao identificar que uma biblioteca de terceiros pode ser descontinuada durante o projeto, decide-se implementar a funcionalidade internamente, eliminando a dependência. Transferir consiste em passar o impacto do risco a um terceiro, sem eliminá-lo — contratar uma empresa especializada para o módulo de pagamentos, com garantia contratual de disponibilidade, transfere para ela o prejuízo de uma indisponibilidade. Mitigar reduz a probabilidade ou o impacto a um nível aceitável, sem eliminar o risco — implantar testes automatizados e integração contínua não impede que bugs cheguem à produção, mas reduz muito essa chance e o tempo de correção. Aceitar significa não tomar nenhuma ação preventiva, seja porque o custo da resposta supera o do impacto, seja porque não há resposta viável; a aceitação ativa reserva contingência de tempo ou dinheiro para o caso de o risco se materializar, enquanto a passiva apenas registra o risco e o monitora — um exemplo seria aceitar o risco de pequena instabilidade de um serviço de nuvem consolidado. Escalar aplica-se quando o risco está fora da alçada do gerente e do escopo do projeto, devendo ser encaminhado ao nível organizacional adequado — por exemplo, uma mudança regulatória que afeta todos os produtos da empresa. É importante lembrar que as respostas podem gerar riscos secundários, isto é, novos riscos criados pela própria resposta, e que quase sempre restam riscos residuais em nível considerado aceitável."
+  }
+ ]
+}

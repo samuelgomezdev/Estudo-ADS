@@ -1,0 +1,110 @@
+{
+  "ignorar": [],
+  "materias": {
+    "Arquitetura de Computadores": {
+      "id": "arquitetura-de-computadores",
+      "nome": "Arquitetura de Computadores",
+      "periodo": 1,
+      "sigla": "AC",
+      "cor": "#ef4444"
+    },
+    "Database Design for Apps": {
+      "id": "database-design",
+      "nome": "Database Design for Apps",
+      "periodo": 3,
+      "sigla": "DDA",
+      "cor": "#8b5cf6"
+    },
+    "Empreendedorismo": {
+      "id": "empreendedorismo",
+      "nome": "Empreendedorismo",
+      "periodo": 1,
+      "sigla": "EMP",
+      "cor": "#06b6d4"
+    },
+    "Engenharia de Requisitos": {
+      "id": "engenharia-de-requisitos",
+      "nome": "Engenharia de Requisitos",
+      "periodo": 2,
+      "sigla": "ER",
+      "cor": "#2563eb"
+    },
+    "Fundamentos Computacionais": {
+      "id": "fundamentos-computacionais",
+      "nome": "Fundamentos Computacionais",
+      "periodo": 1,
+      "sigla": "FC",
+      "cor": "#f59e0b"
+    },
+    "Gerenciamento de Projetos": {
+      "id": "gerenciamento-de-projetos",
+      "nome": "Gerenciamento de Projetos",
+      "periodo": 1,
+      "sigla": "GP",
+      "cor": "#22c55e"
+    },
+    "Inovação Disruptiva": {
+      "id": "inovacao-disruptiva",
+      "nome": "Inovação Disruptiva",
+      "periodo": 2,
+      "sigla": "ID",
+      "cor": "#ec4899"
+    },
+    "Inteligencia Interpessoal": {
+      "id": "inteligencia-interpessoal",
+      "nome": "Inteligencia Interpessoal",
+      "periodo": 2,
+      "sigla": "II",
+      "cor": "#14b8a6"
+    },
+    "Paradigmas de Programação": {
+      "id": "paradigmas",
+      "nome": "Paradigmas de Programação",
+      "periodo": 4,
+      "sigla": "PP",
+      "cor": "#a855f7"
+    },
+    "Produção de Jogos": {
+      "id": "producao-de-jogos",
+      "nome": "Produção de Jogos",
+      "periodo": 0,
+      "sigla": "PJ",
+      "cor": "#f97316"
+    },
+    "Programming and Data Persistence": {
+      "id": "data-persistence",
+      "nome": "Programming and Data Persistence",
+      "periodo": 3,
+      "sigla": "PDP",
+      "cor": "#3b82f6"
+    },
+    "SO - Sistemas Operacionais": {
+      "id": "so-sistemas-operacionais",
+      "nome": "SO - Sistemas Operacionais",
+      "periodo": 1,
+      "sigla": "SSO",
+      "cor": "#84cc16"
+    },
+    "Software Design": {
+      "id": "software-design",
+      "nome": "Software Design",
+      "periodo": 3,
+      "sigla": "SD",
+      "cor": "#e11d48"
+    },
+    "UI e UX": {
+      "id": "ui-e-ux",
+      "nome": "UI e UX",
+      "periodo": 1,
+      "sigla": "UU",
+      "cor": "#0ea5e9"
+    },
+    "Responsive Web Development": {
+      "id": "responsive-web",
+      "nome": "Responsive Web Development",
+      "periodo": 3,
+      "sigla": "RWD",
+      "cor": "#06b6d4"
+    }
+  }
+}

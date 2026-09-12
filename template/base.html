@@ -1,0 +1,71 @@
+<title>Estudo ADS UNIVALI</title>
+<style>
+__CSS__
+</style>
+
+<a class="pular" href="#conteudo">Pular para o conteúdo</a>
+
+<header class="topbar">
+  <div class="topbar-in">
+    <button class="voltar" id="btn-voltar" hidden aria-label="Voltar">
+      <span aria-hidden="true">←</span>
+    </button>
+    <button class="brand" id="brand">
+      <span class="brand-dot" aria-hidden="true">A</span>
+      <span class="brand-txt">Estudo ADS<small>Análise e Desenvolvimento de Sistemas · UNIVALI</small></span>
+    </button>
+    <nav class="crumb" id="crumb" aria-label="Você está em"></nav>
+  </div>
+</header>
+
+<main id="conteudo">
+  <!-- ============ HOME ============ -->
+  <section class="view on" id="view-home">
+    <div class="wrap">
+      <h1>Central de estudos</h1>
+      <p class="sub">Resumos, flashcards, quizzes e simulados de todas as matérias do curso, no mesmo lugar.</p>
+
+      <div class="stats" id="stats"></div>
+
+      <div class="busca-wrap">
+        <span class="busca-ico" aria-hidden="true">⌕</span>
+        <input id="busca" type="search" placeholder="Buscar matéria…  (tecle / )" aria-label="Buscar matéria" autocomplete="off">
+      </div>
+      <p class="busca-info" id="busca-info"></p>
+
+      <div id="continuar" hidden></div>
+      <div id="periodos"></div>
+
+      <div class="rodape">
+        Gerado a partir da pasta Univali · última atualização <span id="ano"></span><br>
+        Criou uma pasta de matéria nova? Rode <code>atualizar.bat</code> que ela aparece aqui.
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ MATÉRIA ============ -->
+  <section class="view" id="view-materia">
+    <div class="wrap">
+      <div class="mat-head">
+        <div class="mat-sig" id="m-sig"></div>
+        <h1 id="m-nome"></h1>
+        <p class="sub" id="m-sub"></p>
+      </div>
+      <nav class="tabs" id="m-tabs" aria-label="Seções da matéria"></nav>
+      <div class="pane" id="pane-resumo"></div>
+      <div class="pane" id="pane-cards"></div>
+      <div class="pane" id="pane-quiz"></div>
+      <div class="pane" id="pane-simulado"></div>
+      <div class="pane" id="pane-disc"></div>
+      <div class="pane" id="pane-colas"></div>
+      <div class="pane" id="pane-material"></div>
+    </div>
+  </section>
+</main>
+
+<script>
+const DADOS = __DADOS__;
+</script>
+<script>
+__JS__
+</script>

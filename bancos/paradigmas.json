@@ -1,0 +1,1609 @@
+{
+ "id": "paradigmas",
+ "nome": "Paradigmas de Programação",
+ "periodo": 4,
+ "cor": "#ef4444",
+ "sigla": "PP",
+ "resumos": [
+  {
+   "tema": "Métodos de Programação e História",
+   "html": "<p>Um <b>paradigma</b> é um padrão de pensamento que define um modelo para resolver problemas — toda linguagem de programação é construída sobre pelo menos um. Estudar paradigmas dá <b>vocabulário conceitual</b>, capacidade de escolher a ferramenta certa e facilidade para aprender novas linguagens (Sebesta).</p><p><b>Linha do tempo:</b> 1954 Fortran (1ª de alto nível) → 1959 LISP (1ª funcional pura, John McCarthy, MIT) → anos 1960 crise do software → 1968 Dijkstra, <i>A Case against the GO TO Statement</i> → anos 1970 estruturado e declarativo (Prolog, SQL) → anos 1980-90 orientação a objetos → anos 2000 SOA → hoje multiparadigma.</p><p><b>Classificação clássica (4 tipos):</b> imperativo, estruturado, orientado a objetos e declarativo (com os subtipos lógico e funcional). Segundo Tucker e Noonan, linguagens de programação diferem das naturais por terem <b>domínio de expressão mais reduzido</b> e propósito específico: expressar ideias computacionais.</p><p><b>Duas áreas impulsionaram novos paradigmas:</b> a Inteligência Artificial (LISP, Prolog) e a World Wide Web (linguagens de script, declarativas para marcação e consulta).</p>"
+  },
+  {
+   "tema": "Paradigma Imperativo",
+   "html": "<p>O <b>mais antigo e mais bem-sucedido</b> dos paradigmas. Surgiu na década de 1940, quando <b>John von Neumann</b> e colaboradores perceberam que programa e dados poderiam <b>compartilhar a memória principal</b> — antes disso os programas ficavam fora da memória.</p><p>A <b>arquitetura von Neumann-Eckert</b> é a base do paradigma: a memória guarda instruções e dados, e no centro está a <b>atribuição</b> — alterar o valor de uma posição de memória destruindo o valor anterior. Daí o conceito de <b>estado mutável</b>.</p><p><b>Todas as linguagens imperativas incluem</b> (Tucker e Noonan, p. 277): atribuição, declaração de variáveis, expressões, comandos condicionais, laços e abstração procedural.</p><p><b>Como funciona:</b> o programa descreve <i>COMO</i> chegar ao resultado — uma sequência explícita de comandos. Linguagens: C (a mais usada), Pascal, Fortran, Cobol, Basic, Ada.</p><p><b>Vantagens:</b> eficiência (espelha o hardware), controle total, modelo mental simples e direto. <b>Desvantagens:</b> falta de flexibilidade devido ao caráter sequencial, dificuldade de paralelizar, efeitos colaterais causados pelo estado compartilhado, código mais verboso.</p><p>É <b>Turing-completo</b>: pode expressar qualquer computação computável.</p>"
+  },
+  {
+   "tema": "Paradigma Estruturado",
+   "html": "<p><b>Motivação histórica:</b> a crise do software dos anos 1960 e o uso excessivo do comando <b>GOTO</b>, que permitia saltos arbitrários entre instruções e gerava o chamado \"código espaguete\" — praticamente impossível de entender e manter. Em 1968 <b>Edsger W. Dijkstra</b> publica <i>A Case against the GO TO Statement</i>.</p><p><b>Teorema de Böhm-Jacopini:</b> qualquer algoritmo pode ser escrito usando apenas <b>três estruturas de controle</b>:</p><ul><li><b>Sequência</b> — comandos executados um após o outro</li><li><b>Seleção / Decisão</b> — if, if-else, switch</li><li><b>Iteração / Repetição</b> — for, while, do-while (executa um bloco várias vezes)</li></ul><p><b>Formas de representar um algoritmo:</b> linguagem natural (descrição narrativa), fluxograma (símbolos gráficos) e pseudocódigo/portugol (texto estruturado).</p><p><b>Outros pilares:</b> modularização (dividir em sub-rotinas, funções e procedimentos), refinamento sucessivo (top-down) e escopo de variáveis (locais x globais).</p><p>Linguagens: Pascal, C, Fortran, Cobol, Algol. Auge nas décadas de 1970 e 1980. O estruturado é um <b>refinamento disciplinado do imperativo</b>, não um paradigma oposto a ele.</p>"
+  },
+  {
+   "tema": "Paradigma Declarativo",
+   "html": "<p>Surgiu na década de 1970. O programador informa <b>O QUE</b> quer obter — os objetivos da computação — e não <b>COMO</b> obter (Sebesta). O <i>como</i> fica a cargo do motor de execução da linguagem.</p><p>Um programa é um <b>conjunto de declarações</b> (verdade, falso, satisfaz restrição). Consequências: código mais enxuto, mais fácil de aprender que o imperativo, e a <b>ordem das declarações importa menos</b>.</p><p><b>Dois domínios principais de aplicação</b> (os mais cobrados em prova):</p><ul><li><b>Inteligência Artificial</b> — aplicações baseadas em regras e lógica; destaque para o <b>Prolog</b></li><li><b>Acesso a informação em banco de dados</b> — consulta e manipulação em SGBDs; o expoente é o <b>SQL</b></li></ul><p>Outros exemplos declarativos: HTML e XML (marcação), CSS, Haskell, Prolog, expressões regulares, e Web Services / integração baseada em XML.</p><p><b>Subparadigmas:</b> lógico (Prolog), funcional (LISP, Haskell, F#) e programação por restrições (domínios booleano e finito).</p>"
+  },
+  {
+   "tema": "Paradigma Lógico",
+   "html": "<p>Baseado na <b>lógica de primeira ordem</b>: o programa é um conjunto de <b>fatos</b> e <b>regras</b>, e a execução é uma <b>consulta</b> que o motor de inferência tenta provar.</p><p><b>Prolog</b> (PROgrammation en LOGique, 1972, Colmerauer e Kowalski) é a linguagem de referência. Mecanismos: <b>unificação</b> (casar termos), <b>backtracking</b> (voltar e tentar outra alternativa) e <b>resolução</b>.</p><pre>progenitor(joao, maria).\nprogenitor(maria, ana).\navo(X, Z) :- progenitor(X, Y), progenitor(Y, Z).\n?- avo(joao, ana).   % true</pre><p><b>Características cobradas:</b> processamento simbólico (manipula símbolos, não só números), facilidade de modificação (acrescentar um fato não exige reescrever o programa) e adequação a <b>soluções heurísticas</b> — problemas em que não se conhece um algoritmo determinístico, apenas regras de busca.</p><p>Aplicações: sistemas especialistas, processamento de linguagem natural, prova automática de teoremas, diagnóstico.</p>"
+  },
+  {
+   "tema": "POO — Modelagem de Problemas",
+   "html": "<p>A POO surgiu para <b>aplicar conceitos da realidade ao contexto da programação</b>: o programa é estruturado em torno de <b>objetos</b> que emulam entidades do mundo real.</p><p><b>Objeto = atributos (estado) + métodos (comportamento).</b> A <b>classe</b> é a matriz/molde: define o tipo, os atributos e a implementação dos métodos que os objetos daquele tipo terão. O objeto é a <b>instância</b> da classe.</p><p><b>Diferença de foco:</b> no estruturado o foco está nos <b>procedimentos</b> que atuam sobre dados separados; na POO os dados e os procedimentos que os manipulam ficam <b>juntos, dentro do objeto</b>.</p><p>Na POO, etapas de <b>análise e projeto</b> que outros paradigmas minimizavam tornam-se requisitos fundamentais. O <b>reúso de código</b> é consequência de boa análise e projeto — não apenas do uso de funções e procedimentos.</p><p><b>Os 4 pilares:</b> Abstração, Encapsulamento, Herança e Polimorfismo.</p><p>Linguagens OO: Simula 67 (a primeira), Smalltalk (a primeira puramente OO), C++, Java, C#, Python, Ruby, PHP.</p>"
+  },
+  {
+   "tema": "POO — Classes, Relacionamentos e Encapsulamento",
+   "html": "<p><b>Encapsulamento:</b> apenas os métodos do próprio objeto devem manipular seus atributos. Esconde a implementação interna e expõe uma interface pública controlada (getters/setters), acrescentando uma camada de segurança e permitindo mudar o interior sem quebrar quem usa.</p><p><b>Modificadores de visibilidade:</b> <code>private</code> (só a própria classe), <code>protected</code> (classe e subclasses), <code>public</code> (qualquer lugar), <code>package/default</code> (mesmo pacote).</p><p><b>Relacionamentos entre classes:</b></p><ul><li><b>Associação</b> — ligação genérica entre classes<ul><li><b>Agregação</b> (losango vazio ◇): todo/parte em que a <b>parte existe independentemente</b> do todo. Ex.: Departamento ◇ Funcionário — o funcionário continua existindo se o departamento acabar.</li><li><b>Composição</b> (losango cheio ◆): todo/parte com <b>dependência de existência</b>. Ex.: Pedido ◆ ItemPedido — o item não existe sem o pedido.</li></ul></li><li><b>Herança</b> — relação \"é um tipo de\"<ul><li><b>Generalização</b>: de baixo para cima — extrair o que há de comum nas subclasses para a superclasse</li><li><b>Especialização</b>: de cima para baixo — criar subclasses que refinam a superclasse</li></ul></li><li><b>Dependência</b> — uma classe usa outra pontualmente (parâmetro, variável local)</li></ul>"
+  },
+  {
+   "tema": "POO — Herança e Polimorfismo",
+   "html": "<p><b>Herança:</b> a subclasse herda <b>todos</b> os atributos e métodos da superclasse — inclusive os que vierem a ser acrescentados no futuro. Atributos específicos de uma subclasse devem ficar <b>só nela</b>, nunca subir para a superclasse.</p><p><b>Herança múltipla</b> (herdar de mais de uma classe): C++ e Python permitem; <b>Java não permite entre classes</b> — resolve o problema com múltiplas interfaces.</p><p><b>Polimorfismo:</b> \"muitas formas\" — seleção dinâmica de comportamento. O mesmo método assume comportamentos diferentes conforme o tipo real do objeto.</p><ul><li><b>Sobrecarga (overload):</b> mesma classe, mesmo nome de método, <b>assinaturas diferentes</b> (número/tipo de parâmetros). Resolvida em tempo de compilação (polimorfismo estático).</li><li><b>Sobreposição / sobrescrita (override):</b> exige <b>herança</b>. Mesma assinatura na subclasse, <b>comportamento diferente</b>. Resolvida em tempo de execução (polimorfismo dinâmico).</li></ul><pre>class Funcionario { double salario(){ return base; } }\nclass Vendedor extends Funcionario {\n  @Override double salario(){ return base + comissao; }  // sobreposição\n}</pre>"
+  },
+  {
+   "tema": "POO — Interfaces e Classes Abstratas",
+   "html": "<p><b>Classe abstrata:</b> classe que <b>não pode ser instanciada diretamente</b>. Serve como base para subclasses concretas — só faz sentido com herança.</p><ul><li>Pode ter métodos <b>concretos</b> (com implementação) e <b>abstratos</b> (só assinatura)</li><li><b>Pode ter construtores</b> (chamados pelas subclasses via <code>super()</code>) e atributos</li><li>Pode herdar de outra classe abstrata</li><li>Se uma classe tem ao menos um método abstrato, ela precisa ser abstrata</li></ul><p><b>Interface:</b> define um <b>contrato</b> — o conjunto de métodos que a classe implementadora se compromete a fornecer, tradicionalmente <b>sem implementação</b>.</p><ul><li>Uma classe pode implementar <b>múltiplas interfaces, sem limite</b> — vantagem decisiva sobre a herança simples de classes abstratas em Java</li><li>Interfaces tradicionais exigem a implementação de <b>todos</b> os métodos declarados</li><li>Não têm estado nem construtores</li></ul><p><b>Regra de bolso:</b> classe abstrata = \"é um\" com código compartilhado; interface = \"é capaz de\" / contrato entre partes.</p>"
+  },
+  {
+   "tema": "POO — Java, C++ e C#",
+   "html": "<p><b>Java</b> (1995, Sun/Oracle) — <i>write once, run anywhere</i>: o código vira <b>bytecode</b> executado pela <b>JVM</b>. Fortemente tipada, coletor de lixo automático, <b>sem herança múltipla de classes</b> (usa interfaces), sem ponteiros explícitos, sem sobrecarga de operadores.</p><p><b>C++</b> (1983, Bjarne Stroustrup) — extensão de C com OO. <b>Multiparadigma</b> (procedural, OO, genérico). Compilada para código nativo, <b>permite herança múltipla</b>, tem <b>ponteiros</b> e <b>gerenciamento manual de memória</b> (new/delete, destrutores), sobrecarga de operadores, templates.</p><p><b>C#</b> (2000, Microsoft) — incorpora OO à sintaxe da família C, roda sobre o <b>.NET/CLR</b> compilando para <b>CIL</b>. Fortemente tipada, GC automático, sem herança múltipla de classes, tem propriedades, delegates, LINQ, <code>async/await</code> e expressões lambda.</p><p><b>Histórico:</b> Fortran (1954) foi a primeira linguagem de alto nível. C, basicamente procedural, influenciou Java e C#.</p>"
+  },
+  {
+   "tema": "Funcional — Conceitos e Funções Puras",
+   "html": "<p>Origem: necessidade de implementações em <b>inteligência artificial</b>, <i>machine learning</i> e ciência cognitiva. Trata os problemas sob o ponto de vista <b>matemático</b>, evitando estado e mutação (Tucker e Noonan). Base teórica: o <b>cálculo lambda de Alonzo Church</b> (década de 1930).</p><p>Como <b>não existe estado</b>, é impossível incrementar ou decrementar variáveis — logo <b>não existem laços</b>, que são substituídos por <b>recursão</b> (repetição de uma função).</p><p><b>Princípios do paradigma funcional:</b></p><ul><li><b>Funções puras</b> — não produzem efeitos colaterais e não têm estado interno (<i>stateless</i>). Para a mesma entrada, sempre a mesma saída. Não podem depender de estado mutável nem acessar/alterar variáveis globais.</li><li><b>Transparência referencial</b> — o valor da função depende apenas dos seus argumentos; a chamada pode ser substituída pelo seu resultado sem mudar o programa.</li><li><b>Imutabilidade</b> — atribuído um valor, ele permanece até o fim. Facilita testes e depuração (não é preciso reconstituir toda a sequência de mudanças de estado). <b>Custo:</b> tende a consumir mais memória.</li><li><b>Funções de primeira classe e de ordem superior</b></li><li><b>Recursão</b> no lugar de iteração</li></ul><p><b>Vantagens:</b> alto nível de abstração, código conciso, mais fácil de testar e verificar erros, favorece <b>paralelismo</b> (sem estado compartilhado, chips multinúcleo aproveitam melhor). Empresas como Facebook e Twitter usam funcional em produção.</p>"
+  },
+  {
+   "tema": "Funcional — Primeira Classe e Ordem Superior",
+   "html": "<p><b>Função de primeira classe (<i>first-class function</i>):</b> a função é tratada como qualquer outro valor. Ela pode ser:</p><ul><li><b>atribuída a uma variável</b></li><li><b>passada como argumento</b> para outra função</li><li><b>retornada como valor</b> de outra função</li><li><b>armazenada em estruturas de dados</b> (listas, arrays, objetos)</li></ul><p><b>Função de ordem superior (<i>higher-order function</i>):</b> a que <b>recebe uma função como parâmetro e/ou retorna uma função</b>. Note a diferença: primeira classe é uma propriedade da <b>linguagem</b>; ordem superior é uma propriedade da <b>função</b>.</p><p><b>Funções anônimas / lambda:</b> funções sem nome, escritas no ponto de uso. Herdam o nome <i>lambda</i> do cálculo de Church:</p><pre>(lambda (x) (* x x))        ; LISP\nx =&gt; x * x                   // C#\nlambda x: x * x              # Python\n(x) -&gt; x * x                 // Java</pre><p><b>O trio clássico de ordem superior:</b></p><ul><li><b>map</b> — transforma cada elemento, devolve coleção do mesmo tamanho</li><li><b>filter</b> — seleciona os que satisfazem um predicado, devolve coleção menor ou igual</li><li><b>reduce/fold</b> — acumula a coleção em um único valor</li></ul><pre>const total = produtos\n  .filter(p =&gt; p.emEstoque)\n  .map(p =&gt; p.preco)\n  .reduce((a, b) =&gt; a + b, 0);</pre>"
+  },
+  {
+   "tema": "Funcional — Cálculo Lambda",
+   "html": "<p><b>Cálculo lambda</b>: sistema formal criado por <b>Alonzo Church</b> na década de 1930 para expressar computação por meio de <b>funções, abstração e aplicação</b>. É o fundamento teórico da programação funcional, assim como a <b>Máquina de Turing</b> é o do paradigma imperativo — e os dois modelos são <b>equivalentes em poder computacional</b>.</p><p><b>Sintaxe — três construções apenas:</b></p><ul><li><b>Variável:</b> <code>x</code></li><li><b>Abstração</b> (definir função): <code>λx.E</code> — função de parâmetro <code>x</code> e corpo <code>E</code></li><li><b>Aplicação</b> (chamar função): <code>(F A)</code></li></ul><pre>λx.x           função identidade\nλx.x*x         eleva ao quadrado\n(λx.x*x) 5  →  25</pre><p><b>Reduções:</b> <b>α</b> (alfa) renomeia variáveis ligadas; <b>β</b> (beta) substitui o parâmetro pelo argumento — é o passo de \"execução\"; <b>η</b> (eta) trata equivalência de funções. Uma expressão totalmente reduzida está na <b>forma normal</b>.</p><p><b>Variável livre x ligada:</b> em <code>λx.(x + y)</code>, <code>x</code> é ligada (pelo λ) e <code>y</code> é livre.</p><p><b>Contexto histórico do capítulo:</b> a <b>Lei de Moore</b> (Gordon Moore, 1964) está chegando ao limite físico; ganhos de desempenho vêm de <b>múltiplos núcleos</b>, e o paradigma funcional — sem estado compartilhado — se beneficia diretamente da execução paralela.</p><p><b>LISP</b> (LISt Processing, 1959, <b>John McCarthy</b>, MIT) foi a primeira linguagem funcional pura, criada para manipular símbolos em pesquisas de IA.</p>"
+  },
+  {
+   "tema": "Funcional — Currying e Closures",
+   "html": "<p><b>Currying:</b> técnica que transforma uma função de <b>múltiplos parâmetros</b> em uma <b>cadeia de funções de um único parâmetro</b>, cada uma retornando a próxima. O nome homenageia o matemático <b>Haskell Curry</b>.</p><p>A assinatura muda de tipo:</p><pre>int, int -&gt; int        // original\nint -&gt; int -&gt; int      // curried</pre><pre>// JavaScript, sem currying\nvar add = function (x, y) { return x + y; };\nadd(1, 2);            // 3\n\n// com currying\nvar add = function (x) {\n  return function (y) { return x + y; };\n};\nadd(1)(2);            // 3\nvar mais5 = add(5);   // aplicação parcial\nmais5(10);            // 15</pre><p><b>Vantagens:</b> permite <b>aplicação parcial</b> (fixar alguns argumentos e reaproveitar), favorece <b>composição de funções</b>, gera código mais reutilizável e configurável. Motivação prática: usar frequentemente funções obtidas fixando apenas alguns dos parâmetros.</p><p><b>Depende de closure</b> para funcionar. <b>Closure</b> é a função que \"lembra\" o ambiente léxico em que foi criada — no exemplo, a função interna continua enxergando <code>x</code> depois que <code>add</code> já retornou.</p><p>Linguagens com suporte sintático nativo a currying: <b>Haskell, ML e JavaScript</b> (Scala, F# também).</p>"
+  },
+  {
+   "tema": "Funcional — Functors, Applicatives e Monads",
+   "html": "<p>Conceitos avançados que permitem <b>compor funções sobre valores dentro de um contexto</b> (uma lista, um valor que pode falhar, uma operação assíncrona).</p><p><b>Composição de funções:</b> encadear funções de modo que a saída de uma seja a entrada da próxima — <code>(f ∘ g)(x) = f(g(x))</code>.</p><ul><li><b>Functor (funtor):</b> estrutura que sabe <b>aplicar uma função comum ao valor que carrega</b>, preservando o contexto. Operação: <code>map</code> / <code>fmap</code>. Um array em JS é um functor: <code>[1,2,3].map(x =&gt; x*2)</code> devolve um array.</li><li><b>Applicative functor (funtor aplicativo):</b> vai além — <b>a própria função está dentro do contexto</b>. Operação <code>ap</code>/<code>&lt;*&gt;</code>: aplica uma função embrulhada a um valor embrulhado. Permite combinar vários valores em contexto.</li><li><b>Monad (mônada):</b> permite <b>encadear operações que devolvem valores já dentro do contexto</b>, sem aninhar contextos. Operações: <code>of/return</code> (embrulha) e <code>bind</code>/<code>flatMap</code>/<code>&gt;&gt;=</code> (encadeia e achata). Resolve o problema de <code>map</code> gerar contexto dentro de contexto.</li></ul><p><b>Hierarquia:</b> todo Monad é um Applicative, e todo Applicative é um Functor.</p><p>Exemplos práticos: <code>Maybe/Option</code> (valor que pode não existir), <code>Either</code> (sucesso ou erro), <code>Promise</code> (valor futuro — <code>then</code> funciona como bind), listas.</p>"
+  },
+  {
+   "tema": "Linguagens Multiparadigma",
+   "html": "<p>Nenhum paradigma isolado resolve todos os problemas de forma computacionalmente eficiente. Linguagens <b>multiparadigma</b> permitem combinar paradigmas — separadamente ou de forma integrada — obtendo soluções eficientes e de manutenção facilitada.</p><p><b>F#</b> — \"f sharp\", plataforma <b>.NET</b>, criada em <b>2005 por Don Syme</b> na Microsoft Research. Suporta <b>funcional (primário), imperativo e orientado a objetos</b>. Inferência de tipos forte, imutabilidade por padrão (<code>let</code>; precisa de <code>mutable</code> para permitir alteração), pattern matching, pipeline <code>|&gt;</code>.</p><pre>let mutable x = 1\nx &lt;- 3\nfor i in 1..x do printfn \"%d\" i</pre><p><b>JavaScript</b> — criada em 1995 por Brendan Eich, padronizada como <b>ECMAScript</b>. Multiparadigma: imperativa, funcional (funções de primeira classe, closures, arrow functions, map/filter/reduce) e orientada a objetos <b>baseada em protótipos</b> (a sintaxe <code>class</code> do ES6 é açúcar sintático). Tipagem dinâmica e fraca. Executa no navegador e no servidor (Node.js).</p><p><b>Python</b> — criada por <b>Guido van Rossum</b> (1991). Multiparadigma: imperativa/estruturada, OO (tudo é objeto, <b>permite herança múltipla</b>) e funcional (<code>lambda</code>, <code>map</code>, <code>filter</code>, <code>functools.reduce</code>, compreensões de lista). Tipagem <b>dinâmica e forte</b>, interpretada, blocos definidos por <b>indentação</b>.</p><p>Outras multiparadigma: Scala, Kotlin, C++, C#, Rust, Swift, Lua.</p>"
+  }
+ ],
+ "colas": [
+  {
+   "titulo": "Os 4 paradigmas em uma linha",
+   "mnemonico": "Mnemônico: \"I Enche o Objeto Declarado\" → Imperativo, Estruturado, Orientado a objetos, Declarativo.",
+   "pontos": [
+    "Imperativo: COMO fazer, passo a passo, com estado mutável e atribuição.",
+    "Estruturado: o imperativo disciplinado — sequência, seleção e iteração, sem GOTO.",
+    "Orientado a objetos: o mundo modelado em objetos que juntam dados e comportamento.",
+    "Declarativo: O QUE quero, não como — subdivide em lógico (Prolog) e funcional (LISP/Haskell)."
+   ]
+  },
+  {
+   "titulo": "Böhm-Jacopini — as 3 estruturas",
+   "mnemonico": "Mnemônico: \"SSI\" → Sequência, Seleção, Iteração. Basta isso para qualquer algoritmo.",
+   "pontos": [
+    "Sequência: um comando depois do outro.",
+    "Seleção: if / if-else / switch.",
+    "Iteração: for / while / do-while.",
+    "Consequência histórica: o GOTO se torna dispensável (Dijkstra, 1968)."
+   ]
+  },
+  {
+   "titulo": "Domínios do declarativo",
+   "mnemonico": "Mnemônico: \"IA e BD\" — Prolog para IA, SQL para banco de dados.",
+   "pontos": [
+    "Inteligência Artificial: regras e lógica → Prolog.",
+    "Acesso a informação em banco de dados: consulta e manipulação → SQL.",
+    "As duas áreas que impulsionaram novos paradigmas: IA e WWW."
+   ]
+  },
+  {
+   "titulo": "Agregação x Composição",
+   "mnemonico": "Mnemônico: losango VAZIO = a parte VIVE sem o todo; losango CHEIO = a parte MORRE com o todo.",
+   "pontos": [
+    "Agregação ◇: Departamento ◇ Funcionário — existência independente.",
+    "Composição ◆: Pedido ◆ ItemPedido — existência dependente.",
+    "Generalização: de baixo para cima (extrai o comum).",
+    "Especialização: de cima para baixo (refina em subclasses)."
+   ]
+  },
+  {
+   "titulo": "Sobrecarga x Sobreposição",
+   "mnemonico": "Mnemônico: sobreCARGA = CARREGA parâmetros diferentes; sobrePOSIÇÃO = POSICIONA por cima, na herança.",
+   "pontos": [
+    "Sobrecarga (overload): MESMA classe, mesmo nome, assinaturas DIFERENTES. Estático, em compilação.",
+    "Sobreposição (override): exige HERANÇA, MESMA assinatura, comportamento diferente. Dinâmico, em execução.",
+    "Java não tem herança múltipla de classes; C++ e Python têm."
+   ]
+  },
+  {
+   "titulo": "Classe abstrata x Interface",
+   "mnemonico": "Mnemônico: abstrata = \"É UM\" com código pronto; interface = \"É CAPAZ DE\", só contrato.",
+   "pontos": [
+    "Abstrata: não instancia, pode ter métodos concretos E abstratos, PODE ter construtor e atributos.",
+    "Abstrata: herança simples em Java — só uma por classe.",
+    "Interface: só o contrato, sem estado nem construtor; a classe implementa QUANTAS quiser.",
+    "Interface tradicional exige implementar TODOS os métodos."
+   ]
+  },
+  {
+   "titulo": "Os pilares do funcional",
+   "mnemonico": "Mnemônico: \"PITI\" → função Pura, Imutabilidade, Transparência referencial, funções de primeira classe (Instrumento).",
+   "pontos": [
+    "Função pura: mesma entrada → mesma saída, sem efeito colateral, sem estado (stateless).",
+    "Transparência referencial: posso trocar a chamada pelo resultado sem mudar o programa.",
+    "Imutabilidade: valor atribuído não muda mais. Custo: mais memória.",
+    "Sem estado → sem laços: a repetição vira RECURSÃO."
+   ]
+  },
+  {
+   "titulo": "Primeira classe x Ordem superior",
+   "mnemonico": "Mnemônico: primeira classe é o que a LINGUAGEM permite; ordem superior é o que a FUNÇÃO faz.",
+   "pontos": [
+    "Primeira classe: função pode ser atribuída, passada, retornada e guardada em estrutura de dados.",
+    "Ordem superior: função que RECEBE função e/ou RETORNA função.",
+    "map: transforma (mesmo tamanho) | filter: seleciona (menor ou igual) | reduce: acumula em um valor."
+   ]
+  },
+  {
+   "titulo": "Cálculo lambda — o essencial",
+   "mnemonico": "Mnemônico: Church : funcional :: Turing : imperativo — modelos equivalentes.",
+   "pontos": [
+    "Alonzo Church, década de 1930. Só 3 construções: variável, abstração (λx.E) e aplicação (F A).",
+    "Redução β: substitui o parâmetro pelo argumento — é a execução. α renomeia, η equivale funções.",
+    "Expressão totalmente reduzida = forma normal.",
+    "LISP (1959, John McCarthy, MIT): primeira linguagem funcional pura."
+   ]
+  },
+  {
+   "titulo": "Currying",
+   "mnemonico": "Mnemônico: homenagem a Haskell CURRY — quebra n parâmetros em n funções de 1 parâmetro.",
+   "pontos": [
+    "int,int -> int  vira  int -> int -> int.",
+    "add(1,2) vira add(1)(2). Permite aplicação parcial: const mais5 = add(5).",
+    "Depende de CLOSURE — a função interna lembra o ambiente onde nasceu.",
+    "Suporte nativo: Haskell, ML e JavaScript."
+   ]
+  },
+  {
+   "titulo": "Functor → Applicative → Monad",
+   "mnemonico": "Mnemônico: Functor mapeia, Applicative aplica função embrulhada, Monad encadeia e ACHATA.",
+   "pontos": [
+    "Functor: map/fmap — aplica função normal ao valor dentro do contexto.",
+    "Applicative: ap — a função também está dentro do contexto.",
+    "Monad: bind/flatMap — encadeia funções que já devolvem contexto, sem aninhar.",
+    "Hierarquia: todo Monad é Applicative; todo Applicative é Functor."
+   ]
+  },
+  {
+   "titulo": "Multiparadigma — quem é quem",
+   "mnemonico": "Mnemônico: F# = .NET funcional; JS = protótipos; Python = indentação e herança múltipla.",
+   "pontos": [
+    "F#: Don Syme, 2005, Microsoft Research, .NET. Funcional + imperativo + OO. let imutável, mutable para alterar.",
+    "JavaScript: Brendan Eich, 1995, ECMAScript. OO por PROTÓTIPOS; class do ES6 é açúcar sintático.",
+    "Python: Guido van Rossum, 1991. Tipagem dinâmica e FORTE, permite herança múltipla, blocos por indentação.",
+    "Fortran (1954): primeira linguagem de alto nível. C influenciou Java e C#."
+   ]
+  }
+ ],
+ "flashcards": [
+  {
+   "tema": "Métodos de Programação e História",
+   "p": "O que é um paradigma de programação?",
+   "r": "Um padrão de pensamento que define um modelo para a resolução de problemas e rege basicamente toda linguagem de programação existente. Toda linguagem é construída sobre pelo menos um paradigma."
+  },
+  {
+   "tema": "Métodos de Programação e História",
+   "p": "Por que estudar paradigmas de programação? (Sebesta)",
+   "r": "Aumenta a capacidade de expressar ideias, dá embasamento para escolher a linguagem certa para cada problema, facilita aprender novas linguagens e ajuda a entender como a linguagem interpreta as instruções."
+  },
+  {
+   "tema": "Métodos de Programação e História",
+   "p": "Segundo Tucker e Noonan, como as linguagens de programação diferem das linguagens naturais?",
+   "r": "Possuem um domínio de expressão bem mais reduzido, porque seu objetivo é permitir a compreensão de ideias computacionais — não atender a todos os requisitos da comunicação humana."
+  },
+  {
+   "tema": "Métodos de Programação e História",
+   "p": "Quais duas áreas mais impulsionaram o surgimento de novos paradigmas?",
+   "r": "A Inteligência Artificial (LISP, Prolog) e a World Wide Web (linguagens de script e declarativas)."
+  },
+  {
+   "tema": "Métodos de Programação e História",
+   "p": "Qual foi a primeira linguagem de alto nível e em que ano surgiu?",
+   "r": "Fortran, em 1954."
+  },
+  {
+   "tema": "Paradigma Imperativo",
+   "p": "Em que década e a partir de qual descoberta surgiu o paradigma imperativo?",
+   "r": "Década de 1940, quando John von Neumann e colaboradores perceberam que o programa e seus dados poderiam compartilhar a memória principal — antes disso os programas ficavam fora da memória."
+  },
+  {
+   "tema": "Paradigma Imperativo",
+   "p": "Qual é o conceito central do paradigma imperativo herdado da arquitetura von Neumann?",
+   "r": "A atribuição: alterar o valor de uma posição de memória destruindo o valor anterior. Daí decorre o estado mutável."
+  },
+  {
+   "tema": "Paradigma Imperativo",
+   "p": "O que TODA linguagem imperativa inclui, segundo Tucker e Noonan?",
+   "r": "Atribuição, declaração de variáveis, expressões, comandos condicionais, laços e abstração procedural."
+  },
+  {
+   "tema": "Paradigma Imperativo",
+   "p": "Qual é a principal desvantagem do paradigma imperativo?",
+   "r": "A falta de flexibilidade dada pelo seu caráter sequencial — dificulta paralelismo e gera efeitos colaterais pelo estado compartilhado."
+  },
+  {
+   "tema": "Paradigma Estruturado",
+   "p": "Qual foi a motivação histórica da programação estruturada?",
+   "r": "A crise do software da década de 1960 e o uso excessivo do comando GOTO, criticado por Edsger W. Dijkstra em 1968 no artigo 'A Case against the GO TO Statement'. O GOTO gerava programas impossíveis de entender e manter."
+  },
+  {
+   "tema": "Paradigma Estruturado",
+   "p": "Quais são as três estruturas de controle do teorema de Böhm-Jacopini?",
+   "r": "Sequência, seleção (decisão) e iteração (repetição). Qualquer algoritmo pode ser escrito usando apenas essas três."
+  },
+  {
+   "tema": "Paradigma Estruturado",
+   "p": "Quais são as três formas de representar um algoritmo?",
+   "r": "Linguagem natural (descrição narrativa), fluxograma (símbolos gráficos) e pseudocódigo/portugol (texto estruturado)."
+  },
+  {
+   "tema": "Paradigma Estruturado",
+   "p": "Para que servem as estruturas de repetição?",
+   "r": "Para executar um mesmo bloco de comandos várias vezes, controlado por uma condição — evitando duplicar código."
+  },
+  {
+   "tema": "Paradigma Declarativo",
+   "p": "Qual é a ideia central da programação declarativa?",
+   "r": "O programador informa QUAIS os objetivos pretendidos com a computação (o quê), e não algoritmos detalhados descrevendo COMO alcançá-los (Sebesta)."
+  },
+  {
+   "tema": "Paradigma Declarativo",
+   "p": "Quais são os dois domínios principais de aplicação do paradigma declarativo?",
+   "r": "1) Inteligência Artificial — regras e lógica, destaque para o Prolog. 2) Acesso a informações em banco de dados — consulta e manipulação em SGBDs, com o SQL como expoente."
+  },
+  {
+   "tema": "Paradigma Declarativo",
+   "p": "O que é um programa no paradigma declarativo?",
+   "r": "Um conjunto de declarações (verdade, falso, satisfaz restrição), em que o foco está sempre na declaração e não na sequência de execução."
+  },
+  {
+   "tema": "Paradigma Lógico",
+   "p": "Como funciona o paradigma lógico?",
+   "r": "O programa é um conjunto de fatos e regras baseados em lógica de primeira ordem; a execução é uma consulta que o motor de inferência tenta provar, usando unificação, resolução e backtracking. Linguagem de referência: Prolog."
+  },
+  {
+   "tema": "Paradigma Lógico",
+   "p": "Que tipo de solução o paradigma lógico favorece?",
+   "r": "Soluções heurísticas — problemas em que não se conhece um algoritmo determinístico, apenas regras de busca. Também se destaca no processamento simbólico e na facilidade de modificação."
+  },
+  {
+   "tema": "POO — Modelagem de Problemas",
+   "p": "O que é um objeto e o que é uma classe?",
+   "r": "Objeto = atributos (estado) + métodos (comportamento). A classe é a matriz/molde que define o tipo, os atributos e a implementação dos métodos; o objeto é a instância da classe."
+  },
+  {
+   "tema": "POO — Modelagem de Problemas",
+   "p": "Qual a diferença de FOCO entre programação estruturada e orientada a objetos?",
+   "r": "No estruturado o foco está nos procedimentos que atuam sobre dados separados; na POO os dados e os procedimentos que os manipulam ficam juntos, encapsulados dentro do objeto."
+  },
+  {
+   "tema": "POO — Modelagem de Problemas",
+   "p": "A reutilização de código em POO é consequência de quê?",
+   "r": "De uma boa análise e projeto de software — não apenas do uso de funções e procedimentos. Na POO, análise e projeto deixam de ser minimizados e viram requisitos fundamentais."
+  },
+  {
+   "tema": "POO — Classes, Relacionamentos e Encapsulamento",
+   "p": "O que é encapsulamento?",
+   "r": "O conceito de que apenas os métodos do próprio objeto devem manipular seus atributos, escondendo a implementação interna e expondo uma interface controlada — acrescenta uma camada de segurança e permite mudar o interior sem quebrar quem usa."
+  },
+  {
+   "tema": "POO — Classes, Relacionamentos e Encapsulamento",
+   "p": "Qual a diferença entre agregação e composição?",
+   "r": "Agregação (losango vazio ◇): todo/parte com existência INDEPENDENTE — Departamento ◇ Funcionário. Composição (losango cheio ◆): a parte DEPENDE do todo para existir — Pedido ◆ ItemPedido."
+  },
+  {
+   "tema": "POO — Classes, Relacionamentos e Encapsulamento",
+   "p": "Qual a diferença entre generalização e especialização?",
+   "r": "Generalização vai de baixo para cima: extrai o que há de comum nas subclasses para uma superclasse. Especialização vai de cima para baixo: cria subclasses que refinam a superclasse."
+  },
+  {
+   "tema": "POO — Herança e Polimorfismo",
+   "p": "O que a subclasse herda da superclasse?",
+   "r": "TODOS os atributos e métodos, inclusive os que forem acrescentados no futuro. Atributos específicos de uma subclasse devem ficar só nela, nunca subir para a superclasse."
+  },
+  {
+   "tema": "POO — Herança e Polimorfismo",
+   "p": "Quais linguagens permitem herança múltipla entre classes?",
+   "r": "C++ e Python permitem. Java NÃO permite herança múltipla entre classes — resolve o problema permitindo implementar múltiplas interfaces."
+  },
+  {
+   "tema": "POO — Herança e Polimorfismo",
+   "p": "Qual a diferença entre sobrecarga e sobreposição?",
+   "r": "Sobrecarga (overload): mesma classe, mesmo nome, assinaturas diferentes — resolvida em tempo de compilação. Sobreposição/sobrescrita (override): exige herança, mesma assinatura, comportamento diferente — resolvida em tempo de execução."
+  },
+  {
+   "tema": "POO — Herança e Polimorfismo",
+   "p": "O que é polimorfismo?",
+   "r": "A seleção dinâmica de comportamento: o mesmo método assume comportamentos diferentes conforme o tipo real do objeto, permitindo tratar objetos distintos de forma uniforme."
+  },
+  {
+   "tema": "POO — Interfaces e Classes Abstratas",
+   "p": "O que uma classe abstrata PODE ter?",
+   "r": "Métodos concretos e abstratos, atributos, construtores (chamados pelas subclasses via super) e pode herdar de outra classe abstrata. O que ela NÃO pode é ser instanciada diretamente."
+  },
+  {
+   "tema": "POO — Interfaces e Classes Abstratas",
+   "p": "Qual a principal vantagem das interfaces sobre as classes abstratas em Java?",
+   "r": "Uma classe pode implementar múltiplas interfaces, sem limite — enquanto só pode herdar de uma única classe (abstrata ou não)."
+  },
+  {
+   "tema": "POO — Interfaces e Classes Abstratas",
+   "p": "O que uma interface tradicional exige de quem a implementa?",
+   "r": "A implementação de TODOS os métodos declarados no contrato."
+  },
+  {
+   "tema": "POO — Interfaces e Classes Abstratas",
+   "p": "Classes abstratas só fazem sentido em qual contexto?",
+   "r": "Com herança — elas existem para servir de base a subclasses concretas, já que não podem ser instanciadas."
+  },
+  {
+   "tema": "POO — Java, C++ e C#",
+   "p": "Qual característica define o Java quanto à execução?",
+   "r": "'Write once, run anywhere': o código é compilado para bytecode, executado pela JVM em qualquer plataforma."
+  },
+  {
+   "tema": "POO — Java, C++ e C#",
+   "p": "O que diferencia C++ de Java em gerenciamento de memória e herança?",
+   "r": "C++ tem gerenciamento manual de memória (new/delete, destrutores), ponteiros explícitos e permite herança múltipla. Java tem coletor de lixo automático, sem ponteiros explícitos e sem herança múltipla de classes."
+  },
+  {
+   "tema": "POO — Java, C++ e C#",
+   "p": "O que é o C# em relação à linguagem C?",
+   "r": "C# incorpora a orientação a objetos à linguagem C, que por sua vez é basicamente procedural, baseada em rotinas, métodos e funções. Roda sobre o .NET/CLR compilando para CIL."
+  },
+  {
+   "tema": "Funcional — Conceitos e Funções Puras",
+   "p": "O que é uma função pura?",
+   "r": "Aquela que não produz efeitos colaterais e não tem estado interno (stateless): para o mesmo parâmetro de entrada, sempre a mesma saída. Não depende de estado mutável nem acessa/altera variáveis globais."
+  },
+  {
+   "tema": "Funcional — Conceitos e Funções Puras",
+   "p": "O que é transparência referencial?",
+   "r": "A propriedade de o valor da função depender apenas dos valores de seus argumentos — a função sempre produz o mesmo resultado a partir dos mesmos parâmetros, e a chamada pode ser substituída pelo resultado."
+  },
+  {
+   "tema": "Funcional — Conceitos e Funções Puras",
+   "p": "Qual é o custo da imutabilidade?",
+   "r": "Tende a consumir mais memória, porque em vez de alterar um valor existente cria-se um novo. Em troca, os testes ficam muito mais simples: não é preciso reconstituir a sequência de mudanças de estado."
+  },
+  {
+   "tema": "Funcional — Conceitos e Funções Puras",
+   "p": "Por que não existem laços na programação funcional pura?",
+   "r": "Porque não há ideia de estado nem variáveis mutáveis — é impossível incrementar ou decrementar um contador. Os laços são substituídos por recursão (repetição de uma função)."
+  },
+  {
+   "tema": "Funcional — Conceitos e Funções Puras",
+   "p": "De onde surgiu a programação funcional?",
+   "r": "Da necessidade de implementações em inteligência artificial, aprendizado de máquina e ciência cognitiva, tratando os problemas sob o ponto de vista matemático — com base no cálculo lambda de Alonzo Church (década de 1930)."
+  },
+  {
+   "tema": "Funcional — Primeira Classe e Ordem Superior",
+   "p": "O que caracteriza uma função de primeira classe?",
+   "r": "Poder ser atribuída a uma variável, passada como argumento para outra função, retornada como valor de outra função e armazenada em estruturas de dados."
+  },
+  {
+   "tema": "Funcional — Primeira Classe e Ordem Superior",
+   "p": "Qual a diferença entre função de primeira classe e de ordem superior?",
+   "r": "Primeira classe é uma propriedade da LINGUAGEM (funções são tratadas como valores). Ordem superior é uma propriedade da FUNÇÃO: ela recebe função como parâmetro e/ou retorna função."
+  },
+  {
+   "tema": "Funcional — Primeira Classe e Ordem Superior",
+   "p": "O que fazem map, filter e reduce?",
+   "r": "map transforma cada elemento e devolve coleção do mesmo tamanho; filter seleciona os que satisfazem um predicado, devolvendo coleção menor ou igual; reduce (fold) acumula a coleção em um único valor."
+  },
+  {
+   "tema": "Funcional — Primeira Classe e Ordem Superior",
+   "p": "O que é uma função anônima?",
+   "r": "Uma função sem nome, escrita no ponto de uso. Recebe em sua sintaxe a palavra lambda porque utiliza os conceitos do cálculo de Church — ex.: (lambda (x) (* x x))."
+  },
+  {
+   "tema": "Funcional — Cálculo Lambda",
+   "p": "Quem criou o cálculo lambda e quando?",
+   "r": "Alonzo Church, na década de 1930. É o fundamento teórico da programação funcional, equivalente em poder computacional à Máquina de Turing (fundamento do imperativo)."
+  },
+  {
+   "tema": "Funcional — Cálculo Lambda",
+   "p": "Quais são as três construções do cálculo lambda?",
+   "r": "Variável (x), abstração — definir função — (λx.E) e aplicação — chamar função — (F A)."
+  },
+  {
+   "tema": "Funcional — Cálculo Lambda",
+   "p": "O que é a redução beta (β)?",
+   "r": "O passo de 'execução': substituir o parâmetro formal pelo argumento no corpo da função. (λx.x*x) 5 → 25. Alfa (α) renomeia variáveis ligadas e eta (η) trata equivalência de funções."
+  },
+  {
+   "tema": "Funcional — Cálculo Lambda",
+   "p": "Qual foi a primeira linguagem funcional pura, quem a criou e quando?",
+   "r": "LISP (LISt Processing), criada em 1959 pelo Dr. John McCarthy no MIT, para manipular símbolos em pesquisas de inteligência artificial."
+  },
+  {
+   "tema": "Funcional — Cálculo Lambda",
+   "p": "Por que a Lei de Moore é citada como motivação para o paradigma funcional?",
+   "r": "Porque os microprocessadores estão chegando ao limite físico: os ganhos vêm de múltiplos núcleos. Como o funcional não tem estado compartilhado, ele permite executar instruções em paralelo, aproveitando chips multinucleares."
+  },
+  {
+   "tema": "Funcional — Currying e Closures",
+   "p": "O que é currying?",
+   "r": "A técnica de transformar uma função originalmente com múltiplos parâmetros em uma cadeia de funções que aceitam apenas um parâmetro cada, retornando a próxima — homenagem ao matemático Haskell Curry."
+  },
+  {
+   "tema": "Funcional — Currying e Closures",
+   "p": "Como muda a assinatura de uma função ao aplicar currying?",
+   "r": "De 'int, int -> int' para 'int -> int -> int'. Uma função de n parâmetros vira n funções de um parâmetro."
+  },
+  {
+   "tema": "Funcional — Currying e Closures",
+   "p": "Quais são as vantagens do currying?",
+   "r": "Permite aplicação parcial (fixar alguns argumentos e reaproveitar a função), favorece composição de funções e gera código mais reutilizável e configurável."
+  },
+  {
+   "tema": "Funcional — Currying e Closures",
+   "p": "O que é uma closure e qual sua relação com o currying?",
+   "r": "Closure é a função que 'lembra' o ambiente léxico em que foi criada. O currying só é possível em linguagens que implementam closure — a função interna continua enxergando o parâmetro da externa depois que esta já retornou."
+  },
+  {
+   "tema": "Funcional — Currying e Closures",
+   "p": "Quais linguagens têm suporte sintático nativo a currying?",
+   "r": "Haskell, ML e JavaScript (também Scala e F#)."
+  },
+  {
+   "tema": "Funcional — Functors, Applicatives e Monads",
+   "p": "O que é um functor?",
+   "r": "Uma estrutura que sabe aplicar uma função comum ao valor que carrega, preservando o contexto. Operação: map/fmap. Um array em JS é um functor."
+  },
+  {
+   "tema": "Funcional — Functors, Applicatives e Monads",
+   "p": "O que diferencia um applicative functor de um functor?",
+   "r": "No applicative a PRÓPRIA FUNÇÃO também está dentro do contexto: a operação ap aplica uma função embrulhada a um valor embrulhado, permitindo combinar vários valores em contexto."
+  },
+  {
+   "tema": "Funcional — Functors, Applicatives e Monads",
+   "p": "O que um monad resolve?",
+   "r": "Permite encadear operações que já devolvem valores dentro do contexto, sem aninhar contextos. Operações: of/return (embrulha) e bind/flatMap (encadeia e achata). Ex.: Promise, Maybe, Either."
+  },
+  {
+   "tema": "Funcional — Functors, Applicatives e Monads",
+   "p": "Qual é a hierarquia entre functor, applicative e monad?",
+   "r": "Todo monad é um applicative, e todo applicative é um functor. Cada nível acrescenta poder de composição."
+  },
+  {
+   "tema": "Linguagens Multiparadigma",
+   "p": "Por que existem linguagens multiparadigma?",
+   "r": "Porque nenhum paradigma isolado, por mais flexível, fornece recursos para resolver eficientemente todas as necessidades. Combinar paradigmas gera soluções eficientes e de manutenção facilitada."
+  },
+  {
+   "tema": "Linguagens Multiparadigma",
+   "p": "Quem criou o F#, quando, e quais paradigmas ele suporta?",
+   "r": "Don Syme, em 2005, na Microsoft Research (plataforma .NET). Suporta funcional (primário), imperativo e orientado a objetos."
+  },
+  {
+   "tema": "Linguagens Multiparadigma",
+   "p": "Como o F# trata mutabilidade?",
+   "r": "Valores são imutáveis por padrão com 'let'; é preciso declarar 'let mutable' e usar o operador '<-' para alterar."
+  },
+  {
+   "tema": "Linguagens Multiparadigma",
+   "p": "Que modelo de orientação a objetos o JavaScript usa?",
+   "r": "Baseado em PROTÓTIPOS, não em classes. A sintaxe 'class' do ES6 é apenas açúcar sintático sobre o mecanismo de protótipos."
+  },
+  {
+   "tema": "Linguagens Multiparadigma",
+   "p": "Quem criou o Python e quais são suas características de tipagem e herança?",
+   "r": "Guido van Rossum (1991). Tipagem dinâmica e forte, interpretada, blocos por indentação, tudo é objeto e PERMITE herança múltipla."
+  }
+ ],
+ "questoes": [
+  {
+   "tema": "Métodos de Programação e História",
+   "q": "O que é um paradigma de programação?",
+   "op": [
+    "Um padrão de pensamento que define um modelo para a resolução de problemas e rege as linguagens de programação",
+    "Uma biblioteca padrão de funções de uma linguagem",
+    "O compilador que traduz o código para linguagem de máquina",
+    "Um conjunto de regras de formatação de código-fonte"
+   ],
+   "r": 0,
+   "exp": "Paradigma é um padrão de pensamento que guia um conjunto de atividades relacionadas — um modelo para resolver problemas. Toda linguagem de programação é construída sobre pelo menos um paradigma."
+  },
+  {
+   "tema": "Métodos de Programação e História",
+   "q": "Segundo Tucker e Noonan, as linguagens de programação diferem das linguagens naturais principalmente porque:",
+   "op": [
+    "São mais fáceis de aprender que qualquer idioma",
+    "Não permitem ambiguidade de nenhum tipo",
+    "São universais e independem de cultura",
+    "Possuem um domínio de expressão mais reduzido, voltado a ideias computacionais"
+   ],
+   "r": 3,
+   "exp": "Apesar de permitirem a comunicação entre humanos e máquinas, as LPs têm um domínio de expressão bem mais reduzido do que as linguagens naturais, pois seu objetivo é permitir a compreensão de ideias computacionais."
+  },
+  {
+   "tema": "Métodos de Programação e História",
+   "q": "Quais áreas foram determinantes para impulsionar o surgimento de novos paradigmas de programação?",
+   "op": [
+    "Jogos digitais e realidade virtual",
+    "Computação gráfica e edição de vídeo",
+    "Inteligência Artificial e World Wide Web",
+    "Automação industrial e robótica"
+   ],
+   "r": 2,
+   "exp": "A IA motivou o surgimento de LISP e Prolog (funcional e lógico); a WWW motivou linguagens de script e declarativas para marcação e consulta."
+  },
+  {
+   "tema": "Métodos de Programação e História",
+   "q": "Qual foi a primeira linguagem de programação de alto nível?",
+   "op": [
+    "COBOL, em 1959",
+    "Fortran, em 1954",
+    "LISP, em 1959",
+    "Algol, em 1960"
+   ],
+   "r": 1,
+   "exp": "Fortran, criada em 1954, foi a primeira linguagem de alto nível para computadores. LISP (1959) foi a primeira funcional pura."
+  },
+  {
+   "tema": "Métodos de Programação e História",
+   "q": "Qual é a vantagem prática de um profissional estudar diferentes paradigmas de programação?",
+   "op": [
+    "Amplia a capacidade de expressar ideias e de escolher a linguagem adequada a cada problema",
+    "Permite escrever código sem precisar testar",
+    "Elimina a necessidade de documentação",
+    "Garante que o programa será mais rápido em qualquer linguagem"
+   ],
+   "r": 0,
+   "exp": "Saber como uma linguagem funciona para interpretar instruções e como conceitos evoluíram traz vantagens na construção de softwares e na escolha da ferramenta certa."
+  },
+  {
+   "tema": "Paradigma Imperativo",
+   "q": "O paradigma imperativo surgiu na década de 1940 a partir de qual percepção de John von Neumann e colaboradores?",
+   "op": [
+    "Que o programa e seus dados poderiam compartilhar a memória principal",
+    "Que os computadores deveriam usar sistema binário",
+    "Que os programas deveriam ser escritos em linguagem natural",
+    "Que era possível executar instruções em paralelo"
+   ],
+   "r": 0,
+   "exp": "Antes disso, os primeiros computadores armazenavam seus programas FORA da memória. Poder armazenar o programa na memória junto com os dados foi o conceito inovador que originou o paradigma imperativo."
+  },
+  {
+   "tema": "Paradigma Imperativo",
+   "q": "Qual conceito está no centro da arquitetura von Neumann-Eckert e caracteriza o paradigma imperativo?",
+   "op": [
+    "A recursão",
+    "A inferência lógica",
+    "A atribuição — alterar o valor de um local de memória destruindo o anterior",
+    "A imutabilidade dos dados"
+   ],
+   "r": 2,
+   "exp": "Todas as linguagens imperativas incluem a atribuição como elemento central, justamente porque surgiram do modelo von Neumann-Eckert. Daí decorre o conceito de estado mutável."
+  },
+  {
+   "tema": "Paradigma Imperativo",
+   "q": "Segundo Tucker e Noonan, além da atribuição, o que TODAS as linguagens imperativas suportam?",
+   "op": [
+    "Inferência de tipos, mônadas e pattern matching",
+    "Fatos, regras e backtracking",
+    "Declarações de variáveis, expressões, comandos condicionais, laços e abstração procedural",
+    "Herança, polimorfismo e encapsulamento"
+   ],
+   "r": 2,
+   "exp": "Citação direta de Tucker e Noonan (2009, p. 277): as linguagens imperativas incluem atribuição, declarações de variáveis, expressões, comandos condicionais, laços e abstração procedural."
+  },
+  {
+   "tema": "Paradigma Imperativo",
+   "q": "Qual é a principal desvantagem apontada para o paradigma imperativo?",
+   "op": [
+    "Não é Turing-completo",
+    "Não permite estruturas de repetição",
+    "Não pode ser usado em sistemas embarcados",
+    "Falta de flexibilidade, dado o seu caráter sequencial"
+   ],
+   "r": 3,
+   "exp": "O caráter sequencial do imperativo dificulta o paralelismo e torna o código menos flexível; o estado compartilhado ainda gera efeitos colaterais difíceis de rastrear."
+  },
+  {
+   "tema": "Paradigma Imperativo",
+   "q": "Uma empresa precisa desenvolver o software de controle de uma linha de produção, com recursos de hardware bastante limitados. Qual escolha é mais adequada e por quê?",
+   "op": [
+    "Prolog, pela facilidade de modificação das regras",
+    "Haskell, pela imutabilidade que evita bugs",
+    "SQL, por ser declarativa e enxuta",
+    "C, por ser imperativa e eficiente, com controle direto sobre memória e hardware"
+   ],
+   "r": 3,
+   "exp": "Em contextos de baixo recurso de hardware e necessidade de controle direto, a linguagem imperativa C é a escolha clássica: espelha a arquitetura da máquina e gera código eficiente."
+  },
+  {
+   "tema": "Paradigma Imperativo",
+   "q": "O que significa dizer que o paradigma imperativo é Turing-completo?",
+   "op": [
+    "Que ele executa mais rápido que os demais paradigmas",
+    "Que ele foi criado por Alan Turing",
+    "Que ele pode expressar qualquer computação computável",
+    "Que ele dispensa o uso de compilador"
+   ],
+   "r": 2,
+   "exp": "Turing-completude significa poder expressar qualquer computação que uma Máquina de Turing possa realizar — não diz nada sobre desempenho ou autoria."
+  },
+  {
+   "tema": "Paradigma Estruturado",
+   "q": "Qual acontecimento histórico motivou o surgimento da programação estruturada?",
+   "op": [
+    "A criação da internet nos anos 1990",
+    "O surgimento dos computadores pessoais",
+    "A padronização da linguagem SQL",
+    "A crise do software dos anos 1960 e o uso excessivo do comando GOTO"
+   ],
+   "r": 3,
+   "exp": "Em 1968 Edsger W. Dijkstra publicou 'A Case against the GO TO Statement', criticando o GOTO por gerar programas praticamente impossíveis de entender e manter."
+  },
+  {
+   "tema": "Paradigma Estruturado",
+   "q": "Segundo o teorema de Böhm-Jacopini, quais estruturas bastam para escrever qualquer algoritmo?",
+   "op": [
+    "Atribuição, condição e GOTO",
+    "Sequência, seleção e iteração",
+    "Classe, objeto e método",
+    "Fato, regra e consulta"
+   ],
+   "r": 1,
+   "exp": "As três estruturas de controle básicas da programação estruturada são sequência (um comando após o outro), seleção (if/switch) e iteração (for/while)."
+  },
+  {
+   "tema": "Paradigma Estruturado",
+   "q": "Quem criticou o uso do comando GOTO e em qual artigo?",
+   "op": [
+    "Alonzo Church, em 'The Calculi of Lambda Conversion'",
+    "John von Neumann, em 'First Draft of a Report on the EDVAC'",
+    "Robert C. Martin, em 'Clean Code'",
+    "Edsger W. Dijkstra, em 'A Case against the GO TO Statement'"
+   ],
+   "r": 3,
+   "exp": "Dijkstra, na década de 1960, criticou o uso excessivo do GOTO, estrutura de controle que permitia saltos arbitrários de instruções e gerava o 'código espaguete'."
+  },
+  {
+   "tema": "Paradigma Estruturado",
+   "q": "Quais são as formas de representação de um algoritmo citadas no estudo do paradigma estruturado?",
+   "op": [
+    "Diagrama de classes, de sequência e de componentes",
+    "DER, MER e modelo físico",
+    "Linguagem natural, fluxograma e pseudocódigo",
+    "Fatos, regras e consultas"
+   ],
+   "r": 2,
+   "exp": "Linguagem natural (descrição narrativa), fluxograma (representação gráfica com símbolos) e pseudocódigo/portugol (texto estruturado próximo da linguagem de programação)."
+  },
+  {
+   "tema": "Paradigma Estruturado",
+   "q": "Um sistema legado escrito em Basic usa GOTO por todo o código e está impossível de manter. Qual é a estratégia correta de reescrita para C estruturado?",
+   "op": [
+    "Substituir cada GOTO por uma chamada recursiva",
+    "Converter o programa para orientação a objetos, já que estruturado não resolve",
+    "Manter os GOTOs e apenas melhorar os comentários",
+    "Reescrever o fluxo usando sequência, seleção e iteração, com modularização em funções"
+   ],
+   "r": 3,
+   "exp": "A solução estruturada consiste em substituir os saltos por estruturas de controle disciplinadas (sequência, seleção, iteração) e dividir o programa em sub-rotinas — reduzindo drasticamente a complexidade de manutenção."
+  },
+  {
+   "tema": "Paradigma Estruturado",
+   "q": "Qual é a relação entre o paradigma estruturado e o imperativo?",
+   "op": [
+    "São paradigmas opostos e incompatíveis",
+    "O estruturado é um refinamento disciplinado do imperativo",
+    "O estruturado é um subtipo do declarativo",
+    "O imperativo surgiu a partir do estruturado"
+   ],
+   "r": 1,
+   "exp": "O estruturado não abandona a atribuição nem o estado mutável — apenas impõe disciplina ao fluxo de controle, eliminando o GOTO. É o imperativo organizado."
+  },
+  {
+   "tema": "Paradigma Declarativo",
+   "q": "Qual é a característica que define a programação declarativa?",
+   "op": [
+    "O programador descreve passo a passo como o resultado é obtido",
+    "O programador foca nos objetivos da computação, não em como alcançá-los",
+    "O programa é organizado em classes e objetos",
+    "O programa usa exclusivamente estruturas de repetição"
+   ],
+   "r": 1,
+   "exp": "Sebesta: a programação declarativa requer que o programador foque nos objetivos da computação (o QUÊ), e não em COMO esses objetivos serão alcançados."
+  },
+  {
+   "tema": "Paradigma Declarativo",
+   "q": "Quais são os dois domínios principais das aplicações declarativas?",
+   "op": [
+    "Jogos digitais e computação gráfica",
+    "Sistemas operacionais e drivers de dispositivo",
+    "Inteligência artificial e acesso a informações em banco de dados",
+    "Aplicações móveis e sistemas embarcados"
+   ],
+   "r": 2,
+   "exp": "IA (regras e lógica — Prolog em destaque) e consulta/manipulação de dados em SGBDs (SQL como expoente) são os dois domínios clássicos do paradigma declarativo."
+  },
+  {
+   "tema": "Paradigma Declarativo",
+   "q": "Uma empresa precisa integrar seu sistema de folha de pagamento a diversos sistemas externos heterogêneos, trocando informações estruturadas. Que abordagem declarativa é adequada?",
+   "op": [
+    "Web Services com troca de mensagens em XML",
+    "Reescrever tudo em Assembly para maior controle",
+    "Migrar todos os sistemas para uma única linguagem imperativa",
+    "Usar apenas arquivos de texto com posições fixas"
+   ],
+   "r": 0,
+   "exp": "Web Services e XML são exemplos declarativos: descreve-se a estrutura e o conteúdo da informação (o quê), não o procedimento de leitura passo a passo."
+  },
+  {
+   "tema": "Paradigma Declarativo",
+   "q": "No paradigma declarativo, um programa pode ser entendido como:",
+   "op": [
+    "Um conjunto de declarações (verdade, falso, satisfaz restrição)",
+    "Uma sequência ordenada de comandos de atribuição",
+    "Um conjunto de classes que se relacionam por herança",
+    "Uma pilha de chamadas de sub-rotinas"
+   ],
+   "r": 0,
+   "exp": "O conceito fundamental do declarativo é a declaração; a sequência de execução perde a centralidade que tem no imperativo."
+  },
+  {
+   "tema": "Paradigma Declarativo",
+   "q": "Por que a linguagem SQL é considerada declarativa?",
+   "op": [
+    "Porque é compilada para bytecode antes de executar",
+    "Porque exige que o programador defina o plano de acesso aos índices",
+    "Porque o programador declara qual resultado quer, e o SGBD decide como obtê-lo",
+    "Porque só funciona dentro de bancos relacionais"
+   ],
+   "r": 2,
+   "exp": "Em SELECT o programador declara colunas, origem e condições — o otimizador do SGBD decide o plano de execução (varredura, índice, ordem dos joins)."
+  },
+  {
+   "tema": "Paradigma Lógico",
+   "q": "Como um programa é estruturado no paradigma lógico?",
+   "op": [
+    "Em classes e objetos que trocam mensagens",
+    "Em funções puras compostas entre si",
+    "Em uma sequência de comandos com atribuições",
+    "Em fatos e regras, consultados por um motor de inferência"
+   ],
+   "r": 3,
+   "exp": "O paradigma lógico baseia-se em lógica de primeira ordem: declaram-se fatos e regras, e a execução é uma consulta que o motor tenta provar por unificação, resolução e backtracking."
+  },
+  {
+   "tema": "Paradigma Lógico",
+   "q": "Qual linguagem é a principal representante do paradigma lógico?",
+   "op": [
+    "Haskell",
+    "Prolog",
+    "Erlang",
+    "Scheme"
+   ],
+   "r": 1,
+   "exp": "Prolog (PROgrammation en LOGique, 1972) tem sido o destaque no domínio de aplicações de inteligência artificial baseadas em regras e lógica."
+  },
+  {
+   "tema": "Paradigma Lógico",
+   "q": "Que tipo de solução o paradigma lógico favorece?",
+   "op": [
+    "Soluções algorítmicas determinísticas de alto desempenho",
+    "Soluções voltadas a manipulação direta de memória",
+    "Soluções heurísticas, quando não se conhece um algoritmo determinístico",
+    "Soluções gráficas e de renderização"
+   ],
+   "r": 2,
+   "exp": "Além do processamento simbólico e da facilidade de modificação, o paradigma lógico se destaca em problemas cuja solução é heurística — busca guiada por regras, e não um algoritmo fechado."
+  },
+  {
+   "tema": "Paradigma Lógico",
+   "q": "O que é backtracking no contexto do Prolog?",
+   "op": [
+    "A compilação incremental do programa",
+    "A conversão de regras em código imperativo",
+    "O retorno a um ponto anterior para tentar outra alternativa quando uma tentativa falha",
+    "O armazenamento em cache dos resultados já provados"
+   ],
+   "r": 2,
+   "exp": "Backtracking é o mecanismo que permite ao motor de inferência desfazer escolhas e explorar outras possibilidades até satisfazer a consulta — junto com a unificação, é o coração da execução em Prolog."
+  },
+  {
+   "tema": "POO — Modelagem de Problemas",
+   "q": "Qual é a definição correta de objeto e classe?",
+   "op": [
+    "Objeto define o tipo; classe é a instância em memória",
+    "Objeto e classe são sinônimos em linguagens modernas",
+    "Objeto = atributos + métodos; classe é a matriz que define o tipo e a implementação",
+    "Classe é o dado; objeto é o procedimento que opera sobre ele"
+   ],
+   "r": 2,
+   "exp": "O objeto reúne atributos (estado) e métodos (comportamento). A classe é o molde: define o tipo, os atributos e a implementação dos métodos. O objeto é a instância da classe."
+  },
+  {
+   "tema": "POO — Modelagem de Problemas",
+   "q": "Qual é a principal diferença de FOCO entre programação estruturada e orientada a objetos?",
+   "op": [
+    "A OO não usa estruturas de repetição",
+    "A estruturada é mais recente que a OO",
+    "No estruturado o foco está nos procedimentos sobre dados separados; na OO dados e comportamento ficam juntos no objeto",
+    "A OO não permite modularização"
+   ],
+   "r": 2,
+   "exp": "Essa é a distinção conceitual mais cobrada: o estruturado separa dados de procedimentos; a OO encapsula os dois dentro do objeto."
+  },
+  {
+   "tema": "POO — Modelagem de Problemas",
+   "q": "Na POO, a reutilização de código é consequência principalmente de:",
+   "op": [
+    "Do uso intensivo de funções e procedimentos",
+    "Uma boa análise e projeto de software",
+    "Do uso de bibliotecas de terceiros",
+    "Da escolha da linguagem compilada certa"
+   ],
+   "r": 1,
+   "exp": "Etapas de análise e projeto, minimizadas em outros paradigmas, tornam-se requisitos fundamentais na POO — é delas que decorre o reúso, não apenas da modularização em funções."
+  },
+  {
+   "tema": "POO — Modelagem de Problemas",
+   "q": "Quais são os quatro pilares da orientação a objetos?",
+   "op": [
+    "Abstração, encapsulamento, herança e polimorfismo",
+    "Sequência, seleção, iteração e modularização",
+    "Classe, objeto, atributo e método",
+    "Análise, projeto, implementação e teste"
+   ],
+   "r": 0,
+   "exp": "Abstração (modelar a essência), encapsulamento (esconder o interior), herança (reutilizar e especializar) e polimorfismo (mesmo método, comportamentos diferentes)."
+  },
+  {
+   "tema": "POO — Classes, Relacionamentos e Encapsulamento",
+   "q": "O que garante o encapsulamento em POO?",
+   "op": [
+    "Que toda classe tenha ao menos um método abstrato",
+    "Que todos os atributos sejam públicos para facilitar o acesso",
+    "Que apenas os métodos do próprio objeto manipulem seus atributos",
+    "Que a classe possa ser instanciada de qualquer lugar"
+   ],
+   "r": 2,
+   "exp": "O encapsulamento determina que apenas os métodos do próprio objeto devem manipular seus atributos, adicionando uma camada de segurança e escondendo a implementação."
+  },
+  {
+   "tema": "POO — Classes, Relacionamentos e Encapsulamento",
+   "q": "Um sistema modela Pedido e ItemPedido: o item não faz sentido nem existe fora do pedido. Que relacionamento representa isso?",
+   "op": [
+    "Composição",
+    "Agregação",
+    "Herança",
+    "Dependência"
+   ],
+   "r": 0,
+   "exp": "Composição (losango cheio ◆): a parte depende do todo para existir. Se o pedido é destruído, os itens também. Na agregação (losango vazio ◇) a parte sobreviveria."
+  },
+  {
+   "tema": "POO — Classes, Relacionamentos e Encapsulamento",
+   "q": "Departamento e Funcionário se relacionam de modo que o funcionário continua existindo mesmo se o departamento for extinto. Trata-se de:",
+   "op": [
+    "Composição",
+    "Herança",
+    "Agregação",
+    "Realização"
+   ],
+   "r": 2,
+   "exp": "Agregação: relação todo/parte com existência INDEPENDENTE da parte. Representada por losango vazio ◇."
+  },
+  {
+   "tema": "POO — Classes, Relacionamentos e Encapsulamento",
+   "q": "Qual a diferença entre generalização e especialização?",
+   "op": [
+    "Generalização cria interfaces; especialização cria classes abstratas",
+    "Generalização vai de baixo para cima; especialização, de cima para baixo",
+    "São nomes diferentes para o mesmo processo",
+    "Generalização é composição; especialização é agregação"
+   ],
+   "r": 1,
+   "exp": "Generalização extrai o que há de comum nas subclasses e sobe para a superclasse. Especialização parte da superclasse e cria subclasses que a refinam."
+  },
+  {
+   "tema": "POO — Classes, Relacionamentos e Encapsulamento",
+   "q": "Qual modificador de visibilidade permite acesso pela própria classe e por suas subclasses, mas não por classes não relacionadas?",
+   "op": [
+    "private",
+    "protected",
+    "public",
+    "default (package)"
+   ],
+   "r": 1,
+   "exp": "protected: acessível na própria classe e nas subclasses. private restringe à própria classe; public libera para qualquer lugar; default limita ao mesmo pacote."
+  },
+  {
+   "tema": "POO — Herança e Polimorfismo",
+   "q": "O que uma subclasse herda da superclasse?",
+   "op": [
+    "Apenas os métodos públicos",
+    "Apenas os atributos, nunca os métodos",
+    "Somente o que for explicitamente marcado como herdável",
+    "Todos os atributos e métodos, inclusive os acrescentados futuramente"
+   ],
+   "r": 3,
+   "exp": "A subclasse herda todo o conteúdo da superclasse, incluindo o que vier a ser acrescentado depois — por isso atributos específicos de uma subclasse não devem subir para a superclasse."
+  },
+  {
+   "tema": "POO — Herança e Polimorfismo",
+   "q": "Quais linguagens permitem herança múltipla entre classes?",
+   "op": [
+    "Java e C#",
+    "Java e Python",
+    "C# e JavaScript",
+    "C++ e Python"
+   ],
+   "r": 3,
+   "exp": "C++ e Python permitem herança múltipla entre classes. Java NÃO permite — resolve a necessidade por meio da implementação de múltiplas interfaces."
+  },
+  {
+   "tema": "POO — Herança e Polimorfismo",
+   "q": "Duas versões do método calcular() na MESMA classe, com número diferente de parâmetros. Isso é:",
+   "op": [
+    "Sobrecarga (overload)",
+    "Sobreposição (override)",
+    "Herança múltipla",
+    "Encapsulamento"
+   ],
+   "r": 0,
+   "exp": "Sobrecarga: mesma classe, mesmo nome, assinaturas diferentes. Resolvida em tempo de compilação (polimorfismo estático)."
+  },
+  {
+   "tema": "POO — Herança e Polimorfismo",
+   "q": "Uma subclasse redefine o método salario() da superclasse mantendo a mesma assinatura, mas com cálculo diferente. Isso é:",
+   "op": [
+    "Sobreposição/sobrescrita (override)",
+    "Sobrecarga (overload)",
+    "Encapsulamento",
+    "Composição"
+   ],
+   "r": 0,
+   "exp": "Sobreposição exige herança: mesma assinatura, comportamento diferente na subclasse. Resolvida em tempo de execução (polimorfismo dinâmico)."
+  },
+  {
+   "tema": "POO — Herança e Polimorfismo",
+   "q": "O que é polimorfismo em orientação a objetos?",
+   "op": [
+    "A seleção dinâmica de comportamento: o mesmo método se comporta de forma diferente conforme o objeto",
+    "A capacidade de uma classe ter vários construtores",
+    "A possibilidade de ocultar atributos por meio de getters e setters",
+    "A capacidade de uma classe herdar de várias superclasses"
+   ],
+   "r": 0,
+   "exp": "Polimorfismo permite tratar objetos de tipos diferentes de forma uniforme, com o comportamento adequado sendo escolhido conforme o tipo real do objeto."
+  },
+  {
+   "tema": "POO — Herança e Polimorfismo",
+   "q": "Ao modelar Cliente com subclasses PessoaFisica e PessoaJuridica, onde deve ficar o atributo CNPJ?",
+   "op": [
+    "Na superclasse Cliente, para ficar disponível a todos",
+    "Somente na subclasse PessoaJuridica",
+    "Em uma interface implementada por ambas",
+    "Duplicado nas duas subclasses"
+   ],
+   "r": 1,
+   "exp": "Atributos específicos de uma subclasse devem ficar apenas nela. Colocar CNPJ em Cliente faria PessoaFisica herdar um atributo que não lhe pertence."
+  },
+  {
+   "tema": "POO — Interfaces e Classes Abstratas",
+   "q": "O que caracteriza uma classe abstrata?",
+   "op": [
+    "Não pode ser instanciada diretamente e serve de base para subclasses",
+    "Não pode ter atributos nem construtores",
+    "Só pode conter métodos abstratos",
+    "É a única forma de obter herança múltipla em Java"
+   ],
+   "r": 0,
+   "exp": "Classe abstrata não é instanciável, mas PODE ter atributos, construtores, métodos concretos e abstratos, e ainda herdar de outra classe abstrata."
+  },
+  {
+   "tema": "POO — Interfaces e Classes Abstratas",
+   "q": "Sobre construtores em classes abstratas, é correto afirmar que:",
+   "op": [
+    "Classes abstratas não podem ter construtores",
+    "Podem ter construtores, chamados pelas subclasses ao serem instanciadas",
+    "O construtor de classe abstrata é sempre público e instancia a classe",
+    "Só podem ter construtores se não tiverem métodos abstratos"
+   ],
+   "r": 1,
+   "exp": "Classes abstratas podem ter construtores; eles são invocados pelas subclasses concretas (via super) para inicializar o estado herdado."
+  },
+  {
+   "tema": "POO — Interfaces e Classes Abstratas",
+   "q": "Qual é a principal vantagem das interfaces sobre as classes abstratas em Java?",
+   "op": [
+    "Interfaces executam mais rápido",
+    "Uma classe pode implementar múltiplas interfaces, mas herdar de uma só classe",
+    "Interfaces podem ter estado compartilhado",
+    "Interfaces dispensam a implementação dos métodos"
+   ],
+   "r": 1,
+   "exp": "Como Java não permite herança múltipla de classes, a possibilidade de implementar quantas interfaces forem necessárias é a vantagem decisiva desse recurso."
+  },
+  {
+   "tema": "POO — Interfaces e Classes Abstratas",
+   "q": "O que uma interface tradicional exige da classe que a implementa?",
+   "op": [
+    "Que implemente ao menos um dos métodos",
+    "Que herde também de uma classe abstrata",
+    "Que declare todos os atributos da interface",
+    "Que implemente todos os métodos declarados no contrato"
+   ],
+   "r": 3,
+   "exp": "A interface define um contrato: quem a implementa se compromete a fornecer TODOS os métodos declarados."
+  },
+  {
+   "tema": "POO — Interfaces e Classes Abstratas",
+   "q": "Um sistema de marketing precisa se autenticar em vários portais, cada um com regras próprias, mas todos exigindo getNomeUsuario(), getSenha() e getToken(). Qual é a solução adequada?",
+   "op": [
+    "Criar uma classe abstrata Portal e usar herança múltipla",
+    "Duplicar os três métodos em cada classe, sem contrato comum",
+    "Usar composição entre as classes de portal",
+    "Definir uma interface LoginPortal com os três métodos e implementá-la em cada sistema"
+   ],
+   "r": 3,
+   "exp": "Uma interface define o contrato de autenticação sem impor implementação, e cada sistema o cumpre a seu modo — além disso, a classe fica livre para implementar outras interfaces."
+  },
+  {
+   "tema": "POO — Interfaces e Classes Abstratas",
+   "q": "Classes abstratas só fazem sentido em qual situação?",
+   "op": [
+    "Quando não possuem nenhum método abstrato",
+    "Quando implementam ao menos duas interfaces",
+    "Quando usadas com herança, servindo de base para subclasses concretas",
+    "Quando são instanciadas dinamicamente em tempo de execução"
+   ],
+   "r": 2,
+   "exp": "Como não podem ser instanciadas, classes abstratas existem exclusivamente para serem estendidas — sem herança, elas não têm utilidade."
+  },
+  {
+   "tema": "POO — Java, C++ e C#",
+   "q": "O que caracteriza a execução de programas Java?",
+   "op": [
+    "Compilação direta para código de máquina nativo",
+    "Compilação para bytecode executado pela JVM em qualquer plataforma",
+    "Interpretação linha a linha do código-fonte",
+    "Execução sobre o CLR da plataforma .NET"
+   ],
+   "r": 1,
+   "exp": "O modelo 'write once, run anywhere': o compilador gera bytecode, e a JVM de cada plataforma o executa. O CLR é do .NET (C#)."
+  },
+  {
+   "tema": "POO — Java, C++ e C#",
+   "q": "Qual característica distingue C++ de Java?",
+   "op": [
+    "C++ tem coletor de lixo automático; Java exige liberação manual",
+    "C++ permite herança múltipla e gerenciamento manual de memória",
+    "C++ não suporta orientação a objetos",
+    "C++ roda sobre uma máquina virtual"
+   ],
+   "r": 1,
+   "exp": "C++ (Stroustrup, 1983) permite herança múltipla, ponteiros explícitos e gerenciamento manual de memória (new/delete). Java tem GC automático e não permite herança múltipla de classes."
+  },
+  {
+   "tema": "POO — Java, C++ e C#",
+   "q": "Qual é a relação entre C# e a linguagem C?",
+   "op": [
+    "C# é uma versão simplificada de C, sem orientação a objetos",
+    "C# e C são a mesma linguagem com nomes diferentes",
+    "C# antecede C historicamente",
+    "C# incorpora a orientação a objetos à linguagem C, que é basicamente procedural"
+   ],
+   "r": 3,
+   "exp": "C, basicamente procedural e baseada em rotinas/funções, influenciou tanto Java quanto C#. C# incorpora OO a essa base e roda sobre o .NET/CLR."
+  },
+  {
+   "tema": "Funcional — Conceitos e Funções Puras",
+   "q": "O que define uma função pura?",
+   "op": [
+    "Uma função que só usa tipos primitivos",
+    "Uma função que só pode ser chamada uma vez",
+    "Uma função sem efeitos colaterais e sem estado interno, que dá sempre a mesma saída para a mesma entrada",
+    "Uma função declarada como constante"
+   ],
+   "r": 2,
+   "exp": "Funções puras são stateless: não produzem efeitos colaterais, não dependem de estado mutável e não acessam nem alteram variáveis globais."
+  },
+  {
+   "tema": "Funcional — Conceitos e Funções Puras",
+   "q": "O que é transparência referencial?",
+   "op": [
+    "A possibilidade de ver o código-fonte da função em tempo de execução",
+    "A propriedade de o valor da função depender apenas dos valores de seus argumentos",
+    "A conversão automática entre tipos de dados",
+    "A capacidade de referenciar variáveis globais de qualquer escopo"
+   ],
+   "r": 1,
+   "exp": "Com transparência referencial, a função sempre produz o mesmo resultado a partir dos mesmos parâmetros — e a chamada pode ser substituída pelo seu resultado sem alterar o programa."
+  },
+  {
+   "tema": "Funcional — Conceitos e Funções Puras",
+   "q": "Por que a programação funcional pura não possui laços de repetição?",
+   "op": [
+    "Porque laços são proibidos pelos compiladores funcionais",
+    "Porque laços são mais lentos que a recursão",
+    "Porque os laços foram substituídos pelo comando GOTO",
+    "Porque não há estado nem variáveis mutáveis para servir de contador — a repetição vira recursão"
+   ],
+   "r": 3,
+   "exp": "Sem estado, é impossível incrementar ou decrementar. Tucker e Noonan: a inexistência de estados e variáveis implica a inexistência de laços, substituídos pela repetição de uma função (recursão)."
+  },
+  {
+   "tema": "Funcional — Conceitos e Funções Puras",
+   "q": "Qual é o principal CUSTO da imutabilidade?",
+   "op": [
+    "Impede o uso de recursão",
+    "Tende a consumir mais memória",
+    "Torna impossível testar o código",
+    "Elimina a possibilidade de paralelismo"
+   ],
+   "r": 1,
+   "exp": "Como não se altera um valor existente, cria-se um novo a cada operação — o consumo de memória sobe. Em compensação, testes e depuração ficam muito mais simples."
+  },
+  {
+   "tema": "Funcional — Conceitos e Funções Puras",
+   "q": "De qual necessidade histórica surgiu a programação funcional?",
+   "op": [
+    "Do desenvolvimento de sistemas operacionais",
+    "Da necessidade de implementações em inteligência artificial, machine learning e ciência cognitiva",
+    "Da padronização de bancos de dados relacionais",
+    "Da criação de interfaces gráficas"
+   ],
+   "r": 1,
+   "exp": "A programação funcional nasce da IA e da ciência cognitiva, tratando problemas sob o ponto de vista matemático e evitando estado e mutação de dados (Tucker e Noonan)."
+  },
+  {
+   "tema": "Funcional — Conceitos e Funções Puras",
+   "q": "Por que a programação funcional se beneficia de processadores multinúcleo?",
+   "op": [
+    "Porque a ausência de estado compartilhado permite executar instruções em paralelo com segurança",
+    "Porque compila mais rápido em máquinas modernas",
+    "Porque usa menos memória que o imperativo",
+    "Porque a recursão é executada diretamente pelo hardware"
+   ],
+   "r": 0,
+   "exp": "Sem estado mutável compartilhado não há condições de corrida — cada função pode rodar em um núcleo diferente. Com a Lei de Moore chegando ao limite físico, isso se torna decisivo."
+  },
+  {
+   "tema": "Funcional — Primeira Classe e Ordem Superior",
+   "q": "O que caracteriza uma função de primeira classe?",
+   "op": [
+    "Ser sempre a primeira função executada no programa",
+    "Não poder receber parâmetros",
+    "Poder ser atribuída a variáveis, passada como argumento, retornada e armazenada em estruturas de dados",
+    "Ser declarada no escopo global do programa"
+   ],
+   "r": 2,
+   "exp": "Função de primeira classe é tratada como qualquer outro valor da linguagem: pode ser atribuída, passada, retornada e guardada em estruturas de dados."
+  },
+  {
+   "tema": "Funcional — Primeira Classe e Ordem Superior",
+   "q": "Qual é a diferença entre função de primeira classe e função de ordem superior?",
+   "op": [
+    "São exatamente o mesmo conceito com nomes diferentes",
+    "Primeira classe só existe em Haskell; ordem superior em qualquer linguagem",
+    "Ordem superior é sempre anônima; primeira classe é sempre nomeada",
+    "Primeira classe é propriedade da linguagem; ordem superior é a função que recebe e/ou retorna função"
+   ],
+   "r": 3,
+   "exp": "Primeira classe descreve como a LINGUAGEM trata funções (como valores). Ordem superior descreve o que a FUNÇÃO faz: recebe função como parâmetro e/ou retorna função."
+  },
+  {
+   "tema": "Funcional — Primeira Classe e Ordem Superior",
+   "q": "Qual função de ordem superior transforma cada elemento de uma coleção mantendo o mesmo tamanho?",
+   "op": [
+    "filter",
+    "reduce",
+    "map",
+    "sort"
+   ],
+   "r": 2,
+   "exp": "map aplica a função a cada elemento e devolve uma coleção do mesmo tamanho. filter devolve coleção menor ou igual; reduce devolve um único valor."
+  },
+  {
+   "tema": "Funcional — Primeira Classe e Ordem Superior",
+   "q": "Qual pipeline calcula corretamente a soma dos preços dos produtos em estoque?",
+   "op": [
+    "produtos.map(p => p.emEstoque).filter(p => p.preco).reduce((a,b) => a+b, 0)",
+    "produtos.filter(p => p.emEstoque).map(p => p.preco).reduce((a,b) => a+b, 0)",
+    "produtos.reduce(p => p.emEstoque).map(p => p.preco).filter((a,b) => a+b)",
+    "produtos.filter(p => p.preco).reduce(p => p.emEstoque).map((a,b) => a+b)"
+   ],
+   "r": 1,
+   "exp": "A ordem natural do pipeline é filter (seleciona os em estoque) → map (extrai o preço) → reduce (soma tudo em um valor único)."
+  },
+  {
+   "tema": "Funcional — Primeira Classe e Ordem Superior",
+   "q": "Por que funções anônimas recebem em geral a palavra 'lambda' em sua sintaxe?",
+   "op": [
+    "Porque lambda significa 'anônimo' em grego antigo",
+    "Porque foram criadas pela linguagem Lambda em 1970",
+    "Porque lambda é o operador de atribuição funcional",
+    "Porque utilizam os conceitos do cálculo de Church"
+   ],
+   "r": 3,
+   "exp": "A nomenclatura vem diretamente do cálculo lambda de Alonzo Church — daí (lambda (x) (* x x)) em LISP, lambda x: x em Python, x => x em C#."
+  },
+  {
+   "tema": "Funcional — Cálculo Lambda",
+   "q": "Quem propôs o cálculo lambda e em qual década?",
+   "op": [
+    "Alan Turing, na década de 1930",
+    "John McCarthy, na década de 1950",
+    "Alonzo Church, na década de 1930",
+    "Haskell Curry, na década de 1940"
+   ],
+   "r": 2,
+   "exp": "Alonzo Church propôs o cálculo lambda na década de 1930 — é o fundamento teórico da programação funcional, equivalente em poder à Máquina de Turing."
+  },
+  {
+   "tema": "Funcional — Cálculo Lambda",
+   "q": "Quais são as três construções do cálculo lambda?",
+   "op": [
+    "Variável, abstração e aplicação",
+    "Fato, regra e consulta",
+    "Sequência, seleção e iteração",
+    "Classe, objeto e método"
+   ],
+   "r": 0,
+   "exp": "Variável (x), abstração — definição de função — (λx.E) e aplicação — chamada de função — (F A). Só isso basta para expressar qualquer computação."
+  },
+  {
+   "tema": "Funcional — Cálculo Lambda",
+   "q": "O que faz a redução beta (β) no cálculo lambda?",
+   "op": [
+    "Substitui o parâmetro formal pelo argumento no corpo da função",
+    "Renomeia variáveis ligadas para evitar conflitos",
+    "Verifica a equivalência entre duas funções",
+    "Converte a expressão para notação polonesa"
+   ],
+   "r": 0,
+   "exp": "A redução β é o passo de 'execução': (λx.x*x) 5 → 5*5 → 25. A redução α renomeia variáveis ligadas e a η trata equivalência de funções."
+  },
+  {
+   "tema": "Funcional — Cálculo Lambda",
+   "q": "Qual foi a primeira linguagem funcional pura, e quem a criou?",
+   "op": [
+    "Haskell, criada por Haskell Curry em 1940",
+    "Prolog, criada por Alain Colmerauer em 1972",
+    "LISP, criada por John McCarthy em 1959 no MIT",
+    "Scheme, criada por Guy Steele em 1975"
+   ],
+   "r": 2,
+   "exp": "LISP (LISt Processing) surgiu em 1959, criada pelo Dr. John McCarthy no MIT, para manipular símbolos representando palavras e conceitos em pesquisas de IA."
+  },
+  {
+   "tema": "Funcional — Cálculo Lambda",
+   "q": "Em λx.(x + y), como se classificam as variáveis x e y?",
+   "op": [
+    "x é livre e y é ligada",
+    "x é ligada (pelo λ) e y é livre",
+    "Ambas são ligadas",
+    "Ambas são livres"
+   ],
+   "r": 1,
+   "exp": "A variável ligada é a que aparece como parâmetro do λ (x). A que não é ligada por nenhum λ no escopo é livre (y)."
+  },
+  {
+   "tema": "Funcional — Currying e Closures",
+   "q": "O que é a técnica de currying?",
+   "op": [
+    "Converter uma função recursiva em iterativa",
+    "Compilar uma função funcional para código imperativo",
+    "Armazenar em cache o resultado de funções puras",
+    "Transformar uma função de múltiplos parâmetros em uma cadeia de funções de um parâmetro"
+   ],
+   "r": 3,
+   "exp": "Currying quebra uma função de n parâmetros em n funções, cada uma recebendo um parâmetro e retornando outra função que espera os restantes."
+  },
+  {
+   "tema": "Funcional — Currying e Closures",
+   "q": "Aplicando currying, a assinatura 'int, int -> int' passa a ser:",
+   "op": [
+    "int -> int",
+    "int -> int -> int",
+    "(int, int) -> (int, int)",
+    "int -> (int, int)"
+   ],
+   "r": 1,
+   "exp": "Cada parâmetro passa a ser recebido por uma função distinta: int -> int -> int. É a leitura clássica da transformação de currying."
+  },
+  {
+   "tema": "Funcional — Currying e Closures",
+   "q": "A quem o nome 'currying' homenageia?",
+   "op": [
+    "Ao criador da linguagem Haskell",
+    "A Alonzo Church",
+    "Ao engenheiro John Curry, da IBM",
+    "Ao matemático Haskell Curry"
+   ],
+   "r": 3,
+   "exp": "A técnica homenageia o matemático Haskell Curry, que estudava o método (Flanagan, 2013)."
+  },
+  {
+   "tema": "Funcional — Currying e Closures",
+   "q": "O currying depende de qual recurso da linguagem para funcionar?",
+   "op": [
+    "Herança múltipla",
+    "Closure",
+    "Tipagem estática",
+    "Coletor de lixo"
+   ],
+   "r": 1,
+   "exp": "É possível em linguagens que implementam closure: a função interna precisa continuar enxergando o parâmetro da externa depois que esta já retornou."
+  },
+  {
+   "tema": "Funcional — Currying e Closures",
+   "q": "Qual é a principal vantagem prática do currying?",
+   "op": [
+    "Permite aplicação parcial — fixar alguns argumentos e reaproveitar a função",
+    "Reduz o consumo de memória do programa",
+    "Elimina a necessidade de funções puras",
+    "Converte automaticamente recursão em laço"
+   ],
+   "r": 0,
+   "exp": "A motivação prática é a frequente utilização de funções obtidas fixando apenas alguns dos parâmetros: const mais5 = add(5). Também favorece composição de funções."
+  },
+  {
+   "tema": "Funcional — Currying e Closures",
+   "q": "Quais linguagens possuem suporte sintático NATIVO à técnica de currying?",
+   "op": [
+    "Haskell, ML e JavaScript",
+    "Java, C# e Python",
+    "C, C++ e Pascal",
+    "Prolog, SQL e XML"
+   ],
+   "r": 0,
+   "exp": "Haskell, ML e JavaScript possuem suporte sintático nativo ao currying (Scala e F# também). Em Java e C# é possível emular, mas sem suporte nativo."
+  },
+  {
+   "tema": "Funcional — Functors, Applicatives e Monads",
+   "q": "O que é um functor na programação funcional?",
+   "op": [
+    "Uma função que não retorna valor algum",
+    "Um tipo de dado que só aceita números",
+    "Uma classe abstrata usada em POO funcional",
+    "Uma estrutura que aplica uma função ao valor que carrega, preservando o contexto (map/fmap)"
+   ],
+   "r": 3,
+   "exp": "O functor sabe aplicar uma função comum ao valor embrulhado, devolvendo o resultado no mesmo contexto. Um array em JS é um functor: [1,2,3].map(x => x*2)."
+  },
+  {
+   "tema": "Funcional — Functors, Applicatives e Monads",
+   "q": "O que diferencia um applicative functor de um functor comum?",
+   "op": [
+    "No applicative, a própria função também está dentro do contexto",
+    "O applicative não preserva o contexto",
+    "O applicative só funciona com listas",
+    "O applicative dispensa a operação map"
+   ],
+   "r": 0,
+   "exp": "No functor a função é comum e o valor está em contexto. No applicative os DOIS estão em contexto — a operação ap aplica função embrulhada a valor embrulhado."
+  },
+  {
+   "tema": "Funcional — Functors, Applicatives e Monads",
+   "q": "Qual problema o monad resolve?",
+   "op": [
+    "A lentidão da recursão profunda",
+    "A ausência de tipagem estática nas linguagens funcionais",
+    "A impossibilidade de usar variáveis globais",
+    "O aninhamento de contextos ao encadear funções que já devolvem valores em contexto"
+   ],
+   "r": 3,
+   "exp": "Se a função encadeada já devolve contexto, map geraria contexto dentro de contexto. bind/flatMap encadeia e achata, mantendo um único nível."
+  },
+  {
+   "tema": "Funcional — Functors, Applicatives e Monads",
+   "q": "Qual é a hierarquia correta entre esses conceitos?",
+   "op": [
+    "Todo monad é um applicative, e todo applicative é um functor",
+    "Todo functor é um monad",
+    "Functor, applicative e monad são independentes entre si",
+    "Todo applicative é um monad, mas nem todo monad é um functor"
+   ],
+   "r": 0,
+   "exp": "A hierarquia é crescente em poder: Functor ⊂ Applicative ⊂ Monad. Cada nível acrescenta capacidade de composição."
+  },
+  {
+   "tema": "Funcional — Functors, Applicatives e Monads",
+   "q": "Qual estrutura do JavaScript se comporta como um monad?",
+   "op": [
+    "Array apenas quando usado com forEach",
+    "O objeto Math",
+    "Promise, cujo then encadeia e achata operações assíncronas",
+    "A instrução switch"
+   ],
+   "r": 2,
+   "exp": "Promise embrulha um valor futuro e o then funciona como bind: encadeia funções que devolvem novas Promises sem aninhá-las."
+  },
+  {
+   "tema": "Linguagens Multiparadigma",
+   "q": "Por que surgiram as linguagens multiparadigma?",
+   "op": [
+    "Para substituir completamente as linguagens imperativas",
+    "Porque os compiladores modernos exigem múltiplos paradigmas",
+    "Para reduzir o número de linguagens existentes no mercado",
+    "Porque nenhum paradigma isolado resolve eficientemente todas as necessidades computacionais"
+   ],
+   "r": 3,
+   "exp": "Um paradigma, por mais flexível que seja, não fornece recursos para solucionar de forma eficiente todas as necessidades — combinar paradigmas gera soluções eficientes e de manutenção facilitada."
+  },
+  {
+   "tema": "Linguagens Multiparadigma",
+   "q": "Quem criou o F#, em que ano e sobre qual plataforma ele roda?",
+   "op": [
+    "Anders Hejlsberg, em 2000, sobre a JVM",
+    "Guido van Rossum, em 1991, sobre o CPython",
+    "Brendan Eich, em 1995, sobre o navegador",
+    "Don Syme, em 2005, na Microsoft Research, sobre a plataforma .NET"
+   ],
+   "r": 3,
+   "exp": "F# foi desenvolvida em 2005 por Don Syme na Microsoft Research, depois migrada para a Microsoft Developer Division. Roda sobre .NET e suporta funcional, imperativo e OO."
+  },
+  {
+   "tema": "Linguagens Multiparadigma",
+   "q": "Em F#, como se declara uma variável cujo valor pode ser alterado?",
+   "op": [
+    "let mutable x = 1",
+    "var x = 1",
+    "let x = 1",
+    "dim x as int = 1"
+   ],
+   "r": 0,
+   "exp": "Em F# valores são imutáveis por padrão com let; é preciso 'let mutable' e o operador '<-' para alterar — o exemplo clássico do capítulo usa o paradigma imperativo em F#."
+  },
+  {
+   "tema": "Linguagens Multiparadigma",
+   "q": "Que modelo de orientação a objetos o JavaScript utiliza?",
+   "op": [
+    "Baseado em classes, como Java",
+    "Baseado em protótipos; a sintaxe class do ES6 é açúcar sintático",
+    "Baseado exclusivamente em interfaces",
+    "Não suporta orientação a objetos"
+   ],
+   "r": 1,
+   "exp": "JavaScript é OO baseada em protótipos. A palavra-chave class introduzida no ES6 apenas facilita a escrita — por baixo, o mecanismo continua sendo o de protótipos."
+  },
+  {
+   "tema": "Linguagens Multiparadigma",
+   "q": "Quais são as características de tipagem e herança do Python?",
+   "op": [
+    "Tipagem estática e forte; não permite herança múltipla",
+    "Tipagem dinâmica e fraca; permite herança múltipla",
+    "Tipagem dinâmica e forte; permite herança múltipla",
+    "Tipagem estática e fraca; não permite herança múltipla"
+   ],
+   "r": 2,
+   "exp": "Python tem tipagem dinâmica (o tipo é verificado em execução) e forte (não faz coerção implícita entre tipos incompatíveis), e permite herança múltipla — ao contrário de Java."
+  },
+  {
+   "tema": "Linguagens Multiparadigma",
+   "q": "Quais paradigmas o F# suporta?",
+   "op": [
+    "Apenas o funcional",
+    "Funcional e lógico",
+    "Funcional, imperativo e orientado a objetos",
+    "Imperativo e orientado a objetos apenas"
+   ],
+   "r": 2,
+   "exp": "F# é classificada como multiparadigma justamente por suportar desenvolvimento funcional, imperativo e orientado a objetos, separadamente ou de forma integrada."
+  },
+  {
+   "tema": "Linguagens Multiparadigma",
+   "q": "Em qual paradigma surgiram os laços de repetição, estruturas condicionais e atribuição de valor a variáveis?",
+   "op": [
+    "Imperativo",
+    "Funcional",
+    "Lógico",
+    "Declarativo"
+   ],
+   "r": 0,
+   "exp": "Instruções como if, while, switch e for são tipicamente encontradas em linguagens imperativas — é neste paradigma, baseado em instruções e comandos, que surgiram o controle de estado e os laços."
+  },
+  {
+   "tema": "POO — Java, C++ e C#",
+   "q": "Um programa escrito em C# é compilado para qual formato intermediário e executado sobre qual ambiente?",
+   "op": [
+    "Para CIL, executado pelo CLR da plataforma .NET",
+    "Para bytecode, executado pela JVM",
+    "Diretamente para código de máquina nativo, sem ambiente de execução",
+    "Para código-fonte C, compilado depois por um compilador C"
+   ],
+   "r": 0,
+   "exp": "C# compila para CIL e roda sobre o CLR do .NET. O par bytecode e JVM pertence ao Java, e a compilação direta para nativo é característica de C++. Ambas as plataformas, .NET e JVM, usam um formato intermediário e coletor de lixo automático."
+  },
+  {
+   "tema": "POO — Java, C++ e C#",
+   "q": "Em Java, uma classe precisa assumir contratos de comportamento vindos de duas fontes diferentes. Como a linguagem resolve essa necessidade?",
+   "op": [
+    "Estendendo duas classes na mesma cláusula extends, separadas por vírgula",
+    "Usando templates, que substituem a herança nesse caso",
+    "Sobrecarregando operadores para combinar os dois comportamentos",
+    "Implementando várias interfaces, já que a herança múltipla de classes não é permitida"
+   ],
+   "r": 3,
+   "exp": "Java não permite herança múltipla de classes; o recurso equivalente é implementar várias interfaces, pois uma classe pode implementar quantas quiser mas estender apenas uma. Herança múltipla de classes, templates e sobrecarga de operadores são recursos de C++."
+  },
+  {
+   "tema": "POO — Modelagem de Problemas",
+   "q": "Qual linguagem é considerada a primeira puramente orientada a objetos?",
+   "op": [
+    "Smalltalk",
+    "Simula 67",
+    "C++",
+    "Java"
+   ],
+   "r": 0,
+   "exp": "Smalltalk é a primeira linguagem puramente orientada a objetos, em que tudo é objeto. Simula 67 veio antes e foi a primeira a introduzir os conceitos de classe e objeto, mas não é pura; C++ e Java são posteriores e multiparadigma."
+  },
+  {
+   "tema": "Paradigma Lógico",
+   "q": "Em Prolog, o que faz o mecanismo de unificação?",
+   "op": [
+    "Reúne vários fatos semelhantes em uma única regra para reduzir o programa",
+    "Casa os termos da consulta com os fatos e regras, atribuindo valores às variáveis até torná-los idênticos",
+    "Volta a um ponto anterior da busca quando uma tentativa falha, para testar outra alternativa",
+    "Traduz as regras declarativas em comandos imperativos antes da execução"
+   ],
+   "r": 1,
+   "exp": "A unificação é o casamento de termos: o motor de inferência tenta igualar a consulta a um fato ou à cabeça de uma regra, ligando variáveis a valores. Voltar atrás para testar outra alternativa é o backtracking, mecanismo complementar, não a unificação."
+  }
+ ],
+ "discursivas": [
+  {
+   "tema": "Paradigma Imperativo",
+   "q": "Explique por que o paradigma imperativo é considerado o mais antigo e o de maior sucesso, relacionando-o à arquitetura dos computadores.",
+   "r": "O paradigma imperativo surgiu na década de 1940, a partir da percepção de von Neumann e colaboradores de que programa e dados poderiam compartilhar a memória principal. Seu sucesso está diretamente ligado à própria arquitetura de processamento dos computadores: a arquitetura von Neumann-Eckert prevê que a memória guarde tanto as instruções em execução quanto os valores dos dados, e no centro dela está a operação de alterar o valor de um local de memória destruindo o valor anterior — ou seja, a atribuição. Como o paradigma imperativo espelha diretamente esse funcionamento (sequência de instruções que alteram estado), ele produz código eficiente e um modelo mental próximo do hardware, o que explica sua longevidade e predominância."
+  },
+  {
+   "tema": "Paradigma Estruturado",
+   "q": "Descreva a motivação histórica da programação estruturada e como as três estruturas de controle resolveram o problema.",
+   "r": "Na década de 1960 instalou-se a chamada crise do software: os programas cresciam em tamanho e complexidade, e o uso excessivo do comando GOTO — que permitia saltos arbitrários entre instruções — gerava código praticamente impossível de entender, o chamado 'código espaguete', com custo de manutenção proibitivo. Em 1968 Edsger W. Dijkstra publicou 'A Case against the GO TO Statement' criticando essa prática. A resposta foi a programação estruturada, apoiada no teorema de Böhm-Jacopini: qualquer algoritmo pode ser escrito usando apenas sequência (comandos em ordem), seleção (if/switch) e iteração (for/while). Disciplinando o fluxo de controle a essas três estruturas e acrescentando modularização em sub-rotinas, o código passou a ter uma leitura linear previsível, com entrada e saída únicas em cada bloco — tornando-se legível, testável e manutenível."
+  },
+  {
+   "tema": "Paradigma Declarativo",
+   "q": "Compare os paradigmas imperativo e declarativo, indicando um domínio de aplicação típico de cada um.",
+   "r": "No paradigma imperativo o programador descreve COMO chegar ao resultado: constrói algoritmos detalhados, passo a passo, manipulando estado por meio de atribuições, condicionais e laços. No declarativo o programador descreve O QUE deseja obter — os objetivos da computação — e deixa o mecanismo de execução decidir a estratégia (Sebesta). Consequências: o código declarativo é mais enxuto e mais fácil de aprender, mas oferece menos controle fino sobre desempenho; o imperativo é mais verboso, porém dá controle total e é mais eficiente em contextos de recursos limitados. Domínio típico do imperativo: software embarcado e de controle de linha de produção, escrito em C, onde os recursos de hardware são escassos. Domínios típicos do declarativo: inteligência artificial, com Prolog aplicando regras e lógica, e acesso a informações em banco de dados, com SQL como expoente de consulta e manipulação em SGBDs."
+  },
+  {
+   "tema": "POO — Classes, Relacionamentos e Encapsulamento",
+   "q": "Modele as classes e os relacionamentos de um sistema de Pedidos que atende pessoas físicas e jurídicas, justificando cada tipo de relacionamento escolhido.",
+   "r": "Classes: Cliente (superclasse, com nome, endereço, telefone), PessoaFisica (CPF) e PessoaJuridica (CNPJ, razão social) como subclasses; Departamento; Pedido (número, data, total); Item (produto, quantidade, valor unitário). Relacionamentos: (1) Cliente → PessoaFisica / PessoaJuridica é HERANÇA por especialização — ambas são um tipo de cliente e compartilham os atributos comuns; CPF fica só em PessoaFisica e CNPJ só em PessoaJuridica, pois atributos específicos de uma subclasse não devem subir para a superclasse. (2) Pedido ◆ Item é COMPOSIÇÃO — o item de pedido não faz sentido nem existe fora do pedido; excluído o pedido, seus itens desaparecem. (3) Pedido ◇ Cliente é AGREGAÇÃO — o cliente existe independentemente de qualquer pedido, continuando cadastrado mesmo que todos os pedidos sejam cancelados. (4) Cliente ◇ Departamento é agregação, pelo mesmo motivo de existência independente. Todos os atributos devem ser privados, com acesso via getters e setters, garantindo o encapsulamento."
+  },
+  {
+   "tema": "POO — Interfaces e Classes Abstratas",
+   "q": "Diferencie classe abstrata e interface, indicando quando usar cada uma.",
+   "r": "A classe abstrata não pode ser instanciada diretamente e existe para ser estendida — só faz sentido com herança. Ela pode conter atributos, construtores (invocados pelas subclasses via super), métodos concretos com implementação pronta e métodos abstratos apenas declarados; pode ainda herdar de outra classe abstrata. Em Java, porém, uma classe só pode herdar de uma única superclasse. A interface define um contrato: declara os métodos que a classe implementadora se compromete a fornecer, tradicionalmente sem implementação, sem estado e sem construtor, e exige que TODOS os métodos declarados sejam implementados. Sua grande vantagem é que uma classe pode implementar quantas interfaces forem necessárias, contornando a ausência de herança múltipla em Java. Regra prática: use classe abstrata quando houver uma relação 'é um' com código comum a compartilhar entre subclasses de uma mesma família; use interface quando quiser declarar uma capacidade ('é capaz de') que classes de famílias diferentes devem cumprir, ou quando uma classe precise cumprir vários contratos simultaneamente."
+  },
+  {
+   "tema": "Funcional — Conceitos e Funções Puras",
+   "q": "Explique o que é uma função pura e por que a pureza facilita o teste e o paralelismo.",
+   "r": "Função pura é aquela que não produz efeitos colaterais dentro do escopo do projeto e não mantém estado interno (stateless): para o mesmo parâmetro de entrada existirá sempre a mesma saída. Ela não pode depender de estado mutável nem acessar ou alterar variáveis globais. Isso facilita os testes porque a função pode ser verificada isoladamente: basta fornecer a entrada e comparar a saída, sem precisar montar um cenário de estado prévio nem reconstituir a sequência de variações que um dado sofreu — o que, em programas com estado, é justamente a maior dificuldade ao investigar um bug complexo. Quanto ao paralelismo, como nenhuma função pura lê ou escreve estado compartilhado, não existem condições de corrida nem necessidade de bloqueios: duas chamadas podem ser executadas simultaneamente em núcleos diferentes com resultado garantido. Isso é especialmente relevante hoje, quando a Lei de Moore se aproxima do limite físico e os ganhos de desempenho vêm da multiplicação de núcleos, e não do aumento de frequência."
+  },
+  {
+   "tema": "Funcional — Currying e Closures",
+   "q": "Explique a técnica de currying, apresente um exemplo em JavaScript e aponte suas vantagens.",
+   "r": "Currying é a transformação de uma função de múltiplos parâmetros em uma cadeia de funções que recebem um único parâmetro cada, retornando a próxima função até que todos os argumentos tenham sido fornecidos. O nome homenageia o matemático Haskell Curry. A assinatura muda de 'int, int -> int' para 'int -> int -> int'. Exemplo: sem currying, var add = function (x, y) { return x + y; }; chamada como add(1, 2). Com currying, var add = function (x) { return function (y) { return x + y; }; }; chamada como add(1)(2). A técnica só é possível em linguagens que implementam closure, pois a função interna precisa continuar enxergando o parâmetro x depois que a função externa já retornou. Vantagens: permite a aplicação parcial — fixar alguns argumentos e reaproveitar a função configurada, como em const mais5 = add(5), reutilizável em todo o programa; favorece a composição de funções, já que funções de um único parâmetro se encadeiam naturalmente; e produz código mais reutilizável e configurável. Haskell, ML e JavaScript têm suporte sintático nativo à técnica."
+  },
+  {
+   "tema": "Linguagens Multiparadigma",
+   "q": "Justifique a existência das linguagens multiparadigma e caracterize F#, JavaScript e Python quanto aos paradigmas que suportam.",
+   "r": "Diante de necessidades computacionais cada vez mais complexas, nenhum paradigma isolado — por mais flexível que seja — fornece recursos para resolver eficientemente todos os problemas. As linguagens multiparadigma permitem mesclar paradigmas, de forma separada ou integrada, obtendo soluções eficientes tanto computacionalmente quanto do ponto de vista da simplicidade de construção e da manutenção. F# foi desenvolvida em 2005 por Don Syme na Microsoft Research, roda sobre a plataforma .NET e suporta os paradigmas funcional (seu foco principal), imperativo e orientado a objetos; seus valores são imutáveis por padrão com let, exigindo let mutable e o operador '<-' para alteração. JavaScript, criada em 1995 por Brendan Eich e padronizada como ECMAScript, é imperativa, funcional (funções de primeira classe, closures, arrow functions, map/filter/reduce) e orientada a objetos baseada em protótipos, sendo a sintaxe class do ES6 apenas açúcar sintático; tem tipagem dinâmica e fraca. Python, criada por Guido van Rossum em 1991, é imperativa/estruturada, orientada a objetos (tudo é objeto e permite herança múltipla) e funcional (lambda, map, filter, functools.reduce e compreensões de lista); tem tipagem dinâmica e forte, é interpretada e delimita blocos por indentação."
+  }
+ ]
+}

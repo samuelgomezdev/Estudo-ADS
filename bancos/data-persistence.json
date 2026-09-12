@@ -1,0 +1,1412 @@
+{
+ "id": "data-persistence",
+ "nome": "Programming and Data Persistence",
+ "periodo": 3,
+ "cor": "#f59e0b",
+ "sigla": "PDP",
+ "flashcards": [
+  {
+   "tema": "Banco de dados relacional e modelagem",
+   "p": "Qual a diferença entre BD, SGBD e SBD?",
+   "r": "BD é o conjunto de dados persistentes e inter-relacionados; o SGBD é o software que permite definir, construir e manipular esse banco (ex.: MySQL); o SBD é o todo — BD + SGBD + as aplicações que o utilizam."
+  },
+  {
+   "tema": "Banco de dados relacional e modelagem",
+   "p": "Quais são as propriedades essenciais de um banco de dados?",
+   "r": "Ser persistente, compartilhado e inter-relacionado. Persistente significa que os dados sobrevivem ao encerramento dos programas; volatilidade é o oposto, como a variável que vive na memória e some quando a execução termina."
+  },
+  {
+   "tema": "Banco de dados relacional e modelagem",
+   "p": "No vocabulário relacional, o que são relação, tupla, atributo, domínio e esquema?",
+   "r": "Relação é a tabela; tupla é a linha, uma ocorrência; atributo é a coluna; domínio é o conjunto de valores permitidos na coluna; esquema é a estrutura da relação, não os dados nela armazenados."
+  },
+  {
+   "tema": "Banco de dados relacional e modelagem",
+   "p": "Qual a diferença entre independência lógica e independência física de dados?",
+   "r": "A lógica permite alterar o esquema conceitual — acrescentar um atributo, dividir uma tabela — sem reescrever os programas de aplicação. A física permite trocar hardware, dispositivo de armazenamento ou índices sem afetar o esquema conceitual."
+  },
+  {
+   "tema": "Banco de dados relacional e modelagem",
+   "p": "Como as cardinalidades 1:N, N:N e 1:1 são traduzidas para tabelas?",
+   "r": "Em 1:N a chave estrangeira vai sempre no lado N (cliente_id em PEDIDO). N:N não existe no modelo relacional: vira tabela associativa cuja PK é formada pelas chaves das duas entidades, atuando como FKs. Em 1:1 pode-se fundir as tabelas ou pôr a FK em qualquer lado."
+  },
+  {
+   "tema": "Banco de dados relacional e modelagem",
+   "p": "O que a chave estrangeira garante no banco?",
+   "r": "A integridade referencial: o SGBD recusa inserir ou atualizar um valor que não exista na chave referenciada e controla as exclusões com CASCADE ou RESTRICT, impedindo registros órfãos."
+  },
+  {
+   "tema": "Banco de dados relacional e modelagem",
+   "p": "Qual a diferença entre atributo composto e atributo multivalorado?",
+   "r": "O composto pode ser dividido em partes menores com significado próprio, como endereço em rua, número e cidade. O multivalorado guarda vários valores do mesmo tipo para a mesma entidade, como diversos telefones."
+  },
+  {
+   "tema": "SQL: consulta, filtros e junções",
+   "p": "Quais são as categorias de comandos SQL?",
+   "r": "DDL, de definição: CREATE, ALTER, DROP, TRUNCATE; DML, de manipulação: INSERT, UPDATE, DELETE; DQL, de consulta: SELECT; DCL, de controle de acesso: GRANT e REVOKE; DTL, de transação: COMMIT, ROLLBACK e SAVEPOINT."
+  },
+  {
+   "tema": "SQL: consulta, filtros e junções",
+   "p": "Qual a diferença entre DROP, DELETE e TRUNCATE?",
+   "r": "DROP TABLE elimina a estrutura junto com dados e índices; DELETE remove linhas, aceita WHERE e pode ser desfeito por ROLLBACK dentro de uma transação; TRUNCATE esvazia a tabela, sem WHERE e em geral sem possibilidade de rollback."
+  },
+  {
+   "tema": "SQL: consulta, filtros e junções",
+   "p": "O que acontece ao executar DELETE ou UPDATE sem cláusula WHERE?",
+   "r": "O comando é sintaticamente válido e atinge todas as linhas da tabela: o DELETE esvazia a tabela e o UPDATE altera todos os registros. É justamente essa validade que torna o esquecimento do WHERE tão destrutivo em produção."
+  },
+  {
+   "tema": "SQL: consulta, filtros e junções",
+   "p": "O que faz o comando ROLLBACK?",
+   "r": "Desfaz todas as operações da transação corrente, devolvendo o banco ao estado em que estava no último COMMIT e garantindo a atomicidade. Quem grava as alterações definitivamente é o COMMIT, que faz o papel inverso."
+  },
+  {
+   "tema": "SQL: consulta, filtros e junções",
+   "p": "O que representam os curingas % e _ no operador LIKE?",
+   "r": "O % representa zero ou mais caracteres quaisquer e o _ representa exatamente um caractere. Assim, LIKE '%a' casa com nomes que terminam em a, e LIKE 'a%' com nomes que começam por a."
+  },
+  {
+   "tema": "SQL: consulta, filtros e junções",
+   "p": "Para que servem DISTINCT, LIMIT e BETWEEN?",
+   "r": "DISTINCT elimina as linhas duplicadas do resultado; LIMIT restringe quantas linhas são retornadas (TOP ou FETCH FIRST em outros SGBDs); BETWEEN 18 AND 30 é inclusivo nas duas pontas, equivalendo a idade maior ou igual a 18 e menor ou igual a 30."
+  },
+  {
+   "tema": "SQL: consulta, filtros e junções",
+   "p": "Quais são os tipos de JOIN e o que cada um retorna?",
+   "r": "INNER JOIN: só as linhas com correspondência nas duas tabelas; LEFT JOIN: tudo da esquerda, com as colunas da direita em NULL quando não há par; RIGHT JOIN: o simétrico; CROSS JOIN: o produto cartesiano, todos com todos."
+  },
+  {
+   "tema": "SQL: consulta, filtros e junções",
+   "p": "Qual JOIN usar para listar todos os clientes, inclusive os que nunca fizeram pedido?",
+   "r": "O LEFT JOIN de clientes para pedidos, que preserva todas as linhas da tabela à esquerda e preenche as colunas de pedidos com NULL para quem nunca comprou. O INNER JOIN eliminaria exatamente esses clientes."
+  },
+  {
+   "tema": "SQL: consulta, filtros e junções",
+   "p": "Qual a diferença entre UNION, UNION ALL e INTERSECT?",
+   "r": "UNION empilha os resultados e remove as duplicatas; UNION ALL mantém todas as linhas e por isso é mais eficiente; INTERSECT devolve só o que aparece nas duas consultas. Todos exigem o mesmo número de colunas, na mesma ordem e com tipos compatíveis."
+  },
+  {
+   "tema": "SQL: agregação, subconsultas e triggers",
+   "p": "Quais são as funções de agregação da SQL?",
+   "r": "COUNT, SUM, AVG, MIN e MAX. O MAX devolve o maior valor existente na coluna, enquanto AVG e SUM produzem valores calculados que podem não corresponder a nenhuma linha real da tabela."
+  },
+  {
+   "tema": "SQL: agregação, subconsultas e triggers",
+   "p": "Qual a diferença entre COUNT(*) e COUNT(coluna)?",
+   "r": "COUNT(*) conta todas as linhas, qualquer que seja o conteúdo; COUNT(coluna) ignora as linhas em que aquela coluna é NULL. As duas formas só coincidem quando a coluna não admite valores nulos."
+  },
+  {
+   "tema": "SQL: agregação, subconsultas e triggers",
+   "p": "Qual a diferença entre WHERE e HAVING?",
+   "r": "O WHERE é avaliado linha a linha, antes do agrupamento, e por isso não aceita funções de agregação. O HAVING atua depois do GROUP BY, filtrando grupos — é ele que lista, por exemplo, departamentos com mais de 5 funcionários."
+  },
+  {
+   "tema": "SQL: agregação, subconsultas e triggers",
+   "p": "Quais colunas do SELECT precisam aparecer no GROUP BY?",
+   "r": "Toda coluna que não esteja dentro de uma função de agregação, porque cada linha do resultado representa um grupo inteiro. Bancos que permitem omiti-la devolvem um valor arbitrário do grupo, comportamento não portável."
+  },
+  {
+   "tema": "SQL: agregação, subconsultas e triggers",
+   "p": "Quando uma subconsulta pode ser usada à direita de um operador de comparação?",
+   "r": "Quando devolve um único valor escalar, como em WHERE salario maior que (SELECT AVG(salario) FROM funcionario). Se a subconsulta retornar mais de uma linha, o operador = gera erro e deve-se usar IN, ANY, ALL ou EXISTS."
+  },
+  {
+   "tema": "SQL: agregação, subconsultas e triggers",
+   "p": "O que é um trigger e o que caracteriza um banco de dados ativo?",
+   "r": "O trigger é código armazenado que o próprio SGBD dispara automaticamente quando ocorre o evento configurado e a condição é satisfeita, sem chamada da aplicação. Esse modelo evento-condição-ação define o banco de dados ativo, formalizado no padrão SQL:1999."
+  },
+  {
+   "tema": "SQL: agregação, subconsultas e triggers",
+   "p": "Qual a diferença entre um trigger BEFORE e um AFTER?",
+   "r": "O BEFORE executa antes da gravação e serve para validar ou ajustar valores; o AFTER executa depois e é adequado a auditoria e tabelas derivadas, como decrementar o estoque após uma venda. Ambos podem ser ligados a INSERT, UPDATE ou DELETE."
+  },
+  {
+   "tema": "Java e banco de dados: JDBC, JPA e Hibernate",
+   "p": "O que caracteriza o driver JDBC Tipo 4?",
+   "r": "É escrito inteiramente em Java e conversa direto com o protocolo nativo do SGBD, por isso é chamado de thin driver e basta ter o JAR no classpath. Os tipos 1 (ponte ODBC) e 2 (nativo) dependem de bibliotecas externas e quebram a portabilidade."
+  },
+  {
+   "tema": "Java e banco de dados: JDBC, JPA e Hibernate",
+   "p": "Quando usar executeQuery() e quando usar executeUpdate()?",
+   "r": "executeQuery() é para consultas e devolve um ResultSet; executeUpdate() é para INSERT, UPDATE, DELETE e comandos DDL, devolvendo um int com as linhas afetadas. Conforme o tipo configurado, o ResultSet navega com next(), previous(), first() e last()."
+  },
+  {
+   "tema": "Java e banco de dados: JDBC, JPA e Hibernate",
+   "p": "Qual a diferença entre Statement e PreparedStatement?",
+   "r": "O Statement concatena o texto do usuário no SQL, e uma entrada como ' OR '1'='1 altera a lógica da consulta: é a SQL Injection. O PreparedStatement envia o comando parametrizado com ?, e os valores dos setters viajam como dado, nunca como código, além de reaproveitar o plano de execução."
+  },
+  {
+   "tema": "Java e banco de dados: JDBC, JPA e Hibernate",
+   "p": "Qual a diferença entre JPA e Hibernate?",
+   "r": "A JPA é a especificação: interfaces e anotações padronizadas. O Hibernate é uma implementação dela, como OpenJPA e EclipseLink — este é a implementação de referência oficial, enquanto o Hibernate é o mais popular do mercado."
+  },
+  {
+   "tema": "Java e banco de dados: JDBC, JPA e Hibernate",
+   "p": "Para que servem as anotações @Entity, @Id, @Table e @Column?",
+   "r": "@Entity declara que a classe é gerenciada pela JPA; @Id marca o atributo que é a chave primária, obrigatória em toda entidade; @Table nomeia a tabela correspondente; @Column configura a coluna de um atributo comum."
+  },
+  {
+   "tema": "Java e banco de dados: JDBC, JPA e Hibernate",
+   "p": "O que fazem persist(), find() e remove() do EntityManager?",
+   "r": "persist() torna gerenciada uma instância nova e agenda o INSERT, efetivado no flush ou no commit; find() recupera uma entidade existente pela chave primária; remove() marca a entidade para exclusão."
+  },
+  {
+   "tema": "Java e banco de dados: JDBC, JPA e Hibernate",
+   "p": "O que diferencia a HQL do SQL puro?",
+   "r": "A HQL consulta o modelo de objetos: nomes de classes e de atributos Java, não de tabelas e colunas. O Hibernate a traduz para o dialeto SQL do banco configurado, o que a torna independente do SGBD; ela suporta WHERE, JOIN e funções de agregação."
+  },
+  {
+   "tema": "Web: HTTP, servlets e Tomcat",
+   "p": "O que é o HTTP e como ele funciona por padrão?",
+   "r": "É um protocolo de aplicação que roda sobre TCP, por padrão na porta 80; a 443 é do HTTPS, o mesmo HTTP sobre TLS. Ele é stateless e, a partir do HTTP/1.1, a conexão passou a ser persistente por padrão (keep-alive)."
+  },
+  {
+   "tema": "Web: HTTP, servlets e Tomcat",
+   "p": "Como os cookies simulam estado em um protocolo stateless?",
+   "r": "O servidor envia o cabeçalho Set-Cookie com um identificador de sessão e o navegador o devolve no cabeçalho Cookie a cada requisição seguinte, permitindo associar todas elas ao mesmo usuário ou carrinho de compras."
+  },
+  {
+   "tema": "Web: HTTP, servlets e Tomcat",
+   "p": "O que indica cada faixa de código de status HTTP?",
+   "r": "1xx é informativo; 2xx sucesso (200 OK); 3xx redirecionamento; 4xx erro do cliente (404 Not Found); 5xx erro do servidor. Mnemônico: 4 é erro seu, 5 é erro dele."
+  },
+  {
+   "tema": "Web: HTTP, servlets e Tomcat",
+   "p": "Como o CRUD se relaciona com os comandos SQL e os métodos HTTP?",
+   "r": "Create = INSERT = POST; Read = SELECT = GET; Update = UPDATE = PUT; Delete = DELETE = DELETE. O GET busca recursos e expõe os dados na URL; o POST leva os dados no corpo e é não idempotente, pois altera o estado do servidor."
+  },
+  {
+   "tema": "Web: HTTP, servlets e Tomcat",
+   "p": "Quais são os métodos do ciclo de vida de um servlet?",
+   "r": "init() roda uma única vez, na criação da instância, para carregar recursos caros; service() roda a cada requisição e delega a doGet() ou doPost(); destroy() roda uma única vez, ao descarregar o servlet."
+  },
+  {
+   "tema": "Web: HTTP, servlets e Tomcat",
+   "p": "Como um servlet lê os dados enviados por um formulário?",
+   "r": "Pelo objeto de requisição: request.getParameter(\"email\") usa o atributo name do campo como chave e devolve uma String, ou null se o campo não veio. O mapeamento do servlet para a URL é feito com @WebServlet ou no web.xml."
+  },
+  {
+   "tema": "Web: HTTP, servlets e Tomcat",
+   "p": "Qual a hierarquia de elementos do server.xml do Tomcat?",
+   "r": "Server, a instância inteira, contém Service, que agrupa conectores; dentro dele o Engine processa as requisições, seguido de Host e de Context. O Context representa uma aplicação web individual, ligando um caminho de URL ao diretório ou WAR."
+  },
+  {
+   "tema": "Front-end: formulários, DOM, AJAX e APIs",
+   "p": "Qual a diferença entre enviar um formulário por GET e por POST?",
+   "r": "No GET os campos viram query string na URL, ficando visíveis no histórico e nos logs e sujeitos ao limite de tamanho da URL. No POST eles seguem no corpo da requisição, sem limite prático, o que o torna adequado a senhas, textos longos e uploads."
+  },
+  {
+   "tema": "Front-end: formulários, DOM, AJAX e APIs",
+   "p": "Qual enctype é necessário para enviar arquivos em um formulário?",
+   "r": "O multipart/form-data, que divide o envio em partes independentes e carrega os bytes do arquivo junto com os campos de texto. O padrão application/x-www-form-urlencoded só codifica pares nome=valor e não transporta o conteúdo do arquivo."
+  },
+  {
+   "tema": "Front-end: formulários, DOM, AJAX e APIs",
+   "p": "Qual a diferença entre campos radio e checkbox?",
+   "r": "Radios que compartilham o mesmo atributo name formam um grupo mutuamente exclusivo, admitindo uma única escolha; o id não agrupa nada, pois é único no documento. Checkboxes são independentes: várias podem ficar marcadas e cada uma envia seu valor."
+  },
+  {
+   "tema": "Front-end: formulários, DOM, AJAX e APIs",
+   "p": "O que é o DOM e qual sua hierarquia básica no navegador?",
+   "r": "É a representação da página em árvore de nós, independente de linguagem. O window é a raiz e contém document, location e history; o document é a raiz dos nós HTML. O getElementById() devolve um elemento ou null, e um nó criado por createElement() só aparece na página depois de appendChild()."
+  },
+  {
+   "tema": "Front-end: formulários, DOM, AJAX e APIs",
+   "p": "Qual a diferença entre os métodos open() e send() do XMLHttpRequest?",
+   "r": "O open() apenas configura método HTTP, URL e assincronismo: nada trafega na rede. Quem dispara a requisição é o send(). O evento load marca a transferência concluída, progress ocorre durante o tráfego e abort no cancelamento."
+  },
+  {
+   "tema": "Front-end: formulários, DOM, AJAX e APIs",
+   "p": "Quais são os valores de readyState do XMLHttpRequest?",
+   "r": "0 UNSENT, antes do open(); 1 OPENED, após o open(); 2 HEADERS_RECEIVED; 3 LOADING, recebendo o corpo; 4 DONE, operação concluída. Só no estado 4, com status 200, a resposta está completa e pronta para uso."
+  },
+  {
+   "tema": "Front-end: formulários, DOM, AJAX e APIs",
+   "p": "Qual a diferença entre REST e SOAP?",
+   "r": "O SOAP é um protocolo rígido, com envelope XML e contrato WSDL. O REST é um estilo arquitetural que reaproveita o próprio HTTP e aceita JSON, XML ou texto; entre suas seis restrições estão stateless, cliente-servidor e cache."
+  },
+  {
+   "tema": "Arquivos e NoSQL (MongoDB vs MySQL)",
+   "p": "O que a extensão de um arquivo indica?",
+   "r": "É uma convenção no nome que identifica o formato e permite ao sistema operacional associar o arquivo ao programa capaz de abri-lo. Ela não guarda tamanho nem data, que são metadados do sistema de arquivos, e renomeá-la não converte o conteúdo."
+  },
+  {
+   "tema": "Arquivos e NoSQL (MongoDB vs MySQL)",
+   "p": "Qual a vantagem do backup em nuvem sobre o HD externo ou pen drive?",
+   "r": "Na nuvem os dados ficam replicados na infraestrutura do provedor, fora do dispositivo local, livres da perda, do roubo e do desgaste físico, e acessíveis remotamente de qualquer máquina autenticada. Manter cópias em mais de um local mitiga falhas e ransomware."
+  },
+  {
+   "tema": "Arquivos e NoSQL (MongoDB vs MySQL)",
+   "p": "Quais são as equivalências entre MongoDB e o modelo relacional?",
+   "r": "Collection equivale a tabela, document a linha e field a coluna. O MongoDB é um banco NoSQL orientado a documentos, que armazena os dados em JSON/BSON em vez de tabelas."
+  },
+  {
+   "tema": "Arquivos e NoSQL (MongoDB vs MySQL)",
+   "p": "Quais as diferenças centrais entre MongoDB e MySQL?",
+   "r": "O MongoDB é schema-less: documentos da mesma collection podem ter campos diferentes, dispensando ALTER TABLE e migrações. Ele também não faz JOINs tradicionais, resolvendo relações com documentos embutidos ou referências, e prioriza escalabilidade horizontal por sharding."
+  }
+ ],
+ "questoes": [
+  {
+   "tema": "Banco de dados relacional e modelagem",
+   "q": "O que caracteriza um Sistema Gerenciador de Banco de Dados (SGBD)?",
+   "op": [
+    "Apenas um arquivo de texto organizado em colunas",
+    "Uma linguagem de programação orientada a objetos",
+    "Um software que permite definir, construir e manipular bancos de dados, garantindo integridade e segurança",
+    "Um tipo de hardware de armazenamento"
+   ],
+   "r": 2,
+   "exp": "O SGBD é a camada de software que fica entre os usuários e os arquivos físicos, oferecendo linguagens de definição e manipulação (DDL e DML), controle de concorrência, backup, segurança e integridade. Ele não é hardware nem linguagem de programação: é o programa que gerencia o banco."
+  },
+  {
+   "tema": "Banco de dados relacional e modelagem",
+   "q": "No modelo relacional, uma linha de uma tabela é chamada de:",
+   "op": [
+    "Tupla",
+    "Atributo",
+    "Domínio",
+    "Esquema"
+   ],
+   "r": 0,
+   "exp": "No modelo relacional, uma tabela é uma relação e cada linha é uma tupla, ou seja, uma ocorrência do conjunto de atributos. Atributo é a coluna, domínio é o conjunto de valores permitidos para ela e esquema é a estrutura da relação, não uma linha de dados."
+  },
+  {
+   "tema": "Banco de dados relacional e modelagem",
+   "q": "Qual característica abaixo NÃO é uma propriedade essencial de um banco de dados, segundo Mannino?",
+   "op": [
+    "Persistente",
+    "Volátil",
+    "Compartilhado",
+    "Inter-relacionado"
+   ],
+   "r": 1,
+   "exp": "Um banco de dados é por definição persistente: os dados sobrevivem ao encerramento dos programas que os criaram. Volatilidade é justamente o oposto disso e caracteriza memória temporária, não um banco; já ser compartilhado e inter-relacionado são propriedades esperadas."
+  },
+  {
+   "tema": "Banco de dados relacional e modelagem",
+   "q": "A independência lógica de dados permite que:",
+   "op": [
+    "O esquema conceitual seja alterado sem afetar os programas de aplicação",
+    "O hardware seja substituído sem afetar o SGBD",
+    "Os dados sejam armazenados em qualquer formato de arquivo",
+    "Os usuários acessem o banco sem autenticação"
+   ],
+   "r": 0,
+   "exp": "A independência lógica isola os programas do esquema conceitual: mudanças como acrescentar um atributo ou dividir uma tabela não exigem reescrever as aplicações, que continuam enxergando suas visões. Trocar hardware ou dispositivo de armazenamento é independência física, um nível diferente de abstração."
+  },
+  {
+   "tema": "Banco de dados relacional e modelagem",
+   "q": "(V ou F) Uma variável em um programa de computador é considerada persistente, pois permanece após o término da execução.",
+   "op": [
+    "Verdadeiro",
+    "Falso"
+   ],
+   "r": 1,
+   "exp": "Variáveis ficam na memória principal e desaparecem quando o programa termina; persistência é característica de dado em armazenamento permanente."
+  },
+  {
+   "tema": "Banco de dados relacional e modelagem",
+   "q": "Um relacionamento N:N entre ALUNO e DISCIPLINA deve ser implementado, no modelo lógico, por meio de:",
+   "op": [
+    "Uma chave estrangeira em ALUNO apontando para DISCIPLINA",
+    "A fusão das duas tabelas em uma só",
+    "Um atributo multivalorado em DISCIPLINA",
+    "Uma tabela associativa contendo as chaves primárias de ALUNO e DISCIPLINA como chaves estrangeiras"
+   ],
+   "r": 3,
+   "exp": "O modelo relacional não suporta relacionamentos muitos-para-muitos diretamente, por isso ele é decomposto em uma tabela associativa cuja chave primária é formada pelas chaves das duas entidades, cada uma atuando como chave estrangeira. Uma única FK em ALUNO só conseguiria registrar uma disciplina por aluno."
+  },
+  {
+   "tema": "Banco de dados relacional e modelagem",
+   "q": "Em um relacionamento 1:N entre CLIENTE (1) e PEDIDO (N), a chave estrangeira deve ser colocada:",
+   "op": [
+    "Na tabela CLIENTE, referenciando PEDIDO",
+    "Na tabela PEDIDO, referenciando CLIENTE",
+    "Em ambas as tabelas",
+    "Em uma terceira tabela associativa"
+   ],
+   "r": 1,
+   "exp": "Em um relacionamento 1:N a chave estrangeira vai sempre no lado N, porque cada pedido se liga a exatamente um cliente e cabe em uma única coluna. Colocá-la em CLIENTE obrigaria um cliente a ter apenas um pedido, violando a cardinalidade, e uma tabela associativa só é necessária em relacionamentos N:N."
+  },
+  {
+   "tema": "Banco de dados relacional e modelagem",
+   "q": "Um atributo composto é aquele que:",
+   "op": [
+    "Possui múltiplos valores para uma mesma entidade",
+    "Não pode ser nulo",
+    "Identifica unicamente a entidade",
+    "Pode ser dividido em partes menores com significado próprio (ex.: endereço em rua, número, cidade)"
+   ],
+   "r": 3,
+   "exp": "Atributo composto é o que se decompõe em componentes menores com significado próprio, como endereço em logradouro, número, bairro e cidade. Não confundir com atributo multivalorado, que guarda vários valores do mesmo tipo para a mesma entidade, como diversos telefones."
+  },
+  {
+   "tema": "Banco de dados relacional e modelagem",
+   "q": "(V ou F) A chave estrangeira (FK) garante que o valor referenciado exista na tabela referenciada, implementando a integridade referencial.",
+   "op": [
+    "Verdadeiro",
+    "Falso"
+   ],
+   "r": 0,
+   "exp": "A chave estrangeira implementa a integridade referencial: o SGBD recusa inserir ou atualizar um valor que não exista na chave referenciada e controla o que ocorre em exclusões, por exemplo com CASCADE ou RESTRICT. É essa restrição que impede registros órfãos no banco."
+  },
+  {
+   "tema": "Banco de dados relacional e modelagem",
+   "q": "(V ou F) Em um relacionamento 1:1, a única forma de modelagem possível é a criação de uma tabela associativa.",
+   "op": [
+    "Verdadeiro",
+    "Falso"
+   ],
+   "r": 1,
+   "exp": "Pode-se mesclar as duas entidades em uma tabela ou colocar a FK em qualquer um dos lados."
+  },
+  {
+   "tema": "SQL: consulta, filtros e junções",
+   "q": "O comando SQL responsável por remover permanentemente uma tabela do banco de dados é:",
+   "op": [
+    "DELETE TABLE",
+    "REMOVE TABLE",
+    "TRUNCATE",
+    "DROP TABLE"
+   ],
+   "r": 3,
+   "exp": "DROP TABLE é comando DDL e elimina a estrutura da tabela junto com os dados, índices e restrições associadas. DELETE remove apenas linhas e TRUNCATE esvazia a tabela, mas ambos preservam a definição do objeto no esquema."
+  },
+  {
+   "tema": "SQL: consulta, filtros e junções",
+   "q": "Qual classificação de comandos SQL inclui CREATE, ALTER e DROP?",
+   "op": [
+    "DML",
+    "DCL",
+    "DQL",
+    "DDL"
+   ],
+   "r": 3,
+   "exp": "CREATE, ALTER e DROP definem e alteram a estrutura dos objetos do banco, e por isso formam a DDL, a linguagem de definição de dados. A DML atua sobre o conteúdo das tabelas (INSERT, UPDATE, DELETE) e não sobre o esquema."
+  },
+  {
+   "tema": "SQL: consulta, filtros e junções",
+   "q": "Os comandos GRANT e REVOKE pertencem à categoria:",
+   "op": [
+    "DDL",
+    "DCL",
+    "DML",
+    "DTL"
+   ],
+   "r": 1,
+   "exp": "GRANT e REVOKE concedem e retiram privilégios de usuários e papéis, atuando sobre o controle de acesso, que é o papel da DCL. A DDL trata da estrutura dos objetos e a DML do conteúdo das tabelas, não de permissões."
+  },
+  {
+   "tema": "SQL: consulta, filtros e junções",
+   "q": "Ao executar DELETE FROM clientes; sem cláusula WHERE, o resultado é:",
+   "op": [
+    "Erro de sintaxe",
+    "Apenas a primeira linha é removida",
+    "Nada acontece",
+    "Todas as linhas da tabela são removidas"
+   ],
+   "r": 3,
+   "exp": "O DELETE percorre todas as linhas que satisfazem o filtro; sem WHERE, o filtro é sempre verdadeiro e a tabela inteira é esvaziada, embora a estrutura permaneça. A sintaxe é válida, por isso não há erro, e é justamente essa validade que torna o comando perigoso sem uma transação aberta."
+  },
+  {
+   "tema": "SQL: consulta, filtros e junções",
+   "q": "O comando ROLLBACK tem a função de:",
+   "op": [
+    "Confirmar definitivamente as alterações no banco",
+    "Retornar o banco a um estado anterior ao último COMMIT",
+    "Criar uma nova transação",
+    "Apagar uma tabela"
+   ],
+   "r": 1,
+   "exp": "O ROLLBACK desfaz todas as operações da transação corrente, devolvendo o banco ao estado em que estava no último COMMIT e garantindo a atomicidade. Quem grava definitivamente as alterações é o COMMIT, que faz o papel inverso."
+  },
+  {
+   "tema": "SQL: consulta, filtros e junções",
+   "q": "(V ou F) O comando UPDATE sem cláusula WHERE altera todas as linhas da tabela.",
+   "op": [
+    "Verdadeiro",
+    "Falso"
+   ],
+   "r": 0,
+   "exp": "Sem WHERE não há filtro, então o SET do UPDATE é aplicado a cada linha da tabela. O comando é sintaticamente válido e executa normalmente, motivo pelo qual o esquecimento da cláusula WHERE é uma das falhas mais destrutivas em produção."
+  },
+  {
+   "tema": "SQL: consulta, filtros e junções",
+   "q": "Para buscar clientes cujo nome termina com a letra \"a\", a cláusula correta é:",
+   "op": [
+    "WHERE nome LIKE 'a%'",
+    "WHERE nome = '%a%'",
+    "WHERE nome IN ('a')",
+    "WHERE nome LIKE '%a'"
+   ],
+   "r": 3,
+   "exp": "No LIKE, o curinga % representa qualquer sequência de caracteres, inclusive vazia; colocá-lo antes da letra faz o padrão casar com nomes que terminam nela. Se o % viesse depois, o padrão buscaria nomes que começam com ela, e o operador de igualdade não interpreta curingas, tratando o símbolo como caractere literal."
+  },
+  {
+   "tema": "SQL: consulta, filtros e junções",
+   "q": "O comando SELECT DISTINCT estado FROM clientes; tem como objetivo:",
+   "op": [
+    "Listar todos os estados, incluindo repetições",
+    "Contar quantos clientes há por estado",
+    "Listar os estados sem repetição",
+    "Ordenar os estados alfabeticamente"
+   ],
+   "r": 2,
+   "exp": "O DISTINCT elimina linhas duplicadas do resultado, devolvendo cada estado uma única vez, ou seja, os valores distintos presentes na coluna. Ele não conta ocorrências, tarefa de COUNT com GROUP BY, nem garante ordenação, que depende de ORDER BY."
+  },
+  {
+   "tema": "SQL: consulta, filtros e junções",
+   "q": "Qual cláusula limita a quantidade de linhas retornadas por uma consulta?",
+   "op": [
+    "WHERE",
+    "GROUP BY",
+    "DISTINCT",
+    "LIMIT"
+   ],
+   "r": 3,
+   "exp": "LIMIT restringe quantas linhas o resultado final apresenta, sendo útil em paginação e amostragens (em outros SGBDs aparece como TOP ou FETCH FIRST). O WHERE não limita quantidade: ele filtra por condição lógica e pode devolver qualquer número de linhas."
+  },
+  {
+   "tema": "SQL: consulta, filtros e junções",
+   "q": "A expressão idade BETWEEN 18 AND 30 é equivalente a:",
+   "op": [
+    "idade >= 18 AND idade <= 30",
+    "idade > 18 AND idade < 30",
+    "idade = 18 OR idade = 30",
+    "idade <> 18 AND idade <> 30"
+   ],
+   "r": 0,
+   "exp": "O BETWEEN é inclusivo nas duas pontas, equivalendo a uma comparação com maior ou igual no limite inferior e menor ou igual no limite superior. Por isso idades de exatamente 18 ou 30 entram no resultado, diferentemente de uma comparação apenas com maior e menor estritos."
+  },
+  {
+   "tema": "SQL: consulta, filtros e junções",
+   "q": "(V ou F) O caractere curinga _ no operador LIKE representa zero ou mais caracteres quaisquer.",
+   "op": [
+    "Verdadeiro",
+    "Falso"
+   ],
+   "r": 1,
+   "exp": "'_' representa exatamente um caractere; '%' representa zero ou mais."
+  },
+  {
+   "tema": "SQL: consulta, filtros e junções",
+   "q": "Qual tipo de JOIN retorna apenas os registros que possuem correspondência em ambas as tabelas envolvidas?",
+   "op": [
+    "LEFT JOIN",
+    "RIGHT JOIN",
+    "INNER JOIN",
+    "CROSS JOIN"
+   ],
+   "r": 2,
+   "exp": "O INNER JOIN devolve somente as combinações em que a condição de junção é satisfeita nas duas tabelas, descartando linhas sem par. Os joins externos (LEFT e RIGHT) preservam as linhas sem correspondência de um dos lados preenchendo o outro com NULL, e o CROSS JOIN nem sequer usa condição de junção."
+  },
+  {
+   "tema": "SQL: consulta, filtros e junções",
+   "q": "Se quisermos listar TODOS os clientes, mesmo aqueles que nunca fizeram um pedido, devemos usar:",
+   "op": [
+    "LEFT JOIN de clientes para pedidos",
+    "INNER JOIN entre clientes e pedidos",
+    "CROSS JOIN",
+    "RIGHT JOIN de pedidos para clientes apenas"
+   ],
+   "r": 0,
+   "exp": "O LEFT JOIN preserva todas as linhas da tabela à esquerda mesmo sem correspondência, completando as colunas de pedidos com NULL para quem nunca comprou. O INNER JOIN eliminaria exatamente esses clientes, que são o objeto do interesse da consulta."
+  },
+  {
+   "tema": "SQL: consulta, filtros e junções",
+   "q": "O resultado de um CROSS JOIN entre uma tabela com 3 linhas e outra com 4 linhas terá:",
+   "op": [
+    "7 linhas",
+    "3 linhas",
+    "12 linhas",
+    "Depende da condição WHERE"
+   ],
+   "r": 2,
+   "exp": "O CROSS JOIN produz o produto cartesiano: cada linha de uma tabela é combinada com todas as linhas da outra, resultando em 3 vezes 4 linhas. Como não existe condição de junção, o total depende apenas da cardinalidade das tabelas."
+  },
+  {
+   "tema": "SQL: consulta, filtros e junções",
+   "q": "(V ou F) A sintaxe FROM tabelaA, tabelaB WHERE tabelaA.id = tabelaB.id realiza, na prática, um INNER JOIN implícito.",
+   "op": [
+    "Verdadeiro",
+    "Falso"
+   ],
+   "r": 0,
+   "exp": "Listar tabelas separadas por vírgula gera o produto cartesiano, e a condição de igualdade no WHERE filtra apenas os pares correspondentes, produzindo o mesmo resultado de um INNER JOIN. É a sintaxe antiga: funciona, mas a forma explícita com JOIN e ON é preferida por separar junção de filtro e evitar cartesianos acidentais."
+  },
+  {
+   "tema": "SQL: consulta, filtros e junções",
+   "q": "Qual a principal diferença entre UNION e UNION ALL?",
+   "op": [
+    "UNION é mais rápido que UNION ALL",
+    "UNION remove duplicatas; UNION ALL mantém todas as linhas, incluindo duplicadas",
+    "UNION só funciona com números; UNION ALL com texto",
+    "Não há diferença, são sinônimos"
+   ],
+   "r": 1,
+   "exp": "As duas operações empilham os resultados de consultas compatíveis, mas o UNION aplica uma eliminação de duplicatas ao conjunto final, enquanto o UNION ALL devolve todas as linhas como vieram. Justamente por esse trabalho extra de deduplicação, o UNION tende a ser mais custoso, não mais rápido."
+  },
+  {
+   "tema": "SQL: consulta, filtros e junções",
+   "q": "Para que duas consultas SELECT possam ser combinadas com UNION, é necessário que:",
+   "op": [
+    "As tabelas de origem tenham o mesmo nome",
+    "Ambas tenham o mesmo número de colunas com tipos compatíveis",
+    "Ambas usem GROUP BY",
+    "Apenas uma das consultas tenha WHERE"
+   ],
+   "r": 1,
+   "exp": "UNION é uma operação de conjuntos sobre tuplas, então as consultas precisam ter a mesma quantidade de colunas, na mesma ordem e com tipos compatíveis entre si. Os nomes das tabelas e das colunas são irrelevantes: o cabeçalho do resultado é herdado da primeira consulta."
+  },
+  {
+   "tema": "SQL: consulta, filtros e junções",
+   "q": "(V ou F) UNION ALL é geralmente mais eficiente em desempenho do que UNION, pois não precisa eliminar duplicatas.",
+   "op": [
+    "Verdadeiro",
+    "Falso"
+   ],
+   "r": 0,
+   "exp": "O UNION precisa ordenar ou aplicar hash sobre todo o conjunto para descartar linhas repetidas, custo que o UNION ALL não paga por simplesmente concatenar os resultados. Por isso, quando se sabe que não há duplicatas ou que elas são aceitáveis, UNION ALL é a escolha mais eficiente."
+  },
+  {
+   "tema": "SQL: consulta, filtros e junções",
+   "q": "(V ou F) Não é recomendado combinar UNION com SELECT DISTINCT na mesma consulta, pois isso é redundante.",
+   "op": [
+    "Verdadeiro",
+    "Falso"
+   ],
+   "r": 0,
+   "exp": "O UNION já elimina duplicatas do conjunto resultante, de modo que aplicar DISTINCT nas consultas combinadas repete um trabalho que o próprio operador fará, apenas encarecendo o plano de execução. Se as duplicatas forem desejadas, o caminho é usar UNION ALL, não acrescentar DISTINCT."
+  },
+  {
+   "tema": "SQL: agregação, subconsultas e triggers",
+   "q": "Para listar apenas os departamentos com mais de 5 funcionários, a cláusula correta é:",
+   "op": [
+    "WHERE COUNT(*) > 5",
+    "HAVING COUNT(*) > 5 após GROUP BY departamento",
+    "GROUP BY COUNT(*) > 5",
+    "ORDER BY COUNT(*) > 5"
+   ],
+   "r": 1,
+   "exp": "O WHERE é avaliado antes do agrupamento, linha a linha, e por isso não enxerga funções de agregação; filtros sobre resultados agregados pertencem ao HAVING, que age depois do GROUP BY. Daí agrupar por departamento e condicionar com HAVING sobre a contagem."
+  },
+  {
+   "tema": "SQL: agregação, subconsultas e triggers",
+   "q": "A função COUNT(coluna) difere de COUNT(*) porque:",
+   "op": [
+    "São idênticas em todos os casos",
+    "COUNT(*) só funciona com números",
+    "COUNT(coluna) é mais lento sempre",
+    "COUNT(coluna) ignora valores NULL daquela coluna; COUNT(*) conta todas as linhas"
+   ],
+   "r": 3,
+   "exp": "COUNT(*) conta linhas, independentemente do conteúdo, enquanto COUNT(coluna) conta apenas as linhas em que aquela coluna não é NULL. Por isso as duas formas só coincidem quando a coluna não admite valores nulos."
+  },
+  {
+   "tema": "SQL: agregação, subconsultas e triggers",
+   "q": "(V ou F) É possível usar uma função de agregação como SUM() diretamente na cláusula WHERE.",
+   "op": [
+    "Verdadeiro",
+    "Falso"
+   ],
+   "r": 1,
+   "exp": "Funções de agregação não podem ser usadas em WHERE; deve-se usar HAVING."
+  },
+  {
+   "tema": "SQL: agregação, subconsultas e triggers",
+   "q": "(V ou F) Todas as colunas no SELECT que não estão dentro de uma função de agregação devem aparecer no GROUP BY.",
+   "op": [
+    "Verdadeiro",
+    "Falso"
+   ],
+   "r": 0,
+   "exp": "Depois do GROUP BY cada linha do resultado representa um grupo inteiro, então uma coluna não agregada precisa ter valor único dentro do grupo, o que se garante incluindo-a na lista de agrupamento. Bancos que permitem omiti-la devolvem um valor arbitrário do grupo, comportamento não portável e fonte de erro."
+  },
+  {
+   "tema": "SQL: agregação, subconsultas e triggers",
+   "q": "Qual função de agregação retornaria o valor mais alto de uma coluna \"salário\"?",
+   "op": [
+    "AVG(salario)",
+    "SUM(salario)",
+    "MAX(salario)",
+    "COUNT(salario)"
+   ],
+   "r": 2,
+   "exp": "MAX devolve o maior valor existente na coluna dentro do conjunto agrupado, que é exatamente o maior salário. AVG calcula a média e SUM o total acumulado, valores que normalmente nem correspondem a um salário real de algum funcionário."
+  },
+  {
+   "tema": "SQL: agregação, subconsultas e triggers",
+   "q": "A subconsulta \"SELECT nome FROM funcionario WHERE salario > (SELECT AVG(salario) FROM funcionario);\" é válida para achar quem ganha mais que a média?",
+   "op": [
+    "Não, subconsultas não podem usar funções de agregação",
+    "Sim, está correta e retorna um valor escalar para comparação",
+    "Não, falta a cláusula GROUP BY",
+    "Sim, mas apenas em bancos NoSQL"
+   ],
+   "r": 1,
+   "exp": "A subconsulta com AVG não retorna um conjunto, e sim um único valor escalar, o que a torna perfeitamente válida do lado direito de um operador de comparação. Funções de agregação são permitidas em subconsultas, e não há necessidade de GROUP BY porque a média é calculada sobre a tabela inteira."
+  },
+  {
+   "tema": "SQL: agregação, subconsultas e triggers",
+   "q": "Para verificar se um cliente fez algum pedido, qual operador é mais apropriado com uma subconsulta que retorna uma lista de IDs?",
+   "op": [
+    "=",
+    "LIKE",
+    "BETWEEN",
+    "IN"
+   ],
+   "r": 3,
+   "exp": "Quando a subconsulta devolve vários valores, o operador IN é o adequado, pois testa a pertinência do valor ao conjunto retornado. O operador de igualdade exigiria um único valor e provocaria erro, e alternativas como EXISTS costumam ser usadas quando basta verificar a existência da correspondência."
+  },
+  {
+   "tema": "SQL: agregação, subconsultas e triggers",
+   "q": "(V ou F) Uma subconsulta no WHERE que retorna mais de uma linha não pode ser usada com o operador =, pois ele espera um único valor.",
+   "op": [
+    "Verdadeiro",
+    "Falso"
+   ],
+   "r": 0,
+   "exp": "O operador de igualdade compara um valor com outro valor, portanto uma subconsulta que devolve várias linhas causa erro de execução por retornar mais de um resultado. Nesses casos usam-se operadores de conjunto como IN, ANY ou ALL, ou então EXISTS."
+  },
+  {
+   "tema": "SQL: agregação, subconsultas e triggers",
+   "q": "Um gatilho (trigger) em SQL é executado:",
+   "op": [
+    "Manualmente, sempre que o usuário digita EXECUTE TRIGGER",
+    "Apenas uma vez, na criação do banco",
+    "Automaticamente pelo SGBD quando uma condição especificada é satisfeita por uma operação no banco",
+    "Apenas em bancos NoSQL"
+   ],
+   "r": 2,
+   "exp": "O gatilho é código armazenado e disparado pelo próprio SGBD quando ocorre o evento configurado (INSERT, UPDATE ou DELETE) e a condição associada é satisfeita, sem qualquer chamada da aplicação. É esse comportamento reativo, no modelo evento-condição-ação, que caracteriza um banco de dados ativo."
+  },
+  {
+   "tema": "SQL: agregação, subconsultas e triggers",
+   "q": "O padrão SQL que formalizou o suporte a gatilhos e bancos de dados ativos é:",
+   "op": [
+    "SQL:1999",
+    "SQL-86",
+    "SQL/XML",
+    "NoSQL"
+   ],
+   "r": 0,
+   "exp": "O suporte a gatilhos foi incorporado ao padrão da linguagem no SQL:1999, que consolidou os recursos de banco de dados ativo antes existentes apenas como extensões proprietárias. O SQL-86 é a versão inicial do padrão, bem anterior a esses recursos."
+  },
+  {
+   "tema": "SQL: agregação, subconsultas e triggers",
+   "q": "(V ou F) Um gatilho pode ser disparado antes (BEFORE) ou depois (AFTER) de uma operação de INSERT, UPDATE ou DELETE.",
+   "op": [
+    "Verdadeiro",
+    "Falso"
+   ],
+   "r": 0,
+   "exp": "O momento do disparo faz parte da definição do gatilho: BEFORE executa antes da gravação, sendo útil para validar ou ajustar valores, e AFTER executa depois, adequado para auditoria e atualização de tabelas derivadas. Ambos podem ser associados a INSERT, UPDATE ou DELETE."
+  },
+  {
+   "tema": "Java e banco de dados: JDBC, JPA e Hibernate",
+   "q": "Qual a principal vantagem de usar PreparedStatement em vez de Statement?",
+   "op": [
+    "PreparedStatement previne SQL Injection ao tratar parâmetros como dados, não como código SQL",
+    "PreparedStatement é mais lento, mas mais seguro",
+    "Statement não pode executar comandos SELECT",
+    "Não há diferença prática entre eles"
+   ],
+   "r": 0,
+   "exp": "O PreparedStatement envia o comando SQL ao banco já parametrizado, e os valores passados pelos setters viajam separados como dados, nunca sendo interpretados como parte do comando. Isso neutraliza a SQL Injection e ainda permite reaproveitar o plano de execução, o que costuma deixá-lo mais rápido, e não mais lento, que o Statement."
+  },
+  {
+   "tema": "Java e banco de dados: JDBC, JPA e Hibernate",
+   "q": "O driver JDBC Tipo 4 é caracterizado por:",
+   "op": [
+    "Usar uma ponte ODBC",
+    "Ser escrito inteiramente em Java, comunicando-se diretamente com o protocolo do banco (\"Thin driver\")",
+    "Exigir bibliotecas nativas do sistema operacional",
+    "Funcionar apenas com Oracle"
+   ],
+   "r": 1,
+   "exp": "O driver Tipo 4 é 100% Java e conversa direto com o protocolo nativo do SGBD pela rede, sem camadas intermediárias, por isso é chamado de thin driver e basta adicionar o JAR ao classpath. Bibliotecas nativas do sistema ou ponte ODBC caracterizam os tipos 1 e 2, justamente os que quebram a portabilidade."
+  },
+  {
+   "tema": "Java e banco de dados: JDBC, JPA e Hibernate",
+   "q": "Para executar um comando INSERT INTO via JDBC, deve-se usar o método:",
+   "op": [
+    "executeQuery()",
+    "executeSelect()",
+    "getResultSet()",
+    "executeUpdate()"
+   ],
+   "r": 3,
+   "exp": "Comandos de manipulação que alteram dados (INSERT, UPDATE, DELETE) e de DDL usam executeUpdate(), que devolve um int com a quantidade de linhas afetadas. O executeQuery() é reservado a consultas, pois seu retorno é um ResultSet, algo que um INSERT não produz."
+  },
+  {
+   "tema": "Java e banco de dados: JDBC, JPA e Hibernate",
+   "q": "(V ou F) O objeto ResultSet permite navegação apenas para frente (next()), nunca para trás.",
+   "op": [
+    "Verdadeiro",
+    "Falso"
+   ],
+   "r": 1,
+   "exp": "Dependendo do tipo de ResultSet configurado, é possível navegar com next(), previous(), first() e last()."
+  },
+  {
+   "tema": "Java e banco de dados: JDBC, JPA e Hibernate",
+   "q": "A principal diferença entre Hibernate e JPA é que:",
+   "op": [
+    "São exatamente a mesma coisa",
+    "Hibernate só funciona com MySQL; JPA com qualquer banco",
+    "JPA é uma especificação padrão; Hibernate é uma implementação dessa especificação (entre outras, como EclipseLink)",
+    "JPA é mais antigo que o Hibernate"
+   ],
+   "r": 2,
+   "exp": "A JPA é apenas a especificação (as interfaces e anotações padronizadas do Jakarta/Java EE); quem escreve o código que de fato executa o mapeamento objeto-relacional é um provedor, como Hibernate, EclipseLink ou OpenJPA. Programar contra a JPA permite trocar de implementação sem reescrever as entidades."
+  },
+  {
+   "tema": "Java e banco de dados: JDBC, JPA e Hibernate",
+   "q": "Qual anotação JPA indica que um atributo é a chave primária da entidade?",
+   "op": [
+    "@Column",
+    "@Table",
+    "@Id",
+    "@Entity"
+   ],
+   "r": 2,
+   "exp": "A anotação @Id marca o atributo que serve de identificador único da entidade, mapeado para a chave primária da tabela; toda entidade JPA é obrigada a ter um. @Entity apenas declara que a classe é gerenciada, @Table nomeia a tabela e @Column configura uma coluna comum."
+  },
+  {
+   "tema": "Java e banco de dados: JDBC, JPA e Hibernate",
+   "q": "O HQL (Hibernate Query Language) se diferencia do SQL puro porque:",
+   "op": [
+    "É escrito em XML",
+    "Opera sobre entidades e seus atributos (orientado a objetos), sendo independente do SGBD utilizado",
+    "Não permite filtros (WHERE)",
+    "Só funciona com PostgreSQL"
+   ],
+   "r": 1,
+   "exp": "A HQL consulta o modelo de objetos: você escreve nomes de classes e de atributos Java, não de tabelas e colunas, e o Hibernate traduz para o dialeto SQL do banco configurado. Por isso a mesma consulta funciona em SGBDs diferentes, e ela suporta normalmente WHERE, JOIN e funções de agregação."
+  },
+  {
+   "tema": "Java e banco de dados: JDBC, JPA e Hibernate",
+   "q": "No ciclo de vida JPA, qual método do EntityManager é usado para persistir uma nova entidade no banco?",
+   "op": [
+    "persist()",
+    "find()",
+    "remove()",
+    "detach()"
+   ],
+   "r": 0,
+   "exp": "O persist() do EntityManager torna uma instância nova (transient) gerenciada pelo contexto de persistência, agendando o INSERT que será efetivado no flush ou no commit da transação. O find() só recupera uma entidade existente pela chave primária e o remove() a marca para exclusão."
+  },
+  {
+   "tema": "Java e banco de dados: JDBC, JPA e Hibernate",
+   "q": "(V ou F) EclipseLink é considerado a implementação de referência (reference implementation) da especificação JPA.",
+   "op": [
+    "Verdadeiro",
+    "Falso"
+   ],
+   "r": 0,
+   "exp": "A afirmação é verdadeira: o EclipseLink, derivado do projeto TopLink e mantido pela Eclipse Foundation, é a implementação de referência oficial da especificação JPA. O Hibernate é a implementação mais popular do mercado, mas não é a de referência."
+  },
+  {
+   "tema": "Web: HTTP, servlets e Tomcat",
+   "q": "No ciclo de vida de um Servlet, o método chamado apenas uma vez, durante a inicialização, é:",
+   "op": [
+    "service()",
+    "destroy()",
+    "init()",
+    "doGet()"
+   ],
+   "r": 2,
+   "exp": "O init() é executado uma única vez pelo contêiner, quando a instância do Servlet é criada, e serve para carregar recursos caros como conexões e configurações. Depois disso, cada requisição passa pelo service(), que delega a doGet() ou doPost(), e o destroy() só roda ao descarregar o Servlet."
+  },
+  {
+   "tema": "Web: HTTP, servlets e Tomcat",
+   "q": "Dentro de um Servlet, para capturar o valor de um campo de formulário \"email\" enviado via POST, utiliza-se:",
+   "op": [
+    "response.getParameter(\"email\")",
+    "request.getParameter(\"email\")",
+    "session.getAttribute(\"email\")",
+    "getServletConfig(\"email\")"
+   ],
+   "r": 1,
+   "exp": "Os dados enviados pelo navegador chegam dentro do objeto de requisição, então é request.getParameter(\"email\") que devolve o valor do campo como String (ou null se ele não veio). O objeto response serve só para construir a resposta, e não possui getParameter."
+  },
+  {
+   "tema": "Web: HTTP, servlets e Tomcat",
+   "q": "No arquivo server.xml do Tomcat, qual elemento representa uma aplicação web individual em execução?",
+   "op": [
+    "<Context>",
+    "<Server>",
+    "<Engine>",
+    "<Service>"
+   ],
+   "r": 0,
+   "exp": "O elemento Context representa uma aplicação web individual implantada, associando um caminho de URL ao diretório ou WAR correspondente. Os demais são camadas superiores da hierarquia do Tomcat: Server é a instância inteira, Service agrupa conectores e Engine processa as requisições recebidas."
+  },
+  {
+   "tema": "Web: HTTP, servlets e Tomcat",
+   "q": "(V ou F) O CGI era mais eficiente que Servlets, pois criava um novo processo do SO para cada requisição.",
+   "op": [
+    "Verdadeiro",
+    "Falso"
+   ],
+   "r": 1,
+   "exp": "Criar um processo por requisição era a desvantagem do CGI; Servlets usam threads, sendo mais eficientes."
+  },
+  {
+   "tema": "Web: HTTP, servlets e Tomcat",
+   "q": "A anotação usada para mapear uma classe Servlet a uma URL é:",
+   "op": [
+    "@Entity",
+    "@Controller",
+    "@RequestMapping",
+    "@WebServlet"
+   ],
+   "r": 3,
+   "exp": "A anotação @WebServlet, da API de Servlets, declara o mapeamento da classe para um ou mais padrões de URL, dispensando a declaração equivalente no web.xml. @Controller e @RequestMapping pertencem ao Spring MVC, que é um framework construído sobre os Servlets, e não parte da especificação."
+  },
+  {
+   "tema": "Web: HTTP, servlets e Tomcat",
+   "q": "O protocolo HTTP, por padrão, opera sobre qual porta e protocolo de transporte?",
+   "op": [
+    "Porta 21, UDP",
+    "Porta 443, UDP",
+    "Porta 80, TCP",
+    "Porta 22, TCP"
+   ],
+   "r": 2,
+   "exp": "O HTTP é um protocolo de camada de aplicação que se apoia no TCP para garantir entrega ordenada e confiável dos dados, usando por padrão a porta 80. A porta 443 é a do HTTPS, ou seja, o mesmo HTTP encapsulado em TLS."
+  },
+  {
+   "tema": "Web: HTTP, servlets e Tomcat",
+   "q": "Qual método HTTP é tipicamente usado para enviar dados de um formulário que serão processados e armazenados no servidor?",
+   "op": [
+    "GET",
+    "HEAD",
+    "POST",
+    "TRACE"
+   ],
+   "r": 2,
+   "exp": "O POST transporta os dados no corpo da requisição, sem limite prático de tamanho, e é definido como não idempotente justamente por representar uma operação que altera o estado do servidor, como gravar um cadastro. O GET serve para buscar recursos e expõe os dados na URL, ficando em históricos e logs."
+  },
+  {
+   "tema": "Web: HTTP, servlets e Tomcat",
+   "q": "Um código de status HTTP na faixa 400-499 indica:",
+   "op": [
+    "Erro no lado do cliente",
+    "Sucesso da requisição",
+    "Erro no lado do servidor",
+    "Redirecionamento"
+   ],
+   "r": 0,
+   "exp": "A faixa 4xx agrupa os erros atribuídos ao cliente: a requisição está malformada, não autenticada ou aponta para um recurso inexistente, como em 400, 401, 403 e 404. Falhas internas do servidor ficam na faixa 5xx e os redirecionamentos, na 3xx."
+  },
+  {
+   "tema": "Web: HTTP, servlets e Tomcat",
+   "q": "(V ou F) O HTTP é, por natureza, um protocolo com monitoramento de estado (stateful).",
+   "op": [
+    "Verdadeiro",
+    "Falso"
+   ],
+   "r": 1,
+   "exp": "HTTP é stateless por padrão; cookies foram criados para simular estado entre requisições."
+  },
+  {
+   "tema": "Web: HTTP, servlets e Tomcat",
+   "q": "A partir do HTTP/1.1, o tipo de conexão padrão passou a ser:",
+   "op": [
+    "Persistente",
+    "Não-persistente",
+    "UDP",
+    "Sem conexão"
+   ],
+   "r": 0,
+   "exp": "No HTTP/1.1 a conexão TCP passou a ser mantida aberta por padrão (keep-alive), permitindo que várias requisições e respostas trafeguem pela mesma conexão. Isso elimina o custo de um novo handshake por objeto, que era o gargalo do modelo não persistente do HTTP/1.0."
+  },
+  {
+   "tema": "Front-end: formulários, DOM, AJAX e APIs",
+   "q": "A principal diferença conceitual entre REST e SOAP é:",
+   "op": [
+    "REST é um protocolo; SOAP é um estilo arquitetural",
+    "Ambos exigem exatamente a mesma sintaxe",
+    "SOAP é um protocolo rígido baseado em XML; REST é um estilo arquitetural mais flexível",
+    "SOAP só funciona em redes locais"
+   ],
+   "r": 2,
+   "exp": "O SOAP é um protocolo formal: exige envelope XML, contrato WSDL e um conjunto fixo de regras de mensagem. O REST não é protocolo, e sim um estilo arquitetural que reaproveita o próprio HTTP (seus métodos, URIs e códigos de status) e aceita qualquer formato de representação, como JSON, XML ou texto."
+  },
+  {
+   "tema": "Front-end: formulários, DOM, AJAX e APIs",
+   "q": "Uma das seis restrições que caracterizam uma API RESTful é:",
+   "op": [
+    "Monitoramento obrigatório de estado da sessão no servidor",
+    "Uso exclusivo do protocolo FTP",
+    "Sem monitoramento de estado (stateless) entre requisições",
+    "Proibição de cache"
+   ],
+   "r": 2,
+   "exp": "O estilo REST exige que a comunicação seja stateless: cada requisição carrega tudo o que é necessário para ser entendida, e o servidor não guarda estado de sessão entre chamadas. Isso é o que permite escalar horizontalmente, já que qualquer instância pode atender qualquer requisição; o cache, aliás, é outra restrição obrigatória, não algo proibido."
+  },
+  {
+   "tema": "Front-end: formulários, DOM, AJAX e APIs",
+   "q": "(V ou F) Um Webhook funciona enviando uma requisição do cliente ao servidor repetidamente até obter dados novos (polling).",
+   "op": [
+    "Verdadeiro",
+    "Falso"
+   ],
+   "r": 1,
+   "exp": "Webhook é o inverso: o servidor envia POST ao cliente quando há dados novos, sem polling do cliente."
+  },
+  {
+   "tema": "Front-end: formulários, DOM, AJAX e APIs",
+   "q": "Para que serve o método open() do objeto XMLHttpRequest?",
+   "op": [
+    "Enviar efetivamente a requisição ao servidor",
+    "Fechar a conexão",
+    "Ler a resposta do servidor",
+    "Configurar o método HTTP e a URL da requisição, sem ainda enviá-la"
+   ],
+   "r": 3,
+   "exp": "O open() apenas prepara a requisição, definindo o método HTTP, a URL e se ela será assíncrona; nada trafega na rede nesse momento. O disparo efetivo só acontece no send(), que é onde o corpo da requisição é transmitido."
+  },
+  {
+   "tema": "Front-end: formulários, DOM, AJAX e APIs",
+   "q": "(V ou F) Requisições XMLHttpRequest síncronas podem ser usadas livremente fora de Web Workers, sem causar problemas de performance.",
+   "op": [
+    "Verdadeiro",
+    "Falso"
+   ],
+   "r": 1,
+   "exp": "Requisições síncronas fora de Web Workers congelam a interface principal."
+  },
+  {
+   "tema": "Front-end: formulários, DOM, AJAX e APIs",
+   "q": "Qual evento do XMLHttpRequest é disparado quando a transferência de dados é concluída com sucesso?",
+   "op": [
+    "load",
+    "progress",
+    "abort",
+    "open"
+   ],
+   "r": 0,
+   "exp": "O evento load é disparado quando a transferência termina com sucesso e a resposta está completa em responseText ou response. O progress é emitido várias vezes durante o tráfego, o abort ocorre quando a requisição é cancelada e open nem é evento, e sim o método de configuração."
+  },
+  {
+   "tema": "Front-end: formulários, DOM, AJAX e APIs",
+   "q": "(V ou F) O nome \"XMLHttpRequest\" implica que o objeto só pode trabalhar com dados no formato XML.",
+   "op": [
+    "Verdadeiro",
+    "Falso"
+   ],
+   "r": 1,
+   "exp": "O nome é histórico; hoje a API trabalha com texto, JSON, dados binários etc."
+  },
+  {
+   "tema": "Front-end: formulários, DOM, AJAX e APIs",
+   "q": "No DOM, qual objeto é considerado a raiz de toda a árvore, sendo pai de document, location e history?",
+   "op": [
+    "document",
+    "body",
+    "window",
+    "html"
+   ],
+   "r": 2,
+   "exp": "Em um navegador, window é o objeto global que representa a janela ou aba e contém todos os demais, incluindo document (a árvore da página), location e history. O document é a raiz apenas da árvore de nós HTML, ficando um nível abaixo de window."
+  },
+  {
+   "tema": "Front-end: formulários, DOM, AJAX e APIs",
+   "q": "Qual método do objeto document localiza um elemento HTML específico por meio de seu atributo id?",
+   "op": [
+    "getElementsByTagName()",
+    "createElement()",
+    "appendChild()",
+    "getElementById()"
+   ],
+   "r": 3,
+   "exp": "O getElementById() usa o id, que deve ser único no documento, e por isso devolve um único elemento (ou null se não existir), sem necessidade de índice. Métodos como getElementsByTagName() retornam uma coleção de nós, exigindo percorrer ou indexar o resultado."
+  },
+  {
+   "tema": "Front-end: formulários, DOM, AJAX e APIs",
+   "q": "(V ou F) O DOM foi projetado para ser usado exclusivamente com JavaScript, não podendo ser manipulado por outras linguagens.",
+   "op": [
+    "Verdadeiro",
+    "Falso"
+   ],
+   "r": 1,
+   "exp": "O DOM é independente de linguagem; pode ser manipulado por outras linguagens, como Python."
+  },
+  {
+   "tema": "Front-end: formulários, DOM, AJAX e APIs",
+   "q": "O método utilizado para inserir um novo elemento filho dentro de um nó existente do DOM é:",
+   "op": [
+    "removeChild()",
+    "parentNode()",
+    "createAttribute()",
+    "appendChild()"
+   ],
+   "r": 3,
+   "exp": "O appendChild() anexa um nó como último filho do elemento sobre o qual é chamado, sendo o passo que efetivamente insere na árvore um elemento recém-criado por createElement(). Sem essa inserção, o nó criado existe apenas em memória e não aparece na página."
+  },
+  {
+   "tema": "Front-end: formulários, DOM, AJAX e APIs",
+   "q": "Qual a principal diferença entre os métodos GET e POST em um formulário HTML?",
+   "op": [
+    "GET envia dados pela URL (visíveis, limitados); POST envia no corpo da requisição (não visível, sem limite prático)",
+    "POST é mais rápido sempre",
+    "GET só funciona com senhas",
+    "Não há diferença prática"
+   ],
+   "r": 0,
+   "exp": "No GET os dados viram uma query string anexada à URL, ficando visíveis na barra de endereços, no histórico e nos logs, além de sujeitos ao limite de tamanho da URL. No POST eles seguem no corpo da requisição, sem esse limite prático, o que o torna adequado para senhas, textos longos e uploads."
+  },
+  {
+   "tema": "Front-end: formulários, DOM, AJAX e APIs",
+   "q": "Para que dois botões do tipo radio sejam tratados como um grupo de opções mutuamente exclusivas, é necessário que eles:",
+   "op": [
+    "Tenham o mesmo id",
+    "Tenham o mesmo atributo name",
+    "Estejam dentro do mesmo <div>",
+    "Tenham o mesmo value"
+   ],
+   "r": 1,
+   "exp": "É o atributo name compartilhado que define o grupo de radios: o navegador garante que apenas um botão com aquele name fique marcado e envia um único par nome/valor ao servidor. O id precisa ser único em todo o documento, então repeti-lo seria inválido e não agruparia nada."
+  },
+  {
+   "tema": "Front-end: formulários, DOM, AJAX e APIs",
+   "q": "Para permitir o envio de arquivos em um formulário, o atributo enctype do <form> deve ser:",
+   "op": [
+    "application/x-www-form-urlencoded",
+    "multipart/form-data",
+    "text/plain",
+    "application/json"
+   ],
+   "r": 1,
+   "exp": "O enctype multipart/form-data divide o envio em partes independentes, cada uma com seus próprios cabeçalhos, permitindo transportar bytes binários do arquivo junto com os campos de texto. O padrão application/x-www-form-urlencoded só codifica pares nome=valor e não é capaz de carregar o conteúdo do arquivo."
+  },
+  {
+   "tema": "Front-end: formulários, DOM, AJAX e APIs",
+   "q": "(V ou F) Campos do tipo checkbox permitem selecionar múltiplas opções de um mesmo grupo, diferentemente do radio.",
+   "op": [
+    "Verdadeiro",
+    "Falso"
+   ],
+   "r": 0,
+   "exp": "A afirmação é verdadeira: as checkboxes são independentes entre si, de modo que várias podem estar marcadas ao mesmo tempo e cada uma marcada envia seu próprio valor. Os radios que compartilham o mesmo name são mutuamente exclusivos por definição, admitindo uma única escolha."
+  },
+  {
+   "tema": "Front-end: formulários, DOM, AJAX e APIs",
+   "q": "No lado do servidor (ex.: Servlet Java), o valor digitado em um campo de formulário é obtido através de:",
+   "op": [
+    "request.getParameter(nomeDoCampo)",
+    "response.write(nomeDoCampo)",
+    "document.getElementById(nomeDoCampo)",
+    "session.create(nomeDoCampo)"
+   ],
+   "r": 0,
+   "exp": "No servidor, os valores digitados chegam como parâmetros da requisição HTTP e são lidos com request.getParameter(nome), usando o atributo name do campo como chave. O document.getElementById só existe no JavaScript que roda no navegador, e não tem acesso ao lado servidor."
+  },
+  {
+   "tema": "Arquivos e NoSQL (MongoDB vs MySQL)",
+   "q": "A extensão de um arquivo serve para:",
+   "op": [
+    "Indicar o tamanho do arquivo",
+    "Identificar o formato do arquivo e qual programa pode lê-lo/manipulá-lo",
+    "Criptografar o conteúdo automaticamente",
+    "Definir a data de criação"
+   ],
+   "r": 1,
+   "exp": "A extensão é uma convenção no nome do arquivo que identifica seu formato, permitindo ao sistema operacional associá-lo ao programa capaz de abri-lo e interpretá-lo. Ela não guarda tamanho nem data, que são metadados mantidos pelo sistema de arquivos, e também não criptografa nada."
+  },
+  {
+   "tema": "Arquivos e NoSQL (MongoDB vs MySQL)",
+   "q": "O backup em nuvem se diferencia do backup em HD externo/pen drive principalmente porque:",
+   "op": [
+    "É sempre mais lento",
+    "Não pode ser usado por dispositivos móveis",
+    "Substitui completamente a necessidade de senha",
+    "Os dados ficam isentos do desgaste ou perda do dispositivo físico local, sendo acessíveis remotamente"
+   ],
+   "r": 3,
+   "exp": "No backup em nuvem os dados ficam replicados na infraestrutura do provedor, fora do dispositivo local, de modo que a perda, o roubo ou o desgaste físico do HD externo ou do pen drive não elimina a cópia. Além disso, o acesso é remoto, por qualquer dispositivo conectado e autenticado."
+  },
+  {
+   "tema": "Arquivos e NoSQL (MongoDB vs MySQL)",
+   "q": "(V ou F) Salvar um documento editável como PDF impede totalmente e de forma permanente qualquer edição, mesmo com softwares modernos.",
+   "op": [
+    "Verdadeiro",
+    "Falso"
+   ],
+   "r": 1,
+   "exp": "Softwares modernos já permitem editar PDFs, exigindo cuidados extras (senha, permissões) para proteção real."
+  },
+  {
+   "tema": "Arquivos e NoSQL (MongoDB vs MySQL)",
+   "q": "Qual ação NÃO pode ser realizada diretamente sobre um arquivo digital?",
+   "op": [
+    "Alteração apenas da extensão sem alterar o conteúdo real do formato",
+    "Edição",
+    "Criação",
+    "Salvamento"
+   ],
+   "r": 0,
+   "exp": "Renomear a extensão não converte o arquivo: o conteúdo continua codificado no formato original, e programas que identificam o tipo pelos bytes internos acusarão erro. Criar, editar e salvar são operações comuns; já mudar de formato de verdade exige uma conversão que reescreva os dados."
+  },
+  {
+   "tema": "Arquivos e NoSQL (MongoDB vs MySQL)",
+   "q": "No MongoDB, o equivalente a uma \"tabela\" do MySQL é chamado de:",
+   "op": [
+    "Collection",
+    "Document",
+    "Field",
+    "Index"
+   ],
+   "r": 0,
+   "exp": "No MongoDB, os documentos JSON/BSON são agrupados em collections, que ocupam o papel das tabelas do modelo relacional. O document equivale a uma linha e o field a uma coluna, mas sem esquema fixo: documentos da mesma collection podem ter campos diferentes."
+  },
+  {
+   "tema": "Arquivos e NoSQL (MongoDB vs MySQL)",
+   "q": "Uma das principais vantagens do MongoDB sobre o MySQL, segundo o estudo comparativo, é:",
+   "op": [
+    "MongoDB exige sempre um esquema fixo, igual ao MySQL",
+    "MongoDB permite estruturas de dados flexíveis (schema-less) e demonstrou tempos de execução menores nos testes",
+    "MongoDB não pode lidar com grandes volumes de dados",
+    "MongoDB usa exclusivamente a linguagem SQL"
+   ],
+   "r": 1,
+   "exp": "Por ser orientado a documentos e schema-less, o MongoDB aceita documentos com estruturas distintas na mesma collection, dispensando ALTER TABLE e migrações a cada mudança de modelo. Nos testes comparativos do estudo, essa ausência de esquema rígido e de junções resultou também em tempos de execução menores."
+  },
+  {
+   "tema": "Arquivos e NoSQL (MongoDB vs MySQL)",
+   "q": "(V ou F) O MongoDB possui suporte nativo a operações de JOIN, idêntico ao SQL tradicional.",
+   "op": [
+    "Verdadeiro",
+    "Falso"
+   ],
+   "r": 1,
+   "exp": "MongoDB não realiza JOINs tradicionais; usa documentos embutidos ou referências entre coleções."
+  },
+  {
+   "tema": "Arquivos e NoSQL (MongoDB vs MySQL)",
+   "q": "Bancos de dados NoSQL como o MongoDB são frequentemente classificados como bancos de dados:",
+   "op": [
+    "Relacionais normalizados",
+    "Hierárquicos antigos",
+    "Não-relacionais (NoSQL), priorizando flexibilidade de esquema e escalabilidade",
+    "Apenas para uso em planilhas"
+   ],
+   "r": 2,
+   "exp": "O MongoDB é um banco NoSQL orientado a documentos: dispensa tabelas, esquema fixo e junções, o que favorece a flexibilidade do modelo e a escalabilidade horizontal por sharding. Chamá-lo de relacional normalizado é o erro comum, já que normalização e integridade referencial são justamente características do modelo que ele não adota."
+  }
+ ],
+ "discursivas": [
+  {
+   "tema": "Banco de dados relacional e modelagem",
+   "q": "Explique a diferença entre Banco de Dados (BD), SGBD e Sistema de Banco de Dados (SBD), com um exemplo de clínica veterinária.",
+   "r": "BD é o conjunto de dados persistentes e relacionados (ex.: dados de animais e tutores). SGBD é o software que gerencia esse BD (ex.: MySQL). SBD é o conjunto formado pelo BD + SGBD + aplicações que o utilizam (ex.: o sistema completo da clínica)."
+  },
+  {
+   "tema": "Banco de dados relacional e modelagem",
+   "q": "Para um sistema de clínica veterinária com TUTOR, ANIMAL e CONSULTA, explique os relacionamentos/cardinalidades esperados e como seriam traduzidos para tabelas.",
+   "r": "TUTOR 1:N ANIMAL (um tutor tem vários animais; FK TutorID em ANIMAL). ANIMAL 1:N CONSULTA (um animal tem várias consultas; FK AnimalID em CONSULTA). Cada FK é adicionada na tabela do lado \"N\" do relacionamento."
+  },
+  {
+   "tema": "SQL: consulta, filtros e junções",
+   "q": "Explique a diferença entre DROP, DELETE e TRUNCATE (estrutura vs. dados, e possibilidade de ROLLBACK).",
+   "r": "DROP (DDL) remove a tabela inteira (estrutura + dados). DELETE (DML) remove linhas, pode ter WHERE e pode ser revertido com ROLLBACK dentro de uma transação. TRUNCATE (DDL) remove todas as linhas rapidamente, sem WHERE, geralmente sem possibilidade de ROLLBACK."
+  },
+  {
+   "tema": "SQL: consulta, filtros e junções",
+   "q": "Explique a diferença entre as cláusulas WHERE e HAVING, indicando o momento de atuação de cada.",
+   "r": "WHERE filtra linhas individuais antes do agrupamento (não pode usar funções de agregação). HAVING filtra os grupos resultantes do GROUP BY, atuando depois do agrupamento (pode usar funções de agregação)."
+  },
+  {
+   "tema": "SQL: consulta, filtros e junções",
+   "q": "Explique a diferença entre INNER JOIN e LEFT JOIN, com exemplo de PROFESSOR e DISCIPLINA.",
+   "r": "INNER JOIN retorna só professores que têm disciplina associada. LEFT JOIN retorna todos os professores, mesmo os sem disciplina associada (campos da disciplina viriam NULL)."
+  },
+  {
+   "tema": "SQL: consulta, filtros e junções",
+   "q": "Tabelas cliente e fornecedor têm colunas nome e cidade. Escreva uma consulta que retorne, sem repetições, todas as cidades onde existe cliente OU fornecedor.",
+   "r": "SELECT cidade FROM cliente UNION SELECT cidade FROM fornecedor;"
+  },
+  {
+   "tema": "SQL: agregação, subconsultas e triggers",
+   "q": "Por que SELECT departamento, AVG(salario) FROM funcionario WHERE AVG(salario) > 5000 GROUP BY departamento; está incorreta? Como reescrever?",
+   "r": "Está incorreta porque função de agregação não pode estar em WHERE. Correção: SELECT departamento, AVG(salario) FROM funcionario GROUP BY departamento HAVING AVG(salario) > 5000;"
+  },
+  {
+   "tema": "SQL: agregação, subconsultas e triggers",
+   "q": "Escreva uma subconsulta que retorne o nome do paciente com maior idade em paciente(id, nome, idade), sem usar ORDER BY + LIMIT.",
+   "r": "SELECT nome FROM paciente WHERE idade = (SELECT MAX(idade) FROM paciente);"
+  },
+  {
+   "tema": "SQL: agregação, subconsultas e triggers",
+   "q": "Descreva um cenário em que um trigger é mais adequado do que validar a regra apenas na aplicação.",
+   "r": "Manter o saldo de estoque sempre atualizado após cada venda: um trigger AFTER INSERT na tabela de vendas decrementa o estoque automaticamente, garantindo consistência mesmo se a venda for inserida por outra aplicação ou diretamente no banco."
+  },
+  {
+   "tema": "Java e banco de dados: JDBC, JPA e Hibernate",
+   "q": "Explique como Statement concatenando entrada do usuário permite SQL Injection, e como PreparedStatement resolve isso.",
+   "r": "Com Statement, a entrada do usuário é concatenada diretamente na string SQL; um atacante pode inserir algo como ' OR '1'='1 alterando a lógica da consulta. PreparedStatement usa parâmetros (?) que são tratados como dados literais, nunca como código SQL, eliminando o risco."
+  },
+  {
+   "tema": "Java e banco de dados: JDBC, JPA e Hibernate",
+   "q": "Explique framework vs. biblioteca (inversão de controle) e por que Hibernate é um framework de persistência.",
+   "r": "Em uma biblioteca, o código da aplicação chama as funções quando quer. Em um framework, o controle de fluxo é invertido: o framework chama o código da aplicação (ex.: callbacks, ciclo de vida de entidades). Hibernate é framework porque controla o ciclo de persistência (Session, Transaction) e a aplicação se encaixa nesse fluxo."
+  },
+  {
+   "tema": "Web: HTTP, servlets e Tomcat",
+   "q": "Descreva o fluxo completo de uma requisição HTTP, do envio de um formulário HTML até a resposta do Servlet no Tomcat.",
+   "r": "O navegador envia a requisição HTTP (form action) ao Tomcat. O container invoca service(), que despacha para doGet()/doPost() do Servlet correspondente ao <Context>. O Servlet lê os parâmetros (request.getParameter), processa e escreve a resposta (response), devolvida ao navegador."
+  },
+  {
+   "tema": "Web: HTTP, servlets e Tomcat",
+   "q": "Explique como cookies permitem que um carrinho de compras funcione, mesmo o HTTP sendo stateless.",
+   "r": "O servidor envia um cookie (Set-Cookie) com um identificador de sessão. O navegador devolve esse cookie em cada requisição subsequente (cabeçalho Cookie), permitindo ao servidor associar as requisições ao mesmo carrinho/sessão, mesmo sem o HTTP manter estado nativamente."
+  },
+  {
+   "tema": "Front-end: formulários, DOM, AJAX e APIs",
+   "q": "Explique o que significa \"stateless\" em uma API RESTful e a vantagem para a escalabilidade.",
+   "r": "Cada requisição deve conter toda a informação necessária para ser processada, sem depender de estado guardado no servidor entre requisições. Isso permite que qualquer servidor de um cluster atenda qualquer requisição, facilitando escalabilidade horizontal e balanceamento de carga."
+  },
+  {
+   "tema": "Front-end: formulários, DOM, AJAX e APIs",
+   "q": "Descreva o papel do AJAX na construção de páginas dinâmicas, com um exemplo prático.",
+   "r": "AJAX permite enviar/receber dados do servidor sem recarregar a página, melhorando a experiência do usuário. Exemplo: validar se um e-mail já está cadastrado enquanto o usuário digita, exibindo o aviso sem reload da página."
+  },
+  {
+   "tema": "Front-end: formulários, DOM, AJAX e APIs",
+   "q": "Explique a relação entre HTML, CSS, JavaScript e o DOM.",
+   "r": "HTML define a estrutura inicial, que o navegador transforma em uma árvore DOM. CSS define a aparência dos nós dessa árvore. JavaScript manipula o DOM dinamicamente (adiciona/remove/altera nós), e o navegador re-renderiza a página automaticamente, sem precisar recarregar."
+  },
+  {
+   "tema": "Front-end: formulários, DOM, AJAX e APIs",
+   "q": "Compare os tipos de input text, email e password.",
+   "r": "text: campo livre sem validação especial. email: o navegador valida automaticamente o formato (precisa conter @ e domínio). password: oculta os caracteres digitados na tela, mas não criptografa o valor automaticamente no envio."
+  },
+  {
+   "tema": "Arquivos e NoSQL (MongoDB vs MySQL)",
+   "q": "Por que é boa prática manter backups em mais de um local/dispositivo?",
+   "r": "Mitiga o risco de perda total dos dados em caso de falha, roubo, dano físico ou ataque (ex.: ransomware) que afete um único local — se um backup falhar ou for corrompido, outro permanece íntegro."
+  },
+  {
+   "tema": "Arquivos e NoSQL (MongoDB vs MySQL)",
+   "q": "Por que um fórum com estruturas altamente customizáveis por usuário se beneficia mais de um NoSQL como MongoDB?",
+   "r": "Porque cada documento pode ter uma estrutura diferente sem exigir alteração de esquema (schema-less), o que é ideal para subfóruns/campos variáveis por usuário — em um relacional isso exigiria tabelas extras ou colunas nulas em excesso."
+  }
+ ],
+ "colas": [
+  {
+   "titulo": "CRUD ↔ SQL ↔ HTTP",
+   "mnemonico": "Mnemônico: alinhe as três colunas sempre na mesma ordem C-R-U-D.",
+   "pontos": [
+    "Create = INSERT = POST",
+    "Read = SELECT = GET",
+    "Update = UPDATE = PUT",
+    "Delete = DELETE = DELETE"
+   ]
+  },
+  {
+   "titulo": "Tipos de JOIN",
+   "mnemonico": "Mnemônico: pense em círculos de Venn — interseção, tudo-de-um-lado, ou tudo-com-tudo.",
+   "pontos": [
+    "INNER JOIN: só quem tem correspondência nas duas tabelas (interseção).",
+    "LEFT JOIN: tudo da esquerda + o que casar da direita (resto NULL).",
+    "RIGHT JOIN: tudo da direita + o que casar da esquerda.",
+    "CROSS JOIN: produto cartesiano — todos com todos."
+   ]
+  },
+  {
+   "titulo": "Códigos de status HTTP",
+   "mnemonico": "Mnemônico: \"1 informa, 2 é OK, 3 manda pra outro lugar, 4 erro SEU, 5 erro DELE.\"",
+   "pontos": [
+    "1xx: informativo.",
+    "2xx: sucesso (200 OK).",
+    "3xx: redirecionamento.",
+    "4xx: erro do cliente (404 Not Found).",
+    "5xx: erro do servidor."
+   ]
+  },
+  {
+   "titulo": "WHERE vs HAVING",
+   "mnemonico": "Mnemônico: \"WHERE filtra linha por linha ANTES de agrupar; HAVING filtra grupo DEPOIS de agrupar.\"",
+   "pontos": [
+    "WHERE: não aceita função de agregação (COUNT, AVG...).",
+    "HAVING: criado justamente para filtrar com função de agregação após o GROUP BY."
+   ]
+  },
+  {
+   "titulo": "JPA vs Hibernate",
+   "mnemonico": "Mnemônico: \"JPA é a regra do jogo; Hibernate é o jogador que segue a regra.\"",
+   "pontos": [
+    "JPA: especificação (interface, anotações @Entity/@Id/@Column).",
+    "Hibernate: implementação da JPA (assim como EclipseLink, a referência oficial).",
+    "HQL: linguagem de consulta do Hibernate, orientada a objetos."
+   ]
+  },
+  {
+   "titulo": "Statement vs PreparedStatement",
+   "mnemonico": "Mnemônico: \"Statement concatena = porta aberta para injeção; PreparedStatement usa '?' = pergunta fechada.\"",
+   "pontos": [
+    "Statement: monta SQL concatenando texto do usuário → risco de SQL Injection.",
+    "PreparedStatement: parâmetros (?) tratados como dado, nunca como código SQL."
+   ]
+  },
+  {
+   "titulo": "Ciclo de vida do Servlet",
+   "mnemonico": "Mnemônico: \"Nasce uma vez, vive várias, morre uma vez.\"",
+   "pontos": [
+    "init(): chamado uma única vez, na inicialização.",
+    "service() → doGet()/doPost(): chamado a cada requisição.",
+    "destroy(): chamado uma única vez, ao final."
+   ]
+  },
+  {
+   "titulo": "DOM — hierarquia básica",
+   "mnemonico": "Mnemônico: \"window é o avô, document é o pai, os elementos são os filhos.\"",
+   "pontos": [
+    "window: raiz de tudo (tem document, location, history).",
+    "document: representa a página — getElementById, createElement, appendChild."
+   ]
+  },
+  {
+   "titulo": "REST — restrições mais cobradas",
+   "mnemonico": "Mnemônico: \"Sem estado, em camadas, cliente-servidor.\"",
+   "pontos": [
+    "Stateless: cada requisição é independente, sem guardar sessão no servidor.",
+    "Cliente-servidor: papéis bem separados.",
+    "Cacheável: respostas podem ser armazenadas para reuso."
+   ]
+  }
+ ],
+ "resumos": [
+  {
+   "tema": "Banco de dados relacional e modelagem",
+   "html": "<p><b>Banco de dados (BD)</b> é o conjunto de dados persistentes e inter-relacionados; o <b>SGBD</b> é o software que fica entre os usuários e os arquivos físicos, permitindo <b>definir, construir e manipular</b> o banco, com DDL e DML, controle de concorrência, backup, segurança e integridade; o <b>Sistema de Banco de Dados (SBD)</b> é BD + SGBD + aplicações. Em uma clínica veterinária: os dados de tutores e animais são o BD, o MySQL é o SGBD e o sistema inteiro é o SBD.</p><p>Propriedades essenciais de um BD: ser <b>persistente</b> (os dados sobrevivem ao encerramento dos programas), <b>compartilhado</b> e <b>inter-relacionado</b>. <b>Volatilidade é o oposto de persistência</b>: uma variável de programa vive na memória principal e desaparece quando a execução termina, portanto não é dado persistente.</p><p><b>Vocabulário relacional:</b></p><ul><li><b>relação</b> = tabela;</li><li><b>tupla</b> = linha, uma ocorrência;</li><li><b>atributo</b> = coluna;</li><li><b>domínio</b> = conjunto de valores permitidos na coluna;</li><li><b>esquema</b> = a estrutura da relação, não os dados.</li></ul><p><b>Independência de dados:</b> a <b>lógica</b> permite alterar o esquema conceitual — acrescentar um atributo, dividir uma tabela — sem reescrever os programas de aplicação; a <b>física</b> permite trocar hardware, dispositivo de armazenamento ou índices sem afetar o esquema conceitual.</p><p><b>Do modelo ER para tabelas:</b></p><ul><li><b>Atributo composto</b>: divide-se em partes com significado próprio (endereço → rua, número, cidade). Não confundir com <b>multivalorado</b>, que guarda vários valores do mesmo tipo (vários telefones).</li><li><b>1:N</b>: a <b>FK vai sempre no lado N</b>. CLIENTE 1:N PEDIDO coloca <code>cliente_id</code> em PEDIDO.</li><li><b>N:N</b>: não existe diretamente no modelo relacional; decompõe-se em uma <b>tabela associativa</b> cuja PK é formada pelas chaves das duas entidades, cada uma atuando como FK.</li><li><b>1:1</b>: há mais de uma solução — fundir as entidades em uma tabela ou colocar a FK em qualquer um dos lados; tabela associativa não é obrigatória.</li></ul><p>A <b>chave estrangeira</b> implementa a <b>integridade referencial</b>: o SGBD recusa inserir ou atualizar um valor que não exista na chave referenciada e controla as exclusões com <code>CASCADE</code> ou <code>RESTRICT</code>, impedindo registros órfãos.</p>"
+  },
+  {
+   "tema": "SQL: consulta, filtros e junções",
+   "html": "<p><b>Categorias da SQL:</b></p><ul><li><b>DDL</b> (definição): <code>CREATE</code>, <code>ALTER</code>, <code>DROP</code>, <code>TRUNCATE</code>;</li><li><b>DML</b> (manipulação): <code>INSERT</code>, <code>UPDATE</code>, <code>DELETE</code>;</li><li><b>DQL</b> (consulta): <code>SELECT</code>;</li><li><b>DCL</b> (controle de acesso): <code>GRANT</code> e <code>REVOKE</code>;</li><li><b>DTL</b> (transação): <code>COMMIT</code>, <code>ROLLBACK</code>, <code>SAVEPOINT</code>.</li></ul><p><b>DROP × DELETE × TRUNCATE:</b> <code>DROP TABLE</code> elimina a estrutura junto com dados e índices; <code>DELETE</code> remove linhas, aceita <code>WHERE</code> e pode ser desfeito por <code>ROLLBACK</code>; <code>TRUNCATE</code> esvazia a tabela, sem <code>WHERE</code> e em geral sem rollback. <code>DELETE</code> e <code>UPDATE</code> <b>sem WHERE são válidos</b> e atingem todas as linhas: daí o perigo. O <code>ROLLBACK</code> devolve o banco ao estado do último <code>COMMIT</code>.</p><p><b>Filtros:</b> <code>DISTINCT</code> elimina linhas duplicadas; <code>LIMIT</code> limita as linhas retornadas (TOP ou FETCH FIRST em outros SGBDs); <code>BETWEEN 18 AND 30</code> é <b>inclusivo</b>, equivalendo a <code>idade &gt;= 18 AND idade &lt;= 30</code>. No <code>LIKE</code>, <b><code>%</code> representa zero ou mais caracteres</b> e <b><code>_</code> exatamente um</b>: <code>'%a'</code> casa com quem <b>termina</b> em \"a\" e <code>'a%'</code> com quem começa.</p><p><b>JOINs:</b></p><ul><li><b>INNER JOIN</b>: só as linhas com correspondência nas duas tabelas;</li><li><b>LEFT JOIN</b>: tudo da esquerda, com as colunas da direita em <b>NULL</b> quando não há par — lista todos os clientes, inclusive os que nunca fizeram pedido;</li><li><b>RIGHT JOIN</b>: o simétrico;</li><li><b>CROSS JOIN</b>: produto cartesiano — 3 × 4 = 12 linhas.</li></ul><p><code>FROM a, b WHERE a.id = b.id</code> é um <b>INNER JOIN implícito</b>: funciona, mas a forma explícita com <code>JOIN ... ON</code> evita cartesianos acidentais.</p><p><b>Conjuntos:</b> <code>UNION</code> empilha resultados e <b>remove duplicatas</b>; <code>UNION ALL</code> mantém todas e por isso é mais eficiente; <code>INTERSECT</code> devolve só o que aparece nas duas. Exigem <b>mesmo número de colunas, na mesma ordem e com tipos compatíveis</b>. Somar <code>DISTINCT</code> ao <code>UNION</code> é redundante.</p>"
+  },
+  {
+   "tema": "SQL: agregação, subconsultas e triggers",
+   "html": "<p><b>Funções de agregação</b> resumem linhas: <code>COUNT</code>, <code>SUM</code>, <code>AVG</code>, <code>MIN</code> e <code>MAX</code>. <code>MAX(salario)</code> devolve o maior salário existente; <code>AVG</code> e <code>SUM</code> produzem valores que podem não corresponder a nenhuma linha real.</p><p><b><code>COUNT(*)</code> conta todas as linhas</b>; <b><code>COUNT(coluna)</code> ignora os NULL</b> daquela coluna. As duas formas só coincidem quando a coluna não admite nulos.</p><p><b>WHERE × HAVING:</b> o <code>WHERE</code> é avaliado <b>linha a linha, antes do agrupamento</b>, e por isso <b>não enxerga funções de agregação</b>; o <code>HAVING</code> atua <b>depois do GROUP BY</b>, filtrando grupos — é ele que lista, por exemplo, departamentos com mais de 5 funcionários.</p><pre>-- errado: agregação no WHERE\nSELECT departamento, AVG(salario) FROM funcionario\nWHERE AVG(salario) &gt; 5000 GROUP BY departamento;\n\n-- correto\nSELECT departamento, AVG(salario) FROM funcionario\nGROUP BY departamento HAVING AVG(salario) &gt; 5000;</pre><p>Toda coluna do <code>SELECT</code> que <b>não</b> esteja dentro de uma agregação deve aparecer no <code>GROUP BY</code>, porque cada linha do resultado representa um grupo inteiro.</p><p><b>Subconsultas:</b> uma subquery com agregação devolve um <b>valor escalar</b>, válido à direita de um operador de comparação.</p><pre>SELECT nome FROM funcionario\nWHERE salario &gt; (SELECT AVG(salario) FROM funcionario);</pre><p>Se a subconsulta retorna <b>mais de uma linha</b>, o <code>=</code> gera erro; usa-se <code>IN</code> (pertinência a um conjunto de IDs), <code>ANY</code>, <code>ALL</code> ou <code>EXISTS</code>.</p><p><b>Triggers e banco de dados ativo:</b> o gatilho é código armazenado que o <b>próprio SGBD dispara automaticamente</b> quando ocorre o evento configurado e a condição é satisfeita — é o modelo <b>evento-condição-ação</b> que caracteriza um <b>banco de dados ativo</b>. Pode ser <b>BEFORE</b> (validar ou ajustar valores) ou <b>AFTER</b> (auditoria, tabelas derivadas), associado a <code>INSERT</code>, <code>UPDATE</code> ou <code>DELETE</code>. O suporte a gatilhos foi formalizado no padrão <b>SQL:1999</b>. Um <code>AFTER INSERT</code> em vendas que decrementa o estoque mantém a consistência mesmo se a venda vier de outro sistema ou direto no banco — vantagem sobre validar só na aplicação.</p>"
+  },
+  {
+   "tema": "Java e banco de dados: JDBC, JPA e Hibernate",
+   "html": "<p><b>JDBC</b> é a API padrão do Java para bancos SQL. O <b>driver Tipo 4</b> (<b>thin driver</b>) é escrito <b>inteiramente em Java</b> e fala direto o protocolo do SGBD; basta o JAR no classpath. Os tipos 1 (ponte ODBC) e 2 (nativo) quebram a portabilidade.</p><p><b>Executando:</b> <code>executeQuery()</code> para consultas, retornando um <code>ResultSet</code>; <code>executeUpdate()</code> para <code>INSERT</code>, <code>UPDATE</code>, <code>DELETE</code> e DDL, retornando um <code>int</code> com as linhas afetadas. O <code>ResultSet</code> não é só para frente: conforme o tipo, aceita <code>next()</code>, <code>previous()</code>, <code>first()</code> e <code>last()</code>.</p><p><b>Statement × PreparedStatement:</b> o <code>Statement</code> concatena texto do usuário no SQL, e uma entrada como <code>' OR '1'='1</code> altera a lógica da consulta: é a <b>SQL Injection</b>. O <code>PreparedStatement</code> envia o comando parametrizado com <code>?</code>, e os valores dos setters viajam como <b>dado, nunca como código SQL</b>; ainda reaproveita o plano de execução.</p><pre>PreparedStatement ps = con.prepareStatement(\n  \"INSERT INTO cliente (nome) VALUES (?)\");\nps.setString(1, nome);\nint linhas = ps.executeUpdate();</pre><p><b>JPA × Hibernate:</b> a <b>JPA é a especificação</b> (interfaces e anotações padronizadas); o <b>Hibernate é uma implementação</b> dela, como OpenJPA e <b>EclipseLink — este é a implementação de referência oficial</b>, enquanto o Hibernate é o mais popular.</p><p><b>Anotações:</b> <code>@Entity</code> declara a classe gerenciada, <code>@Id</code> marca a <b>chave primária</b> (obrigatória em toda entidade), <code>@Table</code> nomeia a tabela e <code>@Column</code> a coluna.</p><p><b>EntityManager:</b> <code>persist()</code> torna gerenciada uma instância nova e agenda o INSERT, efetivado no flush/commit; <code>find()</code> recupera pela chave primária e <code>remove()</code> marca para exclusão.</p><p>A <b>HQL</b> consulta o <b>modelo de objetos</b> — classes e atributos Java, não tabelas e colunas. O Hibernate a traduz para o dialeto SQL do banco, e ela suporta <code>WHERE</code>, <code>JOIN</code> e agregação, ficando independente do SGBD.</p><p>Hibernate é <b>framework</b>, não biblioteca: há <b>inversão de controle</b> — quem comanda o ciclo de persistência (Session, Transaction) é ele; a aplicação se encaixa nesse fluxo.</p>"
+  },
+  {
+   "tema": "Web: HTTP, servlets e Tomcat",
+   "html": "<p>O <b>HTTP</b> é protocolo de aplicação sobre <b>TCP</b>, por padrão na <b>porta 80</b>; a <b>443</b> é do <b>HTTPS</b>, o mesmo HTTP sobre TLS. Ele é <b>stateless</b>. Os <b>cookies</b> simulam estado: o servidor envia <code>Set-Cookie</code> com um id de sessão e o navegador o devolve no cabeçalho <code>Cookie</code> a cada requisição, associando-as ao mesmo carrinho.</p><p>No <b>HTTP/1.1</b> a conexão passou a ser <b>persistente por padrão (keep-alive)</b>: várias requisições trafegam pela mesma conexão TCP, eliminando o handshake por objeto do HTTP/1.0.</p><p><b>Códigos de status:</b> 1xx informativo; <b>2xx sucesso</b> (200 OK); 3xx redirecionamento; <b>4xx erro do cliente</b> (404 Not Found); <b>5xx erro do servidor</b>.</p><p><b>CRUD ↔ SQL ↔ HTTP:</b></p><ul><li>Create = <code>INSERT</code> = POST;</li><li>Read = <code>SELECT</code> = GET;</li><li>Update = <code>UPDATE</code> = PUT;</li><li>Delete = <code>DELETE</code> = DELETE.</li></ul><p>O <b>GET</b> busca recursos e expõe os dados na URL; o <b>POST</b> leva os dados no corpo, sem limite prático, e é <b>não idempotente</b>, pois altera o estado do servidor — é o método para gravar um cadastro.</p><p><b>Servlets</b> substituíram o <b>CGI</b>, que criava <b>um processo do SO por requisição</b>; servlets usam <b>threads</b> e são mais eficientes.</p><p><b>Ciclo de vida do Servlet:</b></p><ul><li><code>init()</code> — <b>uma única vez</b>, na criação da instância; carrega recursos caros;</li><li><code>service()</code> — a cada requisição, delegando a <code>doGet()</code> ou <code>doPost()</code>;</li><li><code>destroy()</code> — uma única vez, ao descarregar o servlet.</li></ul><p>O mapeamento para URLs usa <code>@WebServlet</code> ou o <code>web.xml</code>; <code>@Controller</code> e <code>@RequestMapping</code> são do Spring MVC, construído sobre servlets. Os dados do navegador chegam no objeto de requisição e são lidos com <code>request.getParameter(\"email\")</code>, que devolve <code>String</code> ou <code>null</code>.</p><p>No <code>server.xml</code> do <b>Tomcat</b> a hierarquia é <code>&lt;Server&gt;</code> (a instância inteira) → <code>&lt;Service&gt;</code> (agrupa conectores) → <code>&lt;Engine&gt;</code> (processa requisições) → <code>&lt;Host&gt;</code> → <b><code>&lt;Context&gt;</code>, que representa uma aplicação web individual</b>, ligando um caminho de URL ao diretório ou WAR.</p>"
+  },
+  {
+   "tema": "Front-end: formulários, DOM, AJAX e APIs",
+   "html": "<p><b>Formulários:</b> com <b>GET</b> os campos viram query string na URL, visível e limitada; com <b>POST</b> vão no corpo, sem limite prático — adequado a senhas, textos longos e uploads. Para enviar arquivos, o <code>&lt;form&gt;</code> exige <code>enctype=\"multipart/form-data\"</code>, que carrega os bytes; o <code>application/x-www-form-urlencoded</code> só codifica pares nome=valor.</p><ul><li><b>radio</b>: o <b>mesmo <code>name</code></b> forma o grupo mutuamente exclusivo (o <code>id</code> é único no documento);</li><li><b>checkbox</b>: independentes, várias podem ficar marcadas, cada uma enviando seu valor;</li><li><b>text</b> é livre, <b>email</b> é validado pelo navegador, <b>password</b> oculta os caracteres mas <b>não criptografa</b> o envio.</li></ul><p>No servidor o valor é lido pela chave <code>name</code>: <code>request.getParameter(nome)</code>; <code>document.getElementById</code> só existe no navegador.</p><p><b>DOM:</b> <b><code>window</code> é a raiz da árvore</b> e contém <code>document</code>, <code>location</code> e <code>history</code>; o <code>document</code> é raiz dos nós HTML. O DOM é <b>independente de linguagem</b>. <code>getElementById()</code> devolve <b>um</b> elemento ou <code>null</code>; <code>getElementsByTagName()</code>, uma coleção. Um nó de <code>createElement()</code> só entra na página com <code>appendChild()</code>, que o anexa como último filho.</p><p><b>AJAX / XHR:</b> troca dados com o servidor <b>sem recarregar a página</b> — por exemplo, validar um e-mail enquanto se digita. O <code>open()</code> só configura método, URL e assincronismo: <b>nada trafega</b>; quem dispara é o <code>send()</code>. O evento <b><code>load</code></b> marca a transferência concluída; <code>progress</code> ocorre durante o tráfego e <code>abort</code> no cancelamento. O nome é histórico: ela trabalha com texto, JSON e binário. Requisições <b>síncronas fora de Web Workers congelam a interface</b>.</p><p><b>REST × SOAP:</b> o SOAP é <b>protocolo rígido</b>, com envelope XML e WSDL; o REST é um <b>estilo arquitetural</b> que reaproveita o HTTP e aceita JSON, XML ou texto. Entre as <b>seis restrições</b> estão <b>stateless</b> (cada requisição carrega tudo o que precisa, permitindo escalar horizontalmente), cliente-servidor e cache. <b>Webhook</b> é o inverso do polling: o servidor envia POST ao cliente quando há dado novo.</p>"
+  },
+  {
+   "tema": "Arquivos e NoSQL (MongoDB vs MySQL)",
+   "html": "<p><b>Arquivos:</b> a <b>extensão</b> é uma convenção no nome que identifica o <b>formato</b> e permite ao sistema operacional associar o arquivo ao programa capaz de abri-lo e interpretá-lo. Ela <b>não</b> guarda tamanho nem data — esses são metadados mantidos pelo sistema de arquivos — e também não criptografa nada. <b>Renomear a extensão não converte o arquivo</b>: o conteúdo continua codificado no formato original, e programas que identificam o tipo pelos bytes internos acusam erro. Mudar de formato exige uma conversão que reescreva os dados.</p><p>Salvar um documento como <b>PDF</b> dificulta, mas <b>não impede permanentemente</b> a edição: softwares modernos editam PDFs, e a proteção real depende de senha e permissões.</p><p><b>Backup:</b> em <b>HD externo ou pen drive</b> os dados dependem do dispositivo físico, sujeito a perda, roubo e desgaste; na <b>nuvem</b> ficam replicados na infraestrutura do provedor, fora do dispositivo local, com acesso remoto de qualquer máquina conectada e autenticada. Manter cópias em <b>mais de um local</b> mitiga falha, dano físico e ataques como ransomware: se uma cópia se corromper, outra permanece íntegra.</p><p><b>MongoDB × MySQL:</b> o MongoDB é um banco <b>NoSQL orientado a documentos</b>, que armazena <b>JSON/BSON</b>. As equivalências com o modelo relacional são:</p><ul><li><b>collection</b> ↔ tabela;</li><li><b>document</b> ↔ linha;</li><li><b>field</b> ↔ coluna.</li></ul><p>A diferença central está no esquema: o MongoDB é <b>schema-less</b>, ou seja, documentos da mesma collection podem ter campos diferentes, dispensando <code>ALTER TABLE</code> e migrações a cada mudança de modelo. Por isso um fórum com estruturas altamente customizáveis por usuário se beneficia dele — no relacional, isso exigiria tabelas extras ou excesso de colunas nulas.</p><p>O MongoDB <b>não realiza JOINs tradicionais</b> como o SQL: as relações são resolvidas com <b>documentos embutidos</b> ou <b>referências</b> entre coleções. Nos testes do estudo comparativo, a ausência de esquema rígido e de junções resultou em <b>tempos de execução menores</b> que os do MySQL.</p><p>Bancos NoSQL priorizam <b>flexibilidade de esquema e escalabilidade</b>, inclusive horizontal por <b>sharding</b>. Normalização e integridade referencial são justamente características do modelo relacional, que o MongoDB não adota.</p>"
+  }
+ ]
+}

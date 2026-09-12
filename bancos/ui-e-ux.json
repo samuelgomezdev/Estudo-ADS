@@ -1,0 +1,681 @@
+{
+ "id": "ui-e-ux",
+ "nome": "UI e UX",
+ "periodo": 1,
+ "cor": "#0ea5e9",
+ "sigla": "UX",
+ "resumos": [
+  {
+   "tema": "IHC, Interface, Usabilidade e Experiência",
+   "html": "<p><b>IHC (Interação Humano-Computador)</b> é a área que estuda o projeto, a avaliação e a implementação de sistemas computacionais interativos para uso humano. É <b>multidisciplinar</b>: computação, design, psicologia cognitiva, ergonomia, antropologia e linguística.</p><p><b>Três conceitos que costumam ser confundidos:</b></p><ul><li><b>Interface</b> — a parte do sistema com a qual o usuário tem contato: telas, botões, comandos. É o meio.</li><li><b>Usabilidade</b> — a <b>qualidade de uso</b> dessa interface: quão fácil é aprender, usar e obter o resultado desejado. É objetiva e mensurável.</li><li><b>Experiência do usuário (UX)</b> — tudo o que a pessoa sente e percebe antes, durante e depois do uso: emoção, confiança, satisfação, valor percebido. É mais ampla e inclui a usabilidade.</li></ul><p><b>UI x UX:</b> <b>UI</b> (User Interface) é o desenho da interface — layout, cor, tipografia, componentes, estados. <b>UX</b> é a experiência inteira — pesquisa, arquitetura de informação, fluxos, conteúdo, testes. Uma interface bonita com fluxo confuso é boa UI e má UX.</p><p><b>Os 5 atributos de usabilidade de Nielsen:</b> <b>facilidade de aprendizado</b>, <b>eficiência</b> de uso, <b>facilidade de memorização</b> (voltar depois e lembrar), <b>baixa taxa de erros</b> (e boa recuperação) e <b>satisfação</b> subjetiva.</p><p><b>Tipos de interface:</b> linha de comando (CLI), gráfica (GUI — janelas, ícones, menus, apontador), por toque, por voz, gestual, realidade virtual e aumentada, e interfaces cérebro-computador.</p><p><b>Acessibilidade</b> é garantir que pessoas com diferentes capacidades consigam usar o sistema. O <b>W3C/WAI</b> mantém as diretrizes <b>WCAG</b>, apoiadas em quatro princípios — <b>POUR</b>: <b>P</b>erceptível, <b>O</b>perável, <b>C</b>ompreensível e <b>R</b>obusto. Na prática: texto alternativo em imagens, contraste suficiente, navegação por teclado, legendas em vídeo, sem depender só de cor para transmitir informação. Acessibilidade beneficia todo mundo — o efeito meio-fio.</p>"
+  },
+  {
+   "tema": "Heurísticas e Avaliação em IHC",
+   "html": "<p><b>As 10 heurísticas de Nielsen</b> — o instrumento mais cobrado da disciplina:</p><ol><li><b>Visibilidade do status do sistema</b> — o sistema informa o que está acontecendo, em tempo razoável</li><li><b>Correspondência entre o sistema e o mundo real</b> — usa a linguagem e os conceitos do usuário, não os do sistema</li><li><b>Controle e liberdade do usuário</b> — saída de emergência clara: desfazer e refazer</li><li><b>Consistência e padrões</b> — a mesma coisa se chama e se comporta do mesmo jeito em todo lugar</li><li><b>Prevenção de erros</b> — melhor evitar o erro do que avisar depois</li><li><b>Reconhecer em vez de lembrar</b> — deixar as opções visíveis, sem exigir memorização</li><li><b>Flexibilidade e eficiência de uso</b> — atalhos para o experiente, sem atrapalhar o novato</li><li><b>Design estético e minimalista</b> — sem informação irrelevante competindo com a relevante</li><li><b>Ajudar a reconhecer, diagnosticar e recuperar-se de erros</b> — mensagem em linguagem clara, indicando a solução</li><li><b>Ajuda e documentação</b> — disponível, buscável e focada na tarefa</li></ol><p><b>Métodos de avaliação — a distinção central:</b></p><ul><li><b>Avaliação por inspeção</b> — feita por <b>especialistas, sem usuários</b>. Mais rápida e barata. Ex.: avaliação heurística, percurso cognitivo (o avaliador simula o raciocínio do usuário passo a passo), inspeção semiótica.</li><li><b>Avaliação por observação</b> — feita <b>com usuários reais</b>. Mais cara, revela problemas que o especialista não prevê. Ex.: teste de usabilidade, observação de campo, <b>think aloud</b> (o usuário verbaliza o que pensa enquanto usa).</li><li><b>Avaliação por questionamento</b> — entrevistas, questionários, grupos focais. Capta opinião e percepção, não comportamento.</li></ul><p><b>Regra prática de Nielsen:</b> <b>5 usuários</b> em um teste de usabilidade já revelam cerca de <b>85%</b> dos problemas — vale mais fazer vários testes pequenos e iterativos do que um único teste grande.</p><p><b>Métricas:</b> taxa de sucesso na tarefa, tempo de execução, número de erros, satisfação (escala SUS).</p>"
+  },
+  {
+   "tema": "Processo de Design de IHC e Design Thinking",
+   "html": "<p><b>Design centrado no usuário (DCU):</b> o usuário participa do processo do início ao fim, e o ciclo é <b>iterativo</b>. As quatro etapas da ISO 9241-210: <b>compreender o contexto de uso</b> → <b>especificar requisitos</b> → <b>produzir soluções de design</b> → <b>avaliar</b> — e voltar ao início quantas vezes for preciso.</p><p><b>Etapas do processo de design de um site ou produto:</b> pesquisa e briefing (com <b>personas</b>) → arquitetura de informação (sitemap, fluxos) → <b>wireframe</b> (esboço de baixa fidelidade) → identidade visual (cores, tipografia) → <b>mockup/protótipo</b> → implementação → avaliação.</p><p><b>Ferramentas de pesquisa:</b> <b>persona</b> (personagem fictício representando um grupo real de usuários, construído a partir de pesquisa — não de suposição), <b>mapa de empatia</b> (o que a pessoa pensa e sente, vê, ouve, fala e faz, mais dores e ganhos), <b>jornada do usuário</b> (etapas, pontos de contato, emoções e pontos de atrito).</p><p><b>Design Thinking</b> — abordagem de solução criativa de problemas <b>centrada no ser humano</b>, iterativa e baseada em empatia e cocriação. Não é linear nem rígida, não se restringe ao design gráfico e não dispensa testes. Fundamenta-se na compreensão profunda das necessidades humanas e na formulação de questionamentos.</p><p><b>As 5 fases (modelo d.school):</b> <b>Empatizar</b> (entender profundamente o usuário) → <b>Definir</b> (sintetizar em um problema claro) → <b>Idear</b> (gerar o máximo de ideias, sem julgar) → <b>Prototipar</b> (materializar rápido e barato) → <b>Testar</b> (validar com usuários reais). No Brasil também se usa o modelo em três etapas: imersão, ideação e prototipação.</p><p><b>Divergir e convergir</b> (duplo diamante): primeiro abre-se o leque de possibilidades, depois se afunila para uma escolha — duas vezes, uma no problema e outra na solução.</p><p><b>Técnicas de ideação:</b> brainstorming (verbal, em grupo, sem julgamento) e <b>brainwriting</b> (cada um escreve suas ideias antes de compartilhar, o que reduz a influência dos mais falantes e a timidez).</p>"
+  },
+  {
+   "tema": "Prototipação",
+   "html": "<p><b>Protótipo</b> é uma representação preliminar do produto usada para explorar ideias, comunicar conceitos e validar decisões <b>antes</b> de investir na construção — o que é incomparavelmente mais barato do que descobrir o erro depois de pronto.</p><p><b>Fidelidade:</b></p><ul><li><b>Baixa</b> — papel, post-its, rascunhos. Sem semelhança visual com o produto; serve para validar <b>fluxos e estrutura</b>. Barato, rápido e, justamente por ser tosco, convida à crítica sincera.</li><li><b>Média</b> — computadorizado, com visual parcial; wireframes clicáveis.</li><li><b>Alta</b> — usa os mesmos materiais do produto final, com banco de homologação; visualmente idêntico ao produto real.</li></ul><p><b>Abrangência:</b></p><ul><li><b>Horizontal</b> — grande <b>variedade de funções</b> com poucos detalhes em cada. Dá a visão ampla do sistema.</li><li><b>Vertical</b> — <b>poucas funções</b>, cada uma detalhada ao máximo. Aprofunda um módulo crítico.</li></ul><p><b>Destino:</b></p><ul><li><b>Descartável (throwaway)</b> — criado para explorar ideias e descartado depois do aprendizado; não vira o sistema final.</li><li><b>Evolutivo</b> — refinado iterativamente até se tornar o produto de produção.</li></ul><p><b>Design conceitual x físico:</b> o <b>conceitual</b> define <b>o que</b> o sistema faz do ponto de vista do usuário, sem falar de tecnologia. O <b>físico</b> define <b>como</b> será implementado — tecnologias, estrutura de telas, acessibilidade.</p><p><b>Wireframe x mockup x protótipo:</b> o wireframe é o esqueleto (estrutura e hierarquia, sem visual); o mockup é o visual estático completo; o protótipo é navegável e simula a interação.</p><p><b>Ferramentas:</b> Figma, Adobe XD, Sketch, InVision, Marvel, Balsamiq, Axure, Origami Studio (Meta) e Webflow.</p>"
+  },
+  {
+   "tema": "Psicologia, Cognição e Percepção Visual",
+   "html": "<p><b>Modelo mental</b> é a representação que o usuário tem na cabeça de como o sistema funciona. Quanto mais o <b>modelo de projeto</b> (como o sistema realmente funciona) se aproximar do modelo mental do usuário, mais intuitivo o produto parece.</p><p><b>Affordance</b> — a propriedade do objeto que sugere como ele deve ser usado (um botão elevado pede clique; uma alça pede que se puxe). <b>Signifier</b> é o sinal que comunica essa affordance. <b>Feedback</b> é a resposta que confirma que a ação foi registrada. Conceitos de <b>Donald Norman</b>, autor de <i>O Design do Dia a Dia</i>.</p><p><b>Carga cognitiva:</b> o esforço mental exigido pela interface. A memória de trabalho humana é limitada (a regra clássica de Miller fala em 7 ± 2 itens), então interfaces devem <b>reconhecer em vez de exigir lembrar</b>.</p><p><b>Lei de Fitts:</b> o tempo para atingir um alvo depende da <b>distância</b> e do <b>tamanho</b> dele — alvos importantes devem ser grandes e próximos. <b>Lei de Hick:</b> o tempo de decisão cresce com o número de opções — menus enormes travam o usuário.</p><p><b>Princípios da Gestalt</b> (como o cérebro agrupa o que vê): <b>proximidade</b> (o que está perto parece do mesmo grupo), <b>similaridade</b> (o que se parece parece relacionado), <b>continuidade</b>, <b>fechamento</b> (o cérebro completa figuras incompletas), <b>figura e fundo</b> e <b>destino comum</b>. Segundo Dondis, na linguagem visual a percepção ocorre <b>primeiro globalmente e depois nas partes</b>.</p><p><b>Psicologia das cores</b> — associações culturais mais comuns no Ocidente: vermelho (urgência, erro, paixão), azul (confiança, calma, tecnologia — a cor mais usada por bancos e redes sociais), verde (sucesso, natureza, permissão), amarelo (atenção, otimismo), preto (sofisticação, luxo), branco (limpeza, espaço). Cuidado: essas associações <b>variam entre culturas</b>, e cor nunca deve ser o único canal de informação — cerca de 8% dos homens têm alguma deficiência na percepção de cores.</p><p><b>Comportamento do consumidor:</b> o processo de decisão passa por reconhecimento da necessidade → busca de informação → avaliação de alternativas → decisão de compra → comportamento pós-compra. A tecnologia mudou esse comportamento ao dar ao consumidor acesso imediato a informação, comparação e avaliações de outros compradores, deslocando o poder do vendedor para o comprador.</p>"
+  }
+ ],
+ "colas": [
+  {
+   "titulo": "UI x UX x Usabilidade",
+   "mnemonico": "Mnemônico: UI é a CARA; usabilidade é o FUNCIONA BEM; UX é o SENTIMENTO INTEIRO.",
+   "pontos": [
+    "Interface: o meio de contato — telas, botões, comandos.",
+    "Usabilidade: a QUALIDADE DE USO da interface. Objetiva e mensurável.",
+    "UX: tudo que a pessoa sente antes, durante e depois. Inclui a usabilidade.",
+    "Interface bonita + fluxo confuso = boa UI, má UX.",
+    "5 atributos de Nielsen: aprendizado, eficiência, memorização, poucos erros, satisfação."
+   ]
+  },
+  {
+   "titulo": "As 10 heurísticas de Nielsen",
+   "mnemonico": "Mnemônico: as 3 primeiras são VISIBILIDADE, MUNDO REAL e CONTROLE — as mais cobradas.",
+   "pontos": [
+    "1 Visibilidade do status | 2 Correspondência com o mundo real | 3 Controle e liberdade",
+    "4 Consistência e padrões | 5 Prevenção de erros | 6 Reconhecer em vez de lembrar",
+    "7 Flexibilidade e eficiência | 8 Design estético e minimalista",
+    "9 Ajudar a reconhecer, diagnosticar e recuperar-se de erros | 10 Ajuda e documentação",
+    "Prevenir erro (5) é melhor que avisar do erro (9)."
+   ]
+  },
+  {
+   "titulo": "Métodos de avaliação",
+   "mnemonico": "Mnemônico: INSPEÇÃO = especialista SEM usuário. OBSERVAÇÃO = COM usuário real.",
+   "pontos": [
+    "Inspeção: avaliação heurística, percurso cognitivo, inspeção semiótica. Barata e rápida.",
+    "Observação: teste de usabilidade, observação de campo, think aloud. Cara, mas revela o imprevisto.",
+    "Questionamento: entrevista, questionário, grupo focal — capta OPINIÃO, não comportamento.",
+    "Regra de Nielsen: 5 usuários já revelam ~85% dos problemas."
+   ]
+  },
+  {
+   "titulo": "Fidelidade e tipo de protótipo",
+   "mnemonico": "Mnemônico: HORIZONTAL é LARGO (muitas funções rasas); VERTICAL é FUNDO (poucas funções detalhadas).",
+   "pontos": [
+    "Baixa fidelidade: papel/post-it, valida FLUXO. Alta: materiais reais + banco de homologação.",
+    "Horizontal: variedade de funções, poucos detalhes. Vertical: poucas funções, máximo detalhe.",
+    "Descartável: explora e joga fora. Evolutivo: vira o produto final.",
+    "Conceitual = O QUE o sistema faz (sem tecnologia). Físico = COMO será implementado.",
+    "Wireframe (esqueleto) → mockup (visual estático) → protótipo (navegável)."
+   ]
+  },
+  {
+   "titulo": "Design Thinking",
+   "mnemonico": "Mnemônico: \"EDIPT\" → Empatizar, Definir, Idear, Prototipar, Testar. Centrado no HUMANO e ITERATIVO.",
+   "pontos": [
+    "É centrado no ser humano, iterativo, com empatia e COCRIAÇÃO.",
+    "NÃO é linear nem rígido; NÃO é só design gráfico; NÃO dispensa testes.",
+    "Duplo diamante: diverge e converge duas vezes — no problema e na solução.",
+    "Brainstorming: verbal e em grupo. Brainwriting: escreve antes de falar (reduz influência dos mais falantes)."
+   ]
+  },
+  {
+   "titulo": "Psicologia da interface",
+   "mnemonico": "Mnemônico: Fitts = TAMANHO e DISTÂNCIA do alvo. Hick = QUANTIDADE de opções.",
+   "pontos": [
+    "Affordance: o objeto sugere como usar. Signifier: o sinal que comunica isso. (Donald Norman)",
+    "Modelo mental: como o usuário ACHA que funciona. Quanto mais perto do real, mais intuitivo.",
+    "Lei de Fitts: alvo importante = grande e perto.",
+    "Lei de Hick: mais opções = decisão mais lenta.",
+    "Gestalt: proximidade, similaridade, continuidade, fechamento, figura/fundo.",
+    "WCAG/POUR: Perceptível, Operável, Compreensível, Robusto."
+   ]
+  }
+ ],
+ "flashcards": [
+  {
+   "tema": "IHC, Interface, Usabilidade e Experiência",
+   "p": "O que é IHC?",
+   "r": "Interação Humano-Computador: a área que estuda o projeto, a avaliação e a implementação de sistemas computacionais interativos para uso humano. É multidisciplinar — computação, design, psicologia, ergonomia, antropologia e linguística."
+  },
+  {
+   "tema": "IHC, Interface, Usabilidade e Experiência",
+   "p": "Qual a diferença entre interface, usabilidade e experiência do usuário?",
+   "r": "Interface é o meio de contato (telas, botões). Usabilidade é a qualidade de uso dessa interface — objetiva e mensurável. UX é tudo o que a pessoa sente antes, durante e depois do uso, e inclui a usabilidade."
+  },
+  {
+   "tema": "IHC, Interface, Usabilidade e Experiência",
+   "p": "Qual a diferença entre UI e UX?",
+   "r": "UI é o desenho da interface — layout, cor, tipografia, componentes. UX é a experiência inteira — pesquisa, arquitetura de informação, fluxos, conteúdo e testes. Uma tela bonita com fluxo confuso é boa UI e má UX."
+  },
+  {
+   "tema": "IHC, Interface, Usabilidade e Experiência",
+   "p": "Quais são os 5 atributos de usabilidade de Nielsen?",
+   "r": "Facilidade de aprendizado, eficiência de uso, facilidade de memorização, baixa taxa de erros (com boa recuperação) e satisfação subjetiva."
+  },
+  {
+   "tema": "IHC, Interface, Usabilidade e Experiência",
+   "p": "Quais são os 4 princípios da WCAG (POUR)?",
+   "r": "Perceptível, Operável, Compreensível e Robusto. São as diretrizes de acessibilidade mantidas pelo W3C/WAI."
+  },
+  {
+   "tema": "IHC, Interface, Usabilidade e Experiência",
+   "p": "Por que a cor não deve ser o único canal de informação?",
+   "r": "Porque cerca de 8% dos homens têm alguma deficiência na percepção de cores. Além disso, as associações de cor variam entre culturas. Sempre combine cor com texto, ícone ou forma."
+  },
+  {
+   "tema": "Heurísticas e Avaliação em IHC",
+   "p": "O que diz a heurística 'visibilidade do status do sistema'?",
+   "r": "O sistema deve sempre manter o usuário informado sobre o que está acontecendo, com feedback apropriado em tempo razoável — barra de progresso, confirmação de salvamento, indicador de carregamento."
+  },
+  {
+   "tema": "Heurísticas e Avaliação em IHC",
+   "p": "O que significa 'correspondência entre o sistema e o mundo real'?",
+   "r": "O sistema deve falar a linguagem do usuário — palavras, frases e conceitos familiares a ele — em vez de termos internos do sistema, seguindo convenções do mundo real."
+  },
+  {
+   "tema": "Heurísticas e Avaliação em IHC",
+   "p": "O que a heurística 'controle e liberdade do usuário' exige?",
+   "r": "Uma saída de emergência claramente marcada para quando o usuário escolhe uma função por engano — desfazer e refazer, cancelar, voltar."
+  },
+  {
+   "tema": "Heurísticas e Avaliação em IHC",
+   "p": "Qual a diferença entre as heurísticas 5 e 9 de Nielsen?",
+   "r": "A 5 é prevenção de erros: projetar para que o erro não aconteça (desabilitar opções inválidas, confirmar ações destrutivas). A 9 é ajudar a reconhecer, diagnosticar e recuperar-se do erro quando ele ocorre. Prevenir é melhor que remediar."
+  },
+  {
+   "tema": "Heurísticas e Avaliação em IHC",
+   "p": "O que significa 'reconhecer em vez de lembrar'?",
+   "r": "Minimizar a carga de memória do usuário deixando objetos, ações e opções visíveis, em vez de exigir que ele memorize informação de uma tela para outra."
+  },
+  {
+   "tema": "Heurísticas e Avaliação em IHC",
+   "p": "Qual a diferença entre avaliação por inspeção e por observação?",
+   "r": "A inspeção é feita por especialistas, SEM usuários — mais rápida e barata (avaliação heurística, percurso cognitivo). A observação é feita COM usuários reais — mais cara, mas revela problemas que o especialista não prevê."
+  },
+  {
+   "tema": "Heurísticas e Avaliação em IHC",
+   "p": "O que é o percurso cognitivo?",
+   "r": "Um método de inspeção em que o avaliador simula passo a passo o raciocínio de um usuário novato executando uma tarefa, perguntando a cada passo se ele saberia o que fazer e se perceberia que progrediu."
+  },
+  {
+   "tema": "Heurísticas e Avaliação em IHC",
+   "p": "O que é o método think aloud?",
+   "r": "Pensar em voz alta: o usuário verbaliza o que está pensando enquanto executa as tarefas, revelando dúvidas, expectativas e modelos mentais que a observação silenciosa não capta."
+  },
+  {
+   "tema": "Heurísticas e Avaliação em IHC",
+   "p": "Quantos usuários Nielsen recomenda em um teste de usabilidade e por quê?",
+   "r": "Cinco — eles já revelam cerca de 85% dos problemas. É mais produtivo fazer vários testes pequenos e iterativos do que um único teste grande."
+  },
+  {
+   "tema": "Processo de Design de IHC e Design Thinking",
+   "p": "Quais são as quatro etapas do design centrado no usuário (ISO 9241-210)?",
+   "r": "Compreender o contexto de uso → especificar os requisitos → produzir soluções de design → avaliar. E voltar ao início — o ciclo é iterativo."
+  },
+  {
+   "tema": "Processo de Design de IHC e Design Thinking",
+   "p": "O que é uma persona?",
+   "r": "Um personagem fictício que representa um grupo real de usuários, construído a partir de pesquisa — nunca de suposição. Dá rosto e contexto aos dados, ajudando o time a decidir para quem está projetando."
+  },
+  {
+   "tema": "Processo de Design de IHC e Design Thinking",
+   "p": "O que é um mapa de empatia?",
+   "r": "Uma ferramenta que organiza o que a pessoa pensa e sente, o que vê, o que ouve, o que fala e faz, além de suas dores e ganhos — para aprofundar a compreensão do usuário além dos dados demográficos."
+  },
+  {
+   "tema": "Processo de Design de IHC e Design Thinking",
+   "p": "O que caracteriza o Design Thinking?",
+   "r": "É uma abordagem de solução criativa de problemas centrada no ser humano, iterativa, baseada em empatia e cocriação. Não é um processo linear e rígido, não se restringe ao design gráfico e não dispensa testes."
+  },
+  {
+   "tema": "Processo de Design de IHC e Design Thinking",
+   "p": "Quais são as 5 fases do Design Thinking (modelo d.school)?",
+   "r": "Empatizar, Definir, Idear, Prototipar e Testar. No Brasil também se usa o modelo de três etapas: imersão, ideação e prototipação."
+  },
+  {
+   "tema": "Processo de Design de IHC e Design Thinking",
+   "p": "O que é o duplo diamante?",
+   "r": "O modelo de divergir e convergir duas vezes: primeiro abre-se a exploração do problema e afunila-se para defini-lo, depois abre-se a geração de soluções e afunila-se para escolher uma."
+  },
+  {
+   "tema": "Processo de Design de IHC e Design Thinking",
+   "p": "Qual a diferença entre brainstorming e brainwriting?",
+   "r": "No brainstorming as ideias são ditas em voz alta, em grupo. No brainwriting cada participante escreve suas ideias individualmente antes de compartilhar — o que reduz a influência dos mais falantes e a inibição dos mais tímidos."
+  },
+  {
+   "tema": "Prototipação",
+   "p": "Para que serve um protótipo?",
+   "r": "Para explorar ideias, comunicar conceitos e validar decisões antes de investir na construção — corrigir no protótipo é incomparavelmente mais barato do que corrigir no produto pronto."
+  },
+  {
+   "tema": "Prototipação",
+   "p": "Qual a diferença entre protótipo horizontal e vertical?",
+   "r": "Horizontal: grande variedade de funções com poucos detalhes em cada — dá a visão ampla do sistema. Vertical: poucas funções, cada uma detalhada ao máximo — aprofunda um módulo crítico."
+  },
+  {
+   "tema": "Prototipação",
+   "p": "Qual a diferença entre protótipo descartável e evolutivo?",
+   "r": "O descartável é criado para explorar ideias e é jogado fora após o aprendizado — não vira o sistema final. O evolutivo é refinado iterativamente até se tornar o produto de produção."
+  },
+  {
+   "tema": "Prototipação",
+   "p": "O que caracteriza um protótipo de alta fidelidade?",
+   "r": "Usa os mesmos materiais do produto final, com banco de dados de homologação, ficando visualmente e funcionalmente idêntico ao produto real. O de baixa fidelidade é papel e post-it, e valida fluxos."
+  },
+  {
+   "tema": "Prototipação",
+   "p": "Qual a vantagem do protótipo de baixa fidelidade?",
+   "r": "É rápido e barato, e justamente por parecer inacabado convida à crítica sincera — as pessoas hesitam menos em sugerir mudanças em um rascunho do que em uma tela que parece pronta."
+  },
+  {
+   "tema": "Prototipação",
+   "p": "Qual a diferença entre design conceitual e design físico?",
+   "r": "O conceitual define O QUE o sistema faz do ponto de vista do usuário, sem falar de tecnologia. O físico define COMO será implementado — tecnologias, estrutura de telas, acessibilidade."
+  },
+  {
+   "tema": "Prototipação",
+   "p": "Qual a diferença entre wireframe, mockup e protótipo?",
+   "r": "Wireframe é o esqueleto: estrutura e hierarquia, sem visual final. Mockup é o visual estático completo. Protótipo é navegável e simula a interação real."
+  },
+  {
+   "tema": "Psicologia, Cognição e Percepção Visual",
+   "p": "O que é modelo mental?",
+   "r": "A representação que o usuário tem na cabeça de como o sistema funciona. Quanto mais o funcionamento real se aproxima desse modelo, mais intuitivo o produto parece."
+  },
+  {
+   "tema": "Psicologia, Cognição e Percepção Visual",
+   "p": "O que é affordance?",
+   "r": "A propriedade de um objeto que sugere como ele deve ser usado — um botão elevado pede clique, uma alça pede que se puxe. Conceito de Donald Norman; o sinal que comunica essa affordance é o signifier."
+  },
+  {
+   "tema": "Psicologia, Cognição e Percepção Visual",
+   "p": "O que diz a Lei de Fitts?",
+   "r": "O tempo para atingir um alvo depende da distância até ele e do seu tamanho. Consequência de projeto: alvos importantes devem ser grandes e próximos do ponto de partida do cursor ou do polegar."
+  },
+  {
+   "tema": "Psicologia, Cognição e Percepção Visual",
+   "p": "O que diz a Lei de Hick?",
+   "r": "O tempo de decisão aumenta com o número e a complexidade das opções. Menus enormes travam o usuário — daí a importância de agrupar, priorizar e revelar progressivamente."
+  },
+  {
+   "tema": "Psicologia, Cognição e Percepção Visual",
+   "p": "Cite os principais princípios da Gestalt aplicados a interfaces.",
+   "r": "Proximidade (o que está perto parece do mesmo grupo), similaridade (o que se parece parece relacionado), continuidade, fechamento (o cérebro completa figuras incompletas), figura e fundo, e destino comum."
+  },
+  {
+   "tema": "Psicologia, Cognição e Percepção Visual",
+   "p": "Segundo Dondis, como ocorre a percepção da linguagem visual?",
+   "r": "Primeiro globalmente e depois nas partes — o olhar capta o todo antes de decompor nos detalhes. Por isso a hierarquia visual de uma tela importa mais que o refinamento de cada elemento isolado."
+  },
+  {
+   "tema": "Psicologia, Cognição e Percepção Visual",
+   "p": "Quais são as etapas do processo de decisão do consumidor?",
+   "r": "Reconhecimento da necessidade → busca de informação → avaliação de alternativas → decisão de compra → comportamento pós-compra."
+  },
+  {
+   "tema": "Psicologia, Cognição e Percepção Visual",
+   "p": "Como a tecnologia mudou o comportamento do consumidor?",
+   "r": "Deu acesso imediato a informação, comparação de preços e avaliações de outros compradores, deslocando o poder da negociação do vendedor para o comprador."
+  }
+ ],
+ "questoes": [
+  {
+   "tema": "IHC, Interface, Usabilidade e Experiência",
+   "q": "O que caracteriza a área de Interação Humano-Computador?",
+   "op": [
+    "É um ramo exclusivo da engenharia de software voltado a testes",
+    "É multidisciplinar, reunindo computação, design, psicologia, ergonomia e linguística",
+    "Trata apenas da programação de interfaces gráficas",
+    "Estuda somente hardware de entrada e saída"
+   ],
+   "r": 1,
+   "exp": "A IHC estuda o projeto, a avaliação e a implementação de sistemas interativos, e para isso reúne várias disciplinas — computação não dá conta sozinha do comportamento humano."
+  },
+  {
+   "tema": "IHC, Interface, Usabilidade e Experiência",
+   "q": "Qual a relação correta entre usabilidade e experiência do usuário?",
+   "op": [
+    "A UX é mais ampla e engloba a usabilidade",
+    "São sinônimos",
+    "A usabilidade é mais ampla e engloba a UX",
+    "Não têm relação entre si"
+   ],
+   "r": 0,
+   "exp": "A usabilidade trata da qualidade de uso da interface. A UX é mais ampla: inclui a usabilidade, mas também emoção, confiança, valor percebido e tudo o que ocorre antes e depois do uso."
+  },
+  {
+   "tema": "IHC, Interface, Usabilidade e Experiência",
+   "q": "Um aplicativo tem visual impecável, mas os usuários não conseguem concluir a compra. O diagnóstico correto é:",
+   "op": [
+    "Boa UI e má UX",
+    "Má UI e boa UX",
+    "Boa UI e boa UX",
+    "O problema é apenas de acessibilidade"
+   ],
+   "r": 0,
+   "exp": "O desenho da interface (UI) está bom, mas a experiência — o fluxo que leva a pessoa ao objetivo — falhou. É o caso clássico de separação entre UI e UX."
+  },
+  {
+   "tema": "IHC, Interface, Usabilidade e Experiência",
+   "q": "Qual destes NÃO é um dos cinco atributos de usabilidade de Nielsen?",
+   "op": [
+    "Rentabilidade do produto",
+    "Facilidade de aprendizado",
+    "Eficiência de uso",
+    "Satisfação subjetiva"
+   ],
+   "r": 0,
+   "exp": "Os cinco são: aprendizado, eficiência, memorização, baixa taxa de erros e satisfação. Rentabilidade é métrica de negócio, não atributo de usabilidade."
+  },
+  {
+   "tema": "IHC, Interface, Usabilidade e Experiência",
+   "q": "Os quatro princípios da WCAG, conhecidos pela sigla POUR, são:",
+   "op": [
+    "Portável, Objetivo, Único e Rápido",
+    "Prático, Otimizado, Usável e Responsivo",
+    "Público, Online, Universal e Restrito",
+    "Perceptível, Operável, Compreensível e Robusto"
+   ],
+   "r": 3,
+   "exp": "POUR: Perceptible, Operable, Understandable, Robust — as diretrizes de acessibilidade do W3C/WAI."
+  },
+  {
+   "tema": "IHC, Interface, Usabilidade e Experiência",
+   "q": "Por que a informação não deve ser transmitida apenas por cor?",
+   "op": [
+    "Porque cores encarecem a produção da interface",
+    "Porque monitores não reproduzem cores com fidelidade",
+    "Porque a WCAG proíbe o uso de cores",
+    "Porque parte significativa da população tem deficiência na percepção de cores e as associações variam entre culturas"
+   ],
+   "r": 3,
+   "exp": "Cerca de 8% dos homens têm alguma deficiência na percepção de cores. A cor deve sempre vir acompanhada de texto, ícone ou forma."
+  },
+  {
+   "tema": "Heurísticas e Avaliação em IHC",
+   "q": "Uma barra de progresso durante o envio de um arquivo atende a qual heurística de Nielsen?",
+   "op": [
+    "Prevenção de erros",
+    "Consistência e padrões",
+    "Design estético e minimalista",
+    "Visibilidade do status do sistema"
+   ],
+   "r": 3,
+   "exp": "A primeira heurística exige que o sistema mantenha o usuário informado sobre o que está acontecendo, com feedback em tempo razoável."
+  },
+  {
+   "tema": "Heurísticas e Avaliação em IHC",
+   "q": "Um sistema exibe a mensagem 'Erro 0x8007005F'. Qual heurística é violada?",
+   "op": [
+    "Flexibilidade e eficiência de uso",
+    "Controle e liberdade do usuário",
+    "Correspondência entre o sistema e o mundo real",
+    "Ajuda e documentação"
+   ],
+   "r": 2,
+   "exp": "A mensagem usa a linguagem interna do sistema, não a do usuário. Também viola a heurística 9, que pede mensagens em linguagem clara indicando a solução."
+  },
+  {
+   "tema": "Heurísticas e Avaliação em IHC",
+   "q": "Oferecer as funções desfazer e refazer atende principalmente a qual heurística?",
+   "op": [
+    "Controle e liberdade do usuário",
+    "Consistência e padrões",
+    "Reconhecer em vez de lembrar",
+    "Ajuda e documentação"
+   ],
+   "r": 0,
+   "exp": "Controle e liberdade do usuário pede uma 'saída de emergência' claramente marcada para quando a pessoa escolhe uma função por engano."
+  },
+  {
+   "tema": "Heurísticas e Avaliação em IHC",
+   "q": "Desabilitar datas inválidas em um calendário, em vez de aceitar e depois acusar erro, corresponde a:",
+   "op": [
+    "Ajudar a reconhecer e recuperar-se de erros",
+    "Design estético e minimalista",
+    "Prevenção de erros",
+    "Flexibilidade de uso"
+   ],
+   "r": 2,
+   "exp": "A heurística 5 diz que evitar que o erro aconteça é melhor do que exibir boas mensagens depois — que seria a heurística 9."
+  },
+  {
+   "tema": "Heurísticas e Avaliação em IHC",
+   "q": "Qual é a característica que define a avaliação por inspeção?",
+   "op": [
+    "É realizada com usuários reais em laboratório",
+    "É realizada por especialistas, sem a participação de usuários",
+    "Depende de questionários aplicados em larga escala",
+    "Só pode ser feita depois do produto lançado"
+   ],
+   "r": 1,
+   "exp": "Na inspeção o especialista examina a interface aplicando critérios (heurísticas, percurso cognitivo). É mais rápida e barata, mas não substitui o teste com usuários."
+  },
+  {
+   "tema": "Heurísticas e Avaliação em IHC",
+   "q": "No método think aloud, o que se pede ao participante?",
+   "op": [
+    "Que responda a um questionário ao final da sessão",
+    "Que avalie a interface em uma escala de 1 a 10",
+    "Que verbalize o que está pensando enquanto executa as tarefas",
+    "Que descreva a interface de memória, sem vê-la"
+   ],
+   "r": 2,
+   "exp": "Pensar em voz alta revela dúvidas, expectativas e modelos mentais durante o uso — informação que a observação silenciosa ou o questionário posterior não capturam."
+  },
+  {
+   "tema": "Heurísticas e Avaliação em IHC",
+   "q": "Segundo Nielsen, quantos usuários bastam para revelar cerca de 85% dos problemas de usabilidade?",
+   "op": [
+    "3",
+    "5",
+    "12",
+    "30"
+   ],
+   "r": 1,
+   "exp": "Cinco usuários. A recomendação é fazer vários testes pequenos e iterativos, em vez de um único teste grande — corrigindo entre uma rodada e outra."
+  },
+  {
+   "tema": "Processo de Design de IHC e Design Thinking",
+   "q": "Qual é a característica essencial do design centrado no usuário?",
+   "op": [
+    "O usuário só é consultado na entrega final",
+    "O designer decide sozinho com base em boas práticas",
+    "O foco está na tecnologia disponível",
+    "O processo é iterativo e o usuário participa do início ao fim"
+   ],
+   "r": 3,
+   "exp": "A ISO 9241-210 estabelece o ciclo: compreender o contexto → especificar requisitos → produzir soluções → avaliar — repetindo quantas vezes for necessário, com o usuário envolvido."
+  },
+  {
+   "tema": "Processo de Design de IHC e Design Thinking",
+   "q": "O que é uma persona no processo de design?",
+   "op": [
+    "Um personagem fictício que representa um grupo real de usuários, construído a partir de pesquisa",
+    "Um usuário real escolhido para testar o sistema",
+    "O perfil de acesso de um usuário no sistema",
+    "Um avatar que o usuário escolhe no aplicativo"
+   ],
+   "r": 0,
+   "exp": "A persona sintetiza dados de pesquisa em um personagem com nome, contexto, objetivos e frustrações. O erro comum é criá-la a partir de suposições em vez de pesquisa."
+  },
+  {
+   "tema": "Processo de Design de IHC e Design Thinking",
+   "q": "Sobre o Design Thinking, assinale a alternativa correta:",
+   "op": [
+    "É uma ferramenta tradicional e linear de resolver problemas",
+    "A investigação da experiência do cliente ocorre apenas por dados estatísticos",
+    "Busca a formulação de questionamentos pela compreensão dos fenômenos, com empatia e cocriação",
+    "Não permite a cocriação de soluções"
+   ],
+   "r": 2,
+   "exp": "O Design Thinking se fundamenta na compreensão profunda das necessidades humanas, na formulação de questionamentos e na cocriação — sendo iterativo, não linear."
+  },
+  {
+   "tema": "Processo de Design de IHC e Design Thinking",
+   "q": "Quais são as cinco fases do Design Thinking no modelo da d.school?",
+   "op": [
+    "Planejar, executar, medir, corrigir e entregar",
+    "Empatizar, definir, idear, prototipar e testar",
+    "Pesquisar, desenhar, programar, testar e lançar",
+    "Imersão, análise, síntese, decisão e implantação"
+   ],
+   "r": 1,
+   "exp": "Empatizar → Definir → Idear → Prototipar → Testar. No Brasil também se usa o modelo de três etapas: imersão, ideação e prototipação."
+  },
+  {
+   "tema": "Processo de Design de IHC e Design Thinking",
+   "q": "Qual a principal vantagem do brainwriting sobre o brainstorming?",
+   "op": [
+    "Gera menos ideias, o que facilita a escolha",
+    "Dispensa a presença de um facilitador",
+    "Reduz a influência dos participantes mais falantes e a inibição dos mais tímidos",
+    "Só pode ser feito remotamente"
+   ],
+   "r": 2,
+   "exp": "Ao escrever antes de compartilhar, cada participante formula sua ideia sem ser ancorado pela primeira sugestão dita em voz alta nem constrangido pela hierarquia do grupo."
+  },
+  {
+   "tema": "Processo de Design de IHC e Design Thinking",
+   "q": "No processo de design de um site, qual entregável representa o esboço de BAIXA fidelidade da estrutura?",
+   "op": [
+    "Mockup",
+    "Wireframe",
+    "Sitemap",
+    "Protótipo navegável"
+   ],
+   "r": 1,
+   "exp": "O wireframe mostra estrutura e hierarquia sem o visual final. Mockup é o visual estático completo; sitemap é o mapa de páginas."
+  },
+  {
+   "tema": "Prototipação",
+   "q": "Qual a diferença entre protótipo horizontal e vertical?",
+   "op": [
+    "Horizontal é em papel; vertical é digital",
+    "Horizontal tem muitas funções com poucos detalhes; vertical tem poucas funções detalhadas ao máximo",
+    "Horizontal é descartável; vertical é evolutivo",
+    "Horizontal serve para web; vertical para mobile"
+   ],
+   "r": 1,
+   "exp": "Horizontal dá amplitude — a visão geral do sistema. Vertical dá profundidade — o aprofundamento de um módulo crítico."
+  },
+  {
+   "tema": "Prototipação",
+   "q": "Qual nível de prototipação utiliza os mesmos materiais do produto final e banco de homologação?",
+   "op": [
+    "Baixa fidelidade",
+    "Média fidelidade",
+    "Fidelidade conceitual",
+    "Alta fidelidade"
+   ],
+   "r": 3,
+   "exp": "O protótipo de alta fidelidade é praticamente indistinguível do produto real. Baixa fidelidade é papel e post-it; média é computadorizado com visual parcial."
+  },
+  {
+   "tema": "Prototipação",
+   "q": "Um protótipo criado para explorar ideias e que NÃO se torna o sistema final é chamado de:",
+   "op": [
+    "Descartável (throwaway)",
+    "Evolutivo",
+    "Vertical",
+    "De alta fidelidade"
+   ],
+   "r": 0,
+   "exp": "O descartável existe para gerar aprendizado e é jogado fora. O evolutivo é refinado iterativamente até virar o produto de produção."
+  },
+  {
+   "tema": "Prototipação",
+   "q": "Por que protótipos de baixa fidelidade costumam gerar críticas mais sinceras?",
+   "op": [
+    "Porque são apresentados de forma anônima",
+    "Porque só podem ser avaliados por especialistas",
+    "Porque não permitem interação",
+    "Porque, por parecerem inacabados, as pessoas hesitam menos em sugerir mudanças"
+   ],
+   "r": 3,
+   "exp": "Diante de uma tela que parece pronta, as pessoas presumem que já houve investimento e suavizam a crítica. O rascunho convida à intervenção."
+  },
+  {
+   "tema": "Prototipação",
+   "q": "Qual a diferença entre design conceitual e design físico?",
+   "op": [
+    "O conceitual define o que o sistema faz para o usuário; o físico define como será implementado",
+    "O conceitual é feito em papel; o físico, no computador",
+    "O conceitual vem depois da implementação",
+    "São nomes diferentes para a mesma etapa"
+   ],
+   "r": 0,
+   "exp": "O design conceitual trata do ponto de vista do usuário sem falar de tecnologia. O físico define tecnologias, estrutura de telas e acessibilidade."
+  },
+  {
+   "tema": "Psicologia, Cognição e Percepção Visual",
+   "q": "O que é affordance em design de interação?",
+   "op": [
+    "A velocidade de resposta da interface",
+    "A propriedade do objeto que sugere como ele deve ser usado",
+    "A quantidade de informação exibida na tela",
+    "O conjunto de cores da identidade visual"
+   ],
+   "r": 1,
+   "exp": "Conceito de Donald Norman: um botão elevado pede clique, uma alça pede que se puxe. O sinal que comunica essa possibilidade é o signifier."
+  },
+  {
+   "tema": "Psicologia, Cognição e Percepção Visual",
+   "q": "O que é o modelo mental do usuário?",
+   "op": [
+    "O diagrama técnico da arquitetura do sistema",
+    "O manual de instruções do produto",
+    "O fluxograma de telas desenhado pelo designer",
+    "A representação que o usuário tem na cabeça de como o sistema funciona"
+   ],
+   "r": 3,
+   "exp": "Quanto mais o funcionamento real do sistema se aproximar do modelo mental do usuário, mais 'intuitivo' o produto parecerá — intuitivo é sinônimo de familiar."
+  },
+  {
+   "tema": "Psicologia, Cognição e Percepção Visual",
+   "q": "Segundo a Lei de Fitts, o tempo para atingir um alvo depende de:",
+   "op": [
+    "Da cor e do contraste do alvo",
+    "Da quantidade de opções disponíveis na tela",
+    "Da distância até o alvo e do tamanho dele",
+    "Do nível de experiência do usuário apenas"
+   ],
+   "r": 2,
+   "exp": "Por isso alvos importantes devem ser grandes e próximos — e por isso o botão principal de um app mobile fica na área alcançável pelo polegar."
+  },
+  {
+   "tema": "Psicologia, Cognição e Percepção Visual",
+   "q": "A Lei de Hick afirma que:",
+   "op": [
+    "O tempo de decisão aumenta conforme o número de opções",
+    "O erro do usuário diminui com o tempo de uso",
+    "A memória de trabalho retém 7 ± 2 itens",
+    "O olhar percorre a tela em formato de F"
+   ],
+   "r": 0,
+   "exp": "Mais opções significam decisão mais lenta — daí a importância de agrupar, priorizar e revelar informação progressivamente."
+  },
+  {
+   "tema": "Psicologia, Cognição e Percepção Visual",
+   "q": "Elementos posicionados próximos uns dos outros são percebidos como um grupo. Esse é o princípio da Gestalt chamado:",
+   "op": [
+    "Similaridade",
+    "Fechamento",
+    "Proximidade",
+    "Figura e fundo"
+   ],
+   "r": 2,
+   "exp": "Proximidade é o princípio mais poderoso na organização de interfaces: agrupar espacialmente comunica relação sem precisar de bordas ou títulos."
+  },
+  {
+   "tema": "Psicologia, Cognição e Percepção Visual",
+   "q": "Segundo Dondis, o princípio básico da linguagem visual é que:",
+   "op": [
+    "A percepção sempre segue uma sequência linear",
+    "As palavras são necessárias para dar sentido à imagem",
+    "A percepção ocorre primeiro globalmente e depois nas partes",
+    "A linguagem visual não tem função comunicativa"
+   ],
+   "r": 2,
+   "exp": "O olhar capta o todo antes de decompor nos detalhes — por isso a hierarquia visual de uma tela pesa mais que o refinamento de cada elemento isolado."
+  },
+  {
+   "tema": "Psicologia, Cognição e Percepção Visual",
+   "q": "Qual é a primeira etapa do processo de decisão do consumidor?",
+   "op": [
+    "Avaliação de alternativas",
+    "Decisão de compra",
+    "Comportamento pós-compra",
+    "Reconhecimento da necessidade"
+   ],
+   "r": 3,
+   "exp": "O processo começa quando a pessoa percebe uma lacuna entre a situação atual e a desejada. Depois vêm busca de informação, avaliação, decisão e pós-compra."
+  },
+  {
+   "tema": "Psicologia, Cognição e Percepção Visual",
+   "q": "Como a tecnologia alterou a relação entre consumidor e vendedor?",
+   "op": [
+    "Aumentou o poder do vendedor, que controla a informação",
+    "Deslocou poder para o consumidor, que compara preços e lê avaliações antes de decidir",
+    "Tornou irrelevante a etapa de busca de informação",
+    "Eliminou o comportamento pós-compra"
+   ],
+   "r": 1,
+   "exp": "Com acesso imediato a informação, comparação e opinião de outros compradores, o consumidor chega ao ponto de venda mais informado do que o vendedor esperava."
+  }
+ ],
+ "discursivas": [
+  {
+   "tema": "Heurísticas e Avaliação em IHC",
+   "q": "Explique a diferença entre avaliação por inspeção e avaliação por observação, indicando quando usar cada uma.",
+   "r": "A avaliação por inspeção é conduzida por especialistas em usabilidade que examinam a interface aplicando critérios estabelecidos, sem a participação de usuários finais. Os métodos mais comuns são a avaliação heurística, em que três a cinco avaliadores percorrem a interface confrontando-a com as dez heurísticas de Nielsen, o percurso cognitivo, em que o avaliador simula passo a passo o raciocínio de um usuário novato executando uma tarefa, e a inspeção semiótica, que analisa a mensagem que o designer emite através da interface. Suas vantagens são o custo baixo, a rapidez e a possibilidade de aplicação em qualquer fase, inclusive sobre protótipos de papel; sua limitação é depender da experiência do avaliador e não capturar comportamentos inesperados. A avaliação por observação envolve usuários reais executando tarefas reais enquanto são observados, por meio de testes de usabilidade em laboratório, observação de campo no ambiente natural de uso ou a técnica think aloud, em que o participante verbaliza o que pensa durante o uso. É mais cara e demorada, mas revela problemas que nenhum especialista anteciparia, porque expõe o descompasso entre o modelo mental do usuário e o modelo de projeto. Na prática as duas se complementam e a ordem importa: usa-se primeiro a inspeção, mais barata, para eliminar os problemas óbvios, e só então se leva a interface a usuários reais — assim o teste, que é caro, não é gasto descobrindo erros que um especialista teria apontado em uma hora. Nielsen ainda observa que cinco usuários já revelam cerca de 85% dos problemas, o que favorece vários ciclos pequenos de teste e correção em vez de um único teste grande."
+  },
+  {
+   "tema": "Prototipação",
+   "q": "Compare os tipos de protótipo quanto à fidelidade, à abrangência e ao destino, explicando quando cada combinação é apropriada.",
+   "r": "Quanto à fidelidade, o protótipo de baixa fidelidade é feito em papel, post-its ou rascunhos, sem semelhança visual com o produto, e serve para validar fluxos e estrutura; é barato, rápido e, por parecer inacabado, convida à crítica sincera. O de média fidelidade é computadorizado, com visual parcial — tipicamente wireframes clicáveis. O de alta fidelidade utiliza os mesmos materiais do produto final e banco de dados de homologação, ficando praticamente idêntico ao produto real, o que permite testes realistas e apresentação a investidores, mas custa caro e engessa mudanças. Quanto à abrangência, o protótipo horizontal apresenta grande variedade de funções com poucos detalhes em cada, oferecendo a visão ampla do sistema, útil para validar a arquitetura de informação e a navegação geral; o vertical concentra-se em poucas funções detalhadas ao máximo, aprofundando um módulo crítico ou tecnicamente arriscado. Quanto ao destino, o descartável é criado apenas para gerar aprendizado e é abandonado depois, enquanto o evolutivo é refinado iterativamente até se tornar o produto de produção. As combinações adequadas seguem o momento do projeto: no início, quando a incerteza é máxima e o custo de mudar deve ser mínimo, usa-se baixa fidelidade, horizontal e descartável, para validar rapidamente se o fluxo faz sentido; à medida que o conceito se estabiliza e o risco se concentra em pontos específicos, migra-se para média ou alta fidelidade, vertical, aprofundando o módulo crítico; e a opção evolutiva só é apropriada quando os requisitos já estão razoavelmente estáveis, sob risco de carregar para a produção decisões improvisadas feitas na fase exploratória."
+  }
+ ]
+}

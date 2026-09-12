@@ -1,0 +1,589 @@
+{
+ "id": "producao-de-jogos",
+ "nome": "Produção de Jogos",
+ "periodo": 0,
+ "cor": "#f97316",
+ "sigla": "PJ",
+ "resumos": [
+  {
+   "tema": "Fundamentos de Game Design",
+   "html": "<p><b>Jogo</b> é um sistema em que os jogadores enfrentam um <b>conflito artificial</b>, definido por <b>regras</b>, que resulta em um <b>desfecho quantificável</b> (Salen e Zimmerman). Os elementos essenciais são: objetivo, regras, desafio, interação e feedback.</p><p><b>Tétrade elementar</b> (Jesse Schell) — todo jogo se compõe de quatro elementos igualmente importantes:</p><ul><li><b>Mecânica</b> — as regras e procedimentos: o que o jogador pode fazer e o que acontece em resposta</li><li><b>História</b> — a narrativa e a sequência de eventos</li><li><b>Estética</b> — como o jogo se vê, se ouve e se sente; é o que o jogador percebe primeiro</li><li><b>Tecnologia</b> — os meios que tornam tudo possível; é o que o jogador percebe por último</li></ul><p><b>MDA</b> (Mecânica, Dinâmica, Estética): a <b>mecânica</b> é o que o designer escreve; a <b>dinâmica</b> é o comportamento que emerge quando o jogador interage com a mecânica; a <b>estética</b> é a resposta emocional resultante. O designer projeta da esquerda para a direita; o jogador experimenta da direita para a esquerda.</p><p><b>Loop de jogo (gameplay loop)</b> — o ciclo de ações que o jogador repete: perceber → decidir → agir → receber feedback. Um loop central satisfatório é o que sustenta o jogo.</p><p><b>Curva de dificuldade e Flow</b> (Csikszentmihalyi): o estado de imersão ocorre quando o <b>desafio</b> está equilibrado com a <b>habilidade</b> do jogador. Desafio muito acima da habilidade gera <b>ansiedade</b>; muito abaixo gera <b>tédio</b>. Como a habilidade cresce com o tempo, a dificuldade precisa crescer junto.</p><p><b>Balanceamento:</b> ajustar valores e regras para que nenhuma estratégia seja dominante e o jogo permaneça justo e interessante.</p><p><b>Gêneros:</b> ação, aventura, RPG, estratégia, simulação, puzzle, plataforma, esportes, corrida, roguelike, sandbox, MOBA, battle royale e jogos sérios (educacionais e de treinamento).</p>"
+  },
+  {
+   "tema": "Programação Orientada a Objetos em Jogos",
+   "html": "<p>A POO é o paradigma dominante no desenvolvimento de jogos porque o próprio domínio é naturalmente povoado de <b>objetos</b>: personagens, inimigos, projéteis, itens, cenários.</p><p><b>Conceitos aplicados:</b></p><ul><li><b>Classe e objeto</b> — a classe <code>Inimigo</code> define atributos (vida, velocidade, dano) e métodos (mover, atacar, morrer); cada inimigo na tela é uma <b>instância</b></li><li><b>Encapsulamento</b> — a vida do personagem é privada e só muda por <code>receberDano()</code>, que aplica as regras (armadura, invulnerabilidade temporária)</li><li><b>Herança</b> — <code>Personagem</code> → <code>Jogador</code> e <code>Inimigo</code> → <code>Chefe</code>, reaproveitando comportamento comum</li><li><b>Polimorfismo</b> — todos os inimigos têm <code>atacar()</code>, mas cada tipo implementa à sua maneira; o motor chama o método sem saber o tipo concreto</li><li><b>Abstração</b> — modelar só o que importa para o jogo: o inimigo tem vida e dano, não tem sistema circulatório</li></ul><p><b>Composição sobre herança:</b> em jogos, hierarquias profundas de herança se tornam rígidas rapidamente (o que fazer com um inimigo que voa e nada?). Por isso os motores modernos adotam o padrão <b>Entidade-Componente-Sistema (ECS)</b>: a entidade é apenas um identificador, os componentes são dados (Posição, Sprite, Vida, Física) e os sistemas são a lógica que opera sobre quem tem determinados componentes.</p><p><b>Padrões de projeto comuns em jogos:</b> <b>Singleton</b> (gerenciador de áudio, de cena), <b>Observer</b> (eventos: o placar escuta o evento \"inimigo morreu\"), <b>State</b> (máquina de estados do personagem: parado, correndo, pulando, atacando), <b>Object Pool</b> (reaproveitar projéteis em vez de criar e destruir o tempo todo, evitando pausas do coletor de lixo) e <b>Factory</b> (criação de inimigos).</p><p><b>Game loop</b> — o laço principal que roda continuamente: <b>processar entrada</b> → <b>atualizar</b> (update: física, IA, colisões, regras) → <b>renderizar</b> (draw). O <b>delta time</b> (tempo decorrido desde o último quadro) é usado nos cálculos de movimento para que o jogo se comporte igual em máquinas de FPS diferentes.</p>"
+  },
+  {
+   "tema": "GameMaker e Ferramentas",
+   "html": "<p><b>GameMaker</b> (YoYo Games) é uma engine 2D voltada à criação rápida de jogos, muito usada no ensino por reduzir a barreira de entrada sem esconder a lógica de programação.</p><p><b>Conceitos centrais do GameMaker:</b></p><ul><li><b>Sprite</b> — a imagem ou animação do objeto</li><li><b>Object</b> — a entidade programável, com seus eventos e comportamentos (equivale à classe)</li><li><b>Instance</b> — a cópia do object colocada na sala (equivale ao objeto/instância)</li><li><b>Room</b> — a cena, fase ou tela do jogo</li><li><b>Events</b> — os gatilhos: <b>Create</b> (ao criar a instância), <b>Step</b> (a cada quadro), <b>Draw</b> (ao desenhar), <b>Collision</b>, <b>Alarm</b> (temporizador), <b>Keyboard/Mouse</b>, <b>Destroy</b></li><li><b>Actions</b> / <b>GML</b> — as ações em blocos visuais (drag and drop) ou o código na linguagem <b>GameMaker Language</b></li></ul><p><b>Variáveis importantes:</b> <code>x</code> e <code>y</code> (posição), <code>hspeed</code> e <code>vspeed</code>, <code>sprite_index</code>, <code>image_index</code>, <code>depth</code> (ordem de desenho — menor valor fica na frente), <code>room_speed</code>.</p><p><b>Outras engines:</b> <b>Unity</b> (C#, 2D e 3D, multiplataforma, maior ecossistema), <b>Unreal Engine</b> (C++ e Blueprints visuais, referência em gráficos 3D), <b>Godot</b> (aberta e gratuita, GDScript), <b>Construct</b> e <b>Scratch</b> (introdutórias, sem código), <b>Greenfoot</b> (Java educacional, usada para ensinar POO com objetos visuais) e <b>RPG Maker</b>.</p><p><b>Greenfoot</b> merece nota: é um ambiente em Java criado para ensinar programação orientada a objetos de forma visual — o aluno enxerga classes, objetos, herança e métodos operando em um mundo bidimensional, o que torna concretos conceitos habitualmente abstratos.</p><p><b>Trello e organização:</b> um quadro Kanban simples — Backlog, A fazer, Fazendo, Teste, Concluído — cobre bem a produção de um jogo pequeno, com cartões por funcionalidade, arte ou correção, checklists de critérios de aceitação e etiquetas por área (arte, código, som, design).</p>"
+  },
+  {
+   "tema": "Processo de Produção de Jogos",
+   "html": "<p><b>Fases da produção:</b></p><ol><li><b>Conceito</b> — a ideia central, o gênero, o público-alvo e o <b>pitch</b> (a descrição do jogo em uma frase)</li><li><b>Pré-produção</b> — <b>GDD</b> (Game Design Document), protótipo jogável, definição de escopo e de tecnologia</li><li><b>Produção</b> — construção de fato: código, arte, som, níveis, com iterações constantes</li><li><b>Testes</b> — QA (busca de defeitos) e <b>playtesting</b> (observar jogadores reais para avaliar diversão, clareza e dificuldade)</li><li><b>Lançamento</b> — publicação, marketing e distribuição (Steam, itch.io, lojas de aplicativos, consoles)</li><li><b>Pós-lançamento</b> — correções, atualizações, conteúdo adicional e comunidade</li></ol><p><b>GDD</b> — o documento vivo do jogo: conceito e pitch, público-alvo, gênero, mecânicas centrais, personagens, narrativa, níveis, arte e som, interface, controles, monetização e cronograma. Deve ser atualizado, não engavetado.</p><p><b>Vertical slice</b> — uma fatia pequena do jogo, mas completa e com qualidade final, que demonstra a experiência real. É o que se apresenta a publishers e investidores.</p><p><b>Papéis na equipe:</b> game designer (regras e experiência), programador, artista (conceito, 2D, 3D, animação), sound designer e compositor, level designer, produtor (prazo, escopo, equipe), QA tester e roteirista.</p><p><b>Playtesting</b> é distinto do teste de QA: o QA procura <b>defeitos</b>; o playtesting avalia se o jogo é <b>divertido, claro e bem dosado</b>. O erro clássico é o designer explicar o jogo ao testador — deve-se observar em silêncio, porque no lançamento não haverá ninguém para explicar.</p><p><b>Escopo</b> é o maior inimigo do jogo independente: a ambição costuma superar em muito o tempo e a equipe disponíveis. <b>Game jams</b> (produzir um jogo em 48 ou 72 horas) ensinam disciplina de escopo e a fechar o ciclo completo de produção.</p><p><b>Monetização:</b> venda direta (preço fixo), free-to-play com microtransações, assinatura, publicidade, DLC e expansões, e financiamento coletivo. <b>Pay-to-win</b> — vender vantagem competitiva — é amplamente criticado por quebrar o equilíbrio e a percepção de justiça do jogo.</p>"
+  }
+ ],
+ "colas": [
+  {
+   "titulo": "Tétrade elementar (Jesse Schell)",
+   "mnemonico": "Mnemônico: MHET → Mecânica, História, Estética, Tecnologia. A ESTÉTICA é a mais visível; a TECNOLOGIA, a menos.",
+   "pontos": [
+    "Mecânica: as regras e procedimentos — o que o jogador pode fazer.",
+    "História: a narrativa e a sequência de eventos.",
+    "Estética: como o jogo se vê, se ouve e se sente. O jogador percebe PRIMEIRO.",
+    "Tecnologia: os meios que viabilizam tudo. O jogador percebe POR ÚLTIMO.",
+    "Os quatro são igualmente importantes e se sustentam mutuamente."
+   ]
+  },
+  {
+   "titulo": "MDA e Flow",
+   "mnemonico": "Mnemônico: o DESIGNER projeta da mecânica para a estética; o JOGADOR experimenta no sentido inverso.",
+   "pontos": [
+    "Mecânica: o que o designer escreve. Dinâmica: o comportamento que emerge. Estética: a emoção resultante.",
+    "Flow (Csikszentmihalyi): desafio EQUILIBRADO com a habilidade.",
+    "Desafio > habilidade = ANSIEDADE. Desafio < habilidade = TÉDIO.",
+    "Como a habilidade cresce, a dificuldade precisa crescer junto.",
+    "Gameplay loop: perceber → decidir → agir → feedback."
+   ]
+  },
+  {
+   "titulo": "POO aplicada a jogos",
+   "mnemonico": "Mnemônico: prefira COMPOSIÇÃO a herança — hierarquia profunda engessa (e o inimigo que voa E nada?).",
+   "pontos": [
+    "ECS: Entidade (só um id) + Componentes (dados) + Sistemas (lógica).",
+    "Object Pool: reaproveita projéteis em vez de criar/destruir — evita pausas do coletor de lixo.",
+    "Observer: o placar 'escuta' o evento 'inimigo morreu'.",
+    "State: máquina de estados do personagem (parado, correndo, pulando, atacando).",
+    "Game loop: processar entrada → UPDATE (física, IA, colisão) → RENDER.",
+    "DELTA TIME nos cálculos de movimento: o jogo fica igual em FPS diferentes."
+   ]
+  },
+  {
+   "titulo": "GameMaker — o vocabulário",
+   "mnemonico": "Mnemônico: OBJECT é a classe; INSTANCE é o objeto; ROOM é a fase.",
+   "pontos": [
+    "Sprite: a imagem/animação. Object: a entidade programável. Instance: a cópia na sala.",
+    "Room: a cena/fase. GML: a linguagem do GameMaker.",
+    "Eventos: Create (ao nascer), Step (a cada quadro), Draw, Collision, Alarm (timer), Destroy.",
+    "depth: ordem de desenho — MENOR valor fica NA FRENTE.",
+    "Greenfoot: ambiente Java para ensinar POO visualmente."
+   ]
+  },
+  {
+   "titulo": "Produção e playtesting",
+   "mnemonico": "Mnemônico: QA procura BUG; playtesting procura DIVERSÃO. E no playtest você fica CALADO.",
+   "pontos": [
+    "Fases: conceito → pré-produção → produção → testes → lançamento → pós-lançamento.",
+    "GDD é documento VIVO, não engavetado.",
+    "Vertical slice: fatia pequena do jogo, mas com qualidade FINAL. É o que se mostra a publisher.",
+    "Erro clássico: explicar o jogo ao testador — no lançamento não haverá ninguém para explicar.",
+    "ESCOPO é o maior inimigo do jogo independente. Game jam ensina a fechar o ciclo.",
+    "Pay-to-win: vender vantagem competitiva — quebra o equilíbrio e a percepção de justiça."
+   ]
+  }
+ ],
+ "flashcards": [
+  {
+   "tema": "Fundamentos de Game Design",
+   "p": "Como Salen e Zimmerman definem jogo?",
+   "r": "Um sistema em que os jogadores enfrentam um conflito artificial, definido por regras, que resulta em um desfecho quantificável."
+  },
+  {
+   "tema": "Fundamentos de Game Design",
+   "p": "Quais são os quatro elementos da tétrade elementar de Jesse Schell?",
+   "r": "Mecânica (regras e procedimentos), História (narrativa), Estética (como se vê, ouve e sente) e Tecnologia (os meios que viabilizam tudo). Os quatro são igualmente importantes."
+  },
+  {
+   "tema": "Fundamentos de Game Design",
+   "p": "Na tétrade elementar, qual elemento o jogador percebe primeiro e qual percebe por último?",
+   "r": "Primeiro a estética, que é imediatamente visível e audível; por último a tecnologia, que idealmente permanece invisível para ele."
+  },
+  {
+   "tema": "Fundamentos de Game Design",
+   "p": "O que significa MDA?",
+   "r": "Mecânica (o que o designer escreve), Dinâmica (o comportamento que emerge da interação do jogador com a mecânica) e Estética (a resposta emocional resultante). O designer projeta nessa ordem; o jogador experimenta na ordem inversa."
+  },
+  {
+   "tema": "Fundamentos de Game Design",
+   "p": "O que é o gameplay loop?",
+   "r": "O ciclo de ações que o jogador repete continuamente: perceber a situação → decidir → agir → receber feedback. Um loop central satisfatório é o que sustenta o jogo inteiro."
+  },
+  {
+   "tema": "Fundamentos de Game Design",
+   "p": "O que é o estado de flow em jogos?",
+   "r": "A imersão que ocorre quando o desafio está equilibrado com a habilidade do jogador. Desafio muito acima da habilidade gera ansiedade; muito abaixo gera tédio."
+  },
+  {
+   "tema": "Fundamentos de Game Design",
+   "p": "Por que a curva de dificuldade precisa ser crescente?",
+   "r": "Porque a habilidade do jogador aumenta ao longo da partida. Se a dificuldade permanecer constante, o desafio cai relativamente à habilidade e o jogo entra na zona do tédio."
+  },
+  {
+   "tema": "Fundamentos de Game Design",
+   "p": "O que é balanceamento em um jogo?",
+   "r": "O ajuste de valores e regras para que nenhuma estratégia seja dominante e o jogo permaneça justo e interessante — nem trivial, nem impossível."
+  },
+  {
+   "tema": "Programação Orientada a Objetos em Jogos",
+   "p": "Por que a POO é natural no desenvolvimento de jogos?",
+   "r": "Porque o domínio já é povoado de objetos com estado e comportamento — personagens, inimigos, projéteis, itens e cenários mapeiam diretamente em classes e instâncias."
+  },
+  {
+   "tema": "Programação Orientada a Objetos em Jogos",
+   "p": "Como o polimorfismo aparece em um jogo?",
+   "r": "Todos os inimigos possuem o método atacar(), mas cada tipo o implementa à sua maneira. O motor chama atacar() sem precisar saber qual é o tipo concreto do inimigo."
+  },
+  {
+   "tema": "Programação Orientada a Objetos em Jogos",
+   "p": "Por que se prefere composição a herança em jogos?",
+   "r": "Porque hierarquias profundas engessam rapidamente: um inimigo que voa e nada não cabe bem em uma árvore de herança. Compondo comportamentos, qualquer combinação se torna possível."
+  },
+  {
+   "tema": "Programação Orientada a Objetos em Jogos",
+   "p": "O que é o padrão ECS (Entidade-Componente-Sistema)?",
+   "r": "A entidade é apenas um identificador; os componentes são dados puros (Posição, Sprite, Vida, Física); e os sistemas contêm a lógica que opera sobre todas as entidades que possuem determinados componentes."
+  },
+  {
+   "tema": "Programação Orientada a Objetos em Jogos",
+   "p": "Para que serve o padrão Object Pool em jogos?",
+   "r": "Para reaproveitar objetos frequentes como projéteis e partículas, em vez de criá-los e destruí-los constantemente — evitando pausas causadas pelo coletor de lixo e quedas de desempenho."
+  },
+  {
+   "tema": "Programação Orientada a Objetos em Jogos",
+   "p": "Como o padrão Observer é usado em jogos?",
+   "r": "Para desacoplar sistemas por meio de eventos: quando um inimigo morre, ele emite um evento e o placar, as conquistas e o sistema de missões reagem sem que o inimigo precise conhecê-los."
+  },
+  {
+   "tema": "Programação Orientada a Objetos em Jogos",
+   "p": "Onde se aplica o padrão State em um jogo?",
+   "r": "Na máquina de estados do personagem — parado, correndo, pulando, atacando, atingido — em que cada estado sabe como se comportar e para quais outros estados pode transitar."
+  },
+  {
+   "tema": "Programação Orientada a Objetos em Jogos",
+   "p": "Quais são as três etapas do game loop?",
+   "r": "Processar a entrada do jogador → atualizar (update: física, IA, colisões, regras) → renderizar (draw). Esse ciclo se repete a cada quadro."
+  },
+  {
+   "tema": "Programação Orientada a Objetos em Jogos",
+   "p": "Para que serve o delta time?",
+   "r": "É o tempo decorrido desde o quadro anterior. Multiplicando a velocidade pelo delta time, o movimento fica idêntico em máquinas com taxas de quadros diferentes."
+  },
+  {
+   "tema": "GameMaker e Ferramentas",
+   "p": "No GameMaker, qual a diferença entre object e instance?",
+   "r": "O object é a entidade programável com seus eventos e comportamentos — equivale à classe. A instance é a cópia dele colocada na room — equivale ao objeto instanciado."
+  },
+  {
+   "tema": "GameMaker e Ferramentas",
+   "p": "O que é uma room no GameMaker?",
+   "r": "A cena, fase ou tela do jogo — o espaço onde as instâncias são posicionadas e onde a ação acontece."
+  },
+  {
+   "tema": "GameMaker e Ferramentas",
+   "p": "Quando o evento Step é executado no GameMaker?",
+   "r": "A cada quadro do jogo, continuamente — é onde vai a lógica que precisa ser verificada o tempo todo, como movimento e checagem de condições. O Create roda uma única vez, ao criar a instância."
+  },
+  {
+   "tema": "GameMaker e Ferramentas",
+   "p": "Para que serve o evento Alarm no GameMaker?",
+   "r": "Funciona como temporizador: define-se um número de passos e, quando a contagem chega a zero, o evento dispara — útil para cooldowns, respawn e sequências temporizadas."
+  },
+  {
+   "tema": "GameMaker e Ferramentas",
+   "p": "O que controla a variável depth no GameMaker?",
+   "r": "A ordem de desenho das instâncias. Quanto MENOR o valor de depth, mais à frente o objeto é desenhado."
+  },
+  {
+   "tema": "GameMaker e Ferramentas",
+   "p": "O que é o GML?",
+   "r": "GameMaker Language, a linguagem de script da engine — alternativa ao sistema visual de arrastar e soltar, que dá controle completo sobre a lógica do jogo."
+  },
+  {
+   "tema": "GameMaker e Ferramentas",
+   "p": "O que é o Greenfoot e para que serve?",
+   "r": "Um ambiente educacional em Java criado para ensinar programação orientada a objetos de forma visual: o aluno vê classes, objetos, herança e métodos operando em um mundo bidimensional."
+  },
+  {
+   "tema": "GameMaker e Ferramentas",
+   "p": "Cite as principais engines de jogos e suas linguagens.",
+   "r": "Unity (C#, 2D e 3D), Unreal Engine (C++ e Blueprints), Godot (GDScript, aberta e gratuita), GameMaker (GML, 2D), Construct e Scratch (sem código, introdutórias)."
+  },
+  {
+   "tema": "Processo de Produção de Jogos",
+   "p": "Quais são as fases da produção de um jogo?",
+   "r": "Conceito, pré-produção, produção, testes, lançamento e pós-lançamento."
+  },
+  {
+   "tema": "Processo de Produção de Jogos",
+   "p": "O que é o GDD?",
+   "r": "Game Design Document: o documento vivo que reúne conceito, público-alvo, gênero, mecânicas, personagens, narrativa, níveis, arte, som, interface, controles, monetização e cronograma. Deve ser atualizado, não engavetado."
+  },
+  {
+   "tema": "Processo de Produção de Jogos",
+   "p": "O que é uma vertical slice?",
+   "r": "Uma fatia pequena do jogo, mas completa e com qualidade final, que demonstra a experiência real pretendida. É o que se apresenta a publishers e investidores."
+  },
+  {
+   "tema": "Processo de Produção de Jogos",
+   "p": "Qual a diferença entre QA e playtesting?",
+   "r": "O QA procura defeitos — bugs, travamentos, falhas de comportamento. O playtesting avalia se o jogo é divertido, claro e bem dosado, observando jogadores reais."
+  },
+  {
+   "tema": "Processo de Produção de Jogos",
+   "p": "Qual é o erro clássico ao conduzir um playtest?",
+   "r": "Explicar o jogo ao testador. No lançamento não haverá ninguém para explicar — se o jogador não entende sozinho, o problema é do jogo, e o designer precisa observar em silêncio para descobri-lo."
+  },
+  {
+   "tema": "Processo de Produção de Jogos",
+   "p": "Por que o escopo é o maior inimigo do jogo independente?",
+   "r": "Porque a ambição do projeto quase sempre supera o tempo, o orçamento e a equipe disponíveis — e jogos ambiciosos demais simplesmente não são terminados."
+  },
+  {
+   "tema": "Processo de Produção de Jogos",
+   "p": "O que se aprende em uma game jam?",
+   "r": "Disciplina de escopo e a experiência de fechar o ciclo completo de produção: em 48 ou 72 horas é preciso conceber, produzir e entregar algo jogável."
+  },
+  {
+   "tema": "Processo de Produção de Jogos",
+   "p": "Por que o modelo pay-to-win é criticado?",
+   "r": "Porque vender vantagem competitiva quebra o equilíbrio do jogo e a percepção de justiça, esvaziando o sentido da habilidade e afastando os jogadores que não pagam."
+  }
+ ],
+ "questoes": [
+  {
+   "tema": "Fundamentos de Game Design",
+   "q": "Segundo Salen e Zimmerman, jogo é:",
+   "op": [
+    "Qualquer atividade recreativa com regras",
+    "Um sistema em que os jogadores enfrentam um conflito artificial, definido por regras, com desfecho quantificável",
+    "Um software interativo com gráficos em tempo real",
+    "Uma narrativa interativa com múltiplos finais"
+   ],
+   "r": 1,
+   "exp": "A definição destaca três elementos: conflito artificial, regras que o delimitam e um resultado mensurável ao final."
+  },
+  {
+   "tema": "Fundamentos de Game Design",
+   "q": "Quais são os quatro elementos da tétrade elementar de Jesse Schell?",
+   "op": [
+    "Mecânica, história, estética e tecnologia",
+    "Gráficos, som, controles e narrativa",
+    "Personagem, cenário, enredo e desafio",
+    "Design, arte, programação e produção"
+   ],
+   "r": 0,
+   "exp": "Os quatro são igualmente importantes e se sustentam mutuamente — nenhum é acessório dos demais."
+  },
+  {
+   "tema": "Fundamentos de Game Design",
+   "q": "Na tétrade elementar, qual elemento é o MENOS visível para o jogador?",
+   "op": [
+    "Estética",
+    "História",
+    "Tecnologia",
+    "Mecânica"
+   ],
+   "r": 2,
+   "exp": "A tecnologia idealmente permanece invisível; a estética é o que o jogador percebe primeiro, já na primeira imagem e no primeiro som."
+  },
+  {
+   "tema": "Fundamentos de Game Design",
+   "q": "No modelo MDA, o que é a dinâmica?",
+   "op": [
+    "As regras escritas pelo designer",
+    "O comportamento que emerge quando o jogador interage com as mecânicas",
+    "A resposta emocional do jogador",
+    "A tecnologia usada na renderização"
+   ],
+   "r": 1,
+   "exp": "As mecânicas são escritas; as dinâmicas emergem do uso; as estéticas são a emoção resultante. O designer projeta nessa ordem, o jogador vivencia na ordem inversa."
+  },
+  {
+   "tema": "Fundamentos de Game Design",
+   "q": "Segundo a teoria do flow, o que acontece quando o desafio está muito acima da habilidade do jogador?",
+   "op": [
+    "Ansiedade",
+    "Tédio",
+    "Imersão",
+    "Curiosidade"
+   ],
+   "r": 0,
+   "exp": "Desafio acima da habilidade gera ansiedade e frustração; abaixo dela gera tédio. O flow ocorre no equilíbrio entre os dois."
+  },
+  {
+   "tema": "Fundamentos de Game Design",
+   "q": "Por que a curva de dificuldade de um jogo precisa ser crescente?",
+   "op": [
+    "Porque a habilidade do jogador cresce, e uma dificuldade constante passaria a gerar tédio",
+    "Para aumentar o tempo total de jogo",
+    "Para justificar a venda de conteúdo adicional",
+    "Porque as engines exigem esse comportamento"
+   ],
+   "r": 0,
+   "exp": "Como a habilidade sobe com a prática, manter a dificuldade fixa faz o desafio cair em termos relativos, tirando o jogador do estado de flow."
+  },
+  {
+   "tema": "Fundamentos de Game Design",
+   "q": "O que é o gameplay loop?",
+   "op": [
+    "O laço de repetição do código que desenha a tela",
+    "O ciclo de ações que o jogador repete: perceber, decidir, agir e receber feedback",
+    "A sequência de fases do jogo",
+    "O tempo de carregamento entre cenas"
+   ],
+   "r": 1,
+   "exp": "É o ciclo de experiência do jogador, não o laço de código — este é o game loop técnico (entrada, update, render)."
+  },
+  {
+   "tema": "Programação Orientada a Objetos em Jogos",
+   "q": "Um jogo tem vários tipos de inimigo, cada um com sua forma de atacar, e o motor chama atacar() sem saber o tipo concreto. Esse é um exemplo de:",
+   "op": [
+    "Polimorfismo",
+    "Encapsulamento",
+    "Herança múltipla",
+    "Composição"
+   ],
+   "r": 0,
+   "exp": "Polimorfismo: o mesmo método assume comportamentos diferentes conforme o tipo real do objeto, permitindo tratar todos os inimigos de forma uniforme."
+  },
+  {
+   "tema": "Programação Orientada a Objetos em Jogos",
+   "q": "Por que os motores modernos preferem composição a herança profunda?",
+   "op": [
+    "Porque a herança é mais lenta em tempo de execução",
+    "Porque as linguagens de jogos não suportam herança",
+    "Porque a composição usa menos memória",
+    "Porque hierarquias profundas engessam o design — um inimigo que voa e nada não cabe bem em uma árvore única"
+   ],
+   "r": 3,
+   "exp": "A combinação de comportamentos independentes é muito mais flexível que uma árvore rígida, e por isso o padrão ECS se tornou dominante."
+  },
+  {
+   "tema": "Programação Orientada a Objetos em Jogos",
+   "q": "No padrão ECS, o que são os componentes?",
+   "op": [
+    "A lógica que processa as entidades",
+    "Os identificadores únicos de cada entidade",
+    "Dados puros associados a uma entidade, como Posição, Sprite e Vida",
+    "As cenas do jogo"
+   ],
+   "r": 2,
+   "exp": "Entidade é apenas um identificador; componentes são dados; sistemas contêm a lógica que opera sobre quem tem determinados componentes."
+  },
+  {
+   "tema": "Programação Orientada a Objetos em Jogos",
+   "q": "Qual problema o padrão Object Pool resolve em jogos?",
+   "op": [
+    "A dificuldade de criar inimigos com comportamentos diferentes",
+    "A sincronização entre cliente e servidor",
+    "As pausas causadas pela criação e destruição constante de objetos como projéteis",
+    "O balanceamento da dificuldade"
+   ],
+   "r": 2,
+   "exp": "Reaproveitando objetos de um conjunto pré-alocado, evita-se o custo de alocação e as pausas do coletor de lixo em momentos de ação intensa."
+  },
+  {
+   "tema": "Programação Orientada a Objetos em Jogos",
+   "q": "O placar é atualizado quando um inimigo morre, sem que a classe Inimigo conheça o placar. Que padrão está em uso?",
+   "op": [
+    "Singleton",
+    "Observer",
+    "Factory",
+    "State"
+   ],
+   "r": 1,
+   "exp": "O Observer desacopla emissor e ouvintes: o inimigo emite um evento e quem se interessar reage, sem dependência direta entre eles."
+  },
+  {
+   "tema": "Programação Orientada a Objetos em Jogos",
+   "q": "Qual é a sequência correta do game loop?",
+   "op": [
+    "Renderizar → processar entrada → atualizar",
+    "Atualizar → renderizar → processar entrada",
+    "Processar entrada → renderizar → atualizar",
+    "Processar entrada → atualizar → renderizar"
+   ],
+   "r": 3,
+   "exp": "Lê-se o que o jogador fez, atualiza-se o estado do mundo (física, IA, colisões, regras) e só então se desenha o resultado."
+  },
+  {
+   "tema": "Programação Orientada a Objetos em Jogos",
+   "q": "Para que serve o delta time nos cálculos de movimento?",
+   "op": [
+    "Para limitar a taxa de quadros do jogo",
+    "Para medir o tempo total de jogo",
+    "Para sincronizar a trilha sonora",
+    "Para que o movimento seja igual em máquinas com taxas de quadros diferentes"
+   ],
+   "r": 3,
+   "exp": "Multiplicando a velocidade pelo tempo decorrido desde o último quadro, a distância percorrida por segundo fica constante independentemente do FPS."
+  },
+  {
+   "tema": "GameMaker e Ferramentas",
+   "q": "No GameMaker, qual a relação entre object e instance?",
+   "op": [
+    "Object é a cópia na sala; instance é o molde",
+    "São sinônimos",
+    "Object é a imagem e instance é o comportamento",
+    "Object é a entidade programável (a classe) e instance é a cópia dela na room (o objeto)"
+   ],
+   "r": 3,
+   "exp": "A analogia com POO é direta: object está para classe assim como instance está para objeto instanciado. A imagem é o sprite."
+  },
+  {
+   "tema": "GameMaker e Ferramentas",
+   "q": "Qual evento do GameMaker é executado a cada quadro do jogo?",
+   "op": [
+    "Create",
+    "Draw",
+    "Step",
+    "Alarm"
+   ],
+   "r": 2,
+   "exp": "O Step roda continuamente e abriga a lógica que precisa ser verificada o tempo todo. O Create roda uma única vez, ao instanciar."
+  },
+  {
+   "tema": "GameMaker e Ferramentas",
+   "q": "Para que serve o evento Alarm no GameMaker?",
+   "op": [
+    "Funcionar como temporizador, disparando quando a contagem chega a zero",
+    "Detectar colisões entre instâncias",
+    "Emitir sons de alerta",
+    "Encerrar a room atual"
+   ],
+   "r": 0,
+   "exp": "É a ferramenta padrão para cooldowns de ataque, respawn de inimigos e sequências temporizadas."
+  },
+  {
+   "tema": "GameMaker e Ferramentas",
+   "q": "No GameMaker, o que acontece com uma instância cujo depth tem valor MENOR?",
+   "op": [
+    "É desenhada atrás das demais",
+    "É desenhada à frente das demais",
+    "Move-se mais rapidamente",
+    "É destruída primeiro"
+   ],
+   "r": 1,
+   "exp": "Quanto menor o depth, mais à frente o objeto é desenhado — detalhe que costuma confundir por parecer contraintuitivo."
+  },
+  {
+   "tema": "GameMaker e Ferramentas",
+   "q": "O que é o Greenfoot?",
+   "op": [
+    "Uma engine comercial para jogos 3D",
+    "Um sistema de controle de versão para jogos",
+    "Uma linguagem de script para o GameMaker",
+    "Um ambiente educacional em Java para ensinar programação orientada a objetos de forma visual"
+   ],
+   "r": 3,
+   "exp": "No Greenfoot o aluno vê classes, objetos, herança e chamadas de método operando concretamente em um mundo bidimensional."
+  },
+  {
+   "tema": "GameMaker e Ferramentas",
+   "q": "Qual linguagem é usada na engine Unity?",
+   "op": [
+    "C++",
+    "C#",
+    "GML",
+    "GDScript"
+   ],
+   "r": 1,
+   "exp": "Unity usa C#. C++ e Blueprints são do Unreal; GML é do GameMaker; GDScript é do Godot."
+  },
+  {
+   "tema": "Processo de Produção de Jogos",
+   "q": "Qual é a ordem correta das fases de produção de um jogo?",
+   "op": [
+    "Produção, conceito, testes, pré-produção e lançamento",
+    "Pré-produção, conceito, lançamento, produção e testes",
+    "Conceito, produção, lançamento, testes e pré-produção",
+    "Conceito, pré-produção, produção, testes, lançamento e pós-lançamento"
+   ],
+   "r": 3,
+   "exp": "A pré-produção é onde nascem o GDD e o protótipo jogável, definindo escopo e tecnologia antes da produção pesada começar."
+  },
+  {
+   "tema": "Processo de Produção de Jogos",
+   "q": "O que é o GDD?",
+   "op": [
+    "Um relatório final de defeitos encontrados",
+    "O contrato com a distribuidora",
+    "O Game Design Document, documento vivo que reúne conceito, mecânicas, narrativa, arte, som e cronograma",
+    "O diagrama de classes do jogo"
+   ],
+   "r": 2,
+   "exp": "É documento vivo: precisa ser atualizado conforme o jogo evolui, e não escrito uma vez e engavetado."
+  },
+  {
+   "tema": "Processo de Produção de Jogos",
+   "q": "O que é uma vertical slice?",
+   "op": [
+    "A divisão do trabalho entre as equipes de arte e programação",
+    "O corte de funcionalidades para caber no prazo",
+    "A primeira fase jogável do jogo, ainda sem arte",
+    "Uma fatia pequena do jogo, completa e com qualidade final, que demonstra a experiência real"
+   ],
+   "r": 3,
+   "exp": "Diferentemente de um protótipo, a vertical slice tem qualidade de produto acabado — é o que convence publishers e investidores."
+  },
+  {
+   "tema": "Processo de Produção de Jogos",
+   "q": "Qual a diferença entre QA e playtesting?",
+   "op": [
+    "QA é feito pelos jogadores; playtesting, pela equipe",
+    "QA busca defeitos; playtesting avalia se o jogo é divertido, claro e bem dosado",
+    "São nomes diferentes para a mesma atividade",
+    "QA ocorre após o lançamento; playtesting, antes"
+   ],
+   "r": 1,
+   "exp": "Um jogo pode passar no QA sem nenhum bug e ainda assim ser chato ou confuso — o playtesting existe para descobrir exatamente isso."
+  },
+  {
+   "tema": "Processo de Produção de Jogos",
+   "q": "Durante um playtest, o designer percebe que o jogador não entende o objetivo. O que ele deve fazer?",
+   "op": [
+    "Observar em silêncio e registrar o problema, pois no lançamento não haverá ninguém para explicar",
+    "Explicar o objetivo para que o teste possa prosseguir",
+    "Encerrar o teste e recomeçar com outro jogador",
+    "Alterar o jogo imediatamente durante a sessão"
+   ],
+   "r": 0,
+   "exp": "Explicar contamina o teste e esconde exatamente o defeito que ele revelou. A confusão do jogador é o dado mais valioso da sessão."
+  },
+  {
+   "tema": "Processo de Produção de Jogos",
+   "q": "Por que o escopo é considerado o maior inimigo do jogo independente?",
+   "op": [
+    "Porque aumenta o custo das ferramentas",
+    "Porque dificulta a escolha da engine",
+    "Porque a ambição costuma superar o tempo, o orçamento e a equipe disponíveis, e o jogo não é terminado",
+    "Porque impede a publicação em várias plataformas"
+   ],
+   "r": 2,
+   "exp": "Jogos independentes morrem muito mais por excesso de ambição do que por falta de talento — daí o valor das game jams, que ensinam a fechar o ciclo em prazo curto."
+  },
+  {
+   "tema": "Processo de Produção de Jogos",
+   "q": "Por que o modelo pay-to-win é amplamente criticado?",
+   "op": [
+    "Porque gera menos receita que a venda direta",
+    "Porque é proibido nas principais lojas de aplicativos",
+    "Porque vender vantagem competitiva quebra o equilíbrio e a percepção de justiça do jogo",
+    "Porque exige conexão constante com a internet"
+   ],
+   "r": 2,
+   "exp": "Quando o dinheiro substitui a habilidade, o resultado da partida deixa de refletir o desempenho — e o jogo perde sentido para quem não paga."
+  }
+ ],
+ "discursivas": [
+  {
+   "tema": "Programação Orientada a Objetos em Jogos",
+   "q": "Explique como os pilares da orientação a objetos se aplicam ao desenvolvimento de um jogo e por que a composição costuma ser preferida à herança profunda.",
+   "r": "A orientação a objetos é o paradigma dominante em jogos porque o domínio já é naturalmente povoado de objetos com estado e comportamento. A abstração aparece na decisão sobre o que modelar: um inimigo precisa ter vida, velocidade e dano, mas não precisa de sistema circulatório — modela-se apenas o que importa para as regras do jogo. O encapsulamento protege a integridade do estado: a vida do personagem é um atributo privado e só muda através de um método como receberDano(), que aplica as regras de armadura, invulnerabilidade temporária e morte, impedindo que qualquer parte do código altere o valor diretamente e quebre a lógica. A herança permite reaproveitar comportamento comum, com Personagem servindo de base para Jogador e Inimigo, e Inimigo servindo de base para Chefe. E o polimorfismo é o que torna o motor genérico: todos os inimigos implementam atacar() à sua maneira, e o laço principal chama esse método sem precisar conhecer o tipo concreto de cada um. Apesar disso, hierarquias profundas de herança se revelam problemáticas em jogos. O motivo é que os comportamentos dos personagens são combinações independentes, e não uma taxonomia: se existe InimigoTerrestre e InimigoVoador, onde entra o inimigo que voa e também nada? Duplicar código ou recorrer a herança múltipla torna o design frágil, e cada nova combinação exige reescrever a árvore. A composição resolve isso ao tratar comportamentos como peças acopláveis, e sua expressão mais consolidada é o padrão Entidade-Componente-Sistema: a entidade é apenas um identificador, os componentes são dados puros como Posição, Sprite, Vida e Física, e os sistemas contêm a lógica que opera sobre todas as entidades que possuem determinados componentes. Assim, criar um inimigo que voa e nada é apenas uma questão de anexar os componentes correspondentes, sem tocar em nenhuma hierarquia."
+  },
+  {
+   "tema": "Processo de Produção de Jogos",
+   "q": "Descreva as fases de produção de um jogo e explique a diferença entre QA e playtesting.",
+   "r": "A produção de um jogo percorre seis fases. No conceito, define-se a ideia central, o gênero, o público-alvo e o pitch — a descrição do jogo em uma frase capaz de comunicar sua essência. Na pré-produção, elabora-se o Game Design Document, constrói-se um protótipo jogável para validar se a mecânica central é divertida e definem-se escopo e tecnologia; é a fase mais barata para descobrir que a ideia não funciona. Na produção acontece a construção efetiva: código, arte, som e níveis, em iterações constantes. Na fase de testes, o jogo é submetido a QA e a playtesting. No lançamento, ocorrem publicação, marketing e distribuição em plataformas como Steam, itch.io, lojas de aplicativos e consoles. E no pós-lançamento vêm correções, atualizações, conteúdo adicional e a gestão da comunidade. A distinção entre QA e playtesting é frequentemente cobrada e costuma ser mal compreendida. O QA, ou garantia de qualidade, procura defeitos: bugs, travamentos, comportamentos incorretos, problemas de desempenho e falhas de compatibilidade. Sua pergunta é se o jogo funciona como especificado. O playtesting tem outro objetivo: avaliar se o jogo é divertido, se as regras são compreensíveis sem explicação e se a dificuldade está bem dosada. Sua pergunta é se o jogo é bom. Um jogo pode passar impecavelmente no QA, sem um único bug, e ainda assim ser tedioso ou incompreensível. O erro mais comum no playtesting é o designer explicar o jogo ao testador quando percebe que ele está perdido — atitude que contamina o teste e esconde justamente o problema que ele acabou de revelar, porque no lançamento não haverá ninguém ao lado do jogador para explicar. A postura correta é observar em silêncio, anotar onde a confusão surge e corrigir o jogo, não o jogador."
+  }
+ ]
+}

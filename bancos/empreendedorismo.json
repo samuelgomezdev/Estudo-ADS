@@ -1,0 +1,634 @@
+{
+ "id": "empreendedorismo",
+ "nome": "Empreendedorismo",
+ "periodo": 1,
+ "cor": "#06b6d4",
+ "sigla": "EMP",
+ "resumos": [
+  {
+   "tema": "Perfil, Comportamento e Mindset Empreendedor",
+   "html": "<p><b>Empreendedorismo</b> é o processo de identificar oportunidades, mobilizar recursos e assumir riscos calculados para criar valor. O empreendedor não é necessariamente o dono do negócio — pode empreender dentro de uma empresa (<b>intraempreendedorismo</b>).</p><p><b>Características do comportamento empreendedor</b> (as 10 do modelo do Sebrae/McClelland, agrupadas):</p><ul><li><b>Realização</b> — busca de oportunidades e iniciativa; persistência; comprometimento; exigência de qualidade e eficiência; <b>correr riscos calculados</b></li><li><b>Planejamento</b> — estabelecimento de metas; busca de informações; planejamento e monitoramento sistemáticos</li><li><b>Poder</b> — persuasão e rede de contatos; independência e autoconfiança</li></ul><p><b>Atenção:</b> o empreendedor assume <b>riscos calculados</b>, não riscos temerários. Ele mede, testa e reduz a incerteza antes de avançar — a imagem do aventureiro impulsivo é um mito.</p><p><b>Mindset fixo x mindset de crescimento</b> (Carol Dweck): no <b>fixo</b>, a pessoa acredita que talento e inteligência são dados e imutáveis, por isso evita desafios, desiste diante de obstáculos, vê o esforço como sinal de incompetência e se sente ameaçada pelo sucesso alheio. No <b>de crescimento</b>, acredita que habilidades se desenvolvem com esforço e prática, por isso abraça desafios, persiste, vê o erro como aprendizado e se inspira no sucesso dos outros. Mudar o mindset é o desafio central de quem empreende, porque o negócio novo é uma sucessão de erros informativos.</p><p><b>Motivadores</b> para empreender: independência e autonomia, realização pessoal, identificação de oportunidade, insatisfação com o emprego, renda e necessidade. <b>Inibidores</b>: medo do fracasso, aversão ao risco, falta de capital, burocracia, falta de conhecimento em gestão e ausência de rede de apoio.</p><p><b>Empreendedorismo feminino</b> — mais de 10 milhões de mulheres são protagonistas no cenário empreendedor brasileiro. Enfrentam barreiras específicas: menor acesso a crédito, dupla jornada, redes de contato mais restritas e preconceito no ambiente de negócios. Em contrapartida, apresentam índices consistentemente altos de escolaridade e de gestão colaborativa.</p><p><b>Criatividade e processo criativo:</b> preparação (imersão no problema) → incubação (o problema \"descansa\") → iluminação (o insight) → verificação (teste e refinamento). <b>Ambientes criativos</b> exigem segurança psicológica, diversidade, tempo para exploração e tolerância ao erro. A criatividade <b>pode ser estimulada e, em alguma medida, medida</b> — testes avaliam fluência (quantidade de ideias), flexibilidade (variedade de categorias), originalidade e elaboração.</p>"
+  },
+  {
+   "tema": "Modelo de Negócio e Business Model Canvas",
+   "html": "<p><b>Modelo de negócio</b> descreve a <b>lógica de como a organização cria, entrega e captura valor</b>. Não é o plano de negócio: o modelo é a fotografia da lógica, em uma página; o plano é o documento detalhado com projeções e análises.</p><p><b>Business Model Canvas</b> (Osterwalder e Pigneur) — nove blocos:</p><ol><li><b>Segmentos de clientes</b> — para quem criamos valor</li><li><b>Proposta de valor</b> — que problema resolvemos e por que nos escolher (o coração do canvas)</li><li><b>Canais</b> — como entregamos a proposta e nos comunicamos</li><li><b>Relacionamento com clientes</b> — como conquistamos, mantemos e ampliamos</li><li><b>Fontes de receita</b> — como o dinheiro entra</li><li><b>Recursos-chave</b> — o que é indispensável (físicos, intelectuais, humanos, financeiros)</li><li><b>Atividades-chave</b> — o que precisamos fazer bem</li><li><b>Parcerias-chave</b> — quem nos ajuda a entregar</li><li><b>Estrutura de custos</b> — onde o dinheiro sai</li></ol><p><b>Lado direito x lado esquerdo:</b> os quatro primeiros blocos mais a receita formam o <b>lado do valor e do mercado</b> (externo); recursos, atividades, parcerias e custos formam o <b>lado da eficiência</b> (interno).</p><p><b>Tipos de modelo de negócio:</b> venda direta, assinatura (recorrência), <b>freemium</b>, marketplace, plataforma, franquia, licenciamento, <b>isca e anzol</b> (vende barato o aparelho e caro o insumo), long tail, publicidade e <b>SaaS</b>.</p><p><b>Estratégia do Oceano Azul</b> (Kim e Mauborgne) — em vez de competir no <b>oceano vermelho</b> (mercado saturado, concorrência sangrenta, disputa por preço), criar um <b>oceano azul</b>: um espaço de mercado inexplorado em que a concorrência se torna irrelevante. A ferramenta é a <b>matriz ERRC</b>: o que <b>Eliminar</b>, <b>Reduzir</b>, <b>Elevar</b> e <b>Criar</b> em relação ao padrão do setor. Combina-se bem com o Design Thinking, que fornece a compreensão profunda do usuário para descobrir onde está o espaço não atendido.</p><p><b>Criação de valor compartilhado</b> (Porter e Kramer) — políticas e práticas que aumentam a competitividade da empresa <b>e ao mesmo tempo</b> melhoram as condições sociais e econômicas da comunidade em que ela atua. Vai além da responsabilidade social, porque o benefício social está no <b>núcleo</b> do negócio, não em uma ação paralela. <b>Negócios sociais</b> e <b>inovação social</b> seguem a mesma lógica: resolver um problema social por meio de um modelo economicamente sustentável.</p>"
+  },
+  {
+   "tema": "Plano de Negócio e Startups",
+   "html": "<p><b>Plano de negócio</b> é o documento que descreve o empreendimento e o modelo de negócio que o sustenta. Serve para <b>o próprio empreendedor</b> (organizar o raciocínio e testar a viabilidade) e para <b>terceiros</b> (captar investimento, crédito ou sócios).</p><p><b>Estrutura clássica:</b></p><ol><li><b>Sumário executivo</b> — o resumo de tudo; escreve-se por último, mas é o que o investidor lê primeiro</li><li><b>Descrição da empresa</b> — missão, visão, valores, estrutura legal</li><li><b>Produtos e serviços</b> — o que se oferece e qual o diferencial</li><li><b>Análise de mercado</b> — clientes, concorrentes, fornecedores e tendências</li><li><b>Plano de marketing</b> — os 4 P: produto, preço, praça e promoção</li><li><b>Plano operacional</b> — processos, capacidade, localização, equipe</li><li><b>Plano financeiro</b> — investimento inicial, custos fixos e variáveis, projeção de receitas, fluxo de caixa, ponto de equilíbrio, <b>payback</b>, VPL e TIR</li><li><b>Análise de riscos e cenários</b></li></ol><p><b>Análise SWOT/FOFA:</b> Forças e Fraquezas são <b>internas</b> e controláveis; Oportunidades e Ameaças são <b>externas</b> e não controláveis.</p><p><b>Startup</b> — Steve Blank a define como uma <b>organização temporária em busca de um modelo de negócio repetível e escalável</b>, operando em condições de <b>extrema incerteza</b> (Eric Ries). As palavras-chave são <b>repetível</b>, <b>escalável</b> e <b>incerteza</b> — não é apenas uma empresa nova ou de tecnologia.</p><p><b>Lean Startup</b> (Eric Ries) — o ciclo <b>construir → medir → aprender</b>, o mais rápido possível. Conceitos centrais: <b>MVP</b> (Produto Mínimo Viável — a menor versão que permite aprender com clientes reais), <b>validação de hipóteses</b> com experimentos, <b>métricas acionáveis</b> em oposição às métricas de vaidade, e <b>pivotar</b> — mudar de direção mantendo o aprendizado quando a hipótese é invalidada.</p><p><b>Estágios:</b> ideação → validação → tração → escala. <b>Product-market fit</b> é o marco em que o produto atende de fato a uma demanda real de mercado.</p>"
+  },
+  {
+   "tema": "Finanças, Investimento e Formalização",
+   "html": "<p><b>Fontes de capital, na ordem típica de um negócio nascente:</b></p><ul><li><b>Capital próprio (bootstrapping)</b> — poupança do empreendedor e receita do próprio negócio. Sem diluição societária, mas cresce devagar.</li><li><b>Amigos, família e conhecidos</b> (<i>love money</i>) — o <b>capital de risco informal</b>, baseado em confiança pessoal, normalmente sem contrato robusto.</li><li><b>Investidor-anjo</b> — pessoa física que investe capital próprio em estágio inicial, e cujo maior valor costuma ser o <b>smart money</b>: experiência, mentoria e rede de contatos.</li><li><b>Venture capital</b> — fundos que investem valores maiores em empresas já com tração, em troca de participação societária e assento no conselho.</li><li><b>Private equity</b> — empresas maduras, cheques grandes.</li><li><b>Crédito bancário e linhas de fomento</b> — BNDES, bancos de desenvolvimento, <b>sociedades de crédito, financiamento e investimento (financeiras)</b>; exige garantias e gera dívida, sem diluir participação.</li><li><b>Crowdfunding</b>, incubadoras, aceleradoras e editais públicos (FINEP, FAPs)</li></ul><p><b>Capital próprio x de terceiros:</b> o capital próprio (equity) não precisa ser devolvido, mas dilui a participação e o controle; o capital de terceiros (dívida) preserva o controle, mas precisa ser pago com juros independentemente do desempenho.</p><p><b>Indicadores financeiros essenciais:</b> <b>ponto de equilíbrio</b> (receita que cobre exatamente os custos — lucro zero), <b>margem de contribuição</b> (preço menos custo variável), <b>payback</b> (tempo para recuperar o investimento), <b>VPL</b> (valor presente líquido; positivo indica projeto viável) e <b>TIR</b> (taxa interna de retorno; comparada ao custo de capital). <b>Capital de giro</b> é o dinheiro necessário para bancar a operação entre pagar os custos e receber dos clientes — sua falta é uma das maiores causas de mortalidade de pequenas empresas.</p><p><b>Formalização — MEI</b> (Microempreendedor Individual): faturamento anual limitado, um único empregado, atividades permitidas por lista, CNPJ, emissão de nota fiscal, contribuição mensal única (DAS) e acesso a benefícios previdenciários. Acima do limite, migra-se para <b>ME</b> (microempresa) e depois <b>EPP</b> (empresa de pequeno porte), com o <b>Simples Nacional</b> unificando os tributos. O <b>Sebrae</b> é o principal órgão de apoio.</p><p><b>Gestão financeira</b> traz previsibilidade, permite precificar corretamente, evita a confusão entre as contas da empresa e as pessoais — erro clássico do iniciante — e sustenta a tomada de decisão com dados.</p>"
+  }
+ ],
+ "colas": [
+  {
+   "titulo": "O empreendedor de verdade",
+   "mnemonico": "Mnemônico: risco CALCULADO, não risco temerário. Ele mede antes de saltar.",
+   "pontos": [
+    "Grupos de características: Realização, Planejamento e Poder.",
+    "Realização: busca de oportunidades, persistência, comprometimento, exigência de qualidade, riscos calculados.",
+    "Planejamento: metas, busca de informações, planejamento e monitoramento.",
+    "Poder: persuasão e rede de contatos, independência e autoconfiança.",
+    "Intraempreendedorismo: empreender DENTRO de uma empresa existente."
+   ]
+  },
+  {
+   "titulo": "Mindset fixo x de crescimento (Dweck)",
+   "mnemonico": "Mnemônico: FIXO acha que talento é dado; CRESCIMENTO acha que se constrói.",
+   "pontos": [
+    "Fixo: evita desafio, desiste no obstáculo, vê esforço como sinal de incompetência.",
+    "Crescimento: abraça desafio, persiste, vê o ERRO COMO APRENDIZADO.",
+    "Empreender é uma sucessão de erros informativos — por isso o mindset importa.",
+    "Processo criativo: preparação → incubação → iluminação → verificação."
+   ]
+  },
+  {
+   "titulo": "Os 9 blocos do Canvas",
+   "mnemonico": "Mnemônico: a PROPOSTA DE VALOR é o coração — todos os outros oito blocos existem em função dela.",
+   "pontos": [
+    "Direita (valor/mercado): segmentos, proposta de valor, canais, relacionamento, receitas.",
+    "Esquerda (eficiência): recursos-chave, atividades-chave, parcerias-chave, custos.",
+    "Modelo de negócio ≠ plano de negócio: o modelo é a lógica em 1 página; o plano é o documento detalhado.",
+    "Freemium, assinatura, marketplace, isca e anzol, SaaS: tipos de modelo."
+   ]
+  },
+  {
+   "titulo": "Oceano Azul — matriz ERRC",
+   "mnemonico": "Mnemônico: \"ERRC\" → Eliminar, Reduzir, Elevar, Criar.",
+   "pontos": [
+    "Oceano vermelho: mercado saturado, disputa por preço, concorrência sangrenta.",
+    "Oceano azul: espaço inexplorado onde a concorrência se torna IRRELEVANTE.",
+    "Kim e Mauborgne. Combina bem com Design Thinking (entender onde não se atende).",
+    "Valor compartilhado (Porter e Kramer): benefício social no NÚCLEO do negócio, não em ação paralela."
+   ]
+  },
+  {
+   "titulo": "Startup e Lean Startup",
+   "mnemonico": "Mnemônico Blank: organização TEMPORÁRIA em busca de modelo REPETÍVEL e ESCALÁVEL, sob INCERTEZA extrema.",
+   "pontos": [
+    "Startup não é só 'empresa nova' nem 'empresa de tecnologia'.",
+    "Lean Startup (Eric Ries): CONSTRUIR → MEDIR → APRENDER, o mais rápido possível.",
+    "MVP: a MENOR versão que permite aprender com clientes reais.",
+    "Pivotar: mudar de direção mantendo o aprendizado, quando a hipótese é invalidada.",
+    "Product-market fit: o produto atende de fato a uma demanda real."
+   ]
+  },
+  {
+   "titulo": "Fontes de capital",
+   "mnemonico": "Mnemônico: quanto mais cedo o estágio, mais informal o capital. Anjo traz SMART MONEY.",
+   "pontos": [
+    "Bootstrapping → love money (capital de risco informal) → anjo → venture capital → private equity.",
+    "Anjo: pessoa FÍSICA, capital próprio, estágio inicial, traz mentoria e rede.",
+    "Venture capital: fundo, empresa já com tração, participação societária.",
+    "Equity: não devolve, mas DILUI. Dívida: preserva controle, mas paga JUROS.",
+    "SWOT: Forças e Fraquezas são INTERNAS; Oportunidades e Ameaças são EXTERNAS."
+   ]
+  }
+ ],
+ "flashcards": [
+  {
+   "tema": "Perfil, Comportamento e Mindset Empreendedor",
+   "p": "O empreendedor assume que tipo de risco?",
+   "r": "Riscos calculados — ele mede, testa e reduz a incerteza antes de avançar. A imagem do aventureiro impulsivo que arrisca tudo é um mito."
+  },
+  {
+   "tema": "Perfil, Comportamento e Mindset Empreendedor",
+   "p": "Em quais três grupos se organizam as características do comportamento empreendedor?",
+   "r": "Realização (busca de oportunidades, persistência, comprometimento, exigência de qualidade, riscos calculados), Planejamento (metas, busca de informações, planejamento e monitoramento) e Poder (persuasão e rede de contatos, independência e autoconfiança)."
+  },
+  {
+   "tema": "Perfil, Comportamento e Mindset Empreendedor",
+   "p": "O que é intraempreendedorismo?",
+   "r": "Empreender dentro de uma empresa já existente: identificar oportunidades, propor e conduzir iniciativas inovadoras usando os recursos da organização, sem ser dono do negócio."
+  },
+  {
+   "tema": "Perfil, Comportamento e Mindset Empreendedor",
+   "p": "Qual a diferença entre mindset fixo e de crescimento?",
+   "r": "No fixo, a pessoa acredita que talento e inteligência são imutáveis — evita desafios, desiste diante de obstáculos e vê o esforço como sinal de incompetência. No de crescimento, acredita que habilidades se desenvolvem — abraça desafios, persiste e vê o erro como aprendizado."
+  },
+  {
+   "tema": "Perfil, Comportamento e Mindset Empreendedor",
+   "p": "Quais são as etapas do processo criativo?",
+   "r": "Preparação (imersão no problema), incubação (o problema descansa), iluminação (o insight) e verificação (teste e refinamento da ideia)."
+  },
+  {
+   "tema": "Perfil, Comportamento e Mindset Empreendedor",
+   "p": "A criatividade pode ser medida?",
+   "r": "Em alguma medida, sim. Testes avaliam fluência (quantidade de ideias), flexibilidade (variedade de categorias), originalidade e elaboração — embora nenhum instrumento capture o fenômeno por completo."
+  },
+  {
+   "tema": "Perfil, Comportamento e Mindset Empreendedor",
+   "p": "O que caracteriza um ambiente criativo nas organizações?",
+   "r": "Segurança psicológica, diversidade de perfis, tempo dedicado à exploração e tolerância ao erro. Sem tolerância ao erro, ninguém propõe nada arriscado."
+  },
+  {
+   "tema": "Perfil, Comportamento e Mindset Empreendedor",
+   "p": "Cite motivadores e inibidores do empreendedorismo.",
+   "r": "Motivadores: independência, realização pessoal, identificação de oportunidade, insatisfação com o emprego e necessidade. Inibidores: medo do fracasso, aversão ao risco, falta de capital, burocracia e falta de conhecimento em gestão."
+  },
+  {
+   "tema": "Modelo de Negócio e Business Model Canvas",
+   "p": "O que é um modelo de negócio?",
+   "r": "A lógica de como a organização cria, entrega e captura valor. Não se confunde com o plano de negócio: o modelo é a lógica sintetizada; o plano é o documento detalhado com projeções e análises."
+  },
+  {
+   "tema": "Modelo de Negócio e Business Model Canvas",
+   "p": "Quais são os nove blocos do Business Model Canvas?",
+   "r": "Segmentos de clientes, proposta de valor, canais, relacionamento com clientes, fontes de receita, recursos-chave, atividades-chave, parcerias-chave e estrutura de custos."
+  },
+  {
+   "tema": "Modelo de Negócio e Business Model Canvas",
+   "p": "Qual bloco é considerado o coração do Canvas?",
+   "r": "A proposta de valor — o problema que se resolve e a razão pela qual o cliente escolhe você. Todos os outros oito blocos existem em função dela."
+  },
+  {
+   "tema": "Modelo de Negócio e Business Model Canvas",
+   "p": "Como se dividem os lados do Canvas?",
+   "r": "O lado direito reúne valor e mercado (segmentos, proposta de valor, canais, relacionamento e receitas) e olha para fora. O lado esquerdo reúne a eficiência (recursos, atividades, parcerias e custos) e olha para dentro."
+  },
+  {
+   "tema": "Modelo de Negócio e Business Model Canvas",
+   "p": "O que é o modelo 'isca e anzol'?",
+   "r": "Vender barato o produto principal e caro o insumo recorrente — impressora e cartucho, barbeador e lâmina, console e jogos."
+  },
+  {
+   "tema": "Modelo de Negócio e Business Model Canvas",
+   "p": "Qual a diferença entre oceano vermelho e oceano azul?",
+   "r": "O oceano vermelho é o mercado existente e saturado, com concorrência acirrada e disputa por preço. O oceano azul é um espaço de mercado inexplorado, onde a concorrência se torna irrelevante."
+  },
+  {
+   "tema": "Modelo de Negócio e Business Model Canvas",
+   "p": "O que é a matriz ERRC da Estratégia do Oceano Azul?",
+   "r": "A ferramenta que pergunta, em relação ao padrão do setor: o que Eliminar, o que Reduzir, o que Elevar e o que Criar — reconfigurando a curva de valor do negócio."
+  },
+  {
+   "tema": "Modelo de Negócio e Business Model Canvas",
+   "p": "O que é criação de valor compartilhado?",
+   "r": "Conceito de Porter e Kramer: políticas e práticas que aumentam a competitividade da empresa e ao mesmo tempo melhoram as condições sociais e econômicas da comunidade. O benefício social está no núcleo do negócio, não em uma ação paralela."
+  },
+  {
+   "tema": "Plano de Negócio e Startups",
+   "p": "Para que serve um plano de negócio?",
+   "r": "Para o próprio empreendedor — organizar o raciocínio e testar a viabilidade antes de investir — e para terceiros, na captação de investimento, crédito ou sócios."
+  },
+  {
+   "tema": "Plano de Negócio e Startups",
+   "p": "Por que o sumário executivo é escrito por último?",
+   "r": "Porque ele resume todo o plano, e só é possível resumir o que já está pronto. Ainda assim, é a primeira coisa que o investidor lê — e muitas vezes a única."
+  },
+  {
+   "tema": "Plano de Negócio e Startups",
+   "p": "Na análise SWOT, quais elementos são internos e quais são externos?",
+   "r": "Forças e Fraquezas são internas e controláveis pela organização. Oportunidades e Ameaças são externas, vindas do ambiente, e não controláveis."
+  },
+  {
+   "tema": "Plano de Negócio e Startups",
+   "p": "Quais são os 4 P do marketing?",
+   "r": "Produto, Preço, Praça (distribuição) e Promoção (comunicação)."
+  },
+  {
+   "tema": "Plano de Negócio e Startups",
+   "p": "Como Steve Blank define uma startup?",
+   "r": "Uma organização temporária em busca de um modelo de negócio repetível e escalável — operando, segundo Eric Ries, em condições de extrema incerteza. Não é sinônimo de empresa nova nem de empresa de tecnologia."
+  },
+  {
+   "tema": "Plano de Negócio e Startups",
+   "p": "Qual é o ciclo do Lean Startup?",
+   "r": "Construir → Medir → Aprender, percorrido o mais rápido possível. O objetivo de cada volta é reduzir a incerteza sobre uma hipótese do negócio."
+  },
+  {
+   "tema": "Plano de Negócio e Startups",
+   "p": "O que é um MVP?",
+   "r": "Produto Mínimo Viável: a menor versão do produto que permite aprender com clientes reais. Não é um produto incompleto ou de má qualidade — é o experimento mais barato capaz de testar a hipótese central."
+  },
+  {
+   "tema": "Plano de Negócio e Startups",
+   "p": "O que significa pivotar?",
+   "r": "Mudar de direção — de segmento, de proposta de valor, de canal ou de modelo de receita — mantendo o aprendizado acumulado, quando os dados invalidam a hipótese original."
+  },
+  {
+   "tema": "Plano de Negócio e Startups",
+   "p": "O que é product-market fit?",
+   "r": "O marco em que o produto atende de fato a uma demanda real de mercado — os clientes voltam, recomendam e a demanda cresce sem esforço proporcional de venda."
+  },
+  {
+   "tema": "Plano de Negócio e Startups",
+   "p": "Qual a diferença entre métrica acionável e métrica de vaidade?",
+   "r": "A acionável orienta uma decisão (taxa de conversão, retenção por coorte, custo de aquisição). A de vaidade só faz o gráfico subir sem indicar o que fazer (total acumulado de downloads, número de curtidas)."
+  },
+  {
+   "tema": "Finanças, Investimento e Formalização",
+   "p": "O que é bootstrapping?",
+   "r": "Financiar o negócio com recursos próprios e com a receita gerada pela própria operação, sem capital externo. Preserva o controle e a participação societária, mas limita a velocidade de crescimento."
+  },
+  {
+   "tema": "Finanças, Investimento e Formalização",
+   "p": "O que é capital de risco informal?",
+   "r": "O aporte feito por amigos, familiares e conhecidos (love money), baseado em confiança pessoal e normalmente sem contrato robusto nem avaliação formal da empresa."
+  },
+  {
+   "tema": "Finanças, Investimento e Formalização",
+   "p": "O que caracteriza um investidor-anjo?",
+   "r": "É pessoa física, investe capital próprio em estágio inicial e agrega o chamado smart money — experiência, mentoria e rede de contatos, muitas vezes mais valiosos que o dinheiro."
+  },
+  {
+   "tema": "Finanças, Investimento e Formalização",
+   "p": "Qual a diferença entre venture capital e private equity?",
+   "r": "Venture capital investe em empresas em crescimento, já com alguma tração, aceitando risco alto. Private equity investe em empresas maduras, com cheques maiores e risco menor."
+  },
+  {
+   "tema": "Finanças, Investimento e Formalização",
+   "p": "Qual a diferença entre capital próprio e capital de terceiros?",
+   "r": "O capital próprio (equity) não precisa ser devolvido, mas dilui participação e controle. O capital de terceiros (dívida) preserva o controle, mas exige pagamento com juros independentemente do desempenho do negócio."
+  },
+  {
+   "tema": "Finanças, Investimento e Formalização",
+   "p": "O que é o ponto de equilíbrio?",
+   "r": "O nível de receita em que os custos totais são exatamente cobertos — o lucro é zero. Abaixo dele há prejuízo; acima, lucro."
+  },
+  {
+   "tema": "Finanças, Investimento e Formalização",
+   "p": "O que é payback?",
+   "r": "O tempo necessário para recuperar o investimento inicial com o retorno gerado pelo negócio. É simples de calcular, mas ignora o valor do dinheiro no tempo — daí a importância do VPL."
+  },
+  {
+   "tema": "Finanças, Investimento e Formalização",
+   "p": "O que é capital de giro e por que ele é crítico?",
+   "r": "É o dinheiro necessário para bancar a operação no intervalo entre pagar os custos e receber dos clientes. Sua falta é uma das maiores causas de mortalidade de pequenas empresas — a empresa pode ser lucrativa no papel e quebrar por falta de caixa."
+  },
+  {
+   "tema": "Finanças, Investimento e Formalização",
+   "p": "O que caracteriza o MEI?",
+   "r": "Microempreendedor Individual: faturamento anual limitado, no máximo um empregado, atividades restritas a uma lista, CNPJ próprio, emissão de nota fiscal, contribuição mensal única (DAS) e acesso a benefícios previdenciários."
+  },
+  {
+   "tema": "Finanças, Investimento e Formalização",
+   "p": "Qual erro financeiro é clássico entre empreendedores iniciantes?",
+   "r": "Misturar as contas da empresa com as contas pessoais — o que impede saber se o negócio dá lucro, distorce a precificação e inviabiliza qualquer decisão baseada em dados."
+  }
+ ],
+ "questoes": [
+  {
+   "tema": "Perfil, Comportamento e Mindset Empreendedor",
+   "q": "Que tipo de risco o empreendedor assume?",
+   "op": [
+    "Riscos calculados, mensurados e reduzidos antes de avançar",
+    "Riscos elevados e imprevisíveis, confiando na intuição",
+    "Nenhum risco, pois planeja tudo antecipadamente",
+    "Apenas riscos financeiros, nunca operacionais"
+   ],
+   "r": 0,
+   "exp": "Correr riscos calculados é uma das características do comportamento empreendedor. A figura do aventureiro impulsivo é um mito — o empreendedor testa e mede antes de expor recursos."
+  },
+  {
+   "tema": "Perfil, Comportamento e Mindset Empreendedor",
+   "q": "O que é intraempreendedorismo?",
+   "op": [
+    "Empreender dentro de uma empresa já existente, usando seus recursos",
+    "Empreender em sociedade com familiares",
+    "Abrir um negócio no próprio domicílio",
+    "Empreender no setor público"
+   ],
+   "r": 0,
+   "exp": "O intraempreendedor identifica oportunidades e conduz iniciativas inovadoras dentro da organização em que trabalha, sem ser dono do negócio."
+  },
+  {
+   "tema": "Perfil, Comportamento e Mindset Empreendedor",
+   "q": "Uma pessoa com mindset fixo tende a:",
+   "op": [
+    "Evitar desafios e interpretar o esforço como sinal de incompetência",
+    "Ver o erro como fonte de aprendizado",
+    "Inspirar-se no sucesso alheio",
+    "Persistir diante de obstáculos"
+   ],
+   "r": 0,
+   "exp": "No mindset fixo (Carol Dweck), talento é visto como dado e imutável — por isso o desafio ameaça a autoimagem e o esforço parece confissão de limitação."
+  },
+  {
+   "tema": "Perfil, Comportamento e Mindset Empreendedor",
+   "q": "Qual é a sequência correta das etapas do processo criativo?",
+   "op": [
+    "Iluminação, preparação, incubação e verificação",
+    "Incubação, verificação, preparação e iluminação",
+    "Verificação, iluminação, incubação e preparação",
+    "Preparação, incubação, iluminação e verificação"
+   ],
+   "r": 3,
+   "exp": "Primeiro há imersão no problema, depois um período em que ele 'descansa', então vem o insight e, por fim, o teste e refinamento da ideia."
+  },
+  {
+   "tema": "Perfil, Comportamento e Mindset Empreendedor",
+   "q": "Em relação à mensuração da criatividade, é correto afirmar que:",
+   "op": [
+    "É impossível medir qualquer aspecto da criatividade",
+    "A criatividade é medida exclusivamente pelo número de patentes",
+    "Testes avaliam fluência, flexibilidade, originalidade e elaboração, ainda que nenhum capture o fenômeno por completo",
+    "Só é possível medir criatividade em áreas artísticas"
+   ],
+   "r": 2,
+   "exp": "Fluência é a quantidade de ideias; flexibilidade, a variedade de categorias; originalidade, a raridade; elaboração, o nível de detalhamento."
+  },
+  {
+   "tema": "Perfil, Comportamento e Mindset Empreendedor",
+   "q": "Qual condição é essencial para um ambiente organizacional criativo?",
+   "op": [
+    "Tolerância ao erro e segurança psicológica",
+    "Metas individuais rígidas e competição interna",
+    "Hierarquia bem definida e controle de horários",
+    "Equipes homogêneas e alinhadas"
+   ],
+   "r": 0,
+   "exp": "Sem tolerância ao erro ninguém propõe nada arriscado — e ideia sem risco raramente é original. Diversidade e tempo para exploração completam o quadro."
+  },
+  {
+   "tema": "Modelo de Negócio e Business Model Canvas",
+   "q": "O que descreve um modelo de negócio?",
+   "op": [
+    "O plano financeiro detalhado da empresa",
+    "O organograma e a estrutura societária",
+    "A lógica de como a organização cria, entrega e captura valor",
+    "O conjunto de produtos oferecidos"
+   ],
+   "r": 2,
+   "exp": "O modelo é a lógica sintetizada do negócio, tipicamente em uma página. O documento detalhado com projeções e análises é o plano de negócio."
+  },
+  {
+   "tema": "Modelo de Negócio e Business Model Canvas",
+   "q": "Quantos blocos compõem o Business Model Canvas?",
+   "op": [
+    "4",
+    "6",
+    "9",
+    "12"
+   ],
+   "r": 2,
+   "exp": "São nove: segmentos de clientes, proposta de valor, canais, relacionamento, receitas, recursos-chave, atividades-chave, parcerias-chave e estrutura de custos."
+  },
+  {
+   "tema": "Modelo de Negócio e Business Model Canvas",
+   "q": "Qual bloco é considerado o centro do Business Model Canvas?",
+   "op": [
+    "Proposta de valor",
+    "Fontes de receita",
+    "Segmentos de clientes",
+    "Estrutura de custos"
+   ],
+   "r": 0,
+   "exp": "A proposta de valor define o problema resolvido e a razão de escolha do cliente — todos os demais blocos existem para viabilizá-la e capturá-la."
+  },
+  {
+   "tema": "Modelo de Negócio e Business Model Canvas",
+   "q": "Uma impressora vendida barata com cartuchos caros é exemplo de qual modelo de negócio?",
+   "op": [
+    "Freemium",
+    "Assinatura",
+    "Isca e anzol",
+    "Marketplace"
+   ],
+   "r": 2,
+   "exp": "No modelo isca e anzol, o produto principal é vendido com margem baixa para gerar receita recorrente com o insumo — barbeador e lâmina seguem a mesma lógica."
+  },
+  {
+   "tema": "Modelo de Negócio e Business Model Canvas",
+   "q": "O que caracteriza a estratégia do oceano azul?",
+   "op": [
+    "Competir por preço em um mercado consolidado",
+    "Criar um espaço de mercado inexplorado, tornando a concorrência irrelevante",
+    "Copiar o modelo do líder de mercado com custos menores",
+    "Concentrar-se no segmento premium do setor"
+   ],
+   "r": 1,
+   "exp": "Kim e Mauborgne contrapõem o oceano azul ao vermelho — este último saturado, com disputa por preço. A ferramenta prática é a matriz ERRC."
+  },
+  {
+   "tema": "Modelo de Negócio e Business Model Canvas",
+   "q": "O que significa a sigla ERRC na Estratégia do Oceano Azul?",
+   "op": [
+    "Estimar, Reduzir, Reter e Criar",
+    "Eliminar, Reduzir, Elevar e Criar",
+    "Explorar, Repetir, Replicar e Consolidar",
+    "Escalar, Rentabilizar, Reinvestir e Crescer"
+   ],
+   "r": 1,
+   "exp": "A matriz pergunta, em relação ao padrão do setor: o que eliminar, o que reduzir, o que elevar e o que criar — reconfigurando a curva de valor."
+  },
+  {
+   "tema": "Modelo de Negócio e Business Model Canvas",
+   "q": "O que diferencia a criação de valor compartilhado da responsabilidade social tradicional?",
+   "op": [
+    "O valor compartilhado é uma ação filantrópica de maior porte",
+    "A responsabilidade social é obrigatória por lei",
+    "Não há diferença prática entre os dois conceitos",
+    "No valor compartilhado o benefício social está no núcleo do negócio, e não em uma ação paralela"
+   ],
+   "r": 3,
+   "exp": "Porter e Kramer: as práticas aumentam a competitividade da empresa E melhoram as condições da comunidade simultaneamente — não é doação de parte do lucro."
+  },
+  {
+   "tema": "Plano de Negócio e Startups",
+   "q": "Por que o sumário executivo é escrito por último no plano de negócio?",
+   "op": [
+    "Porque é a seção menos importante",
+    "Porque é opcional na maioria dos casos",
+    "Porque resume todo o plano, e só se resume o que já está pronto",
+    "Porque depende da aprovação do investidor"
+   ],
+   "r": 2,
+   "exp": "É escrito por último e lido primeiro — muitas vezes é a única seção que o investidor lê antes de decidir se avança."
+  },
+  {
+   "tema": "Plano de Negócio e Startups",
+   "q": "Na análise SWOT, Oportunidades e Ameaças referem-se a fatores:",
+   "op": [
+    "Internos e controláveis pela organização",
+    "Externos e não controláveis pela organização",
+    "Exclusivamente financeiros",
+    "Relacionados apenas à concorrência direta"
+   ],
+   "r": 1,
+   "exp": "Forças e Fraquezas são internas e controláveis; Oportunidades e Ameaças vêm do ambiente externo e só podem ser aproveitadas ou mitigadas, não controladas."
+  },
+  {
+   "tema": "Plano de Negócio e Startups",
+   "q": "Segundo Steve Blank, uma startup é:",
+   "op": [
+    "Qualquer empresa recém-fundada",
+    "Uma organização temporária em busca de um modelo de negócio repetível e escalável",
+    "Toda empresa do setor de tecnologia",
+    "Uma empresa que recebeu investimento de risco"
+   ],
+   "r": 1,
+   "exp": "As palavras-chave são temporária, repetível, escalável e — na formulação de Eric Ries — condições de extrema incerteza. Ser nova ou ser de tecnologia não basta."
+  },
+  {
+   "tema": "Plano de Negócio e Startups",
+   "q": "Qual é o ciclo central do Lean Startup?",
+   "op": [
+    "Planejar, executar, verificar e agir",
+    "Pesquisar, desenvolver, lançar e escalar",
+    "Imersão, ideação e prototipação",
+    "Construir, medir e aprender"
+   ],
+   "r": 3,
+   "exp": "O ciclo construir-medir-aprender de Eric Ries deve ser percorrido o mais rápido possível, para reduzir a incerteza sobre cada hipótese do negócio."
+  },
+  {
+   "tema": "Plano de Negócio e Startups",
+   "q": "O que é um MVP?",
+   "op": [
+    "Um produto incompleto lançado às pressas",
+    "A menor versão do produto capaz de gerar aprendizado validado com clientes reais",
+    "A versão final antes do lançamento oficial",
+    "Um protótipo de alta fidelidade sem funcionalidade"
+   ],
+   "r": 1,
+   "exp": "MVP não significa produto ruim: é o experimento mais barato capaz de testar a hipótese central do negócio com usuários reais."
+  },
+  {
+   "tema": "Plano de Negócio e Startups",
+   "q": "O que significa pivotar em uma startup?",
+   "op": [
+    "Encerrar as operações e devolver o capital",
+    "Aumentar o investimento na mesma estratégia",
+    "Mudar de direção mantendo o aprendizado, quando os dados invalidam a hipótese",
+    "Vender a empresa para um concorrente"
+   ],
+   "r": 2,
+   "exp": "Pivotar é uma mudança estruturada — de segmento, proposta, canal ou modelo de receita — que preserva o que já foi aprendido, e não um recomeço do zero."
+  },
+  {
+   "tema": "Plano de Negócio e Startups",
+   "q": "Qual destas é uma métrica de vaidade?",
+   "op": [
+    "Taxa de conversão do funil",
+    "Retenção por coorte",
+    "Custo de aquisição de cliente",
+    "Total acumulado de downloads"
+   ],
+   "r": 3,
+   "exp": "O total acumulado só cresce e nunca indica o que fazer a seguir. Métricas acionáveis orientam decisões — conversão, retenção e custo de aquisição."
+  },
+  {
+   "tema": "Plano de Negócio e Startups",
+   "q": "Quais são os 4 P do marketing?",
+   "op": [
+    "Produto, Preço, Praça e Promoção",
+    "Pesquisa, Planejamento, Produção e Publicidade",
+    "Público, Proposta, Parceria e Performance",
+    "Produto, Processo, Pessoas e Prazo"
+   ],
+   "r": 0,
+   "exp": "O mix de marketing clássico: o que se vende, por quanto, onde se distribui e como se comunica."
+  },
+  {
+   "tema": "Finanças, Investimento e Formalização",
+   "q": "O que é bootstrapping?",
+   "op": [
+    "Financiar o negócio com recursos próprios e com a receita da própria operação",
+    "Captar recursos com investidores-anjo",
+    "Obter empréstimo bancário com garantia real",
+    "Realizar uma campanha de crowdfunding"
+   ],
+   "r": 0,
+   "exp": "O bootstrapping preserva integralmente o controle e a participação societária, em troca de um crescimento mais lento e limitado pelo caixa gerado."
+  },
+  {
+   "tema": "Finanças, Investimento e Formalização",
+   "q": "O aporte feito por amigos e familiares, baseado em confiança pessoal, é conhecido como:",
+   "op": [
+    "Venture capital",
+    "Private equity",
+    "Crédito consignado empresarial",
+    "Capital de risco informal (love money)"
+   ],
+   "r": 3,
+   "exp": "É o capital de risco informal: normalmente sem contrato robusto nem avaliação formal da empresa, o que exige cuidado para não misturar relação pessoal e societária."
+  },
+  {
+   "tema": "Finanças, Investimento e Formalização",
+   "q": "O que caracteriza o investidor-anjo?",
+   "op": [
+    "É um fundo que investe em empresas maduras",
+    "É pessoa física que investe capital próprio em estágio inicial, agregando mentoria e rede de contatos",
+    "É uma linha de crédito subsidiada do governo",
+    "É o próprio empreendedor reinvestindo lucros"
+   ],
+   "r": 1,
+   "exp": "O chamado smart money — experiência, mentoria e acesso a contatos — costuma valer mais para a empresa nascente do que o valor aportado."
+  },
+  {
+   "tema": "Finanças, Investimento e Formalização",
+   "q": "Qual a principal diferença entre capital próprio (equity) e capital de terceiros (dívida)?",
+   "op": [
+    "O equity precisa ser devolvido com juros; a dívida, não",
+    "Ambos diluem a participação societária",
+    "A dívida é sempre mais barata que o equity",
+    "O equity não precisa ser devolvido, mas dilui participação; a dívida preserva o controle, mas exige pagamento com juros"
+   ],
+   "r": 3,
+   "exp": "É a escolha central do financiamento: trocar parte da empresa por dinheiro que não volta, ou manter a empresa inteira assumindo obrigação de pagamento."
+  },
+  {
+   "tema": "Finanças, Investimento e Formalização",
+   "q": "O que é o ponto de equilíbrio de um negócio?",
+   "op": [
+    "O momento em que o lucro atinge o máximo",
+    "A média entre receitas e despesas do ano",
+    "O nível de receita em que os custos totais são exatamente cobertos, com lucro zero",
+    "O prazo para recuperar o investimento inicial"
+   ],
+   "r": 2,
+   "exp": "Abaixo do ponto de equilíbrio há prejuízo; acima, lucro. O prazo para recuperar o investimento é o payback."
+  },
+  {
+   "tema": "Finanças, Investimento e Formalização",
+   "q": "Por que a falta de capital de giro é tão crítica para pequenas empresas?",
+   "op": [
+    "Porque impede a contratação de funcionários",
+    "Porque a empresa pode ser lucrativa no papel e quebrar por não ter caixa para operar entre pagar e receber",
+    "Porque aumenta a carga tributária",
+    "Porque impede a emissão de notas fiscais"
+   ],
+   "r": 1,
+   "exp": "Lucro é resultado contábil; caixa é dinheiro disponível. Vender bem a prazo enquanto se paga à vista destrói o caixa mesmo com lucro crescente."
+  },
+  {
+   "tema": "Finanças, Investimento e Formalização",
+   "q": "Qual destas NÃO é uma característica do MEI?",
+   "op": [
+    "Possui CNPJ e pode emitir nota fiscal",
+    "Contribuição mensal única (DAS) com acesso a benefícios previdenciários",
+    "Tem limite anual de faturamento e lista restrita de atividades",
+    "Pode contratar quantos empregados quiser"
+   ],
+   "r": 3,
+   "exp": "O MEI pode ter no máximo um empregado. Superados os limites, migra-se para microempresa (ME) e depois empresa de pequeno porte (EPP)."
+  },
+  {
+   "tema": "Finanças, Investimento e Formalização",
+   "q": "Qual é um erro financeiro clássico do empreendedor iniciante?",
+   "op": [
+    "Misturar as contas da empresa com as contas pessoais",
+    "Elaborar projeções de fluxo de caixa",
+    "Calcular o ponto de equilíbrio antes de abrir",
+    "Separar custos fixos de custos variáveis"
+   ],
+   "r": 0,
+   "exp": "Sem separação, torna-se impossível saber se o negócio dá lucro, precificar corretamente e tomar qualquer decisão baseada em dados."
+  }
+ ],
+ "discursivas": [
+  {
+   "tema": "Modelo de Negócio e Business Model Canvas",
+   "q": "Explique o que é o Business Model Canvas, descreva seus nove blocos e diferencie modelo de negócio de plano de negócio.",
+   "r": "O Business Model Canvas, criado por Osterwalder e Pigneur, é uma ferramenta visual que representa em uma única página a lógica de como uma organização cria, entrega e captura valor. Seus nove blocos são: segmentos de clientes, que definem para quem se cria valor; proposta de valor, que é o coração do quadro e responde qual problema se resolve e por que o cliente escolheria essa solução; canais, que descrevem como a proposta chega ao cliente e como a comunicação acontece; relacionamento com clientes, que trata de como se conquista, mantém e amplia a base; fontes de receita, que explicam como o dinheiro entra; recursos-chave, que são os ativos indispensáveis, sejam físicos, intelectuais, humanos ou financeiros; atividades-chave, que são as coisas que a empresa precisa fazer bem; parcerias-chave, que identificam quem ajuda a entregar o valor; e estrutura de custos, que mostra onde o dinheiro sai. Costuma-se dividir o quadro em dois lados: o direito, voltado ao valor e ao mercado, olhando para fora da empresa, e o esquerdo, voltado à eficiência e à operação, olhando para dentro. A distinção entre modelo e plano de negócio é importante. O modelo de negócio é a lógica em si — como a empresa ganha dinheiro — e o Canvas é a sua representação sintética, feita para ser testada, alterada e refeita rapidamente conforme se aprende com o mercado. O plano de negócio é um documento extenso e formal, com descrição da empresa, análise de mercado, plano de marketing, plano operacional, projeções financeiras detalhadas e análise de riscos, elaborado principalmente para captar recursos e organizar a execução. Na prática, o Canvas é usado na fase de descoberta, quando ainda se busca o modelo certo, e o plano de negócio ganha relevância quando esse modelo já está validado e é preciso detalhá-lo e defendê-lo perante terceiros."
+  },
+  {
+   "tema": "Plano de Negócio e Startups",
+   "q": "Explique o que caracteriza uma startup e como funciona a abordagem Lean Startup.",
+   "r": "Segundo Steve Blank, startup é uma organização temporária em busca de um modelo de negócio repetível e escalável, operando — na formulação complementar de Eric Ries — em condições de extrema incerteza. Cada palavra dessa definição importa. Temporária, porque a startup é uma fase, não um destino: ao encontrar o modelo, ela deixa de ser startup e se torna empresa. Em busca, porque o modelo ainda não é conhecido; ela não está executando um plano, está procurando um. Repetível, porque a venda precisa poder ser reproduzida sistematicamente, e não depender de esforço heroico caso a caso. Escalável, porque o crescimento da receita deve ser desproporcional ao crescimento dos custos. E incerteza extrema, porque não há histórico nem mercado consolidado que permita projetar com segurança. Daí decorre que nem toda empresa nova é startup, e nem toda startup é de tecnologia — embora a tecnologia frequentemente seja o que viabiliza a escalabilidade. O Lean Startup é a metodologia proposta por Eric Ries para operar sob essa incerteza. Seu núcleo é o ciclo construir–medir–aprender, que deve ser percorrido o mais rápido possível: formula-se uma hipótese sobre o negócio, constrói-se o experimento mais barato capaz de testá-la — o MVP, ou Produto Mínimo Viável, que é a menor versão capaz de gerar aprendizado validado com clientes reais e não um produto malfeito —, mede-se o resultado com métricas acionáveis, que orientam decisão, em vez de métricas de vaidade, que apenas crescem sem indicar o que fazer, e aprende-se se a hipótese se confirma. Quando os dados invalidam a hipótese, a resposta é pivotar: mudar de direção — de segmento, de proposta de valor, de canal ou de modelo de receita — preservando o aprendizado acumulado. O objetivo de todo esse processo é alcançar o product-market fit, o marco em que o produto comprovadamente atende a uma demanda real de mercado, momento a partir do qual faz sentido investir pesado em escala."
+  }
+ ]
+}

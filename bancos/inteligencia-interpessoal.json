@@ -1,0 +1,758 @@
+{
+ "id": "inteligencia-interpessoal",
+ "nome": "Inteligencia Interpessoal",
+ "periodo": 2,
+ "cor": "#14b8a6",
+ "sigla": "II",
+ "resumos": [
+  {
+   "tema": "Semiótica: Linguagem Verbal e Não Verbal",
+   "html": "<p><b>Semiótica</b> é a ciência dos signos e dos sistemas de comunicação. Ela estuda toda linguagem — verbal e não verbal — e é a base para compreender a comunicação humana. A <b>Linguística</b>, surgida no século XX, ocupa-se especificamente da linguagem verbal; a Semiótica trata dos signos em <b>qualquer</b> linguagem.</p><p><b>Linguagem verbal:</b> utiliza <b>palavras</b>. Duas formas:</p><ul><li><b>Oral</b> — fala, entonação, diálogo. Espontânea, imediata, apoiada no tom e no ritmo.</li><li><b>Escrita</b> — traços, letras, textos, tipografia. Permanente, planejada, sem apoio da entonação.</li></ul><p><b>Onomatopeias</b> são palavras que <b>imitam sons</b> (tic-tac, buáá, plim). Os textos podem ser <b>literários</b> (linguagem figurada) ou <b>jornalísticos</b> (informativos). A linguagem verbal tem forte <b>influência psicoemocional</b>: as palavras afetam autoestima, emoções e a construção da identidade.</p><p><b>Linguagem não verbal:</b> comunica <b>sem palavras</b>, por signos visuais, gestuais e corporais.</p><ul><li><b>Gestual</b> — gestos, mímica, expressões faciais, teatro, <b>Libras</b></li><li><b>Visual</b> — fotografia, pintura, cartazes, placas, mapas, semáforos</li><li><b>Corporal</b> — dança, postura, cinema mudo</li></ul><p><b>Libras</b> (Língua Brasileira de Sinais) é uma linguagem <b>gestual normativa</b>, com sinais e <b>gramática própria</b> — não é mímica nem um conjunto de símbolos inventados; é uma língua completa.</p><p><b>Linguagem sincrética</b> — mistura verbal e não verbal no mesmo enunciado. O <b>cinema</b> é o exemplo clássico (imagem, som, música, diálogo, texto); também quadrinhos, publicidade e páginas web.</p><p><b>Principais teóricos:</b></p><ul><li><b>Ferdinand de Saussure</b> (1857-1913) — o <b>signo linguístico</b> = <b>significante</b> (a forma, a imagem acústica) + <b>significado</b> (o conceito). A relação entre eles é arbitrária.</li><li><b>Charles Sanders Peirce</b> (1839-1914) — a <b>tricotomia do signo</b>: <b>ícone</b> (semelhança com o objeto — uma foto), <b>índice</b> (relação de causa e efeito ou contiguidade — fumaça indica fogo, pegada indica quem passou) e <b>símbolo</b> (convenção arbitrária — a bandeira, a palavra, o sinal de trânsito).</li><li><b>Lucia Santaella</b>, <b>Vera Aguiar</b> e <b>Donis Dondis</b> — contribuições à comunicação e à análise visual. Segundo Dondis, o princípio básico da linguagem visual é que a percepção ocorre <b>primeiro globalmente e depois nas partes</b>.</li></ul><p><b>Origem e evolução:</b> a linguagem surgiu como sons, desenhos e rituais primitivos, evoluindo da fala para a escrita e para os sistemas simbólicos. A <b>imprensa de Gutenberg</b> foi a invenção que popularizou a escrita e permitiu a disseminação em massa da informação.</p><p><b>Linguagens digitais:</b> <b>emojis</b> (ícones com significado), <b>hipertextos</b> (escrita não linear, com links) e redes sociais (combinação de verbal e não verbal).</p>"
+  },
+  {
+   "tema": "Comunicação Interpessoal",
+   "html": "<p><b>Comunicação interpessoal</b> é a troca de informações entre duas ou mais pessoas, com <b>interação e feedback</b> — não é monólogo nem mensagem sem resposta.</p><p><b>Elementos:</b> emissor, receptor, mensagem, <b>canal</b>, código, contexto e <b>feedback</b>. Sem feedback não há confirmação de entendimento, e a comunicação fica incompleta.</p><p><b>Fundamentos:</b></p><ul><li><b>Clareza</b> — transmitir a mensagem sem ambiguidades</li><li><b>Escuta ativa</b> — atenção plena, compreensão e interpretação, não apenas esperar a vez de falar</li><li><b>Feedback</b> — confirmação de entendimento, nos dois sentidos</li><li><b>Contexto</b> — ambiente, cultura e situação alteram o significado</li></ul><p><b>Os três estilos de comunicação:</b></p><ul><li><b>Passiva</b> — a pessoa não expressa o que pensa e sente para evitar conflito; acumula ressentimento e é desconsiderada.</li><li><b>Agressiva</b> — expressa-se impondo, desrespeitando o outro; gera conflito e rompe relações.</li><li><b>Assertiva</b> — expressa pensamentos, sentimentos e necessidades de forma <b>clara e respeitosa</b>, sem passividade nem agressividade. É a que contribui para a <b>resolução de conflitos</b>, a clareza de objetivos e o fortalecimento dos relacionamentos.</li></ul><p><b>Diversidade linguística</b> — reconhecer e valorizar as diferentes formas de expressão verbal e não verbal: variedades regionais, dialetos, gírias, registros e linguagem não verbal. Não significa usar apenas a norma padrão; significa compreender diferentes culturas, contextos e formas de expressão, o que impacta diretamente a compreensão mútua e a inclusão em equipes multiculturais.</p><p><b>Comunicação Não Violenta (CNV)</b>, de Marshall Rosenberg — quatro componentes: <b>observação</b> (descrever o fato sem julgamento), <b>sentimento</b> (nomear o que se sente), <b>necessidade</b> (identificar a necessidade por trás do sentimento) e <b>pedido</b> (formular um pedido claro e realizável, não uma exigência). É uma ferramenta central na mediação de conflitos.</p><p><b>Comunicação não verbal no trabalho:</b> postura, contato visual, expressões faciais, tom de voz e uso do espaço frequentemente comunicam mais que as palavras — e quando há contradição entre o verbal e o não verbal, as pessoas tendem a acreditar no não verbal.</p>"
+  },
+  {
+   "tema": "Habilidades Interpessoais no PMBOK",
+   "html": "<p><b>Habilidades interpessoais</b> são características que facilitam o relacionamento entre pessoas para gerar resultados eficazes. São conhecidas como <b>soft skills</b>: aprendizados subjetivos relacionados ao <b>comportamento humano</b> — em oposição às <b>hard skills</b>, que são as competências técnicas mensuráveis.</p><p><b>As habilidades interpessoais do PMBOK:</b></p><ul><li><b>Liderança</b> — concentrar os esforços do grupo na direção de um objetivo comum, motivando e habilitando a equipe; executar por meio de outros</li><li><b>Desenvolvimento de equipe</b> — ajudar o grupo a trabalhar junto: estabelecer objetivos, definir e negociar papéis e procedimentos, promover colaboração</li><li><b>Motivação</b> — o sucesso geral do projeto depende do <b>comprometimento da equipe</b>. Fatores valorizados: satisfação, desafios, realização, crescimento e compensação</li><li><b>Comunicação</b> — atenção a estilos de comunicação, questões culturais, relacionamentos, personalidades e contexto; escuta ativa</li><li><b>Influência</b> — compartilhar poder, liderar pelo exemplo, explicar decisões, manter estilo flexível para obter cooperação</li><li><b>Processo decisório</b> — resolver problemas, avaliar alternativas, planejar ações e analisar resultados</li><li><b>Negociação</b>, <b>coaching</b>, <b>construção de confiança</b>, <b>gestão de conflitos</b> e <b>conhecimento político e cultural</b></li></ul><p><b>Atenção:</b> programação de sistemas, domínio de ferramentas de gestão e conhecimento técnico <b>não</b> são habilidades interpessoais — são hard skills.</p><p><b>As cinco etapas do processo decisório:</b></p><ol><li><b>Definição do problema</b> — explorar, esclarecer e definir com precisão</li><li><b>Criação da solução</b> — prolongar a geração de ideias (brainstorming), evitando decisões prematuras</li><li><b>Ideias para ação</b> — definir critérios de avaliação, pesar prós e contras e escolher a melhor solução</li><li><b>Planejamento da ação</b> — envolver os participantes para ganhar aceitação e compromisso</li><li><b>Avaliação do resultado</b> — analisar o que aconteceu e registrar lições aprendidas</li></ol><p><b>Fatores que afetam o estilo de decisão:</b> tempo disponível, qualidade exigida, confiança da equipe e aceitação necessária.</p>"
+  },
+  {
+   "tema": "Liderança em Contextos Organizacionais",
+   "html": "<p><b>Liderança</b> em projetos é concentrar os esforços de um grupo na direção de um objetivo comum, habilitando a equipe a trabalhar de forma colaborativa e executando por meio de outros — não fazendo tudo sozinho nem apenas delegando sem acompanhar.</p><p><b>As três dimensões de competência do gerente de projetos eficaz:</b></p><ul><li><b>Técnicas</b> — conhecimentos específicos do domínio do projeto</li><li><b>Interpessoais</b> — comunicação, motivação, negociação, liderança</li><li><b>Conceituais</b> — visão estratégica, análise de situações, visão do todo</li></ul><p>O gerente eficaz <b>equilibra as três</b>. Só a técnica não sustenta um projeto; só a interpessoal não resolve os problemas do domínio.</p><p><b>Desenvolvimento de equipe</b> envolve: estabelecer objetivos claros, definir e negociar papéis e responsabilidades, obter apoio da alta administração, oferecer recompensas e reconhecimento, e construir confiança e comunicação aberta.</p><p><b>Estilos de liderança:</b></p><ul><li><b>Autoritária / autocrática</b> — o líder decide sozinho e comunica. Rápida, útil em crise, mas desmotiva no longo prazo.</li><li><b>Democrática / participativa</b> — decide com a equipe. Mais lenta, gera comprometimento e melhores decisões.</li><li><b>Liberal / laissez-faire</b> — delega amplamente e intervém pouco. Funciona com equipes maduras; vira omissão com equipes inexperientes.</li><li><b>Situacional</b> — adapta o estilo ao nível de <b>maturidade e competência</b> de cada liderado para cada tarefa. Não existe estilo certo universal.</li></ul><p><b>Liderança carismática</b> (Alexandre Dorna) — baseada na força pessoal, na visão e na capacidade de mobilizar emocionalmente. Poderosa, mas dependente da presença do líder. <b>Liderança autêntica</b> — apoiada em autoconhecimento, transparência relacional, processamento equilibrado da informação e perspectiva moral internalizada; é a construção contemporânea mais estudada.</p><p><b>Influência</b> significa compartilhar poder e estimular a cooperação para atingir objetivos — liderar pelo exemplo e explicar as decisões, e não impor regras sem explicação.</p><p><b>Inteligência emocional</b> (Daniel Goleman) — autoconsciência, autorregulação, motivação, <b>empatia</b> e habilidades sociais. É o que permite ao líder perceber o clima da equipe e ajustar sua atuação antes que o conflito escale.</p>"
+  },
+  {
+   "tema": "Ética Profissional e Data Storytelling",
+   "html": "<p><b>Ética do profissional de informática:</b> a área lida com dados sensíveis, sistemas críticos e assimetria de conhecimento em relação ao usuário — o que amplia a responsabilidade.</p><p><b>Princípios centrais:</b> privacidade e proteção de dados (LGPD), confidencialidade, integridade profissional, honestidade sobre limites e riscos técnicos, respeito à propriedade intelectual, não causar dano, transparência sobre o funcionamento dos sistemas e responsabilidade social pelo impacto do que se constrói.</p><p><b>Dilemas típicos:</b> usar dados coletados para uma finalidade em outra; entregar um sistema sabidamente inseguro por pressão de prazo; ocultar uma vulnerabilidade descoberta; desenvolver algoritmos que reproduzem vieses discriminatórios; monitorar usuários além do necessário.</p><p><b>Ética empresarial</b> vai além do cumprimento da lei: envolve códigos de conduta, canais de denúncia, governança, compliance e a coerência entre o discurso e a prática da organização.</p><p><b>Data Storytelling</b> — a arte de comunicar dados por meio de uma narrativa, para que a informação seja compreendida e gere ação. Combina <b>três elementos</b>:</p><ul><li><b>Dados</b> — a base analítica confiável</li><li><b>Visualização</b> — gráficos e recursos visuais que revelam o padrão</li><li><b>Narrativa</b> — o fio condutor que dá contexto, explica o porquê e leva a uma conclusão</li></ul><p><b>Por que importa:</b> dados sozinhos não convencem nem são lembrados; a narrativa é o que dá sentido e memória à informação. Um bom data storytelling tem <b>público definido</b>, uma <b>mensagem central</b> clara, contexto (com o que se compara?), o gráfico adequado ao tipo de dado e uma <b>chamada à ação</b>.</p><p><b>Erros comuns:</b> excesso de informação na mesma tela, gráfico inadequado ao dado, escalas distorcidas que exageram diferenças, ausência de contexto e conclusões que os dados não sustentam.</p>"
+  }
+ ],
+ "colas": [
+  {
+   "titulo": "Saussure x Peirce",
+   "mnemonico": "Mnemônico: SAUSSURE tem DOIS (significante + significado). PEIRCE tem TRÊS (ícone, índice, símbolo).",
+   "pontos": [
+    "Saussure (1857-1913): signo = SIGNIFICANTE (forma) + SIGNIFICADO (conceito).",
+    "Peirce (1839-1914): ÍCONE = semelhança (foto). ÍNDICE = causa/efeito (fumaça → fogo).",
+    "SÍMBOLO = convenção arbitrária (bandeira, palavra, sinal de trânsito).",
+    "Dondis: a percepção visual ocorre primeiro GLOBALMENTE e depois nas partes."
+   ]
+  },
+  {
+   "titulo": "Verbal, não verbal e sincrética",
+   "mnemonico": "Mnemônico: verbal usa PALAVRA; não verbal NÃO usa; sincrética MISTURA as duas.",
+   "pontos": [
+    "Verbal: oral (fala, entonação) e escrita (letras, tipografia). Onomatopeia imita som.",
+    "Não verbal: gestual (Libras, mímica, expressão facial), visual (foto, placa, mapa), corporal (dança, cinema mudo).",
+    "PEGADINHA: escrita textual NÃO é linguagem não verbal.",
+    "Libras é língua gestual NORMATIVA, com sinais e GRAMÁTICA — não é mímica.",
+    "Sincrética: cinema, quadrinhos, publicidade. Gutenberg popularizou a escrita."
+   ]
+  },
+  {
+   "titulo": "Os três estilos de comunicação",
+   "mnemonico": "Mnemônico: PASSIVA se cala, AGRESSIVA atropela, ASSERTIVA fala claro e com respeito.",
+   "pontos": [
+    "Assertiva: expressa pensamentos, sentimentos e necessidades de forma clara e RESPEITOSA.",
+    "Assertiva contribui para: resolução de conflitos, clareza de objetivos e relacionamentos fortes.",
+    "Fundamentos: clareza, ESCUTA ATIVA, FEEDBACK e contexto.",
+    "Sem feedback não há comunicação interpessoal — é monólogo.",
+    "CNV (Rosenberg): Observação → Sentimento → Necessidade → Pedido."
+   ]
+  },
+  {
+   "titulo": "Soft skills x hard skills (PMBOK)",
+   "mnemonico": "Mnemônico: se dá para medir em certificado, é HARD. Se é sobre gente, é SOFT.",
+   "pontos": [
+    "Soft skills: aprendizados SUBJETIVOS ligados ao comportamento humano.",
+    "As do PMBOK: liderança, desenvolvimento de equipe, motivação, comunicação, influência, decisão, negociação, coaching, confiança, gestão de conflitos, conhecimento político e cultural.",
+    "PEGADINHA: programação de sistemas NÃO é habilidade interpessoal.",
+    "Sucesso do projeto depende diretamente da MOTIVAÇÃO/comprometimento da equipe."
+   ]
+  },
+  {
+   "titulo": "Processo decisório em 5 etapas",
+   "mnemonico": "Mnemônico: Definir → Criar → Escolher → Planejar → Avaliar.",
+   "pontos": [
+    "1 Definição do problema: explorar, esclarecer, definir.",
+    "2 Criação da solução: brainstorming, EVITAR decisão prematura.",
+    "3 Ideias para ação: definir critérios, pesar prós e contras, escolher.",
+    "4 Planejamento da ação: envolver participantes para ganhar ACEITAÇÃO e COMPROMISSO.",
+    "5 Avaliação: analisar resultados e registrar lições aprendidas.",
+    "Fatores do estilo de decisão: tempo, qualidade, confiança e aceitação."
+   ]
+  },
+  {
+   "titulo": "As 3 competências do gerente eficaz",
+   "mnemonico": "Mnemônico: TÉCNICA + INTERPESSOAL + CONCEITUAL, equilibradas. Só técnica não sustenta projeto.",
+   "pontos": [
+    "Técnicas: conhecimento do domínio. Interpessoais: comunicação, motivação, negociação.",
+    "Conceituais: visão estratégica e análise de situações.",
+    "Liderança situacional: adapta o estilo à MATURIDADE de cada liderado.",
+    "Influência: compartilhar poder e liderar pelo EXEMPLO — não impor sem explicar.",
+    "Goleman: autoconsciência, autorregulação, motivação, EMPATIA e habilidades sociais."
+   ]
+  },
+  {
+   "titulo": "Data Storytelling",
+   "mnemonico": "Mnemônico: DADO + VISUALIZAÇÃO + NARRATIVA. Falta um dos três e não convence.",
+   "pontos": [
+    "Dados sozinhos não convencem nem são lembrados — a narrativa dá sentido e memória.",
+    "Bom storytelling: público definido, mensagem central, contexto, gráfico adequado e chamada à ação.",
+    "Erros: excesso de informação, gráfico errado, escala distorcida, conclusão sem lastro nos dados."
+   ]
+  }
+ ],
+ "flashcards": [
+  {
+   "tema": "Semiótica: Linguagem Verbal e Não Verbal",
+   "p": "O que estuda a Semiótica?",
+   "r": "É a ciência dos signos e dos sistemas de comunicação: estuda a linguagem verbal e a não verbal, sendo a base para compreender a comunicação humana. A Linguística, por sua vez, ocupa-se especificamente da linguagem verbal."
+  },
+  {
+   "tema": "Semiótica: Linguagem Verbal e Não Verbal",
+   "p": "Qual a principal diferença entre linguagem verbal e não verbal?",
+   "r": "A verbal utiliza palavras; a não verbal não utiliza palavras, comunicando por signos visuais, gestuais e corporais."
+  },
+  {
+   "tema": "Semiótica: Linguagem Verbal e Não Verbal",
+   "p": "Segundo Saussure, de que é composto o signo linguístico?",
+   "r": "De significante (a forma, a imagem acústica) e significado (o conceito). A relação entre os dois é arbitrária."
+  },
+  {
+   "tema": "Semiótica: Linguagem Verbal e Não Verbal",
+   "p": "Quais são os três tipos de signo na tricotomia de Peirce?",
+   "r": "Ícone (semelhança com o objeto — uma foto), índice (relação de causa e efeito ou contiguidade — fumaça indica fogo) e símbolo (convenção arbitrária — a bandeira, a palavra)."
+  },
+  {
+   "tema": "Semiótica: Linguagem Verbal e Não Verbal",
+   "p": "O que caracteriza a Libras?",
+   "r": "É uma linguagem gestual normativa, com sinais e gramática própria — uma língua completa, e não mímica ou um sistema de símbolos inventados."
+  },
+  {
+   "tema": "Semiótica: Linguagem Verbal e Não Verbal",
+   "p": "O que são onomatopeias?",
+   "r": "Palavras que imitam sons — tic-tac, buáá, plim. Fazem parte da linguagem verbal escrita ou falada."
+  },
+  {
+   "tema": "Semiótica: Linguagem Verbal e Não Verbal",
+   "p": "O que é linguagem sincrética?",
+   "r": "A que mistura linguagem verbal e não verbal no mesmo enunciado. O cinema é o exemplo clássico, combinando imagem, som, música, diálogo e texto; quadrinhos e publicidade também."
+  },
+  {
+   "tema": "Semiótica: Linguagem Verbal e Não Verbal",
+   "p": "Qual invenção contribuiu para a popularização da escrita e a disseminação da informação?",
+   "r": "A imprensa de Gutenberg, com os tipos móveis, que tornou possível reproduzir textos em massa."
+  },
+  {
+   "tema": "Semiótica: Linguagem Verbal e Não Verbal",
+   "p": "Segundo Dondis, qual o princípio básico da linguagem visual?",
+   "r": "A percepção ocorre primeiro globalmente e depois nas partes — capta-se o todo antes de decompor nos detalhes."
+  },
+  {
+   "tema": "Semiótica: Linguagem Verbal e Não Verbal",
+   "p": "Cite exemplos de linguagens digitais e o que elas combinam.",
+   "r": "Emojis (ícones com significado), hipertextos (escrita não linear, com links) e redes sociais, que combinam elementos verbais e não verbais no mesmo espaço."
+  },
+  {
+   "tema": "Comunicação Interpessoal",
+   "p": "O que é comunicação interpessoal?",
+   "r": "A troca de informações entre duas ou mais pessoas, com interação e feedback. Mensagem enviada sem resposta ou palestra unidirecional não configuram comunicação interpessoal."
+  },
+  {
+   "tema": "Comunicação Interpessoal",
+   "p": "Quais são os fundamentos da comunicação interpessoal?",
+   "r": "Clareza (mensagem sem ambiguidades), escuta ativa (atenção, compreensão e interpretação), feedback (confirmação de entendimento) e contexto (ambiente, cultura e situação)."
+  },
+  {
+   "tema": "Comunicação Interpessoal",
+   "p": "O que caracteriza a comunicação assertiva?",
+   "r": "Expressar pensamentos, sentimentos e necessidades de forma clara e respeitosa — sem a omissão da postura passiva nem a imposição da agressiva."
+  },
+  {
+   "tema": "Comunicação Interpessoal",
+   "p": "Para que contribui a comunicação assertiva?",
+   "r": "Para a resolução de conflitos, a clareza de objetivos e o fortalecimento dos relacionamentos — e, em projetos, para o engajamento da equipe."
+  },
+  {
+   "tema": "Comunicação Interpessoal",
+   "p": "O que significa diversidade linguística?",
+   "r": "Reconhecer e valorizar diferentes formas de expressão verbal e não verbal — variedades regionais, dialetos, gírias e registros. Não significa exigir apenas a norma padrão."
+  },
+  {
+   "tema": "Comunicação Interpessoal",
+   "p": "Como a diversidade linguística influencia a comunicação em equipes?",
+   "r": "Permite compreender diferentes culturas, contextos e formas de expressão, impactando diretamente a compreensão mútua e a inclusão — especialmente em equipes multiculturais."
+  },
+  {
+   "tema": "Comunicação Interpessoal",
+   "p": "Quais são os quatro componentes da Comunicação Não Violenta?",
+   "r": "Observação (descrever o fato sem julgamento), sentimento (nomear o que se sente), necessidade (identificar a necessidade por trás) e pedido (formular um pedido claro e realizável, não uma exigência)."
+  },
+  {
+   "tema": "Comunicação Interpessoal",
+   "p": "Em que a comunicação não verbal pesa no ambiente de trabalho?",
+   "r": "Postura, contato visual, expressões faciais, tom de voz e uso do espaço comunicam muitas vezes mais que as palavras — e havendo contradição entre verbal e não verbal, as pessoas tendem a acreditar no não verbal."
+  },
+  {
+   "tema": "Habilidades Interpessoais no PMBOK",
+   "p": "O que são habilidades interpessoais segundo o PMBOK?",
+   "r": "Características que facilitam o relacionamento entre pessoas para gerar resultados eficazes — as chamadas soft skills, aprendizados subjetivos ligados ao comportamento humano."
+  },
+  {
+   "tema": "Habilidades Interpessoais no PMBOK",
+   "p": "Qual a diferença entre soft skills e hard skills?",
+   "r": "Soft skills são aprendizados subjetivos ligados ao comportamento humano (comunicação, liderança, empatia). Hard skills são competências técnicas mensuráveis (programação, uso de ferramentas, domínio de normas)."
+  },
+  {
+   "tema": "Habilidades Interpessoais no PMBOK",
+   "p": "Cite as principais habilidades interpessoais listadas no PMBOK.",
+   "r": "Liderança, desenvolvimento de equipe, motivação, comunicação, influência, processo decisório, negociação, coaching, construção de confiança, gestão de conflitos e conhecimento político e cultural."
+  },
+  {
+   "tema": "Habilidades Interpessoais no PMBOK",
+   "p": "O que caracteriza a liderança em projetos?",
+   "r": "Concentrar os esforços do grupo na direção de um objetivo comum, motivando e habilitando a equipe — executando por meio de outros, e não trabalhando sozinho nem delegando sem acompanhar."
+  },
+  {
+   "tema": "Habilidades Interpessoais no PMBOK",
+   "p": "Qual a função principal do desenvolvimento de equipe?",
+   "r": "Ajudar o grupo a trabalhar junto: estabelecer objetivos, definir e negociar papéis e procedimentos, e promover a colaboração."
+  },
+  {
+   "tema": "Habilidades Interpessoais no PMBOK",
+   "p": "De qual habilidade interpessoal o sucesso geral do projeto depende diretamente?",
+   "r": "Da motivação da equipe — é o comprometimento das pessoas que sustenta a entrega. Fatores valorizados: satisfação, desafios, realização, crescimento e compensação."
+  },
+  {
+   "tema": "Habilidades Interpessoais no PMBOK",
+   "p": "A que o gerente deve estar atento para uma comunicação eficaz?",
+   "r": "A estilos de comunicação, questões culturais, relacionamentos, personalidades e contexto — não apenas às instruções escritas ou ao cronograma."
+  },
+  {
+   "tema": "Habilidades Interpessoais no PMBOK",
+   "p": "Quais são as cinco etapas do processo decisório?",
+   "r": "Definição do problema, criação da solução, ideias para ação, planejamento da ação e avaliação do resultado."
+  },
+  {
+   "tema": "Habilidades Interpessoais no PMBOK",
+   "p": "Quais fatores afetam o estilo de decisão em projetos?",
+   "r": "Tempo disponível, qualidade exigida, confiança da equipe e nível de aceitação necessário para a decisão."
+  },
+  {
+   "tema": "Habilidades Interpessoais no PMBOK",
+   "p": "O que significa influência no contexto da liderança?",
+   "r": "Compartilhar poder e estimular a cooperação para atingir objetivos, liderando pelo exemplo e explicando as decisões — e não impondo regras sem explicação."
+  },
+  {
+   "tema": "Liderança em Contextos Organizacionais",
+   "p": "Quais são as três dimensões de competência de um gerente de projetos eficaz?",
+   "r": "Técnicas (conhecimento do domínio), interpessoais (comunicação, motivação, negociação, liderança) e conceituais (visão estratégica e análise de situações) — equilibradas."
+  },
+  {
+   "tema": "Liderança em Contextos Organizacionais",
+   "p": "O que envolve o desenvolvimento de equipe?",
+   "r": "Estabelecer objetivos claros, definir e negociar papéis e responsabilidades, obter apoio da alta administração, oferecer recompensas e reconhecimento, e construir confiança e comunicação aberta."
+  },
+  {
+   "tema": "Liderança em Contextos Organizacionais",
+   "p": "Diferencie liderança autoritária, democrática e liberal.",
+   "r": "Autoritária: o líder decide sozinho — rápida, útil em crise, desmotiva no longo prazo. Democrática: decide com a equipe — mais lenta, gera comprometimento. Liberal (laissez-faire): delega amplamente — funciona com equipes maduras, vira omissão com inexperientes."
+  },
+  {
+   "tema": "Liderança em Contextos Organizacionais",
+   "p": "O que caracteriza a liderança situacional?",
+   "r": "O líder adapta seu estilo ao nível de maturidade e competência de cada liderado para cada tarefa específica — não existe estilo certo universal."
+  },
+  {
+   "tema": "Liderança em Contextos Organizacionais",
+   "p": "O que é liderança autêntica?",
+   "r": "A que se apoia em autoconhecimento, transparência relacional, processamento equilibrado da informação e perspectiva moral internalizada. É a construção contemporânea mais estudada na literatura de liderança."
+  },
+  {
+   "tema": "Liderança em Contextos Organizacionais",
+   "p": "Quais são os componentes da inteligência emocional segundo Goleman?",
+   "r": "Autoconsciência, autorregulação, motivação, empatia e habilidades sociais. São eles que permitem ao líder perceber o clima da equipe e agir antes que o conflito escale."
+  },
+  {
+   "tema": "Ética Profissional e Data Storytelling",
+   "p": "Por que a responsabilidade ética do profissional de informática é ampliada?",
+   "r": "Porque ele lida com dados sensíveis, sistemas críticos e uma forte assimetria de conhecimento em relação ao usuário — que não tem como avaliar sozinho os riscos do que usa."
+  },
+  {
+   "tema": "Ética Profissional e Data Storytelling",
+   "p": "Cite dilemas éticos típicos da área de tecnologia.",
+   "r": "Usar dados coletados para uma finalidade em outra; entregar sistema sabidamente inseguro por pressão de prazo; ocultar vulnerabilidade descoberta; construir algoritmos que reproduzem vieses; monitorar usuários além do necessário."
+  },
+  {
+   "tema": "Ética Profissional e Data Storytelling",
+   "p": "O que é Data Storytelling?",
+   "r": "A comunicação de dados por meio de uma narrativa, para que a informação seja compreendida e gere ação. Combina três elementos: dados, visualização e narrativa."
+  },
+  {
+   "tema": "Ética Profissional e Data Storytelling",
+   "p": "Por que a narrativa é essencial no Data Storytelling?",
+   "r": "Porque dados sozinhos não convencem nem são lembrados. A narrativa dá contexto, explica o porquê, conduz a uma conclusão e torna a informação memorável."
+  },
+  {
+   "tema": "Ética Profissional e Data Storytelling",
+   "p": "O que caracteriza um bom Data Storytelling?",
+   "r": "Público definido, uma mensagem central clara, contexto para comparação, o gráfico adequado ao tipo de dado e uma chamada à ação."
+  },
+  {
+   "tema": "Ética Profissional e Data Storytelling",
+   "p": "Quais são os erros mais comuns em Data Storytelling?",
+   "r": "Excesso de informação na mesma tela, gráfico inadequado ao dado, escalas distorcidas que exageram diferenças, ausência de contexto e conclusões que os dados não sustentam."
+  }
+ ],
+ "questoes": [
+  {
+   "tema": "Semiótica: Linguagem Verbal e Não Verbal",
+   "q": "Qual é a principal diferença entre linguagem verbal e não verbal?",
+   "op": [
+    "A verbal utiliza palavras; a não verbal não utiliza palavras",
+    "A verbal é apenas oral; a não verbal é apenas escrita",
+    "A verbal não possui regras; a não verbal possui normas rígidas",
+    "A verbal é exclusiva da escrita; a não verbal é exclusiva da fala"
+   ],
+   "r": 0,
+   "exp": "O critério é a presença ou ausência da palavra. A linguagem verbal tem duas formas — oral e escrita — e ambas usam palavras."
+  },
+  {
+   "tema": "Semiótica: Linguagem Verbal e Não Verbal",
+   "q": "De acordo com Saussure, o signo linguístico é composto por:",
+   "op": [
+    "Significado e significante",
+    "Significado e referência",
+    "Significante e significação",
+    "Signo e símbolo"
+   ],
+   "r": 0,
+   "exp": "Saussure define o signo como a união do significante (a forma, a imagem acústica) com o significado (o conceito), numa relação arbitrária."
+  },
+  {
+   "tema": "Semiótica: Linguagem Verbal e Não Verbal",
+   "q": "A linguagem não verbal pode incluir todas as formas a seguir, EXCETO:",
+   "op": [
+    "Escrita textual",
+    "Expressões faciais",
+    "Gestos e mímicas",
+    "Linguagem visual (fotografia, pintura, cinema)"
+   ],
+   "r": 0,
+   "exp": "A escrita textual utiliza palavras e é, portanto, linguagem VERBAL — na sua forma escrita. É a pegadinha clássica dessa questão."
+  },
+  {
+   "tema": "Semiótica: Linguagem Verbal e Não Verbal",
+   "q": "O que caracteriza a Libras (Língua Brasileira de Sinais)?",
+   "op": [
+    "É uma linguagem visual sem regras",
+    "É uma linguagem gestual normativa, com sinais e gramática",
+    "É apenas uma forma de mímica para surdos",
+    "É um sistema de símbolos inventados"
+   ],
+   "r": 1,
+   "exp": "Libras é uma língua completa, com léxico e gramática próprios — não é mímica nem transcrição gestual do português."
+  },
+  {
+   "tema": "Semiótica: Linguagem Verbal e Não Verbal",
+   "q": "Qual invenção contribuiu para a popularização da escrita e a disseminação de informações?",
+   "op": [
+    "Computador",
+    "Telefone",
+    "Imprensa de Gutenberg",
+    "Cinema mudo"
+   ],
+   "r": 2,
+   "exp": "Os tipos móveis de Gutenberg permitiram a reprodução em massa de textos, transformando o acesso à informação escrita."
+  },
+  {
+   "tema": "Semiótica: Linguagem Verbal e Não Verbal",
+   "q": "O cinema mudo é considerado uma linguagem:",
+   "op": [
+    "Apenas verbal",
+    "Apenas visual",
+    "Exclusivamente oral",
+    "Sincrética (mistura de verbal e não verbal)"
+   ],
+   "r": 3,
+   "exp": "Mesmo sem som, o cinema mudo combina imagem em movimento, expressão corporal e cartelas de texto — misturando verbal e não verbal."
+  },
+  {
+   "tema": "Semiótica: Linguagem Verbal e Não Verbal",
+   "q": "Qual é o princípio básico da linguagem visual, segundo Dondis?",
+   "op": [
+    "Utiliza palavras para comunicar",
+    "Sempre segue uma sequência linear",
+    "A percepção ocorre primeiro globalmente e depois nas partes",
+    "Não tem função comunicativa"
+   ],
+   "r": 2,
+   "exp": "O olhar capta primeiro o conjunto e só então decompõe nos elementos — por isso a composição geral pesa mais que o detalhe isolado."
+  },
+  {
+   "tema": "Semiótica: Linguagem Verbal e Não Verbal",
+   "q": "O que são onomatopeias?",
+   "op": [
+    "Palavras que imitam sons",
+    "Símbolos não verbais",
+    "Ideogramas chineses",
+    "Elementos exclusivos da linguagem escrita"
+   ],
+   "r": 0,
+   "exp": "Tic-tac, buáá, plim — são palavras que reproduzem sons, e integram a linguagem verbal."
+  },
+  {
+   "tema": "Semiótica: Linguagem Verbal e Não Verbal",
+   "q": "Na tricotomia de Peirce, a fumaça que indica fogo é um exemplo de:",
+   "op": [
+    "Ícone",
+    "Índice",
+    "Símbolo",
+    "Significante"
+   ],
+   "r": 1,
+   "exp": "O índice mantém relação de causa e efeito ou contiguidade com o objeto. O ícone se baseia em semelhança (foto); o símbolo, em convenção (bandeira)."
+  },
+  {
+   "tema": "Comunicação Interpessoal",
+   "q": "O que é comunicação interpessoal?",
+   "op": [
+    "Comunicação apenas entre computadores",
+    "Troca de informações entre duas ou mais pessoas, com interação e feedback",
+    "Mensagens enviadas por e-mail sem resposta",
+    "Somente palestras e apresentações públicas"
+   ],
+   "r": 1,
+   "exp": "A interação e o feedback são o que distinguem a comunicação interpessoal da transmissão unidirecional de mensagens."
+  },
+  {
+   "tema": "Comunicação Interpessoal",
+   "q": "A comunicação assertiva é caracterizada por:",
+   "op": [
+    "Ignorar a opinião dos outros",
+    "Evitar conflitos a qualquer custo",
+    "Ser passivo diante de críticas",
+    "Expressar pensamentos, sentimentos e necessidades de forma clara e respeitosa"
+   ],
+   "r": 3,
+   "exp": "A assertividade fica entre a passividade (que se cala) e a agressividade (que atropela): ela se posiciona com clareza sem desrespeitar o outro."
+  },
+  {
+   "tema": "Comunicação Interpessoal",
+   "q": "Diversidade linguística significa:",
+   "op": [
+    "Reconhecer e valorizar diferentes formas de expressão verbal e não verbal",
+    "Usar somente a língua padrão",
+    "Traduzir textos técnicos automaticamente",
+    "Ensinar apenas uma forma de escrita correta"
+   ],
+   "r": 0,
+   "exp": "Envolve variedades regionais, dialetos, gírias, registros e linguagem não verbal — o que impacta compreensão mútua e inclusão."
+  },
+  {
+   "tema": "Comunicação Interpessoal",
+   "q": "Um dos fundamentos da comunicação interpessoal é:",
+   "op": [
+    "Monólogo constante do emissor",
+    "Uso exclusivo de linguagem escrita",
+    "Comunicação sem considerar o contexto",
+    "Feedback entre emissor e receptor"
+   ],
+   "r": 3,
+   "exp": "Sem feedback não há confirmação de entendimento — e a comunicação permanece incompleta. Os demais fundamentos são clareza, escuta ativa e contexto."
+  },
+  {
+   "tema": "Comunicação Interpessoal",
+   "q": "Quais habilidades fortalecem a comunicação interpessoal?",
+   "op": [
+    "Escuta ativa, empatia e clareza",
+    "Somente conhecimento técnico",
+    "Autoridade e imposição",
+    "Uso de jargões complexos"
+   ],
+   "r": 0,
+   "exp": "Escuta ativa é atenção, compreensão e interpretação — não apenas esperar a vez de falar. Jargão e imposição, ao contrário, criam barreiras."
+  },
+  {
+   "tema": "Comunicação Interpessoal",
+   "q": "A comunicação assertiva contribui para:",
+   "op": [
+    "Evitar responsabilidades",
+    "Manter silêncio em reuniões",
+    "Reduzir o trabalho em equipe",
+    "Resolução de conflitos, clareza de objetivos e fortalecimento de relacionamentos"
+   ],
+   "r": 3,
+   "exp": "Ao permitir que divergências sejam explicitadas com respeito, a assertividade resolve o conflito em vez de deixá-lo apodrecer."
+  },
+  {
+   "tema": "Comunicação Interpessoal",
+   "q": "Os quatro componentes da Comunicação Não Violenta são:",
+   "op": [
+    "Escuta, silêncio, resposta e acordo",
+    "Empatia, autoridade, clareza e firmeza",
+    "Observação, sentimento, necessidade e pedido",
+    "Emissor, receptor, mensagem e canal"
+   ],
+   "r": 2,
+   "exp": "O modelo de Marshall Rosenberg: descrever o fato sem julgamento, nomear o sentimento, identificar a necessidade e formular um pedido claro — não uma exigência."
+  },
+  {
+   "tema": "Habilidades Interpessoais no PMBOK",
+   "q": "O que são habilidades interpessoais no contexto do PMBOK?",
+   "op": [
+    "Competências técnicas específicas de cada área",
+    "Apenas o conhecimento sobre ferramentas de gestão",
+    "Habilidades relacionadas exclusivamente à liderança",
+    "Características que facilitam o relacionamento entre pessoas para gerar resultados eficazes"
+   ],
+   "r": 3,
+   "exp": "São as soft skills. Elas não se restringem à liderança: incluem comunicação, negociação, motivação, gestão de conflitos e outras."
+  },
+  {
+   "tema": "Habilidades Interpessoais no PMBOK",
+   "q": "Soft skills podem ser definidas como:",
+   "op": [
+    "Habilidades técnicas e operacionais",
+    "Aprendizados subjetivos relacionados ao comportamento humano",
+    "Regras formais de processos",
+    "Ferramentas de controle de projetos"
+   ],
+   "r": 1,
+   "exp": "As técnicas e operacionais são as hard skills, mensuráveis e certificáveis. As soft skills são subjetivas e ligadas ao comportamento."
+  },
+  {
+   "tema": "Habilidades Interpessoais no PMBOK",
+   "q": "Qual destas NÃO é considerada uma habilidade interpessoal essencial ao gerente de projetos segundo o PMBOK?",
+   "op": [
+    "Liderança",
+    "Comunicação",
+    "Programação de sistemas",
+    "Gerenciamento de conflitos"
+   ],
+   "r": 2,
+   "exp": "Programação é hard skill — competência técnica. As demais são habilidades interpessoais listadas no PMBOK."
+  },
+  {
+   "tema": "Habilidades Interpessoais no PMBOK",
+   "q": "O que caracteriza a liderança em projetos?",
+   "op": [
+    "Delegar tarefas sem acompanhar a equipe",
+    "Trabalhar sozinho para garantir a execução das atividades",
+    "Estabelecer regras rígidas sem flexibilidade",
+    "Concentrar os esforços do grupo na direção de um objetivo comum, motivando e habilitando a equipe"
+   ],
+   "r": 3,
+   "exp": "Liderar é executar por meio de outros: dar direção, motivar e capacitar — nem fazer tudo sozinho, nem largar a equipe sem acompanhamento."
+  },
+  {
+   "tema": "Habilidades Interpessoais no PMBOK",
+   "q": "Qual é a principal função do desenvolvimento de equipe?",
+   "op": [
+    "Organizar os documentos do projeto",
+    "Ajudar o grupo a trabalhar junto, estabelecendo objetivos e definindo papéis",
+    "Criar gráficos de controle",
+    "Focar apenas na execução individual das tarefas"
+   ],
+   "r": 1,
+   "exp": "Desenvolvimento de equipe é sobre fazer o grupo funcionar como grupo: objetivos comuns, papéis negociados e procedimentos acordados."
+  },
+  {
+   "tema": "Habilidades Interpessoais no PMBOK",
+   "q": "O sucesso geral de um projeto depende diretamente de qual habilidade interpessoal?",
+   "op": [
+    "Conhecimento técnico",
+    "Ferramentas de software",
+    "Motivação da equipe",
+    "Controle de custos"
+   ],
+   "r": 2,
+   "exp": "É o comprometimento das pessoas que sustenta a entrega. Fatores valorizados pela equipe: satisfação, desafios, realização, crescimento e compensação."
+  },
+  {
+   "tema": "Habilidades Interpessoais no PMBOK",
+   "q": "Para uma comunicação eficaz, o gerente de projeto deve estar atento a:",
+   "op": [
+    "Apenas às instruções escritas",
+    "Somente ao cronograma e aos prazos",
+    "Estilos de comunicação, questões culturais, relacionamentos, personalidades e contexto",
+    "Ferramentas de comunicação digitais"
+   ],
+   "r": 2,
+   "exp": "A eficácia da comunicação depende de adequar a mensagem ao interlocutor e à situação — a ferramenta é apenas o canal."
+  },
+  {
+   "tema": "Habilidades Interpessoais no PMBOK",
+   "q": "Quais são os fatores que afetam o estilo de decisão em projetos?",
+   "op": [
+    "Apenas recursos financeiros",
+    "Tempo, qualidade, confiança e aceitação",
+    "Apenas pressão da alta administração",
+    "Ferramentas técnicas de planejamento"
+   ],
+   "r": 1,
+   "exp": "Uma decisão urgente admite estilo mais diretivo; uma que exige adesão da equipe pede participação. Confiança e qualidade exigida completam o quadro."
+  },
+  {
+   "tema": "Habilidades Interpessoais no PMBOK",
+   "q": "Na etapa de criação da solução do processo decisório, o que se deve evitar?",
+   "op": [
+    "Envolver a equipe na geração de ideias",
+    "Tomar decisões prematuras antes de gerar alternativas suficientes",
+    "Utilizar brainstorming",
+    "Registrar todas as ideias levantadas"
+   ],
+   "r": 1,
+   "exp": "A etapa existe justamente para prolongar a geração de alternativas. Decidir cedo demais fecha o leque antes que a melhor solução apareça."
+  },
+  {
+   "tema": "Liderança em Contextos Organizacionais",
+   "q": "O que caracteriza um gerente de projetos eficaz?",
+   "op": [
+    "Ter conhecimento técnico apenas",
+    "Ser autoritário e centralizador",
+    "Delegar todas as decisões sem acompanhamento",
+    "Equilibrar habilidades técnicas, interpessoais e conceituais"
+   ],
+   "r": 3,
+   "exp": "Só a técnica não sustenta um projeto, e só a habilidade interpessoal não resolve os problemas do domínio. As conceituais dão a visão do todo."
+  },
+  {
+   "tema": "Liderança em Contextos Organizacionais",
+   "q": "A liderança em projetos envolve principalmente:",
+   "op": [
+    "Controle rígido de tarefas e prazos",
+    "Evitar o contato com a equipe",
+    "Concentração dos esforços de um grupo na direção de um objetivo comum",
+    "Comunicação apenas por relatórios"
+   ],
+   "r": 2,
+   "exp": "Liderança é direção e mobilização, não controle. O controle é uma função de gestão, complementar mas distinta."
+  },
+  {
+   "tema": "Liderança em Contextos Organizacionais",
+   "q": "O desenvolvimento da equipe envolve:",
+   "op": [
+    "Substituir membros que não entregam tarefas",
+    "Controlar rigidamente os horários de todos",
+    "Evitar interações com a liderança",
+    "Estabelecer objetivos, definir papéis e negociar procedimentos"
+   ],
+   "r": 3,
+   "exp": "Inclui ainda apoio da alta administração, recompensas e reconhecimento, e a construção de confiança e comunicação aberta."
+  },
+  {
+   "tema": "Liderança em Contextos Organizacionais",
+   "q": "O que significa influência do líder sobre a equipe?",
+   "op": [
+    "Compartilhar poder e estimular a cooperação para atingir objetivos",
+    "Imposição de regras sem explicação",
+    "Ignorar a opinião dos membros da equipe",
+    "Focar somente em resultados financeiros"
+   ],
+   "r": 0,
+   "exp": "Influenciar é liderar pelo exemplo, explicar decisões e manter estilo flexível — o oposto de impor pela autoridade formal."
+  },
+  {
+   "tema": "Liderança em Contextos Organizacionais",
+   "q": "O que caracteriza a liderança situacional?",
+   "op": [
+    "Manter sempre o mesmo estilo, por coerência",
+    "Decidir sempre por votação da equipe",
+    "Delegar integralmente e não acompanhar",
+    "Adaptar o estilo ao nível de maturidade e competência de cada liderado"
+   ],
+   "r": 3,
+   "exp": "Com um liderado novato o líder é mais diretivo; com um experiente, mais delegador. Não existe estilo certo universal."
+  },
+  {
+   "tema": "Liderança em Contextos Organizacionais",
+   "q": "Segundo Goleman, quais são os componentes da inteligência emocional?",
+   "op": [
+    "Planejamento, execução, controle, avaliação e encerramento",
+    "Técnica, tática, estratégia e operação",
+    "Autoconsciência, autorregulação, motivação, empatia e habilidades sociais",
+    "Autoridade, hierarquia, disciplina e ordem"
+   ],
+   "r": 2,
+   "exp": "São eles que permitem ao líder perceber o próprio estado e o clima da equipe, ajustando sua atuação antes que o conflito escale."
+  },
+  {
+   "tema": "Ética Profissional e Data Storytelling",
+   "q": "Por que a responsabilidade ética do profissional de informática é considerada ampliada?",
+   "op": [
+    "Porque a profissão é regulamentada por conselho próprio",
+    "Porque lida com dados sensíveis, sistemas críticos e assimetria de conhecimento em relação ao usuário",
+    "Porque os salários da área são mais altos",
+    "Porque a tecnologia muda rapidamente"
+   ],
+   "r": 1,
+   "exp": "O usuário não tem como avaliar sozinho os riscos do sistema que usa — essa assimetria transfere ao profissional um dever maior de cuidado."
+  },
+  {
+   "tema": "Ética Profissional e Data Storytelling",
+   "q": "Qual destas situações caracteriza um dilema ético na área de tecnologia?",
+   "op": [
+    "Escolher entre duas linguagens de programação",
+    "Optar por metodologia ágil em vez de cascata",
+    "Usar dados coletados para uma finalidade em outra, sem consentimento",
+    "Definir a arquitetura do banco de dados"
+   ],
+   "r": 2,
+   "exp": "O desvio de finalidade viola o consentimento dado pelo titular e é vedado pela LGPD. As demais são decisões técnicas, não éticas."
+  },
+  {
+   "tema": "Ética Profissional e Data Storytelling",
+   "q": "O Data Storytelling combina quais três elementos?",
+   "op": [
+    "Dados, visualização e narrativa",
+    "Estatística, matemática e programação",
+    "Coleta, armazenamento e processamento",
+    "Gráficos, tabelas e planilhas"
+   ],
+   "r": 0,
+   "exp": "Dados dão a base analítica, a visualização revela o padrão e a narrativa dá contexto e conduz à conclusão. Faltando um dos três, a comunicação não convence."
+  },
+  {
+   "tema": "Ética Profissional e Data Storytelling",
+   "q": "Por que a narrativa é considerada essencial na comunicação de dados?",
+   "op": [
+    "Porque substitui a necessidade de análise estatística",
+    "Porque dados sozinhos não convencem nem são lembrados — a narrativa dá sentido e memória",
+    "Porque torna a apresentação mais longa e detalhada",
+    "Porque elimina a necessidade de gráficos"
+   ],
+   "r": 1,
+   "exp": "A narrativa fornece o contexto e o porquê, transformando números em uma conclusão acionável e memorável."
+  },
+  {
+   "tema": "Ética Profissional e Data Storytelling",
+   "q": "Qual destes é um erro comum em Data Storytelling?",
+   "op": [
+    "Usar escalas distorcidas que exageram diferenças",
+    "Definir claramente o público-alvo",
+    "Incluir uma chamada à ação",
+    "Escolher o gráfico adequado ao tipo de dado"
+   ],
+   "r": 0,
+   "exp": "Distorcer a escala induz a conclusões que os dados não sustentam — é uma falha técnica e também ética. Os demais itens são boas práticas."
+  }
+ ],
+ "discursivas": [
+  {
+   "tema": "Semiótica: Linguagem Verbal e Não Verbal",
+   "q": "Descreva a relação entre signos, linguagem verbal e não verbal, e explique como a Semiótica auxilia na compreensão da comunicação humana.",
+   "r": "O signo é a unidade básica de qualquer processo de significação: algo que está no lugar de outra coisa para alguém. Saussure descreveu o signo linguístico como a união de um significante — a forma, a imagem acústica ou visual — com um significado, o conceito evocado, numa relação arbitrária estabelecida por convenção social. Peirce ampliou essa noção para além da língua, propondo a tricotomia entre ícone, que significa por semelhança com o objeto, como uma fotografia; índice, que significa por relação de causa e efeito ou contiguidade, como a fumaça que indica fogo ou a pegada que indica quem passou; e símbolo, que significa por convenção arbitrária, como a bandeira, a palavra ou o sinal de trânsito. A linguagem verbal é o sistema de signos que utiliza palavras, manifestando-se na forma oral, apoiada na entonação e no ritmo, e na escrita, permanente e planejada. A linguagem não verbal comunica sem palavras, por signos gestuais, visuais e corporais — gestos, mímica, expressões faciais, Libras, fotografia, pintura, placas, mapas, dança e cinema mudo. As duas raramente aparecem isoladas: quando se combinam num mesmo enunciado, temos a linguagem sincrética, cujo exemplo mais completo é o cinema, que articula imagem, som, música, diálogo e texto. A Semiótica auxilia a compreender a comunicação humana justamente por não se limitar à palavra: enquanto a Linguística, surgida no século XX, estuda a linguagem verbal, a Semiótica oferece um instrumental para analisar signos em qualquer linguagem, permitindo entender por que uma imagem publicitária persuade, como um gesto contradiz uma fala, por que emojis funcionam como ícones no ambiente digital e como o hipertexto reorganiza a leitura de forma não linear. Ela dá, em suma, as ferramentas para ler criticamente todas as mensagens que nos cercam."
+  },
+  {
+   "tema": "Comunicação Interpessoal",
+   "q": "Explique a diferença entre comunicação assertiva, passiva e agressiva, dando exemplos práticos em um ambiente profissional.",
+   "r": "Os três estilos se distinguem pela forma como a pessoa lida simultaneamente com os próprios direitos e com os do interlocutor. Na comunicação passiva, o indivíduo deixa de expressar o que pensa, sente ou necessita, geralmente para evitar conflito ou desagradar. Em uma reunião de projeto, seria o desenvolvedor que percebe que o prazo é inviável e mesmo assim concorda em silêncio; o resultado imediato é a preservação da harmonia aparente, mas o custo é o atraso descoberto tarde demais, o acúmulo de ressentimento e a percepção, pela equipe, de que aquela pessoa não tem opinião. Na comunicação agressiva, a pessoa se expressa impondo sua posição e desconsiderando o outro, muitas vezes com ironia, elevação de voz ou ataque pessoal. Seria o gerente que, diante do mesmo prazo, responde que quem não consegue entregar deveria procurar outra área; ele obtém obediência imediata, mas destrói a confiança, inibe futuras informações desconfortáveis e transforma um problema técnico em conflito interpessoal. Na comunicação assertiva, a pessoa expressa pensamentos, sentimentos e necessidades de forma clara e respeitosa, defendendo sua posição sem desqualificar a do outro. Seria o mesmo desenvolvedor dizendo que, com o escopo atual e a equipe disponível, avalia o prazo como inviável, apresentando a estimativa que sustenta essa avaliação e propondo duas alternativas: reduzir o escopo desta entrega ou estender a data em duas semanas. A assertividade é o único dos três estilos que contribui efetivamente para a resolução de conflitos, a clareza de objetivos e o fortalecimento dos relacionamentos, porque coloca o problema real na mesa em tempo de ser resolvido e preserva a relação para as próximas conversas."
+  },
+  {
+   "tema": "Habilidades Interpessoais no PMBOK",
+   "q": "Explique a importância da inteligência emocional e da empatia no gerenciamento de projetos, e diferencie soft skills de hard skills.",
+   "r": "As hard skills são as competências técnicas e operacionais, objetivamente mensuráveis e geralmente certificáveis: programar em determinada linguagem, modelar um banco de dados, operar uma ferramenta de gestão, dominar uma norma. As soft skills são aprendizados subjetivos relacionados ao comportamento humano — comunicação, liderança, negociação, gestão de conflitos, empatia — e é justamente a elas que o PMBOK se refere ao tratar de habilidades interpessoais, definidas como características que facilitam o relacionamento entre pessoas para gerar resultados eficazes. A distinção importa porque um gerente de projetos eficaz não é aquele que domina apenas o lado técnico, mas o que equilibra três dimensões: técnicas, interpessoais e conceituais. A inteligência emocional, na formulação de Daniel Goleman, compreende autoconsciência, autorregulação, motivação, empatia e habilidades sociais, e é decisiva porque projetos são executados por meio de pessoas, sob pressão de prazo, custo e escopo. A autoconsciência permite ao gerente perceber quando sua própria ansiedade está contaminando a comunicação; a autorregulação evita que a pressão da alta administração seja simplesmente repassada à equipe como cobrança; a empatia permite reconhecer que a queda de produtividade de um membro pode ter causa que não aparece no relatório de status, e tratar a causa em vez do sintoma. Como o sucesso geral do projeto depende diretamente do comprometimento da equipe, e como os fatores mais valorizados pelas pessoas são satisfação, desafios, realização, crescimento e compensação, é a leitura emocional que permite ao líder acionar as alavancas certas com cada pessoa. Além disso, a empatia é o alicerce da escuta ativa e da comunicação assertiva, sem as quais conflitos que poderiam ser resolvidos na origem escalam até comprometer a entrega."
+  }
+ ]
+}

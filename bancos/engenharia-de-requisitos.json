@@ -1,0 +1,725 @@
+{
+ "id": "engenharia-de-requisitos",
+ "nome": "Engenharia de Requisitos",
+ "periodo": 2,
+ "cor": "#a855f7",
+ "sigla": "ER",
+ "resumos": [
+  {
+   "tema": "Fundamentos da Engenharia de Requisitos",
+   "html": "<p><b>Requisito</b> é uma condição ou capacidade que o sistema deve possuir para satisfazer uma necessidade do usuário ou atender a um contrato, norma ou especificação.</p><p><b>Por que importa:</b> erros de requisito são os <b>mais caros</b> de todo o ciclo de vida. Corrigir na fase de requisitos custa 1; corrigir em produção custa de 50 a 100 vezes mais. A maioria dos fracassos de projeto de software tem origem em requisitos mal levantados, incompletos ou mal comunicados — não em falha técnica.</p><p><b>As 5 atividades da engenharia de requisitos:</b></p><ol><li><b>Elicitação / levantamento</b> — descobrir as necessidades junto às partes interessadas</li><li><b>Análise e negociação</b> — entender, classificar, resolver conflitos e priorizar</li><li><b>Especificação / documentação</b> — registrar de forma clara e verificável</li><li><b>Validação</b> — confirmar com o cliente que o que foi escrito é o que ele precisa</li><li><b>Gerenciamento</b> — controlar mudanças e rastreabilidade ao longo do projeto</li></ol><p><b>Técnicas de elicitação:</b> entrevista (estruturada, semiestruturada ou aberta), questionário (alcança muita gente, mas não permite aprofundar), <b>observação/etnografia</b> (acompanhar o trabalho real — revela o que as pessoas fazem, não o que dizem que fazem), workshop/JAD, brainstorming, prototipagem, análise de documentos e sistemas legados, e <b>storytelling</b>.</p><p><b>Dificuldades clássicas:</b> o usuário não sabe exatamente o que quer; especialistas usam jargão próprio; stakeholders diferentes querem coisas conflitantes; requisitos mudam durante o projeto; e há muito <b>conhecimento tácito</b> — o que é óbvio demais para ser dito.</p>"
+  },
+  {
+   "tema": "Requisitos Funcionais e Não Funcionais",
+   "html": "<p><b>Requisito funcional (RF)</b> — <b>o que</b> o sistema deve <b>fazer</b>: as funções, serviços e comportamentos. Costuma ser escrito com verbo de ação: \"o sistema deve permitir o cadastro de sócios\", \"o sistema deve emitir o boleto mensal\".</p><p><b>Requisito não funcional (RNF)</b> — <b>como</b> o sistema deve se comportar: as qualidades e restrições. Não descreve uma função, mas um atributo dela ou do sistema todo.</p><p><b>Categorias de RNF:</b></p><ul><li><b>Desempenho</b> — tempo de resposta, vazão. \"A consulta deve responder em até 2 segundos.\"</li><li><b>Segurança</b> — autenticação, criptografia, controle de acesso, auditoria</li><li><b>Usabilidade</b> — facilidade de aprendizado e de uso</li><li><b>Confiabilidade / disponibilidade</b> — \"disponível 99,9% do tempo\"</li><li><b>Manutenibilidade</b>, <b>portabilidade</b>, <b>escalabilidade</b>, <b>interoperabilidade</b></li><li><b>Legais e de conformidade</b> — LGPD, normas do setor</li></ul><p><b>Cuidado clássico de prova:</b> os RNFs são frequentemente <b>mais críticos</b> que os funcionais. Um sistema que faz tudo o que deveria, mas leva cinco minutos para responder ou vaza dados, é inaceitável — o RNF pode inviabilizar o produto inteiro.</p><p><b>Regra de negócio</b> — uma política, restrição ou condição do <b>negócio</b>, que existe independentemente do software. \"O desconto de idoso é de 50%\", \"um sócio inadimplente há 3 meses é bloqueado.\" A regra de negócio <b>origina</b> requisitos, mas não se confunde com eles: ela vale mesmo que o processo seja feito em papel.</p><p><b>Qualidades de um bom requisito:</b> <b>completo</b>, <b>consistente</b> (não contradiz outro), <b>não ambíguo</b> (uma única interpretação possível), <b>verificável/testável</b> (dá para provar objetivamente que foi atendido), <b>rastreável</b> (sabe-se de onde veio e onde foi implementado), <b>viável</b> e <b>necessário</b>. Escrever \"o sistema deve ser rápido\" é ruim porque não é verificável; \"deve responder em até 2 segundos para 95% das requisições\" é bom.</p>"
+  },
+  {
+   "tema": "Priorização e Gerenciamento de Requisitos",
+   "html": "<p>Nem tudo cabe na primeira versão. Priorizar é decidir <b>o que entra agora</b> e o que espera.</p><p><b>MoSCoW</b> — a técnica mais conhecida:</p><ul><li><b>M</b>ust have — obrigatório; sem ele a entrega não tem valor</li><li><b>S</b>hould have — importante, mas há alternativa temporária</li><li><b>C</b>ould have — desejável; entra se sobrar tempo</li><li><b>W</b>on't have (this time) — fica explicitamente fora desta entrega</li></ul><p><b>Outras técnicas:</b> matriz <b>valor x esforço</b> (ganhos rápidos primeiro), <b>Kano</b> (classifica em básicos — cuja ausência frustra mas cuja presença não encanta; de desempenho — quanto mais melhor; e de encantamento — surpreendem), <b>análise de valor</b>, votação com pontos (dot voting) e o método de <b>hierarquia analítica (AHP)</b>, que compara requisitos par a par.</p><p><b>Gerenciamento de requisitos</b> é o controle das mudanças ao longo do projeto. Requisitos mudam — isso é normal e esperado; o problema é mudarem <b>sem controle</b>.</p><p><b>Processo de mudança:</b> solicitação formal → análise de impacto (prazo, custo, riscos, outros requisitos) → decisão do comitê de controle de mudanças (CCB) → atualização da documentação e da linha de base → comunicação a todos os envolvidos.</p><p><b>Rastreabilidade</b> — a capacidade de seguir a vida de um requisito em ambas as direções: <b>para trás</b>, até a necessidade e o stakeholder que o originou; <b>para frente</b>, até o design, o código e os casos de teste que o verificam. A <b>matriz de rastreabilidade</b> é o instrumento que documenta esses vínculos, e é ela que permite responder \"se eu mudar este requisito, o que quebra?\".</p><p><b>Baseline (linha de base)</b> — a versão aprovada e congelada do conjunto de requisitos, a partir da qual toda mudança passa a ser controlada.</p>"
+  },
+  {
+   "tema": "Casos de Uso e Especificação",
+   "html": "<p><b>Caso de uso</b> descreve uma <b>interação</b> entre um ator e o sistema que produz um <b>resultado de valor observável</b> para esse ator. É a técnica mais usada para especificar requisitos funcionais de forma legível ao cliente.</p><p><b>Elementos do diagrama de casos de uso (UML):</b></p><ul><li><b>Ator</b> (boneco palito) — quem interage com o sistema: pessoa, outro sistema ou dispositivo. É sempre <b>externo</b> ao sistema, e representa um <b>papel</b>, não um indivíduo.</li><li><b>Caso de uso</b> (elipse) — nomeado com verbo no infinitivo + objeto: \"Cadastrar sócio\", \"Emitir boleto\".</li><li><b>Fronteira do sistema</b> (retângulo) — separa o que é o sistema do que está fora.</li><li><b>Associação</b> (linha) — liga ator e caso de uso.</li></ul><p><b>Relacionamentos — o ponto mais cobrado:</b></p><ul><li><b>&lt;&lt;include&gt;&gt;</b> — o comportamento é <b>obrigatório</b> e sempre executado; usado para fatorar trecho comum a vários casos de uso. A seta aponta <b>do caso base para o incluído</b>. Ex.: \"Emitir boleto\" <i>include</i> \"Autenticar usuário\".</li><li><b>&lt;&lt;extend&gt;&gt;</b> — o comportamento é <b>opcional/condicional</b>, ocorrendo só em determinada situação. A seta aponta <b>do caso estendido para o caso base</b> (o contrário do include). Ex.: \"Aplicar desconto de idoso\" <i>extend</i> \"Emitir boleto\".</li><li><b>Generalização</b> — herança entre atores ou entre casos de uso.</li></ul><p><b>Especificação (descrição textual)</b> de um caso de uso: nome, ator principal, <b>pré-condições</b>, <b>pós-condições</b>, <b>fluxo principal</b> (o caminho feliz, passo a passo), <b>fluxos alternativos</b> (outros caminhos válidos) e <b>fluxos de exceção</b> (o que fazer quando algo dá errado).</p><p><b>História de usuário (ágil)</b> — a alternativa enxuta: <i>Como &lt;papel&gt;, quero &lt;ação&gt;, para &lt;benefício&gt;</i>, acompanhada de <b>critérios de aceitação</b>. O <b>INVEST</b> avalia sua qualidade: Independente, Negociável, Valiosa, Estimável, Small (pequena) e Testável.</p><p><b>Diagrama de atividades</b> — modela o <b>fluxo de trabalho</b>: nó inicial (círculo cheio), ações (retângulos arredondados), <b>decisão/mesclagem</b> (losango, com condições de guarda entre colchetes), <b>bifurcação/junção</b> (barra grossa, para paralelismo), <b>raias (swimlanes)</b> indicando quem executa cada ação, e nó final (círculo com anel).</p>"
+  },
+  {
+   "tema": "Modelagem de Processos e BPMN",
+   "html": "<p><b>BPM</b> (Business Process Management) é a disciplina de gerir processos de negócio de ponta a ponta. O <b>mapeamento de processos</b> é o retrato de como o trabalho acontece hoje (<b>AS-IS</b>) e de como deveria acontecer (<b>TO-BE</b>).</p><p><b>Por que mapear antes de especificar o sistema:</b> automatizar um processo ruim só faz o erro acontecer mais rápido. O mapeamento revela gargalos, retrabalho, esperas e atividades que não agregam valor.</p><p><b>BPMN</b> (Business Process Model and Notation) é a notação padrão, mantida pela OMG. Elementos principais:</p><ul><li><b>Eventos</b> (círculos): <b>início</b> (linha fina), <b>intermediário</b> (linha dupla) e <b>fim</b> (linha grossa)</li><li><b>Atividades</b> (retângulos arredondados): tarefa ou subprocesso (com um + no rodapé)</li><li><b>Gateways</b> (losangos) — controlam o fluxo:<ul><li><b>Exclusivo (XOR, com X)</b> — só um caminho é seguido</li><li><b>Paralelo (AND, com +)</b> — todos os caminhos seguem simultaneamente</li><li><b>Inclusivo (OR, com O)</b> — um ou mais caminhos, conforme as condições</li></ul></li><li><b>Fluxo de sequência</b> (seta cheia) — dentro do mesmo pool; <b>fluxo de mensagem</b> (seta tracejada) — entre pools diferentes</li><li><b>Pool</b> — um participante do processo; <b>Lane</b> — uma divisão interna do pool, indicando papel ou setor</li><li><b>Artefatos</b> — objeto de dados, anotação, agrupamento</li></ul><p><b>Regra prática:</b> um fluxo de sequência nunca atravessa a fronteira de um pool — a comunicação entre pools é sempre por fluxo de mensagem.</p><p><b>Documento de Visão</b> — apresenta o problema, a oportunidade, os objetivos, os stakeholders, as premissas e restrições, o escopo em alto nível e os critérios de sucesso do projeto. É a base para alinhar expectativas antes do detalhamento.</p>"
+  },
+  {
+   "tema": "Validação, Verificação e Casos de Teste",
+   "html": "<p><b>A distinção fundamental:</b></p><ul><li><b>Verificação</b> — \"Estamos construindo o produto <b>certo</b>?\" Não: \"estamos construindo o produto <b>corretamente</b>?\" É a conferência interna contra a especificação.</li><li><b>Validação</b> — \"Estamos construindo o produto <b>certo</b>?\" É confirmar com o cliente que o especificado é o que ele realmente precisa.</li></ul><p>Em resumo: <b>verificação</b> confere o produto contra o documento; <b>validação</b> confere o documento (e o produto) contra a necessidade real.</p><p><b>Técnicas de validação de requisitos:</b> revisões e <b>inspeções formais</b> (leitura sistemática por pares), <b>walkthrough</b>, prototipagem (o usuário vê antes de existir), <b>checklists</b> de qualidade, geração de <b>casos de teste</b> a partir dos requisitos e validação de modelos.</p><p><b>Caso de teste</b> — conjunto de condições sob as quais se determina se um requisito foi atendido. Estrutura: identificador, requisito relacionado (rastreabilidade), <b>pré-condições</b>, <b>passos</b>, <b>dados de entrada</b>, <b>resultado esperado</b> e resultado obtido.</p><p><b>Ponto-chave:</b> se não é possível escrever um caso de teste para um requisito, ele <b>não é verificável</b> — e portanto está mal escrito. É por isso que \"o sistema deve ser amigável\" é um requisito ruim e \"um usuário sem treinamento deve concluir o cadastro em até 3 minutos, com no máximo 1 erro\" é um requisito bom.</p><p><b>Níveis de teste:</b> unidade (a menor parte, isolada), integração (a conversa entre módulos), sistema (o todo, contra os requisitos) e <b>aceitação</b> (feito pelo cliente, valida o valor de negócio). <b>Teste de regressão</b> reexecuta o que já funcionava para garantir que a mudança não quebrou nada.</p><p><b>Caixa-preta x caixa-branca:</b> na caixa-preta testa-se pelas entradas e saídas, sem conhecer o código (partição de equivalência, análise de valor-limite); na caixa-branca conhece-se a estrutura interna e busca-se cobertura de comandos, decisões e caminhos.</p>"
+  }
+ ],
+ "colas": [
+  {
+   "titulo": "RF x RNF x Regra de negócio",
+   "mnemonico": "Mnemônico: RF é O QUE o sistema FAZ; RNF é COMO ele se comporta; regra de negócio existe mesmo SEM sistema.",
+   "pontos": [
+    "RF: verbo de ação. 'O sistema deve permitir o cadastro de sócios.'",
+    "RNF: qualidade ou restrição. 'A consulta deve responder em até 2 segundos.'",
+    "RNF categorias: desempenho, segurança, usabilidade, confiabilidade, manutenibilidade, portabilidade, legais.",
+    "Regra de negócio: 'idoso tem 50% de desconto' — vale mesmo se o processo for em papel.",
+    "PEGADINHA: RNF costuma ser MAIS crítico que RF — pode inviabilizar o produto inteiro."
+   ]
+  },
+  {
+   "titulo": "Um bom requisito",
+   "mnemonico": "Mnemônico: se não dá para escrever um CASO DE TESTE para ele, o requisito está mal escrito.",
+   "pontos": [
+    "Completo, consistente, NÃO AMBÍGUO, VERIFICÁVEL, rastreável, viável e necessário.",
+    "Ruim: 'o sistema deve ser rápido' — não é verificável.",
+    "Bom: 'deve responder em até 2s em 95% das requisições'.",
+    "Erro de requisito custa 1 na análise e 50 a 100 vezes mais em produção."
+   ]
+  },
+  {
+   "titulo": "MoSCoW",
+   "mnemonico": "Mnemônico: Must, Should, Could, Won't. Os 'M' sozinhos já têm que entregar valor.",
+   "pontos": [
+    "Must have: obrigatório — sem ele a entrega não tem valor.",
+    "Should have: importante, mas existe alternativa temporária.",
+    "Could have: desejável, entra se sobrar tempo.",
+    "Won't have: explicitamente fora DESTA entrega (não é 'nunca').",
+    "Kano: básicos (ausência frustra), desempenho (quanto mais melhor), encantamento (surpreende)."
+   ]
+  },
+  {
+   "titulo": "include x extend — a pegadinha do diagrama",
+   "mnemonico": "Mnemônico: INCLUDE é OBRIGATÓRIO e a seta vai DO BASE PARA O INCLUÍDO. EXTEND é OPCIONAL e a seta vem DE VOLTA para o base.",
+   "pontos": [
+    "<<include>>: sempre executa. 'Emitir boleto' ──▷ 'Autenticar usuário'.",
+    "<<extend>>: só em certa condição. 'Aplicar desconto de idoso' ──▷ 'Emitir boleto'.",
+    "Ator é SEMPRE externo ao sistema e representa um PAPEL, não uma pessoa.",
+    "Caso de uso é nomeado com verbo no infinitivo + objeto.",
+    "Especificação: pré-condições, pós-condições, fluxo principal, alternativos e de exceção."
+   ]
+  },
+  {
+   "titulo": "Gateways do BPMN",
+   "mnemonico": "Mnemônico: X = escolhe UM. + = vai por TODOS. O = vai por um OU MAIS.",
+   "pontos": [
+    "Exclusivo (XOR, X): apenas um caminho é seguido.",
+    "Paralelo (AND, +): todos os caminhos seguem simultaneamente.",
+    "Inclusivo (OR, O): um ou mais, conforme as condições.",
+    "Eventos: início = linha FINA, intermediário = linha DUPLA, fim = linha GROSSA.",
+    "Fluxo de sequência (seta cheia) NUNCA cruza pool — entre pools é fluxo de MENSAGEM (tracejada).",
+    "Pool = participante. Lane = papel/setor dentro do pool."
+   ]
+  },
+  {
+   "titulo": "Verificação x Validação",
+   "mnemonico": "Mnemônico: VErificação = produto certo do jeito CERTO (contra a especificação). VAlidação = o produto CERTO (contra a necessidade do cliente).",
+   "pontos": [
+    "Verificação: confere o produto contra o DOCUMENTO. Interna.",
+    "Validação: confere se o documento e o produto atendem à NECESSIDADE REAL. Com o cliente.",
+    "Níveis de teste: unidade → integração → sistema → aceitação (feito pelo cliente).",
+    "Regressão: reexecuta o que já funcionava para ver se a mudança quebrou algo.",
+    "Caixa-preta: só entradas e saídas. Caixa-branca: conhece o código, busca cobertura."
+   ]
+  }
+ ],
+ "flashcards": [
+  {
+   "tema": "Fundamentos da Engenharia de Requisitos",
+   "p": "O que é um requisito?",
+   "r": "Uma condição ou capacidade que o sistema deve possuir para satisfazer uma necessidade do usuário ou atender a um contrato, norma ou especificação."
+  },
+  {
+   "tema": "Fundamentos da Engenharia de Requisitos",
+   "p": "Por que erros de requisito são os mais caros do ciclo de vida?",
+   "r": "Porque o custo de correção cresce exponencialmente: corrigir na fase de requisitos custa 1; em produção, de 50 a 100 vezes mais — já que o erro se propagou para o design, o código e os testes."
+  },
+  {
+   "tema": "Fundamentos da Engenharia de Requisitos",
+   "p": "Quais são as cinco atividades da engenharia de requisitos?",
+   "r": "Elicitação (levantamento), análise e negociação, especificação (documentação), validação e gerenciamento (controle de mudanças e rastreabilidade)."
+  },
+  {
+   "tema": "Fundamentos da Engenharia de Requisitos",
+   "p": "Qual técnica de elicitação revela o que as pessoas realmente fazem, e não o que dizem fazer?",
+   "r": "A observação (ou etnografia): acompanhar o trabalho real no ambiente do usuário. Ela captura o conhecimento tácito e os desvios do processo oficial que ninguém menciona em entrevista."
+  },
+  {
+   "tema": "Fundamentos da Engenharia de Requisitos",
+   "p": "O que é conhecimento tácito e por que ele dificulta o levantamento?",
+   "r": "É o conhecimento que o especialista tem mas não verbaliza, por ser óbvio demais para ele. Dificulta porque não aparece em entrevista — só na observação do trabalho real."
+  },
+  {
+   "tema": "Requisitos Funcionais e Não Funcionais",
+   "p": "Qual a diferença entre requisito funcional e não funcional?",
+   "r": "O funcional descreve O QUE o sistema deve fazer — suas funções e serviços. O não funcional descreve COMO ele deve se comportar — desempenho, segurança, usabilidade, confiabilidade e outras qualidades e restrições."
+  },
+  {
+   "tema": "Requisitos Funcionais e Não Funcionais",
+   "p": "'A consulta deve responder em até 2 segundos' é qual tipo de requisito?",
+   "r": "Não funcional, da categoria desempenho. Ele não descreve uma função nova, mas um atributo de qualidade de uma função existente."
+  },
+  {
+   "tema": "Requisitos Funcionais e Não Funcionais",
+   "p": "Por que os requisitos não funcionais podem ser mais críticos que os funcionais?",
+   "r": "Porque um sistema que faz tudo o que deveria, mas leva minutos para responder ou vaza dados, é inaceitável. Um RNF não atendido pode inviabilizar o produto inteiro, enquanto um RF ausente costuma inviabilizar apenas uma função."
+  },
+  {
+   "tema": "Requisitos Funcionais e Não Funcionais",
+   "p": "O que é uma regra de negócio e como ela se distingue de um requisito?",
+   "r": "É uma política, restrição ou condição do negócio que existe independentemente do software — 'idoso tem 50% de desconto' vale mesmo se o processo for feito em papel. A regra de negócio origina requisitos, mas não se confunde com eles."
+  },
+  {
+   "tema": "Requisitos Funcionais e Não Funcionais",
+   "p": "Quais são as qualidades de um bom requisito?",
+   "r": "Completo, consistente, não ambíguo, verificável (testável), rastreável, viável e necessário."
+  },
+  {
+   "tema": "Requisitos Funcionais e Não Funcionais",
+   "p": "Por que 'o sistema deve ser rápido' é um requisito mal escrito?",
+   "r": "Porque não é verificável nem inequívoco: não há como provar objetivamente se foi atendido. A versão correta seria 'deve responder em até 2 segundos para 95% das requisições'."
+  },
+  {
+   "tema": "Priorização e Gerenciamento de Requisitos",
+   "p": "O que significa cada letra do MoSCoW?",
+   "r": "Must have (obrigatório, sem ele a entrega não tem valor), Should have (importante, mas com alternativa temporária), Could have (desejável, se sobrar tempo) e Won't have (explicitamente fora desta entrega)."
+  },
+  {
+   "tema": "Priorização e Gerenciamento de Requisitos",
+   "p": "Como o modelo Kano classifica os requisitos?",
+   "r": "Básicos (sua ausência frustra, mas sua presença não encanta — são pressupostos), de desempenho (quanto mais, melhor a satisfação) e de encantamento (o cliente não esperava e se surpreende positivamente)."
+  },
+  {
+   "tema": "Priorização e Gerenciamento de Requisitos",
+   "p": "O que é rastreabilidade de requisitos?",
+   "r": "A capacidade de seguir a vida de um requisito nas duas direções: para trás, até a necessidade e o stakeholder que o originou; para frente, até o design, o código e os casos de teste que o verificam."
+  },
+  {
+   "tema": "Priorização e Gerenciamento de Requisitos",
+   "p": "Para que serve a matriz de rastreabilidade?",
+   "r": "Para documentar os vínculos entre requisitos, artefatos de projeto e testes — permitindo responder 'se eu mudar este requisito, o que mais é afetado?' e verificar se todo requisito foi implementado e testado."
+  },
+  {
+   "tema": "Priorização e Gerenciamento de Requisitos",
+   "p": "Quais são as etapas do processo de mudança de requisitos?",
+   "r": "Solicitação formal → análise de impacto (prazo, custo, riscos, outros requisitos) → decisão do comitê de controle de mudanças → atualização da documentação e da linha de base → comunicação aos envolvidos."
+  },
+  {
+   "tema": "Priorização e Gerenciamento de Requisitos",
+   "p": "O que é a linha de base (baseline) de requisitos?",
+   "r": "A versão aprovada e formalmente congelada do conjunto de requisitos, a partir da qual toda alteração passa a exigir controle de mudanças."
+  },
+  {
+   "tema": "Casos de Uso e Especificação",
+   "p": "O que é um caso de uso?",
+   "r": "A descrição de uma interação entre um ator e o sistema que produz um resultado de valor observável para esse ator. É nomeado com verbo no infinitivo mais objeto: 'Cadastrar sócio'."
+  },
+  {
+   "tema": "Casos de Uso e Especificação",
+   "p": "O que é um ator em um diagrama de casos de uso?",
+   "r": "Quem interage com o sistema — pessoa, outro sistema ou dispositivo. É sempre EXTERNO ao sistema e representa um PAPEL, não um indivíduo específico."
+  },
+  {
+   "tema": "Casos de Uso e Especificação",
+   "p": "Qual a diferença entre <<include>> e <<extend>>?",
+   "r": "<<include>> é obrigatório e sempre executado, fatorando comportamento comum; a seta vai do caso base para o incluído. <<extend>> é opcional/condicional; a seta vai do caso que estende para o caso base — o sentido é invertido."
+  },
+  {
+   "tema": "Casos de Uso e Especificação",
+   "p": "Dê um exemplo de <<include>> e um de <<extend>>.",
+   "r": "Include: 'Emitir boleto' inclui 'Autenticar usuário' — sempre acontece. Extend: 'Aplicar desconto de idoso' estende 'Emitir boleto' — só ocorre se a condição for satisfeita."
+  },
+  {
+   "tema": "Casos de Uso e Especificação",
+   "p": "Quais seções compõem a especificação textual de um caso de uso?",
+   "r": "Nome, ator principal, pré-condições, pós-condições, fluxo principal (caminho feliz), fluxos alternativos (outros caminhos válidos) e fluxos de exceção (o que fazer quando algo dá errado)."
+  },
+  {
+   "tema": "Casos de Uso e Especificação",
+   "p": "Qual o formato de uma história de usuário?",
+   "r": "Como <papel>, quero <ação>, para <benefício> — acompanhada dos critérios de aceitação, que definem objetivamente quando ela está pronta."
+  },
+  {
+   "tema": "Casos de Uso e Especificação",
+   "p": "O que significa o acrônimo INVEST?",
+   "r": "Independente, Negociável, Valiosa, Estimável, Small (pequena) e Testável — os critérios de qualidade de uma boa história de usuário."
+  },
+  {
+   "tema": "Casos de Uso e Especificação",
+   "p": "O que representam o losango e a barra grossa no diagrama de atividades?",
+   "r": "O losango é decisão ou mesclagem, com condições de guarda entre colchetes — apenas um caminho segue. A barra grossa é bifurcação ou junção, representando execução em PARALELO."
+  },
+  {
+   "tema": "Casos de Uso e Especificação",
+   "p": "Para que servem as raias (swimlanes) em um diagrama de atividades?",
+   "r": "Para indicar quem executa cada ação — cada raia representa um ator, papel ou setor responsável, tornando visível a divisão de responsabilidades no fluxo."
+  },
+  {
+   "tema": "Modelagem de Processos e BPMN",
+   "p": "Qual a diferença entre AS-IS e TO-BE?",
+   "r": "AS-IS é o retrato do processo como ele acontece hoje, com todos os seus problemas. TO-BE é o desenho do processo como ele deveria acontecer depois da melhoria."
+  },
+  {
+   "tema": "Modelagem de Processos e BPMN",
+   "p": "Por que mapear o processo antes de especificar o sistema?",
+   "r": "Porque automatizar um processo ruim só faz o erro acontecer mais rápido. O mapeamento revela gargalos, retrabalho, esperas e atividades que não agregam valor, que devem ser corrigidos antes da automação."
+  },
+  {
+   "tema": "Modelagem de Processos e BPMN",
+   "p": "Quais são os três gateways principais do BPMN?",
+   "r": "Exclusivo (XOR, marcado com X) — só um caminho segue. Paralelo (AND, marcado com +) — todos os caminhos seguem ao mesmo tempo. Inclusivo (OR, marcado com O) — um ou mais caminhos, conforme as condições."
+  },
+  {
+   "tema": "Modelagem de Processos e BPMN",
+   "p": "Como se distinguem os eventos de início, intermediário e fim no BPMN?",
+   "r": "Pela espessura da borda do círculo: início tem linha fina, intermediário tem linha dupla e fim tem linha grossa."
+  },
+  {
+   "tema": "Modelagem de Processos e BPMN",
+   "p": "Qual a diferença entre fluxo de sequência e fluxo de mensagem no BPMN?",
+   "r": "O fluxo de sequência (seta cheia) liga elementos DENTRO do mesmo pool e nunca cruza sua fronteira. O fluxo de mensagem (seta tracejada) é a única forma de comunicação ENTRE pools diferentes."
+  },
+  {
+   "tema": "Modelagem de Processos e BPMN",
+   "p": "Qual a diferença entre pool e lane no BPMN?",
+   "r": "O pool representa um participante do processo — uma organização ou entidade. A lane é uma subdivisão interna do pool, indicando papel, setor ou função responsável."
+  },
+  {
+   "tema": "Modelagem de Processos e BPMN",
+   "p": "O que contém um Documento de Visão?",
+   "r": "O problema e a oportunidade, os objetivos, os stakeholders, as premissas e restrições, o escopo em alto nível e os critérios de sucesso do projeto — servindo para alinhar expectativas antes do detalhamento."
+  },
+  {
+   "tema": "Validação, Verificação e Casos de Teste",
+   "p": "Qual a diferença entre verificação e validação?",
+   "r": "Verificação confere o produto contra a especificação — 'estamos construindo o produto corretamente?'. Validação confere se o especificado atende à necessidade real do cliente — 'estamos construindo o produto certo?'."
+  },
+  {
+   "tema": "Validação, Verificação e Casos de Teste",
+   "p": "Cite técnicas de validação de requisitos.",
+   "r": "Revisões e inspeções formais, walkthrough, prototipagem, checklists de qualidade, geração de casos de teste a partir dos requisitos e validação de modelos."
+  },
+  {
+   "tema": "Validação, Verificação e Casos de Teste",
+   "p": "Quais elementos compõem um caso de teste?",
+   "r": "Identificador, requisito relacionado (rastreabilidade), pré-condições, passos de execução, dados de entrada, resultado esperado e resultado obtido."
+  },
+  {
+   "tema": "Validação, Verificação e Casos de Teste",
+   "p": "Qual a relação entre caso de teste e qualidade do requisito?",
+   "r": "Se não é possível escrever um caso de teste para um requisito, ele não é verificável — e portanto está mal escrito. Escrever o teste é a forma mais rápida de descobrir ambiguidade."
+  },
+  {
+   "tema": "Validação, Verificação e Casos de Teste",
+   "p": "Quais são os níveis de teste?",
+   "r": "Unidade (a menor parte, isolada), integração (a comunicação entre módulos), sistema (o produto completo contra os requisitos) e aceitação (feito pelo cliente, valida o valor de negócio)."
+  },
+  {
+   "tema": "Validação, Verificação e Casos de Teste",
+   "p": "O que é teste de regressão?",
+   "r": "A reexecução de testes já aprovados após uma mudança, para garantir que a alteração não quebrou funcionalidades que antes funcionavam."
+  },
+  {
+   "tema": "Validação, Verificação e Casos de Teste",
+   "p": "Qual a diferença entre teste caixa-preta e caixa-branca?",
+   "r": "Na caixa-preta testa-se apenas por entradas e saídas, sem conhecer o código — usa partição de equivalência e análise de valor-limite. Na caixa-branca conhece-se a estrutura interna e busca-se cobertura de comandos, decisões e caminhos."
+  }
+ ],
+ "questoes": [
+  {
+   "tema": "Fundamentos da Engenharia de Requisitos",
+   "q": "Por que erros cometidos na fase de requisitos são os mais caros do ciclo de vida do software?",
+   "op": [
+    "Porque o custo de correção cresce exponencialmente ao longo das fases, chegando a 50-100 vezes em produção",
+    "Porque exigem contratar consultores externos",
+    "Porque a fase de requisitos consome mais horas que as demais",
+    "Porque as ferramentas de requisitos são as mais caras do mercado"
+   ],
+   "r": 0,
+   "exp": "Um erro de requisito se propaga para o design, o código e os testes. Corrigi-lo na origem custa 1; em produção, dezenas de vezes mais."
+  },
+  {
+   "tema": "Fundamentos da Engenharia de Requisitos",
+   "q": "Qual é a sequência correta das atividades da engenharia de requisitos?",
+   "op": [
+    "Especificação, elicitação, validação, análise e gerenciamento",
+    "Validação, elicitação, especificação, gerenciamento e análise",
+    "Elicitação, análise e negociação, especificação, validação e gerenciamento",
+    "Análise, especificação, elicitação, gerenciamento e validação"
+   ],
+   "r": 2,
+   "exp": "Primeiro se descobre (elicitação), depois se entende e negocia, então se documenta, valida com o cliente e finalmente se gerencia a mudança ao longo do projeto."
+  },
+  {
+   "tema": "Fundamentos da Engenharia de Requisitos",
+   "q": "Qual técnica de elicitação é mais adequada para revelar o que os usuários REALMENTE fazem, e não o que dizem fazer?",
+   "op": [
+    "Questionário aplicado por e-mail",
+    "Entrevista estruturada",
+    "Observação (etnografia) no ambiente de trabalho",
+    "Análise de documentos"
+   ],
+   "r": 2,
+   "exp": "A observação captura o conhecimento tácito e os desvios do processo oficial — coisas que o usuário não menciona em entrevista por considerar óbvias ou por não ter consciência delas."
+  },
+  {
+   "tema": "Fundamentos da Engenharia de Requisitos",
+   "q": "O que é conhecimento tácito no contexto do levantamento de requisitos?",
+   "op": [
+    "O conhecimento documentado nos manuais da empresa",
+    "O conhecimento técnico exclusivo da equipe de desenvolvimento",
+    "O conhecimento que o especialista possui mas não verbaliza, por parecer óbvio demais",
+    "As regras formais definidas em contrato"
+   ],
+   "r": 2,
+   "exp": "Justamente por ser óbvio para quem executa, esse conhecimento nunca aparece em entrevista — e é uma das principais causas de requisitos incompletos."
+  },
+  {
+   "tema": "Requisitos Funcionais e Não Funcionais",
+   "q": "'O sistema deve permitir o cadastro de novos sócios' é um requisito:",
+   "op": [
+    "Funcional",
+    "Não funcional de usabilidade",
+    "Regra de negócio",
+    "Não funcional de desempenho"
+   ],
+   "r": 0,
+   "exp": "Descreve uma função que o sistema deve executar — o QUE ele faz. Requisitos funcionais são tipicamente escritos com verbo de ação."
+  },
+  {
+   "tema": "Requisitos Funcionais e Não Funcionais",
+   "q": "'O sistema deve estar disponível 99,9% do tempo' é um requisito:",
+   "op": [
+    "Funcional",
+    "Regra de negócio",
+    "Caso de uso",
+    "Não funcional de confiabilidade/disponibilidade"
+   ],
+   "r": 3,
+   "exp": "Não descreve uma função nova, e sim um atributo de qualidade do sistema como um todo — classificação típica de requisito não funcional."
+  },
+  {
+   "tema": "Requisitos Funcionais e Não Funcionais",
+   "q": "'Sócios inadimplentes há mais de 3 meses têm o acesso bloqueado' é melhor classificado como:",
+   "op": [
+    "Requisito funcional",
+    "Requisito não funcional",
+    "Critério de aceitação de teste",
+    "Regra de negócio"
+   ],
+   "r": 3,
+   "exp": "É uma política do negócio que existe independentemente do software — valeria mesmo se o controle fosse feito em papel. Ela ORIGINA requisitos funcionais, mas não se confunde com eles."
+  },
+  {
+   "tema": "Requisitos Funcionais e Não Funcionais",
+   "q": "Por que se afirma que requisitos não funcionais podem ser mais críticos que os funcionais?",
+   "op": [
+    "Porque são mais numerosos",
+    "Porque são mais fáceis de testar",
+    "Porque um RNF não atendido pode inviabilizar o produto inteiro, enquanto um RF ausente inviabiliza apenas uma função",
+    "Porque sempre têm prioridade contratual"
+   ],
+   "r": 2,
+   "exp": "Um sistema que faz tudo, mas demora minutos para responder ou vaza dados, é inutilizável. O RNF atravessa todo o produto."
+  },
+  {
+   "tema": "Requisitos Funcionais e Não Funcionais",
+   "q": "Qual destes requisitos é mal escrito por não ser verificável?",
+   "op": [
+    "O sistema deve responder em até 2 segundos para 95% das requisições",
+    "O sistema deve permitir exportar o relatório em PDF",
+    "O sistema deve ser amigável e intuitivo",
+    "O sistema deve exigir senha de no mínimo 8 caracteres"
+   ],
+   "r": 2,
+   "exp": "'Amigável e intuitivo' não permite prova objetiva de atendimento. A versão verificável seria algo como 'um usuário sem treinamento conclui o cadastro em até 3 minutos, com no máximo 1 erro'."
+  },
+  {
+   "tema": "Requisitos Funcionais e Não Funcionais",
+   "q": "Quais são características de um bom requisito?",
+   "op": [
+    "Detalhado, técnico, extenso e escrito em linguagem de programação",
+    "Completo, consistente, não ambíguo, verificável e rastreável",
+    "Genérico, flexível e sujeito a interpretação da equipe",
+    "Definido apenas pelo time técnico, sem participação do cliente"
+   ],
+   "r": 1,
+   "exp": "Também deve ser viável e necessário. A ambiguidade é o defeito mais comum e mais caro, porque só é descoberta quando o produto já está pronto."
+  },
+  {
+   "tema": "Priorização e Gerenciamento de Requisitos",
+   "q": "No MoSCoW, o que significa a categoria 'Won't have'?",
+   "op": [
+    "Um requisito que nunca será implementado em nenhuma versão",
+    "Um requisito que está explicitamente fora do escopo desta entrega",
+    "Um requisito de baixa qualidade que foi rejeitado",
+    "Um requisito cuja viabilidade técnica é desconhecida"
+   ],
+   "r": 1,
+   "exp": "'Won't have (this time)' é uma decisão consciente de adiamento — e registrá-la explicitamente evita mal-entendidos com o cliente sobre o escopo acordado."
+  },
+  {
+   "tema": "Priorização e Gerenciamento de Requisitos",
+   "q": "No modelo Kano, requisitos cuja ausência frustra mas cuja presença não encanta são classificados como:",
+   "op": [
+    "De encantamento",
+    "Básicos (obrigatórios)",
+    "De desempenho",
+    "Indiferentes"
+   ],
+   "r": 1,
+   "exp": "São os pressupostos: ninguém elogia um app por abrir, mas todos reclamam se ele não abre. Os de desempenho seguem a lógica 'quanto mais, melhor'; os de encantamento surpreendem."
+  },
+  {
+   "tema": "Priorização e Gerenciamento de Requisitos",
+   "q": "O que é rastreabilidade de requisitos?",
+   "op": [
+    "A capacidade de seguir o requisito da sua origem até o código e os testes que o verificam",
+    "O registro do histórico de versões do documento",
+    "O acompanhamento do tempo gasto em cada requisito",
+    "A numeração sequencial dos requisitos no documento"
+   ],
+   "r": 0,
+   "exp": "A rastreabilidade funciona nas duas direções — para trás, até o stakeholder que originou o requisito; para frente, até o design, o código e os casos de teste."
+  },
+  {
+   "tema": "Priorização e Gerenciamento de Requisitos",
+   "q": "Qual é a principal utilidade prática da matriz de rastreabilidade?",
+   "op": [
+    "Estimar o custo total do projeto",
+    "Definir a ordem de execução das atividades",
+    "Responder o que é afetado quando um requisito muda, e verificar se todo requisito foi implementado e testado",
+    "Substituir o documento de especificação"
+   ],
+   "r": 2,
+   "exp": "É o instrumento da análise de impacto: sem ele, cada mudança vira uma investigação manual pelo código."
+  },
+  {
+   "tema": "Priorização e Gerenciamento de Requisitos",
+   "q": "Qual é a etapa que deve seguir imediatamente a solicitação formal de mudança de um requisito?",
+   "op": [
+    "Implementação imediata pela equipe técnica",
+    "Atualização do contrato com o cliente",
+    "Cancelamento da linha de base",
+    "Análise de impacto em prazo, custo, riscos e outros requisitos"
+   ],
+   "r": 3,
+   "exp": "Sem análise de impacto não há base para decidir. Só depois dela o comitê de controle de mudanças aprova ou rejeita, e a linha de base é atualizada."
+  },
+  {
+   "tema": "Casos de Uso e Especificação",
+   "q": "O que é um ator em um diagrama de casos de uso?",
+   "op": [
+    "Uma entidade externa que interage com o sistema, representando um papel",
+    "Um módulo interno do sistema",
+    "O desenvolvedor responsável pela funcionalidade",
+    "Um caso de uso de alta prioridade"
+   ],
+   "r": 0,
+   "exp": "O ator é sempre externo ao sistema e representa um PAPEL — pode ser pessoa, outro sistema ou dispositivo. Uma mesma pessoa pode exercer vários papéis."
+  },
+  {
+   "tema": "Casos de Uso e Especificação",
+   "q": "O relacionamento <<include>> em um diagrama de casos de uso indica que:",
+   "op": [
+    "O comportamento é opcional e ocorre apenas sob certa condição",
+    "Um ator herda o comportamento de outro",
+    "O caso de uso foi incluído numa versão futura",
+    "O comportamento é obrigatório e sempre executado pelo caso base"
+   ],
+   "r": 3,
+   "exp": "O <<include>> fatora comportamento comum que SEMPRE acontece — como 'Autenticar usuário'. A seta vai do caso base para o incluído."
+  },
+  {
+   "tema": "Casos de Uso e Especificação",
+   "q": "Em 'Aplicar desconto de idoso' <<extend>> 'Emitir boleto', o que se afirma?",
+   "op": [
+    "Que emitir boleto sempre aplica o desconto",
+    "Que emitir boleto herda de aplicar desconto",
+    "Que os dois casos de uso são executados em paralelo",
+    "Que aplicar o desconto é um comportamento opcional que estende a emissão do boleto sob certa condição"
+   ],
+   "r": 3,
+   "exp": "O <<extend>> marca comportamento condicional, e a seta aponta do caso que estende para o caso base — sentido inverso ao do <<include>>."
+  },
+  {
+   "tema": "Casos de Uso e Especificação",
+   "q": "Qual seção da especificação de um caso de uso descreve o que precisa ser verdadeiro ANTES de ele iniciar?",
+   "op": [
+    "Fluxo principal",
+    "Pré-condições",
+    "Pós-condições",
+    "Fluxos de exceção"
+   ],
+   "r": 1,
+   "exp": "Pré-condições são o estado exigido para o caso de uso começar (ex.: usuário autenticado). Pós-condições descrevem o estado após a conclusão bem-sucedida."
+  },
+  {
+   "tema": "Casos de Uso e Especificação",
+   "q": "Qual é o formato correto de uma história de usuário?",
+   "op": [
+    "Como <papel>, quero <ação>, para <benefício>",
+    "O sistema deve permitir que o usuário faça X",
+    "Dado <contexto>, quando <ação>, então <resultado>",
+    "Se <condição>, então <consequência>"
+   ],
+   "r": 0,
+   "exp": "O formato Dado-Quando-Então é o dos critérios de aceitação em BDD, que acompanham a história — mas não é a história em si."
+  },
+  {
+   "tema": "Casos de Uso e Especificação",
+   "q": "No acrônimo INVEST, o que significa a letra 'T'?",
+   "op": [
+    "Técnica",
+    "Temporal",
+    "Transversal",
+    "Testável"
+   ],
+   "r": 3,
+   "exp": "INVEST: Independente, Negociável, Valiosa, Estimável, Small (pequena) e Testável. Sem testabilidade não há como afirmar que a história foi concluída."
+  },
+  {
+   "tema": "Casos de Uso e Especificação",
+   "q": "No diagrama de atividades, o que representa a barra grossa (bifurcação/junção)?",
+   "op": [
+    "A execução de atividades em paralelo",
+    "Uma decisão condicional entre caminhos alternativos",
+    "O fim do fluxo",
+    "A troca de responsável pela atividade"
+   ],
+   "r": 0,
+   "exp": "A barra grossa representa paralelismo: a bifurcação abre vários fluxos simultâneos e a junção os sincroniza. A decisão condicional é representada pelo losango."
+  },
+  {
+   "tema": "Modelagem de Processos e BPMN",
+   "q": "Qual a diferença entre modelagem AS-IS e TO-BE?",
+   "op": [
+    "AS-IS é o processo futuro; TO-BE é o atual",
+    "AS-IS é o processo como ele acontece hoje; TO-BE é como ele deveria acontecer após a melhoria",
+    "AS-IS é usado em processos manuais; TO-BE apenas em automatizados",
+    "São notações diferentes para o mesmo diagrama"
+   ],
+   "r": 1,
+   "exp": "Mapeia-se o AS-IS para enxergar gargalos e retrabalho, e desenha-se o TO-BE como o processo melhorado que o sistema vai apoiar."
+  },
+  {
+   "tema": "Modelagem de Processos e BPMN",
+   "q": "No BPMN, qual gateway indica que TODOS os caminhos devem ser seguidos simultaneamente?",
+   "op": [
+    "Exclusivo (XOR), marcado com X",
+    "Paralelo (AND), marcado com +",
+    "Inclusivo (OR), marcado com O",
+    "Baseado em evento"
+   ],
+   "r": 1,
+   "exp": "O gateway paralelo abre todos os fluxos ao mesmo tempo e, na junção, espera que todos concluam. O exclusivo escolhe apenas um caminho."
+  },
+  {
+   "tema": "Modelagem de Processos e BPMN",
+   "q": "Como se diferencia visualmente um evento de fim de um evento de início no BPMN?",
+   "op": [
+    "Pela espessura da borda: início tem linha fina, fim tem linha grossa",
+    "Pela cor do círculo",
+    "Pelo tamanho do círculo",
+    "Pelo símbolo interno obrigatório"
+   ],
+   "r": 0,
+   "exp": "Início tem borda fina, intermediário tem borda dupla e fim tem borda grossa. É uma das convenções mais cobradas da notação."
+  },
+  {
+   "tema": "Modelagem de Processos e BPMN",
+   "q": "No BPMN, a comunicação entre dois pools distintos é representada por:",
+   "op": [
+    "Fluxo de mensagem (seta tracejada)",
+    "Fluxo de sequência (seta cheia)",
+    "Associação (linha pontilhada sem seta)",
+    "Gateway inclusivo"
+   ],
+   "r": 0,
+   "exp": "O fluxo de sequência nunca cruza a fronteira de um pool. Entre participantes diferentes, a comunicação é sempre por fluxo de mensagem."
+  },
+  {
+   "tema": "Modelagem de Processos e BPMN",
+   "q": "Qual a relação entre pool e lane no BPMN?",
+   "op": [
+    "Lane é um conjunto de pools",
+    "São sinônimos",
+    "Pool representa um participante e lane é uma subdivisão interna dele, indicando papel ou setor",
+    "Pool é usado em processos manuais e lane em automatizados"
+   ],
+   "r": 2,
+   "exp": "Cada pool é uma entidade participante do processo; as lanes dentro dele repartem as atividades por responsável."
+  },
+  {
+   "tema": "Modelagem de Processos e BPMN",
+   "q": "Por que se recomenda mapear o processo antes de especificar o sistema?",
+   "op": [
+    "Porque é exigência da notação BPMN",
+    "Porque automatizar um processo ruim apenas faz o erro acontecer mais rápido",
+    "Porque o mapeamento substitui o levantamento de requisitos",
+    "Porque reduz o custo de licenças de software"
+   ],
+   "r": 1,
+   "exp": "O mapeamento expõe gargalos, retrabalho, esperas e atividades sem valor. Corrigi-los antes de automatizar é o que gera ganho real."
+  },
+  {
+   "tema": "Validação, Verificação e Casos de Teste",
+   "q": "Qual afirmação distingue corretamente verificação de validação?",
+   "op": [
+    "Verificação é feita pelo cliente; validação, pela equipe técnica",
+    "Verificação ocorre no início do projeto; validação, apenas no encerramento",
+    "São sinônimos usados em contextos diferentes",
+    "Verificação confere o produto contra a especificação; validação confere se ele atende à necessidade real do cliente"
+   ],
+   "r": 3,
+   "exp": "Verificação: 'construímos corretamente?'. Validação: 'construímos a coisa certa?'. É possível verificar com sucesso um produto que não valida — ele atende à especificação errada."
+  },
+  {
+   "tema": "Validação, Verificação e Casos de Teste",
+   "q": "Se não é possível escrever um caso de teste para um requisito, isso indica que ele:",
+   "op": [
+    "Não é verificável e, portanto, está mal escrito",
+    "É um requisito não funcional",
+    "Deve ser implementado por último",
+    "É uma regra de negócio, não um requisito"
+   ],
+   "r": 0,
+   "exp": "A testabilidade é uma das qualidades obrigatórias do requisito. Tentar escrever o teste é a forma mais rápida de descobrir ambiguidade na redação."
+  },
+  {
+   "tema": "Validação, Verificação e Casos de Teste",
+   "q": "Qual nível de teste é executado pelo próprio cliente para validar o valor de negócio?",
+   "op": [
+    "Teste de unidade",
+    "Teste de integração",
+    "Teste de aceitação",
+    "Teste de sistema"
+   ],
+   "r": 2,
+   "exp": "O teste de aceitação verifica se o produto atende às necessidades do negócio na perspectiva de quem vai usá-lo — é a validação propriamente dita."
+  },
+  {
+   "tema": "Validação, Verificação e Casos de Teste",
+   "q": "O que é teste de regressão?",
+   "op": [
+    "O teste que verifica o desempenho sob carga",
+    "O teste realizado antes de qualquer implementação",
+    "A revisão do código por outro desenvolvedor",
+    "A reexecução de testes já aprovados para garantir que uma mudança não quebrou o que funcionava"
+   ],
+   "r": 3,
+   "exp": "É o que protege o sistema do efeito colateral: cada correção ou nova funcionalidade pode quebrar algo que já estava certo."
+  },
+  {
+   "tema": "Validação, Verificação e Casos de Teste",
+   "q": "No teste caixa-preta, o testador:",
+   "op": [
+    "Conhece a estrutura interna do código e busca cobertura de caminhos",
+    "Avalia apenas entradas e saídas, sem conhecer a implementação",
+    "Executa somente testes de unidade",
+    "Trabalha exclusivamente com requisitos não funcionais"
+   ],
+   "r": 1,
+   "exp": "A caixa-preta usa técnicas como partição de equivalência e análise de valor-limite, derivadas dos requisitos. Quem conhece o código é o teste caixa-branca."
+  },
+  {
+   "tema": "Fundamentos da Engenharia de Requisitos",
+   "q": "A equipe precisa ouvir cerca de 400 usuários espalhados por várias unidades, com prazo curto. Qual técnica de elicitação é mais adequada e qual é a sua limitação?",
+   "op": [
+    "Prototipagem, cujo limite é depender de uma versão executável do sistema",
+    "Questionário, cujo limite é não permitir aprofundar nem esclarecer as respostas",
+    "Observação no ambiente de trabalho, cujo limite é revelar apenas o processo oficial",
+    "Entrevista aberta, cujo limite é gerar respostas padronizadas demais"
+   ],
+   "r": 1,
+   "exp": "O questionário é a técnica que alcança muita gente com baixo custo, mas não permite repergunta nem esclarecimento, o que empobrece a profundidade dos dados. A entrevista aprofunda, porém não escala para centenas de pessoas em prazo curto."
+  }
+ ],
+ "discursivas": [
+  {
+   "tema": "Requisitos Funcionais e Não Funcionais",
+   "q": "Diferencie requisito funcional, requisito não funcional e regra de negócio, dando um exemplo de cada em um sistema de gestão de sócios de um clube.",
+   "r": "O requisito funcional descreve o que o sistema deve fazer — as funções, serviços e comportamentos que ele oferece — e costuma ser redigido com verbo de ação. Exemplo: 'o sistema deve permitir o cadastro de novos sócios com nome, CPF, data de nascimento e categoria'. O requisito não funcional descreve como o sistema deve se comportar, expressando qualidades e restrições que atravessam as funções: desempenho, segurança, usabilidade, confiabilidade, manutenibilidade, portabilidade e conformidade legal. Exemplo: 'a consulta à situação financeira do sócio deve responder em até 2 segundos para 95% das requisições' ou 'os dados pessoais devem ser armazenados em conformidade com a LGPD'. A regra de negócio, por sua vez, é uma política, restrição ou condição do próprio negócio, que existe independentemente de haver software: ela seria verdadeira mesmo que o clube controlasse tudo em fichas de papel. Exemplo: 'sócios com mais de 60 anos têm 50% de desconto na mensalidade' ou 'um sócio com três mensalidades em atraso tem o acesso às dependências bloqueado'. A relação entre elas é de origem, não de equivalência: a regra de negócio motiva a existência de requisitos funcionais que a implementam — no caso, 'o sistema deve calcular automaticamente o desconto por idade ao gerar a mensalidade' — e a distinção importa porque regras de negócio mudam por decisão da diretoria, em ritmo diferente do software, e por isso devem ser documentadas separadamente e, sempre que possível, implementadas de forma parametrizável."
+  },
+  {
+   "tema": "Casos de Uso e Especificação",
+   "q": "Explique a diferença entre os relacionamentos <<include>> e <<extend>> em um diagrama de casos de uso, indicando o sentido da seta em cada caso.",
+   "r": "Os dois relacionamentos servem para fatorar comportamento entre casos de uso, mas expressam situações opostas. O <<include>> indica um comportamento obrigatório: o caso de uso base sempre executa o caso de uso incluído, sem condição alguma. Sua função é evitar a repetição de um trecho comum a vários casos de uso — por exemplo, 'Emitir boleto', 'Consultar situação financeira' e 'Alterar cadastro' podem todos incluir 'Autenticar usuário'. A seta tracejada com o estereótipo <<include>> aponta do caso base para o caso incluído, ou seja, na direção da dependência: o base depende do incluído para funcionar. O <<extend>> indica um comportamento opcional ou condicional: o caso de uso base é completo e funciona sozinho, e o caso que o estende só é executado quando determinada condição se verifica em um ponto de extensão. Por exemplo, 'Aplicar desconto de idoso' estende 'Emitir boleto' — o boleto é emitido normalmente para qualquer sócio, e apenas quando o sócio tem mais de 60 anos o comportamento adicional entra em cena. Aqui a seta tracejada aponta do caso que estende para o caso base, sentido inverso ao do include, o que costuma ser exatamente o ponto que confunde em prova. Uma forma prática de decidir qual usar é perguntar se o comportamento acontece sempre: se sim, é include; se depende de uma condição, é extend. E vale a regra de moderação — diagramas sobrecarregados de include e extend perdem justamente a legibilidade que justifica a existência do diagrama de casos de uso."
+  }
+ ]
+}

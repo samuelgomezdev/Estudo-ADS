@@ -1,0 +1,878 @@
+{
+ "id": "arquitetura-de-computadores",
+ "nome": "Arquitetura de Computadores",
+ "periodo": 1,
+ "cor": "#ef4444",
+ "sigla": "AC",
+ "resumos": [
+  {
+   "tema": "Sistemas de Numeração e Linguagem Binária",
+   "html": "<p>O computador só entende <b>dois estados</b>: 0 e 1 — falso/verdadeiro, desligado/ligado. O sistema <b>binário (base 2)</b> é posicional: cada posição vale uma potência de 2.</p><p><b>Pesos de um byte:</b> 128 · 64 · 32 · 16 · 8 · 4 · 2 · 1</p><pre>0000 1111 = 8+4+2+1        = 15\n0001 1110 = 16+8+4+2       = 30\n0101 0101 = 64+16+4+1      = 85\n1111 1111 = todos os pesos = 255</pre><p><b>Decimal → binário:</b> divisões sucessivas por 2, lendo os restos de baixo para cima. Ou o método dos pesos: 23 = 16+4+2+1 → 0001 0111.</p><p><b>Unidades:</b> <b>bit</b> = 1 dígito binário (menor unidade). <b>Byte</b> = 8 bits → 2⁸ = <b>256</b> valores (0 a 255). <b>Palavra (word)</b> = a quantidade de bits que o processador manipula de uma vez (16, 32, 64 bits).</p><p><b>Tabela ASCII:</b> associa cada caractere a um número de 7 bits (128 caracteres) — 'A' = 65, 'a' = 97, '0' = 48. O ASCII estendido usa 8 bits (256).</p><p><b>Hexadecimal (base 16):</b> dígitos 0–9 e A–F. Cada dígito hex equivale a exatamente <b>4 bits</b>, o que torna a conversão direta: 1111 1010 = FA. <b>Octal (base 8)</b>: cada dígito equivale a 3 bits.</p>"
+  },
+  {
+   "tema": "Álgebra Booleana e Portas Lógicas",
+   "html": "<p><b>George Boole</b> (1815–1864) criou em meados do século XIX um sistema matemático de análise lógica. No século XX, <b>Claude Elwood Shannon</b> (1916–2001) mostrou que a álgebra booleana servia para analisar e projetar <b>circuitos de comutação</b> — a ponte entre a matemática e a eletrônica digital.</p><p>A <b>tabela-verdade</b> descreve a relação entre entradas e saídas de um circuito lógico. O número de linhas é <b>2ⁿ</b>, onde n é o número de entradas: 2 entradas → 4 linhas; 3 entradas → 8 linhas; 4 entradas → 16 linhas.</p><p><b>As portas básicas:</b></p><ul><li><b>AND (E)</b> — multiplicação lógica (S = A·B). Só dá 1 se <b>todas</b> as entradas forem 1.</li><li><b>OR (OU)</b> — soma lógica (S = A+B). Dá 1 se <b>ao menos uma</b> entrada for 1.</li><li><b>NOT (NÃO)</b> — inversor (S = Ā). Uma única entrada; inverte o valor.</li><li><b>NAND (NÃO E)</b> — AND seguido de NOT. Só dá 0 quando todas as entradas são 1.</li><li><b>NOR (NÃO OU)</b> — OR seguido de NOT. Só dá 1 quando todas as entradas são 0.</li><li><b>XOR (OU exclusivo)</b> — dá 1 quando as entradas são <b>diferentes</b>.</li><li><b>XNOR</b> — dá 1 quando as entradas são <b>iguais</b> (comparador).</li></ul><p>NAND e NOR são <b>portas universais</b>: qualquer função lógica pode ser construída só com elas.</p><p><b>Leis de De Morgan:</b> <code>(A·B)' = A' + B'</code> e <code>(A+B)' = A'·B'</code>.</p>"
+  },
+  {
+   "tema": "Circuitos Combinacionais e Sequenciais",
+   "html": "<p><b>Sinal analógico</b> (contínuo): assume valores de um conjunto <b>infinito</b>. <b>Sinal digital</b> (discreto): assume valores de um conjunto <b>finito</b> — na computação, dois: 0 e 1. O <b>transistor</b>, invenção do século XX, é a chave que popularizou a eletrônica digital: tem apenas dois estados, ligado e desligado. Uma chave tem três partes: entrada da fonte, saída e entrada de controle.</p><p><b>Circuito combinacional:</b> as saídas dependem <b>apenas</b> da combinação dos valores presentes nas entradas. <b>Não tem memória</b> — não armazena bits para ler depois. Exemplos: somadores, multiplexadores, decodificadores, comparadores.</p><p><b>Circuito sequencial</b> (também chamado sistema dinâmico ou <b>máquina de estados</b>): composto por um <b>circuito combinacional + elementos de memória</b>. As saídas dependem das entradas <b>e do estado atual</b> guardado na memória.</p><ul><li>As saídas do combinacional que alimentam a memória são as <b>variáveis do próximo estado</b>.</li><li>As saídas da memória que voltam ao combinacional são as <b>variáveis do estado atual</b>.</li><li>Essa ida e volta é o <b>laço de realimentação</b>.</li></ul><p><b>Assíncrono:</b> o estado pode mudar a qualquer momento, assim que uma entrada muda. Depende dos atrasos de propagação, que não são fixos — projeto difícil, por isso é <b>evitado</b>.</p><p><b>Síncrono:</b> usa um sinal de <b>relógio (clock)</b> que cadencia as trocas de estado. No clock identificam-se borda de subida, borda de descida, nível alto e nível baixo. O <b>período T</b> é o tempo entre duas bordas iguais sucessivas, e a <b>frequência f = 1/T</b>.</p><pre>clock de 200 MHz  →  T = 1 / 200×10⁶ = 5 ns\nlogo, todo bloco combinacional deve ter atraso &lt; 5 ns</pre><p>Elementos de memória: <b>latches</b> (sensíveis ao nível) e <b>flip-flops</b> (sensíveis à borda) — tipos SR, D, JK e T.</p>"
+  },
+  {
+   "tema": "Arquitetura Básica e Modelo de Von Neumann",
+   "html": "<p>Um <b>sistema computacional</b> é formado por <b>hardware</b> (o computador), <b>software</b> (sistemas e programas) e <b>peopleware</b> (os usuários), trabalhando de forma integrada.</p><p><b>As 4 funções básicas do computador:</b> processamento de dados, armazenamento de dados, movimentação de dados e controle.</p><p><b>Modelo de Von Neumann</b> — programa e dados compartilham a <b>mesma memória</b>. Componentes:</p><ul><li><b>UCP / CPU</b> — contém a <b>ULA</b> (unidade lógica e aritmética: cálculos e comparações), a <b>UC</b> (unidade de controle: envia sinais e coordena) e os <b>registradores</b> (memória interna, a mais rápida)</li><li><b>Memória principal</b> — guarda instruções e dados em execução</li><li><b>Dispositivos de entrada e saída</b></li><li><b>Barramentos</b> — de dados, de endereços e de controle</li></ul><p><b>Ciclo de instrução:</b> <b>busca</b> (fetch) → <b>decodificação</b> (decode) → <b>execução</b> (execute) → escrita do resultado. O <b>gargalo de Von Neumann</b> é a limitação de ter um único barramento entre CPU e memória.</p><p><b>Níveis hierárquicos do sistema computacional</b>, do mais alto ao mais baixo: usuário → linguagem de alto nível → linguagem de montagem (Assembly) → controle → unidades funcionais (registradores, ULA, memória, barramentos) → portas lógicas → transistores e fios.</p><p><b>Classes de computador:</b> <b>pessoal</b> (um usuário por vez, com monitor, teclado e mouse); <b>servidor</b> (executa grandes programas para <b>múltiplos usuários simultâneos</b>, acessado por rede); <b>supercomputador</b> (desempenho e custo altíssimos, milhões de dólares); <b>embarcado/embutido</b> (dentro de um dispositivo, executa uma aplicação predeterminada, geralmente <b>transparente ao usuário</b>).</p><p><b>Processadores embarcados</b> podem ser <b>discretos</b> (componente físico pronto para montagem em placa) ou <b>núcleos</b> (componente lógico reutilizável, descrito em linguagem de descrição de hardware e sintetizado para uma tecnologia de fabricação).</p>"
+  },
+  {
+   "tema": "Processadores: RISC, CISC e Desempenho",
+   "html": "<p><b>CISC</b> (Complex Instruction Set Computer): conjunto de instruções <b>grande e complexo</b>, instruções de tamanho variável que podem levar vários ciclos, muitos modos de endereçamento, poucos registradores. Menos instruções por programa, mais ciclos por instrução. Exemplo: família x86 (Intel/AMD).</p><p><b>RISC</b> (Reduced Instruction Set Computer): conjunto <b>pequeno e simples</b>, instruções de tamanho fixo executadas idealmente em <b>um ciclo</b>, muitos registradores, acesso à memória só por <b>load/store</b>. Mais instruções por programa, menos ciclos por instrução, e favorece o <b>pipeline</b>. Exemplos: ARM, MIPS, RISC-V, PowerPC.</p><p>Os processadores modernos são <b>híbridos</b>: um x86 traduz internamente as instruções CISC em micro-operações de estilo RISC.</p><p><b>Pipeline:</b> sobrepõe as etapas do ciclo de instrução, como uma linha de montagem — enquanto uma instrução executa, a próxima já é decodificada e outra é buscada. Aumenta a <b>vazão</b> (throughput), não a latência de cada instrução.</p><p><b>Lei de Moore</b> (Gordon Moore, 1965): o número de transistores em um chip dobra a cada ~2 anos. Chegando ao limite físico, os ganhos passaram a vir do <b>paralelismo</b> — processadores <b>multicore</b>, em que cada núcleo é uma CPU.</p><p><b>Medidas de desempenho:</b> frequência de clock (Hz), <b>IPC</b> (instruções por ciclo), <b>MIPS</b> e <b>FLOPS</b>. Frequência sozinha não mede desempenho: um chip de clock menor com IPC maior pode ser mais rápido.</p>"
+  },
+  {
+   "tema": "Entrada, Saída e Drivers",
+   "html": "<p><b>Dispositivos de entrada:</b> teclado, mouse, scanner, microfone, câmera, leitor biométrico. <b>De saída:</b> monitor, impressora, caixas de som, projetor. <b>De entrada e saída (híbridos):</b> tela sensível ao toque, placa de rede, modem, HD, pen drive, gravador de mídia.</p><p><b>Três formas de fazer E/S:</b></p><ul><li><b>E/S programada (polling):</b> a CPU fica consultando o dispositivo em laço, esperando ficar pronto. Simples, mas <b>desperdiça CPU</b>.</li><li><b>E/S por interrupção:</b> o dispositivo <b>avisa</b> a CPU quando está pronto; a CPU interrompe o que fazia e atende. Muito mais eficiente.</li><li><b>DMA</b> (Direct Memory Access): um controlador transfere dados <b>diretamente</b> entre o dispositivo e a memória, sem passar pela CPU, que só é avisada no fim. Essencial para transferências grandes (disco, rede, vídeo).</li></ul><p><b>Driver</b> é o software que traduz os comandos genéricos do sistema operacional para os comandos específicos daquele hardware. Sem driver o sistema não sabe conversar com o dispositivo. <b>Plug and Play</b> é o mecanismo que detecta o dispositivo e instala o driver automaticamente.</p><p><b>Barramentos e interfaces:</b> USB, PCI Express, SATA, HDMI, Thunderbolt. <b>Portas paralelas</b> transmitem vários bits ao mesmo tempo; <b>seriais</b> transmitem um bit por vez — e hoje as seriais dominam, porque em altas frequências elas evitam o problema de sincronismo entre as vias paralelas.</p>"
+  },
+  {
+   "tema": "História e Evolução dos Computadores",
+   "html": "<p><b>Antes da eletrônica:</b> ábaco; a <b>Pascalina</b> de Blaise Pascal (1642, somava e subtraía); a máquina de Leibniz (multiplicava); o tear de Jacquard (cartões perfurados); a <b>Máquina Analítica</b> de <b>Charles Babbage</b> (1837) — o projeto conceitual do computador programável, com <b>Ada Lovelace</b> escrevendo o que é considerado o primeiro algoritmo.</p><p><b>As gerações:</b></p><ul><li><b>1ª (1940–1955) — válvulas.</b> ENIAC (1946), enorme, quente e programado por fios. Cartões perfurados.</li><li><b>2ª (1955–1965) — transistores.</b> Menores, mais rápidos e confiáveis. Surgem as linguagens de alto nível (Fortran, Cobol).</li><li><b>3ª (1965–1980) — circuitos integrados.</b> Vários transistores em uma pastilha. IBM System/360; nascem os sistemas operacionais com multiprogramação.</li><li><b>4ª (1980–hoje) — microprocessador (VLSI).</b> A CPU inteira em um chip. Computadores pessoais: Altair, Apple II, Macintosh (1984, o primeiro popular com interface gráfica e mouse), IBM PC.</li><li><b>5ª — paralelismo, IA e computação quântica.</b> Multicore, GPUs, nuvem; a Intel e outras desenvolvem chips quânticos, e a IBM já apresentou um computador do <b>tamanho de um grão de sal</b>.</li></ul><p><b>Alan Turing</b> formalizou o modelo teórico da computação (Máquina de Turing, 1936); <b>John von Neumann</b> definiu em 1945 a arquitetura de programa armazenado que usamos até hoje.</p>"
+  }
+ ],
+ "colas": [
+  {
+   "titulo": "Pesos do byte — decorar de trás para frente",
+   "mnemonico": "Mnemônico: 128-64-32-16-8-4-2-1. Some os pesos onde tem 1.",
+   "pontos": [
+    "1 byte = 8 bits = 2⁸ = 256 valores (0 a 255).",
+    "1111 1111 = 255 (o maior). 1000 0000 = 128. 0000 0001 = 1.",
+    "Decimal → binário: divide por 2 e lê os restos de baixo para cima.",
+    "1 dígito HEXA = 4 bits exatos. 1 dígito OCTAL = 3 bits."
+   ]
+  },
+  {
+   "titulo": "As portas lógicas em uma linha cada",
+   "mnemonico": "Mnemônico: AND é multiplicação, OR é soma, XOR é 'diferente dá 1'.",
+   "pontos": [
+    "AND: só 1 se TODAS forem 1. OR: 1 se ALGUMA for 1. NOT: inverte.",
+    "NAND: só 0 quando todas são 1. NOR: só 1 quando todas são 0.",
+    "XOR: 1 quando as entradas são DIFERENTES. XNOR: 1 quando são IGUAIS.",
+    "NAND e NOR são UNIVERSAIS — dá para montar qualquer circuito só com elas.",
+    "Tabela-verdade tem 2ⁿ linhas: 2 entradas → 4; 3 entradas → 8; 4 → 16."
+   ]
+  },
+  {
+   "titulo": "Combinacional x Sequencial",
+   "mnemonico": "Mnemônico: combinacional NÃO tem memória; sequencial TEM (e por isso tem estado).",
+   "pontos": [
+    "Combinacional: saída depende SÓ das entradas atuais. Ex.: somador, multiplexador.",
+    "Sequencial: combinacional + memória. Saída depende das entradas E do estado atual.",
+    "Síncrono usa clock; assíncrono muda a qualquer hora e é evitado (atrasos imprevisíveis).",
+    "f = 1/T. Clock de 200 MHz → T = 5 ns → nenhum bloco pode atrasar mais que isso."
+   ]
+  },
+  {
+   "titulo": "Von Neumann",
+   "mnemonico": "Mnemônico: programa e dados na MESMA memória — é isso que define o modelo.",
+   "pontos": [
+    "CPU = ULA (cálculo) + UC (controle) + registradores (memória mais rápida).",
+    "Ciclo: busca → decodifica → executa → escreve.",
+    "Gargalo de Von Neumann: um só barramento entre CPU e memória.",
+    "4 funções do computador: processar, armazenar, movimentar e controlar."
+   ]
+  },
+  {
+   "titulo": "RISC x CISC",
+   "mnemonico": "Mnemônico: RISC = poucas instruções simples e MUITOS registradores; CISC = muitas instruções complexas.",
+   "pontos": [
+    "RISC: tamanho fixo, ~1 ciclo por instrução, acesso à memória só por load/store. ARM, MIPS, RISC-V.",
+    "CISC: tamanho variável, vários ciclos, muitos modos de endereçamento. x86.",
+    "Modernos são híbridos: o x86 traduz CISC em micro-operações RISC internamente.",
+    "Pipeline aumenta a VAZÃO, não a velocidade de uma instrução isolada."
+   ]
+  },
+  {
+   "titulo": "E/S — as três formas",
+   "mnemonico": "Mnemônico: polling PERGUNTA, interrupção AVISA, DMA DISPENSA a CPU.",
+   "pontos": [
+    "Programada (polling): CPU fica em laço perguntando — desperdiça processamento.",
+    "Interrupção: o dispositivo avisa quando está pronto.",
+    "DMA: transfere direto entre dispositivo e memória, sem passar pela CPU.",
+    "Driver traduz o comando genérico do SO para o comando específico do hardware."
+   ]
+  }
+ ],
+ "flashcards": [
+  {
+   "tema": "Sistemas de Numeração e Linguagem Binária",
+   "p": "Quantos valores diferentes um byte pode representar?",
+   "r": "256 valores (0 a 255), porque 1 byte = 8 bits e 2⁸ = 256."
+  },
+  {
+   "tema": "Sistemas de Numeração e Linguagem Binária",
+   "p": "Quais são os pesos das 8 posições de um byte?",
+   "r": "128, 64, 32, 16, 8, 4, 2, 1 — da esquerda para a direita. Basta somar os pesos onde há 1."
+  },
+  {
+   "tema": "Sistemas de Numeração e Linguagem Binária",
+   "p": "Quanto vale 0101 0101 em decimal?",
+   "r": "85 — soma de 64 + 16 + 4 + 1."
+  },
+  {
+   "tema": "Sistemas de Numeração e Linguagem Binária",
+   "p": "Como converter decimal para binário?",
+   "r": "Divisões sucessivas por 2, lendo os restos de baixo para cima. Ou pelo método dos pesos: 23 = 16+4+2+1 → 0001 0111."
+  },
+  {
+   "tema": "Sistemas de Numeração e Linguagem Binária",
+   "p": "Quantos bits cada dígito hexadecimal representa?",
+   "r": "Exatamente 4 bits. Por isso a conversão binário↔hexa é direta: 1111 1010 = FA. Cada dígito octal representa 3 bits."
+  },
+  {
+   "tema": "Sistemas de Numeração e Linguagem Binária",
+   "p": "O que é a tabela ASCII?",
+   "r": "A tabela que associa cada caractere a um número binário de 7 bits (128 caracteres). 'A' = 65, 'a' = 97, '0' = 48. O ASCII estendido usa 8 bits (256)."
+  },
+  {
+   "tema": "Sistemas de Numeração e Linguagem Binária",
+   "p": "O que é uma palavra (word)?",
+   "r": "A quantidade de bits que o processador manipula de uma só vez — 16, 32 ou 64 bits, conforme a arquitetura."
+  },
+  {
+   "tema": "Álgebra Booleana e Portas Lógicas",
+   "p": "Quem criou a álgebra booleana e quem a aplicou a circuitos?",
+   "r": "George Boole (1815-1864) criou o sistema de análise lógica em meados do século XIX. Claude Elwood Shannon (1916-2001) sugeriu no século XX usá-la para análise e projeto de circuitos de comutação."
+  },
+  {
+   "tema": "Álgebra Booleana e Portas Lógicas",
+   "p": "Quantas linhas tem uma tabela-verdade de 3 entradas?",
+   "r": "8 linhas — o número de linhas é 2ⁿ, onde n é o número de entradas. 2 entradas → 4; 3 → 8; 4 → 16."
+  },
+  {
+   "tema": "Álgebra Booleana e Portas Lógicas",
+   "p": "O que faz a porta AND?",
+   "r": "Executa a multiplicação (conjunção) lógica: a saída só é 1 quando TODAS as entradas forem 1."
+  },
+  {
+   "tema": "Álgebra Booleana e Portas Lógicas",
+   "p": "O que faz a porta XOR?",
+   "r": "OU exclusivo: a saída é 1 quando as entradas são DIFERENTES entre si, e 0 quando são iguais."
+  },
+  {
+   "tema": "Álgebra Booleana e Portas Lógicas",
+   "p": "Quais são as portas universais e por quê?",
+   "r": "NAND e NOR — qualquer função lógica pode ser construída usando apenas uma delas, o que simplifica a fabricação de circuitos integrados."
+  },
+  {
+   "tema": "Álgebra Booleana e Portas Lógicas",
+   "p": "Enuncie as leis de De Morgan.",
+   "r": "(A·B)' = A' + B' — a negação do E vira OU das negações. (A+B)' = A'·B' — a negação do OU vira E das negações."
+  },
+  {
+   "tema": "Circuitos Combinacionais e Sequenciais",
+   "p": "Qual a diferença entre sinal analógico e digital?",
+   "r": "O analógico (contínuo) assume valores de um conjunto INFINITO. O digital (discreto) assume valores de um conjunto FINITO — na computação, apenas 0 e 1."
+  },
+  {
+   "tema": "Circuitos Combinacionais e Sequenciais",
+   "p": "O que caracteriza um circuito combinacional?",
+   "r": "As saídas dependem APENAS da combinação dos valores presentes nas entradas. Não tem memória: não armazena bits para ler depois."
+  },
+  {
+   "tema": "Circuitos Combinacionais e Sequenciais",
+   "p": "Do que é composto um circuito sequencial?",
+   "r": "De um circuito combinacional MAIS elementos de memória. As entradas e saídas ligam-se só ao combinacional; a memória guarda o estado."
+  },
+  {
+   "tema": "Circuitos Combinacionais e Sequenciais",
+   "p": "O que são variáveis de estado atual e de próximo estado?",
+   "r": "Próximo estado: saídas do combinacional que entram na memória. Estado atual: saídas da memória que voltam como entrada do combinacional. Essa ida e volta é o laço de realimentação."
+  },
+  {
+   "tema": "Circuitos Combinacionais e Sequenciais",
+   "p": "Por que circuitos sequenciais assíncronos são evitados?",
+   "r": "Porque dependem dos atrasos de propagação dos componentes, que não são fixos — variam mesmo entre peças iguais do mesmo fabricante, tornando o projeto muito difícil."
+  },
+  {
+   "tema": "Circuitos Combinacionais e Sequenciais",
+   "p": "Qual a relação entre período e frequência de um clock?",
+   "r": "f = 1/T. Um clock de 200 MHz tem período T = 5 ns — logo nenhum bloco combinacional pode ter atraso maior que isso."
+  },
+  {
+   "tema": "Circuitos Combinacionais e Sequenciais",
+   "p": "Qual a diferença entre latch e flip-flop?",
+   "r": "O latch é sensível ao NÍVEL do sinal de controle (muda enquanto o nível estiver ativo). O flip-flop é sensível à BORDA (só muda no instante da transição do clock)."
+  },
+  {
+   "tema": "Arquitetura Básica e Modelo de Von Neumann",
+   "p": "O que define o modelo de Von Neumann?",
+   "r": "Programa e dados compartilham a MESMA memória principal. Antes disso, os computadores armazenavam seus programas fora da memória."
+  },
+  {
+   "tema": "Arquitetura Básica e Modelo de Von Neumann",
+   "p": "Quais são os componentes da CPU?",
+   "r": "ULA (unidade lógica e aritmética — cálculos e comparações), UC (unidade de controle — envia sinais e coordena) e registradores (a memória interna mais rápida)."
+  },
+  {
+   "tema": "Arquitetura Básica e Modelo de Von Neumann",
+   "p": "Quais são as etapas do ciclo de instrução?",
+   "r": "Busca (fetch) → decodificação (decode) → execução (execute) → escrita do resultado."
+  },
+  {
+   "tema": "Arquitetura Básica e Modelo de Von Neumann",
+   "p": "Quais são as 4 funções básicas de um computador?",
+   "r": "Processamento de dados, armazenamento de dados, movimentação de dados e controle."
+  },
+  {
+   "tema": "Arquitetura Básica e Modelo de Von Neumann",
+   "p": "O que forma um sistema computacional?",
+   "r": "Hardware (o computador), software (sistemas e programas) e peopleware (os usuários), todos trabalhando de forma integrada."
+  },
+  {
+   "tema": "Arquitetura Básica e Modelo de Von Neumann",
+   "p": "Qual a principal diferença entre computador pessoal e servidor?",
+   "r": "O servidor executa grandes programas para MÚLTIPLOS usuários quase sempre simultaneamente, normalmente acessado por rede; o pessoal é usado por um único usuário por vez. Não é uma questão de preço nem de ter monitor e teclado."
+  },
+  {
+   "tema": "Arquitetura Básica e Modelo de Von Neumann",
+   "p": "O que caracteriza um computador embarcado?",
+   "r": "É um computador dentro de um dispositivo, projetado para executar uma aplicação predeterminada, e é normalmente transparente ao usuário — que nem percebe que está ali."
+  },
+  {
+   "tema": "Arquitetura Básica e Modelo de Von Neumann",
+   "p": "Qual a diferença entre processador embarcado discreto e baseado em núcleo?",
+   "r": "Discreto: componente físico já fabricado, pronto para montagem em placa. Núcleo: componente LÓGICO reutilizável, descrito em linguagem de descrição de hardware e sintetizado para uma tecnologia de fabricação — o mesmo núcleo serve para vários projetos."
+  },
+  {
+   "tema": "Arquitetura Básica e Modelo de Von Neumann",
+   "p": "Quais são os níveis hierárquicos de um sistema computacional?",
+   "r": "Usuário → linguagem de alto nível → linguagem de montagem (Assembly) → controle → unidades funcionais (registradores, ULA, memória, barramentos) → portas lógicas → transistores e fios."
+  },
+  {
+   "tema": "Processadores: RISC, CISC e Desempenho",
+   "p": "O que caracteriza a arquitetura RISC?",
+   "r": "Conjunto de instruções reduzido e simples, de tamanho fixo, idealmente executadas em um ciclo, com muitos registradores e acesso à memória apenas por load/store. Favorece o pipeline. Ex.: ARM, MIPS, RISC-V."
+  },
+  {
+   "tema": "Processadores: RISC, CISC e Desempenho",
+   "p": "O que caracteriza a arquitetura CISC?",
+   "r": "Conjunto de instruções grande e complexo, com instruções de tamanho variável que podem levar vários ciclos, muitos modos de endereçamento e poucos registradores. Ex.: x86."
+  },
+  {
+   "tema": "Processadores: RISC, CISC e Desempenho",
+   "p": "O que é pipeline?",
+   "r": "A sobreposição das etapas do ciclo de instrução, como uma linha de montagem: enquanto uma instrução executa, a próxima é decodificada e outra é buscada. Aumenta a vazão, não a latência individual."
+  },
+  {
+   "tema": "Processadores: RISC, CISC e Desempenho",
+   "p": "O que diz a Lei de Moore?",
+   "r": "Que o número de transistores em um chip dobra aproximadamente a cada dois anos (Gordon Moore, 1965). Com o limite físico se aproximando, os ganhos passaram a vir do paralelismo — processadores multicore."
+  },
+  {
+   "tema": "Processadores: RISC, CISC e Desempenho",
+   "p": "Frequência de clock maior significa sempre mais desempenho?",
+   "r": "Não. O desempenho depende também do IPC (instruções por ciclo) e da arquitetura — um processador de clock menor com IPC maior pode ser mais rápido."
+  },
+  {
+   "tema": "Entrada, Saída e Drivers",
+   "p": "Quais são as três formas de realizar entrada e saída?",
+   "r": "E/S programada (polling — a CPU fica perguntando em laço, desperdiçando processamento), E/S por interrupção (o dispositivo avisa quando está pronto) e DMA (transferência direta entre dispositivo e memória, sem passar pela CPU)."
+  },
+  {
+   "tema": "Entrada, Saída e Drivers",
+   "p": "O que é DMA e para que serve?",
+   "r": "Direct Memory Access: um controlador transfere dados diretamente entre o dispositivo e a memória, liberando a CPU, que só é avisada ao final. Essencial em transferências grandes — disco, rede, vídeo."
+  },
+  {
+   "tema": "Entrada, Saída e Drivers",
+   "p": "Para que serve um driver?",
+   "r": "É o software que traduz os comandos genéricos do sistema operacional para os comandos específicos daquele hardware. Sem ele, o sistema não sabe conversar com o dispositivo."
+  },
+  {
+   "tema": "Entrada, Saída e Drivers",
+   "p": "Cite dispositivos que são de entrada E saída ao mesmo tempo.",
+   "r": "Tela sensível ao toque, placa de rede, modem, HD, pen drive e gravadores de mídia — todos recebem e enviam dados."
+  },
+  {
+   "tema": "História e Evolução dos Computadores",
+   "p": "Quais são as gerações de computadores e suas tecnologias?",
+   "r": "1ª: válvulas (ENIAC, 1946). 2ª: transistores. 3ª: circuitos integrados (IBM System/360). 4ª: microprocessador/VLSI (computadores pessoais). 5ª: paralelismo, IA e computação quântica."
+  },
+  {
+   "tema": "História e Evolução dos Computadores",
+   "p": "Qual a contribuição de Charles Babbage e Ada Lovelace?",
+   "r": "Babbage projetou em 1837 a Máquina Analítica, o conceito de computador programável. Ada Lovelace escreveu para ela o que é considerado o primeiro algoritmo da história."
+  },
+  {
+   "tema": "História e Evolução dos Computadores",
+   "p": "Qual a importância do Macintosh de 1984?",
+   "r": "Foi o primeiro computador pessoal popular com interface gráfica e mouse, tornando o computador acessível a quem não sabia digitar comandos."
+  }
+ ],
+ "questoes": [
+  {
+   "tema": "Sistemas de Numeração e Linguagem Binária",
+   "q": "Quantos valores diferentes podem ser representados por 1 byte?",
+   "op": [
+    "8 valores",
+    "128 valores",
+    "1024 valores",
+    "256 valores"
+   ],
+   "r": 3,
+   "exp": "1 byte = 8 bits, e 2⁸ = 256 valores possíveis, de 0 a 255."
+  },
+  {
+   "tema": "Sistemas de Numeração e Linguagem Binária",
+   "q": "Qual é o valor decimal do número binário 0001 1110?",
+   "op": [
+    "15",
+    "30",
+    "60",
+    "62"
+   ],
+   "r": 1,
+   "exp": "Somando os pesos onde há 1: 16 + 8 + 4 + 2 = 30."
+  },
+  {
+   "tema": "Sistemas de Numeração e Linguagem Binária",
+   "q": "Qual é a representação binária do número decimal 23 em 8 bits?",
+   "op": [
+    "0001 1101",
+    "0010 0011",
+    "0001 1011",
+    "0001 0111"
+   ],
+   "r": 3,
+   "exp": "23 = 16 + 4 + 2 + 1 → posições 16, 4, 2 e 1 marcadas: 0001 0111."
+  },
+  {
+   "tema": "Sistemas de Numeração e Linguagem Binária",
+   "q": "Qual é o maior valor representável em 8 bits e sua forma binária?",
+   "op": [
+    "128, escrito 1000 0000",
+    "254, escrito 1111 1110",
+    "255, escrito 1111 1111",
+    "256, escrito 1 0000 0000"
+   ],
+   "r": 2,
+   "exp": "Com todos os 8 bits em 1: 128+64+32+16+8+4+2+1 = 255. O 256 já exige 9 bits."
+  },
+  {
+   "tema": "Sistemas de Numeração e Linguagem Binária",
+   "q": "Quantos bits corresponde cada dígito do sistema hexadecimal?",
+   "op": [
+    "2 bits",
+    "3 bits",
+    "4 bits",
+    "8 bits"
+   ],
+   "r": 2,
+   "exp": "A base 16 = 2⁴, logo cada dígito hexadecimal equivale a exatamente 4 bits — o que torna a conversão binário↔hexa direta. Cada dígito octal (base 8 = 2³) vale 3 bits."
+  },
+  {
+   "tema": "Sistemas de Numeração e Linguagem Binária",
+   "q": "O que a tabela ASCII define?",
+   "op": [
+    "A ordem de execução das instruções do processador",
+    "O tamanho da palavra do processador",
+    "A correspondência entre caracteres e números binários",
+    "A frequência do sinal de clock"
+   ],
+   "r": 2,
+   "exp": "ASCII associa cada caractere a um número binário de 7 bits (128 caracteres): 'A' = 65, 'a' = 97, '0' = 48."
+  },
+  {
+   "tema": "Sistemas de Numeração e Linguagem Binária",
+   "q": "O que é a palavra (word) de um processador?",
+   "op": [
+    "O nome dado a cada instrução de máquina",
+    "O conjunto de 8 bits que forma um caractere",
+    "A quantidade de bits que o processador manipula de uma só vez",
+    "A capacidade total da memória RAM"
+   ],
+   "r": 2,
+   "exp": "A palavra é a largura de dados nativa do processador — 16, 32 ou 64 bits, conforme a arquitetura. O conjunto de 8 bits é o byte."
+  },
+  {
+   "tema": "Álgebra Booleana e Portas Lógicas",
+   "q": "Quem sugeriu que a Álgebra Booleana poderia ser usada na análise e projeto de circuitos de comutação?",
+   "op": [
+    "Claude Elwood Shannon",
+    "George Boole",
+    "John von Neumann",
+    "Alan Turing"
+   ],
+   "r": 0,
+   "exp": "Boole criou o sistema matemático de análise lógica em meados do século XIX; Shannon, por volta do século XX, fez a ponte com os circuitos de comutação."
+  },
+  {
+   "tema": "Álgebra Booleana e Portas Lógicas",
+   "q": "Quantas linhas tem a tabela-verdade de um circuito com 4 entradas?",
+   "op": [
+    "4 linhas",
+    "8 linhas",
+    "16 linhas",
+    "32 linhas"
+   ],
+   "r": 2,
+   "exp": "O número de linhas é 2ⁿ. Com 4 entradas: 2⁴ = 16 linhas."
+  },
+  {
+   "tema": "Álgebra Booleana e Portas Lógicas",
+   "q": "Qual porta lógica executa a multiplicação (conjunção) de variáveis binárias?",
+   "op": [
+    "OR",
+    "NOT",
+    "AND",
+    "XOR"
+   ],
+   "r": 2,
+   "exp": "AND executa a multiplicação lógica: a saída só é 1 quando todas as entradas forem 1. OR executa a soma (disjunção)."
+  },
+  {
+   "tema": "Álgebra Booleana e Portas Lógicas",
+   "q": "Em uma porta XOR de duas entradas, quando a saída vale 1?",
+   "op": [
+    "Quando as entradas são diferentes entre si",
+    "Quando as duas entradas são 1",
+    "Quando as duas entradas são 0",
+    "Sempre que ao menos uma entrada for 1"
+   ],
+   "r": 0,
+   "exp": "XOR (OU exclusivo) dá 1 quando as entradas são DIFERENTES. A porta que dá 1 quando são iguais é a XNOR."
+  },
+  {
+   "tema": "Álgebra Booleana e Portas Lógicas",
+   "q": "Por que NAND e NOR são chamadas de portas universais?",
+   "op": [
+    "Porque são as mais rápidas de fabricar",
+    "Porque aceitam qualquer número de entradas",
+    "Porque funcionam tanto com sinais analógicos quanto digitais",
+    "Porque qualquer função lógica pode ser construída usando apenas uma delas"
+   ],
+   "r": 3,
+   "exp": "Com NAND (ou só com NOR) é possível montar AND, OR, NOT e daí qualquer circuito — o que simplifica muito a fabricação de circuitos integrados."
+  },
+  {
+   "tema": "Álgebra Booleana e Portas Lógicas",
+   "q": "Segundo as leis de De Morgan, a expressão (A + B)' equivale a:",
+   "op": [
+    "A' + B'",
+    "A' · B'",
+    "A · B",
+    "A + B"
+   ],
+   "r": 1,
+   "exp": "A negação de um OU vira o E das negações: (A+B)' = A'·B'. E a negação de um E vira o OU das negações: (A·B)' = A'+B'."
+  },
+  {
+   "tema": "Álgebra Booleana e Portas Lógicas",
+   "q": "Quantos estados existem na Álgebra Booleana?",
+   "op": [
+    "Três: 0, 1 e indefinido",
+    "Dois: 0 e 1",
+    "Dez, como no sistema decimal",
+    "Infinitos, como nos sinais analógicos"
+   ],
+   "r": 1,
+   "exp": "Somente dois estados — 0 e 1, falso e verdadeiro, desligado e ligado. É exatamente o que permite representá-la com chaves eletrônicas."
+  },
+  {
+   "tema": "Circuitos Combinacionais e Sequenciais",
+   "q": "Qual a diferença entre um sinal analógico e um sinal digital?",
+   "op": [
+    "O analógico assume valores de um conjunto infinito; o digital, de um conjunto finito",
+    "O analógico é mais rápido que o digital",
+    "O digital só existe em computadores; o analógico, apenas na natureza",
+    "O analógico usa dois valores; o digital usa muitos"
+   ],
+   "r": 0,
+   "exp": "Sinal analógico (contínuo) pode assumir qualquer valor de um conjunto infinito. Sinal digital (discreto) assume valores de um conjunto finito — na computação, dois: 0 e 1."
+  },
+  {
+   "tema": "Circuitos Combinacionais e Sequenciais",
+   "q": "O que caracteriza um circuito combinacional?",
+   "op": [
+    "Possui elementos de memória que guardam o estado anterior",
+    "As saídas dependem apenas dos valores presentes nas entradas",
+    "Precisa obrigatoriamente de um sinal de clock",
+    "As saídas dependem do estado atual e do próximo estado"
+   ],
+   "r": 1,
+   "exp": "No circuito combinacional as saídas são determinadas diretamente pelos valores atuais das entradas — ele não tem memória, logo não armazena bits para ler depois."
+  },
+  {
+   "tema": "Circuitos Combinacionais e Sequenciais",
+   "q": "Um circuito sequencial é composto por:",
+   "op": [
+    "Apenas portas lógicas interligadas",
+    "Dois circuitos combinacionais em paralelo",
+    "Um circuito combinacional e elementos de memória",
+    "Um conjunto de transistores sem realimentação"
+   ],
+   "r": 2,
+   "exp": "O circuito sequencial (também chamado máquina de estados) une um circuito combinacional a elementos de memória, com um laço de realimentação entre eles."
+  },
+  {
+   "tema": "Circuitos Combinacionais e Sequenciais",
+   "q": "Em um circuito sequencial, as saídas dos elementos de memória que voltam a alimentar o circuito combinacional recebem o nome de:",
+   "op": [
+    "Variáveis do próximo estado",
+    "Variáveis de entrada primária",
+    "Sinais de controle",
+    "Variáveis do estado atual"
+   ],
+   "r": 3,
+   "exp": "As saídas da memória são as variáveis do ESTADO ATUAL. As saídas do combinacional que entram na memória são as variáveis do PRÓXIMO estado."
+  },
+  {
+   "tema": "Circuitos Combinacionais e Sequenciais",
+   "q": "Por que os circuitos sequenciais assíncronos têm sido evitados?",
+   "op": [
+    "Porque dependem de atrasos de propagação que não são fixos, dificultando o projeto",
+    "Porque consomem mais energia que os síncronos",
+    "Porque não conseguem armazenar informação",
+    "Porque exigem um sinal de clock muito rápido"
+   ],
+   "r": 0,
+   "exp": "Nos assíncronos o funcionamento correto depende das características temporais dos componentes, e os atrasos variam mesmo entre peças iguais do mesmo fabricante."
+  },
+  {
+   "tema": "Circuitos Combinacionais e Sequenciais",
+   "q": "Um circuito digital síncrono é cadenciado por um clock de 200 MHz. Qual o maior atraso permitido para um bloco combinacional interno?",
+   "op": [
+    "2 ns",
+    "5 ns",
+    "20 ns",
+    "200 ns"
+   ],
+   "r": 1,
+   "exp": "T = 1/f = 1/(200×10⁶) = 5×10⁻⁹ s = 5 ns. Todo bloco combinacional deve concluir em menos que o período do relógio."
+  },
+  {
+   "tema": "Circuitos Combinacionais e Sequenciais",
+   "q": "Qual componente eletrônico é a chave de dois estados que serve de base a todos os circuitos digitais?",
+   "op": [
+    "O transistor",
+    "O capacitor",
+    "O resistor",
+    "O diodo"
+   ],
+   "r": 0,
+   "exp": "O transistor é uma chave que utiliza sinais elétricos e tem apenas dois estados, ligado e desligado — correspondentes ao 0 e 1 do binário. Uma chave tem entrada da fonte, saída e entrada de controle."
+  },
+  {
+   "tema": "Circuitos Combinacionais e Sequenciais",
+   "q": "Qual a diferença entre latch e flip-flop?",
+   "op": [
+    "O latch é combinacional; o flip-flop é sequencial",
+    "O latch armazena 8 bits; o flip-flop armazena 1",
+    "Não há diferença — são sinônimos",
+    "O latch é sensível ao nível do sinal; o flip-flop, à borda do clock"
+   ],
+   "r": 3,
+   "exp": "O latch muda enquanto o nível de controle estiver ativo; o flip-flop só muda no instante da transição (borda) do clock, o que o torna adequado a projetos síncronos."
+  },
+  {
+   "tema": "Arquitetura Básica e Modelo de Von Neumann",
+   "q": "O que define a arquitetura de Von Neumann?",
+   "op": [
+    "A existência de vários núcleos de processamento",
+    "O uso exclusivo de instruções de tamanho fixo",
+    "A separação física entre memória de dados e de instruções",
+    "O armazenamento de programa e dados na mesma memória"
+   ],
+   "r": 3,
+   "exp": "O conceito inovador foi justamente programa e dados compartilharem a memória principal. A separação física entre memória de dados e de instruções caracteriza a arquitetura Harvard."
+  },
+  {
+   "tema": "Arquitetura Básica e Modelo de Von Neumann",
+   "q": "Qual componente da CPU é responsável pelos cálculos e comparações?",
+   "op": [
+    "A unidade de controle (UC)",
+    "A unidade lógica e aritmética (ULA)",
+    "Os registradores",
+    "O barramento de dados"
+   ],
+   "r": 1,
+   "exp": "A ULA executa as operações aritméticas e lógicas. A UC coordena e envia sinais de controle; os registradores armazenam dados temporariamente."
+  },
+  {
+   "tema": "Arquitetura Básica e Modelo de Von Neumann",
+   "q": "Quais são as etapas do ciclo de instrução?",
+   "op": [
+    "Compilar, montar, ligar e carregar",
+    "Busca, decodificação, execução e escrita do resultado",
+    "Entrada, processamento, saída e armazenamento",
+    "Leitura, gravação, verificação e confirmação"
+   ],
+   "r": 1,
+   "exp": "O processador busca a instrução da memória, decodifica, executa o que ela descreve e escreve o resultado — repetindo isso bilhões de vezes por segundo."
+  },
+  {
+   "tema": "Arquitetura Básica e Modelo de Von Neumann",
+   "q": "Um sistema computacional é formado por:",
+   "op": [
+    "Processador, memória e disco",
+    "Entrada, processamento e saída",
+    "Hardware, software e peopleware",
+    "ULA, UC e registradores"
+   ],
+   "r": 2,
+   "exp": "Hardware (o computador), software (sistemas e programas) e peopleware (os usuários), todos trabalhando de forma integrada."
+  },
+  {
+   "tema": "Arquitetura Básica e Modelo de Von Neumann",
+   "q": "Qual é a principal diferença entre um computador pessoal e um servidor?",
+   "op": [
+    "O computador pessoal tem menos processadores",
+    "Só o computador pessoal tem monitor, teclado e mouse",
+    "O servidor é sempre mais caro",
+    "O servidor atende vários usuários e o computador pessoal apenas um"
+   ],
+   "r": 3,
+   "exp": "Um servidor oferece serviços a múltiplos usuários simultaneamente; o pessoal é usado por um usuário por vez. Um servidor pode até ser montado com um computador pessoal, e também pode ter teclado, mouse e monitor."
+  },
+  {
+   "tema": "Arquitetura Básica e Modelo de Von Neumann",
+   "q": "Sobre o computador embarcado, é correto afirmar que:",
+   "op": [
+    "Consome mais energia que um computador pessoal",
+    "É sempre mais caro que um computador pessoal",
+    "Não pode ser programado depois de fabricado",
+    "É projetado visando uma aplicação predeterminada e é normalmente transparente ao usuário"
+   ],
+   "r": 3,
+   "exp": "O embarcado integra um sistema maior, executa uma aplicação predeterminada e geralmente não é visível ao usuário — que nem percebe que existe um computador ali."
+  },
+  {
+   "tema": "Arquitetura Básica e Modelo de Von Neumann",
+   "q": "O que é um núcleo (core) no contexto de processadores embarcados?",
+   "op": [
+    "Um componente físico pronto para montagem em placa de circuito impresso",
+    "O encapsulamento plástico do chip",
+    "A memória cache interna do processador",
+    "Um componente lógico reutilizável, descrito em linguagem de descrição de hardware"
+   ],
+   "r": 3,
+   "exp": "O núcleo é lógico e reutilizável: descrito em linguagem de descrição de hardware e sintetizado para uma tecnologia de fabricação. O componente físico já pronto é o processador discreto."
+  },
+  {
+   "tema": "Arquitetura Básica e Modelo de Von Neumann",
+   "q": "Quais são as quatro funções básicas de um computador?",
+   "op": [
+    "Ligar, processar, salvar e desligar",
+    "Processamento, armazenamento, movimentação de dados e controle",
+    "Entrada, cálculo, memória e saída",
+    "Compilar, executar, depurar e distribuir"
+   ],
+   "r": 1,
+   "exp": "Processar (transformar dados), armazenar, movimentar (transferir entre componentes e sistemas) e controlar todo esse funcionamento."
+  },
+  {
+   "tema": "Arquitetura Básica e Modelo de Von Neumann",
+   "q": "Em qual nível hierárquico do sistema computacional trabalha a maioria dos programadores?",
+   "op": [
+    "Nível de transistores e fios",
+    "Nível das portas lógicas",
+    "Nível da linguagem de alto nível",
+    "Nível de controle"
+   ],
+   "r": 2,
+   "exp": "A maioria dos programadores usa linguagens de alto nível. Abaixo vêm linguagem de montagem, controle, unidades funcionais, portas lógicas e, por fim, transistores e fios."
+  },
+  {
+   "tema": "Processadores: RISC, CISC e Desempenho",
+   "q": "Qual característica define a arquitetura RISC?",
+   "op": [
+    "Conjunto de instruções reduzido, de tamanho fixo, com muitos registradores",
+    "Instruções complexas de tamanho variável e poucos registradores",
+    "Ausência de pipeline para simplificar o projeto",
+    "Acesso à memória permitido em qualquer instrução"
+   ],
+   "r": 0,
+   "exp": "RISC = Reduced Instruction Set Computer: instruções simples e de tamanho fixo, idealmente em um ciclo, muitos registradores e acesso à memória apenas por load/store."
+  },
+  {
+   "tema": "Processadores: RISC, CISC e Desempenho",
+   "q": "A família de processadores x86 (Intel e AMD) é classicamente associada a qual arquitetura?",
+   "op": [
+    "CISC",
+    "RISC",
+    "Harvard pura",
+    "VLIW"
+   ],
+   "r": 0,
+   "exp": "O x86 é CISC — conjunto de instruções grande e complexo. Na prática os x86 modernos são híbridos: traduzem internamente as instruções CISC em micro-operações de estilo RISC."
+  },
+  {
+   "tema": "Processadores: RISC, CISC e Desempenho",
+   "q": "O que o pipeline melhora no processador?",
+   "op": [
+    "Reduz o tempo de execução de cada instrução isolada",
+    "Aumenta a vazão, executando etapas de várias instruções simultaneamente",
+    "Elimina a necessidade de registradores",
+    "Diminui a frequência de clock necessária"
+   ],
+   "r": 1,
+   "exp": "O pipeline funciona como uma linha de montagem: enquanto uma instrução executa, a próxima é decodificada e outra é buscada. A latência de cada instrução não cai — a vazão total sobe."
+  },
+  {
+   "tema": "Processadores: RISC, CISC e Desempenho",
+   "q": "O que afirma a Lei de Moore?",
+   "op": [
+    "A frequência de clock dobra a cada ano",
+    "O número de transistores em um chip dobra a cada cerca de dois anos",
+    "O custo dos computadores cai pela metade a cada ano",
+    "A memória RAM dobra a cada geração de processadores"
+   ],
+   "r": 1,
+   "exp": "Gordon Moore observou em 1965 a duplicação do número de transistores. Com o limite físico se aproximando, os ganhos de desempenho passaram a vir do paralelismo (multicore)."
+  },
+  {
+   "tema": "Processadores: RISC, CISC e Desempenho",
+   "q": "Dois processadores têm clocks de 3,0 GHz e 2,4 GHz. É correto concluir que o primeiro é mais rápido?",
+   "op": [
+    "Não necessariamente — o IPC e a arquitetura também pesam",
+    "Sim, a frequência determina o desempenho",
+    "Sim, desde que ambos tenham a mesma quantidade de RAM",
+    "Não, porque o de menor clock é sempre mais eficiente"
+   ],
+   "r": 0,
+   "exp": "Desempenho depende de frequência E de IPC (instruções por ciclo) e da arquitetura. Um chip de clock menor com IPC maior pode superar o de clock maior."
+  },
+  {
+   "tema": "Entrada, Saída e Drivers",
+   "q": "Qual técnica de entrada e saída desperdiça tempo de processamento porque a CPU fica consultando o dispositivo em laço?",
+   "op": [
+    "DMA",
+    "E/S por interrupção",
+    "Acesso mapeado em memória",
+    "E/S programada (polling)"
+   ],
+   "r": 3,
+   "exp": "Na E/S programada a CPU fica em laço perguntando se o dispositivo está pronto. A interrupção resolve isso: o dispositivo é quem avisa."
+  },
+  {
+   "tema": "Entrada, Saída e Drivers",
+   "q": "O que é DMA?",
+   "op": [
+    "A transferência direta de dados entre dispositivo e memória, sem passar pela CPU",
+    "Um tipo de memória volátil de alta velocidade",
+    "Um protocolo de comunicação serial",
+    "O modo de endereçamento de instruções complexas"
+   ],
+   "r": 0,
+   "exp": "Direct Memory Access: um controlador faz a transferência diretamente, liberando a CPU, que só é avisada ao final. Essencial em disco, rede e vídeo."
+  },
+  {
+   "tema": "Entrada, Saída e Drivers",
+   "q": "Qual a função de um driver de dispositivo?",
+   "op": [
+    "Aumentar a velocidade do barramento",
+    "Traduzir os comandos genéricos do sistema operacional para os comandos específicos do hardware",
+    "Armazenar dados temporariamente antes de gravá-los no disco",
+    "Controlar a frequência do processador"
+   ],
+   "r": 1,
+   "exp": "O driver é a camada de tradução entre o SO e o hardware. Sem ele, o sistema não sabe como conversar com o dispositivo."
+  },
+  {
+   "tema": "Entrada, Saída e Drivers",
+   "q": "Qual destes é um dispositivo de entrada E saída ao mesmo tempo?",
+   "op": [
+    "Scanner",
+    "Projetor",
+    "Microfone",
+    "Tela sensível ao toque"
+   ],
+   "r": 3,
+   "exp": "A tela sensível ao toque exibe (saída) e recebe o toque (entrada). Placa de rede, modem, HD e pen drive também são híbridos."
+  },
+  {
+   "tema": "História e Evolução dos Computadores",
+   "q": "Qual tecnologia caracteriza a primeira geração de computadores?",
+   "op": [
+    "Transistores",
+    "Válvulas",
+    "Circuitos integrados",
+    "Microprocessadores"
+   ],
+   "r": 1,
+   "exp": "1ª geração (1940-1955): válvulas — o ENIAC (1946) é o exemplo clássico. Depois vieram transistores (2ª), circuitos integrados (3ª) e microprocessadores (4ª)."
+  },
+  {
+   "tema": "História e Evolução dos Computadores",
+   "q": "Quem projetou a Máquina Analítica, considerada o conceito do computador programável?",
+   "op": [
+    "Alan Turing",
+    "Blaise Pascal",
+    "Charles Babbage",
+    "John von Neumann"
+   ],
+   "r": 2,
+   "exp": "Babbage projetou a Máquina Analítica em 1837. Ada Lovelace escreveu para ela o que é considerado o primeiro algoritmo da história."
+  },
+  {
+   "tema": "História e Evolução dos Computadores",
+   "q": "Qual foi a importância do Macintosh lançado em 1984?",
+   "op": [
+    "Foi o primeiro computador com processador RISC",
+    "Foi o primeiro computador a usar transistores",
+    "Foi o primeiro computador pessoal popular com interface gráfica e mouse",
+    "Foi o primeiro servidor de rede comercial"
+   ],
+   "r": 2,
+   "exp": "O Macintosh popularizou a interface gráfica e o mouse, tornando o computador acessível a quem não sabia digitar comandos em linha."
+  },
+  {
+   "tema": "Entrada, Saída e Drivers",
+   "q": "Por que as interfaces seriais, como USB e SATA, substituíram as paralelas nas conexões de alto desempenho?",
+   "op": [
+    "Porque em altas frequências as várias vias de uma porta paralela perdem o sincronismo entre si",
+    "Porque a serial transmite vários bits ao mesmo tempo, enquanto a paralela transmite um bit por vez",
+    "Porque só as interfaces seriais dispensam a instalação de driver de dispositivo",
+    "Porque apenas as interfaces seriais conseguem trabalhar com DMA"
+   ],
+   "r": 0,
+   "exp": "A porta paralela envia vários bits ao mesmo tempo por vias distintas; ao subir a frequência, os bits deixam de chegar sincronizados. A serial envia um bit por vez, mas a frequências muito maiores, o que compensa com folga."
+  },
+  {
+   "tema": "História e Evolução dos Computadores",
+   "q": "Além da substituição das válvulas por transistores, o que também marca a segunda geração de computadores?",
+   "op": [
+    "A difusão das linguagens de alto nível, como Fortran e Cobol",
+    "A adoção do microprocessador, com a CPU inteira em uma única pastilha",
+    "O surgimento da interface gráfica e do mouse nos computadores pessoais",
+    "O uso de circuitos integrados reunindo vários transistores em um chip"
+   ],
+   "r": 0,
+   "exp": "Na segunda geração (1955-1965) o transistor tornou as máquinas menores e mais confiáveis, e é nesse período que as linguagens de alto nível como Fortran e Cobol se difundem. Os circuitos integrados só chegam na terceira geração, e o microprocessador na quarta."
+  },
+  {
+   "tema": "História e Evolução dos Computadores",
+   "q": "Qual foi a contribuição de John von Neumann para a computação, em 1945?",
+   "op": [
+    "Definiu a arquitetura de programa armazenado, em que instruções e dados ficam na mesma memória",
+    "Formalizou o modelo teórico da computação com uma máquina abstrata de fita infinita",
+    "Construiu a primeira máquina programável a usar cartões perfurados",
+    "Escreveu o primeiro algoritmo destinado a ser executado por uma máquina"
+   ],
+   "r": 0,
+   "exp": "Von Neumann definiu em 1945 a arquitetura de programa armazenado, usada até hoje. O modelo teórico da computação com fita infinita é a Máquina de Turing (1936), e o primeiro algoritmo é atribuído a Ada Lovelace, sobre a Máquina Analítica de Babbage."
+  }
+ ],
+ "discursivas": [
+  {
+   "tema": "Circuitos Combinacionais e Sequenciais",
+   "q": "Explique a diferença entre circuitos combinacionais e sequenciais e por que os sequenciais são chamados de máquinas de estados.",
+   "r": "Um circuito combinacional é constituído por um conjunto de portas lógicas que determinam os valores das saídas diretamente a partir dos valores atuais das entradas — ele não possui memória, portanto não consegue armazenar bits para lê-los depois. Já o circuito sequencial é composto por um circuito combinacional MAIS elementos de memória, capazes de armazenar informação codificada em binário. As entradas e saídas do circuito sequencial conectam-se apenas ao combinacional; algumas saídas do combinacional entram nos elementos de memória (variáveis do próximo estado) e as saídas da memória voltam como entrada do combinacional (variáveis do estado atual), formando o laço de realimentação. A informação armazenada na memória em um dado instante determina o estado em que o circuito se encontra, e as saídas dependem não apenas das entradas, mas também desse estado. Por isso o circuito sequencial é especificado pela sequência temporal de entradas, saídas e estados internos, e recebe o nome de máquina de estados ou sistema dinâmico."
+  },
+  {
+   "tema": "Arquitetura Básica e Modelo de Von Neumann",
+   "q": "Descreva os componentes do modelo de Von Neumann e explique o chamado gargalo de Von Neumann.",
+   "r": "O modelo de Von Neumann organiza o computador em torno de uma memória principal que guarda tanto as instruções do programa quanto os dados. Os componentes são: a unidade central de processamento (CPU), formada pela unidade lógica e aritmética (ULA), que executa cálculos e comparações, pela unidade de controle (UC), que envia sinais de controle e coordena as transferências entre registradores, memória e demais componentes, e pelos registradores, a memória interna mais rápida; a memória principal, que armazena instruções e dados em execução; os dispositivos de entrada e saída, que fazem a comunicação com o mundo externo; e os barramentos de dados, de endereços e de controle, que interligam tudo. O funcionamento se dá pelo ciclo de instrução: buscar a instrução na memória, decodificá-la, executá-la e escrever o resultado. O gargalo de Von Neumann é a limitação decorrente de instruções e dados dividirem o mesmo caminho de acesso à memória: por mais rápido que o processador seja, ele fica limitado pela largura de banda desse barramento único, ficando ocioso à espera de dados. As memórias cache, o pipeline e a arquitetura Harvard (que separa fisicamente memória de dados e de instruções) são respostas a esse problema."
+  },
+  {
+   "tema": "Processadores: RISC, CISC e Desempenho",
+   "q": "Compare as arquiteturas RISC e CISC e explique por que os processadores modernos são considerados híbridos.",
+   "r": "A arquitetura CISC (Complex Instruction Set Computer) tem um conjunto de instruções grande e complexo, com instruções de tamanho variável que podem consumir vários ciclos de clock, muitos modos de endereçamento e relativamente poucos registradores. A ideia original era aproximar a linguagem de máquina da linguagem de alto nível, reduzindo o número de instruções por programa — em troca de mais ciclos por instrução. O x86 da Intel e da AMD é o exemplo clássico. A arquitetura RISC (Reduced Instruction Set Computer) segue o caminho oposto: conjunto pequeno e simples, instruções de tamanho fixo executadas idealmente em um único ciclo, muitos registradores e acesso à memória restrito às instruções load e store. Isso gera mais instruções por programa, mas com menos ciclos cada e, sobretudo, com um formato regular que favorece o pipeline e o paralelismo. ARM, MIPS e RISC-V seguem esse modelo. Os processadores modernos são híbridos porque a distinção deixou de ser absoluta: um x86 atual mantém o conjunto de instruções CISC por compatibilidade com o software existente, mas internamente decodifica essas instruções complexas em micro-operações simples de estilo RISC, que são então executadas em um pipeline profundo com execução fora de ordem. Assim ele preserva a compatibilidade sem abrir mão das vantagens de desempenho do modelo RISC."
+  }
+ ]
+}

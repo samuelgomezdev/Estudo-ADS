@@ -1,0 +1,561 @@
+{
+ "id": "responsive-web",
+ "nome": "Responsive Web Development",
+ "periodo": 3,
+ "cor": "#06b6d4",
+ "sigla": "RWD",
+ "flashcards": [
+  {
+   "tema": "HTML5 e formulários",
+   "p": "O que é DOCTYPE e por que importa?",
+   "r": "<!DOCTYPE html> informa a versão HTML5 ao navegador, ativando o modo correto de renderização. Sem ele, o browser usa 'quirks mode' (compatibilidade legada), causando comportamentos imprevisíveis."
+  },
+  {
+   "tema": "HTML5 e formulários",
+   "p": "Qual a estrutura mínima de um documento HTML5?",
+   "r": "<!DOCTYPE html>, <html lang='pt-BR'>, <head> com charset UTF-8 + meta viewport + <title>, e <body>. O charset e o viewport são essenciais para internacionalização e responsividade."
+  },
+  {
+   "tema": "HTML5 e formulários",
+   "p": "Quais são as tags semânticas do HTML5?",
+   "r": "<header> (cabeçalho), <nav> (menu de navegação), <main> (conteúdo principal — único por página), <article> (conteúdo independente), <section> (seção temática), <aside> (lateral), <footer> (rodapé)."
+  },
+  {
+   "tema": "HTML5 e formulários",
+   "p": "Qual a diferença entre <article> e <section>?",
+   "r": "<article>: conteúdo autossuficiente que faz sentido fora do contexto da página (post, notícia). <section>: agrupa conteúdo tematicamente relacionado ao contexto da página."
+  },
+  {
+   "tema": "HTML5 e formulários",
+   "p": "Quais novos tipos de input o HTML5 adicionou?",
+   "r": "email (valida formato), url, number (min/max/step), range (slider), date, time, color (hex picker). Todos com validação nativa no navegador, sem necessidade de JavaScript."
+  },
+  {
+   "tema": "HTML5 e formulários",
+   "p": "Qual a diferença entre GET e POST em formulários HTML?",
+   "r": "GET: dados visíveis na URL — para buscas e filtros (não sensíveis). POST: dados no corpo da requisição — para cadastros, logins e dados sensíveis. POST é mais seguro."
+  },
+  {
+   "tema": "CSS3, layout e design do site",
+   "p": "Quais são as 3 formas de aplicar CSS? Qual é recomendada?",
+   "r": "Externo (<link href='style.css'>) — sempre preferido. Interno (<style> no <head>) — prototipação. Inline (style='...' na tag) — evitar. O externo separa estrutura de apresentação."
+  },
+  {
+   "tema": "CSS3, layout e design do site",
+   "p": "Qual a ordem de especificidade dos seletores CSS?",
+   "r": "Inline style > ID (#) > Classe (.) / pseudoclasse / atributo > Tag. Em valores: inline=1000, ID=100, classe=10, tag=1, universal=0. !important override tudo (usar com cautela)."
+  },
+  {
+   "tema": "CSS3, layout e design do site",
+   "p": "Quando usar Flexbox vs CSS Grid?",
+   "r": "Flexbox: layouts em 1 dimensão (linha OU coluna) — menus, alinhamento de itens. Grid: layouts em 2 dimensões (linhas E colunas) — layouts de página completos. São complementares."
+  },
+  {
+   "tema": "CSS3, layout e design do site",
+   "p": "Quais são os pilares do design responsivo?",
+   "r": "1) Meta viewport, 2) Media queries (@media), 3) Unidades relativas (%, rem, vw/vh), 4) Flexbox/Grid para layouts fluidos. Mobile First: começar pelo menor breakpoint."
+  },
+  {
+   "tema": "CSS3, layout e design do site",
+   "p": "Quais são as 4 camadas da arquitetura de um sistema web?",
+   "r": "1) Apresentação (interface/browser), 2) Processamento da Aplicação (lógica de negócio no servidor), 3) Gerenciamento de Dados (acesso ao banco), 4) Banco de Dados (persistência)."
+  },
+  {
+   "tema": "CSS3, layout e design do site",
+   "p": "Quais são as 5 categorias de sistemas web?",
+   "r": "Site de conteúdo, Registro de dados (entrada do usuário), Portal (agrega fontes), Aplicação orientada à transação (loja virtual, banco), Blog (publicação cronológica)."
+  },
+  {
+   "tema": "CSS3, layout e design do site",
+   "p": "Quais são as etapas do processo de design de um site?",
+   "r": "1) Pesquisa/briefing (personas), 2) Arquitetura (sitemap, fluxos), 3) Wireframe (esboço baixa fidelidade), 4) Identidade visual (cores, tipografia), 5) Mockup/Protótipo (Figma), 6) Implementação."
+  },
+  {
+   "tema": "CSS3, layout e design do site",
+   "p": "Qual a diferença entre site estático e aplicação web?",
+   "r": "Estático: baixa interatividade, atualização manual (editar arquivo), personalização limitada. Aplicação web: alta interatividade, atualização dinâmica (banco de dados), personalização avançada."
+  },
+  {
+   "tema": "JavaScript, AJAX e ambiente local",
+   "p": "O que é manipulação do DOM com JavaScript?",
+   "r": "O DOM (Document Object Model) é a representação em árvore do HTML. JavaScript acessa e modifica elementos via document.getElementById(), querySelector(), innerHTML, classList, etc."
+  },
+  {
+   "tema": "JavaScript, AJAX e ambiente local",
+   "p": "Quais são os eventos JavaScript mais importantes?",
+   "r": "click, submit (envio de form), input (digitação), change (blur de select), keydown/keyup, mouseover, DOMContentLoaded (DOM pronto). Adicionados com addEventListener()."
+  },
+  {
+   "tema": "JavaScript, AJAX e ambiente local",
+   "p": "O que é AJAX e qual a vantagem?",
+   "r": "Asynchronous JavaScript And XML: atualiza partes da página sem recarregar completamente. Vantagem: UX mais fluida, menos tráfego. Implementado com Fetch API (moderno) ou XMLHttpRequest."
+  },
+  {
+   "tema": "JavaScript, AJAX e ambiente local",
+   "p": "Por que usar JSON.parse() em vez de eval() para converter JSON?",
+   "r": "eval() executa qualquer expressão JS — perigoso, vulnerável a JS Injection. JSON.parse() interpreta SOMENTE JSON válido, rejeitando comandos JS maliciosos. Sempre usar JSON.parse()."
+  },
+  {
+   "tema": "JavaScript, AJAX e ambiente local",
+   "p": "O que significa XAMPP?",
+   "r": "X = Cross-platform (Win/Linux/Mac), A = Apache (servidor web), M = MySQL/MariaDB (banco de dados), P = PHP (linguagem server-side), P = Perl. Permite rodar servidor web localmente sem internet."
+  },
+  {
+   "tema": "PHP: sintaxe e formulários",
+   "p": "Quais são as principais superglobais do PHP?",
+   "r": "$_GET (dados via URL), $_POST (corpo da requisição), $_SESSION (sessão do usuário), $_COOKIE, $_FILES (upload), $_SERVER (info do servidor), $_REQUEST ($_GET+$_POST+$_COOKIE)."
+  },
+  {
+   "tema": "PHP: sintaxe e formulários",
+   "p": "Qual a diferença entre == e === em PHP?",
+   "r": "== (igual de valor): compara apenas o valor, com coerção de tipo. === (idêntico): compara valor E tipo sem coerção. Ex: 0 == false (true), mas 0 === false (false)."
+  },
+  {
+   "tema": "PHP: sintaxe e formulários",
+   "p": "Quais são as estruturas de repetição do PHP?",
+   "r": "while (condição antes — pode não executar), do...while (condição depois — executa ao menos uma vez), for (número fixo de iterações). continue pula iteração; break sai do laço."
+  },
+  {
+   "tema": "PHP: sintaxe e formulários",
+   "p": "Quais são os tipos de array em PHP?",
+   "r": "Array indexado (índices numéricos), Array associativo (chaves string como 'nome' => 'Ana'), Array multidimensional (arrays dentro de arrays). Percorridos com foreach."
+  },
+  {
+   "tema": "PHP: sintaxe e formulários",
+   "p": "O que são funções variádicas e anônimas em PHP?",
+   "r": "Variádicas: recebem número variável de argumentos com ...$args. Anônimas (closures): funções sem nome atribuídas a variáveis ou passadas como argumento. Ex: $soma = function($a, $b) { return $a + $b; };"
+  },
+  {
+   "tema": "PHP: sintaxe e formulários",
+   "p": "Quais filtros importantes tem a função filter_var() do PHP?",
+   "r": "FILTER_VALIDATE_EMAIL (valida e-mail), FILTER_VALIDATE_INT (valida inteiro), FILTER_VALIDATE_URL (valida URL), FILTER_SANITIZE_STRING (remove tags HTML). Essencial para segurança."
+  },
+  {
+   "tema": "HTML5 e formulários",
+   "p": "Quais são os atributos essenciais da tag <form> em HTML?",
+   "r": "name (identifica o form), method (get ou post), action (URL do script destino — sem ele, envia para a própria página), submit (botão de envio)."
+  },
+  {
+   "tema": "PHP: banco de dados, MVC e padrões",
+   "p": "O que é CRUD e qual SQL corresponde a cada operação?",
+   "r": "C = Create → INSERT INTO, R = Read → SELECT, U = Update → UPDATE...SET, D = Delete → DELETE FROM. É o ciclo completo de persistência de dados."
+  },
+  {
+   "tema": "PHP: banco de dados, MVC e padrões",
+   "p": "O que é PDO e por que usar em vez de mysql_*?",
+   "r": "PDO (PHP Data Objects): abstração de acesso a banco que suporta múltiplos SGBDs (MySQL, PostgreSQL, SQLite). Funções mysql_* foram removidas no PHP 7. PDO usa prepared statements — previne SQL Injection."
+  },
+  {
+   "tema": "PHP: banco de dados, MVC e padrões",
+   "p": "O que é o padrão MVC e quais são suas camadas?",
+   "r": "Model-View-Controller: Model (dados, regras de negócio, banco), View (apresentação ao usuário — HTML/PHP), Controller (recebe requisições, coordena Model e View). Separa responsabilidades claramente."
+  },
+  {
+   "tema": "PHP: banco de dados, MVC e padrões",
+   "p": "O que é o Composer no ecossistema PHP?",
+   "r": "Gerenciador de dependências PHP (como npm para JavaScript). Permite instalar, atualizar e autocarregar bibliotecas via composer.json. Base de todos os frameworks PHP modernos (Laravel, Symfony)."
+  },
+  {
+   "tema": "PHP: banco de dados, MVC e padrões",
+   "p": "Quais são os 3 Design Patterns abordados na UA16?",
+   "r": "1) MVC (Model-View-Controller) — separação de responsabilidades. 2) Singleton — garante uma única instância de uma classe. 3) Factory — centraliza a criação de objetos, desacoplando quem cria de quem usa."
+  },
+  {
+   "tema": "PHP: banco de dados, MVC e padrões",
+   "p": "Quais são as regras do padrão Singleton?",
+   "r": "1) Construtor privado (ninguém pode instanciar com new), 2) Atributo estático que guarda a instância, 3) Método estático getInstance() que cria a instância apenas se ela ainda não existir."
+  }
+ ],
+ "questoes": [
+  {
+   "tema": "HTML5 e formulários",
+   "q": "Qual é o propósito do <!DOCTYPE html>?",
+   "op": [
+    "Definir o idioma da página",
+    "Importar estilos CSS externos automaticamente",
+    "Informar ao navegador que o documento usa HTML5, ativando o modo de renderização correto",
+    "Declarar o título da página"
+   ],
+   "r": 2,
+   "exp": "<!DOCTYPE html> ativa o modo de renderização HTML5. Sem ele, o browser usa 'quirks mode' — compatibilidade legada que pode causar comportamentos imprevisíveis no layout."
+  },
+  {
+   "tema": "HTML5 e formulários",
+   "q": "Qual tag HTML5 é mais adequada para envolver um artigo de blog que faz sentido fora do contexto do site?",
+   "op": [
+    "<section>",
+    "<div>",
+    "<aside>",
+    "<article>"
+   ],
+   "r": 3,
+   "exp": "<article> é para conteúdo autossuficiente que pode existir fora do contexto da página. <section> é para seções temáticas relacionadas ao contexto. <aside> é para conteúdo lateral/complementar."
+  },
+  {
+   "tema": "HTML5 e formulários",
+   "q": "Qual tag semântica deve ser usada APENAS UMA VEZ por página?",
+   "op": [
+    "<header>",
+    "<main>",
+    "<section>",
+    "<article>"
+   ],
+   "r": 1,
+   "exp": "<main> representa o conteúdo principal da página e deve aparecer apenas uma vez. <header>, <footer> e <section> podem aparecer múltiplas vezes (em diferentes seções/articles)."
+  },
+  {
+   "tema": "HTML5 e formulários",
+   "q": "Qual input type HTML5 valida automaticamente o formato name@domain?",
+   "op": [
+    "type='email'",
+    "type='text' com atributo pattern",
+    "type='url'",
+    "type='login'"
+   ],
+   "r": 0,
+   "exp": "type='email' valida automaticamente o formato de e-mail sem JavaScript. HTML5 adicionou: email, url, number, range, date, time, color — todos com validação nativa."
+  },
+  {
+   "tema": "HTML5 e formulários",
+   "q": "Qual método de formulário deve ser usado para enviar dados sensíveis como senhas?",
+   "op": [
+    "GET — mais eficiente",
+    "PUT — padrão REST",
+    "POST — dados no corpo da requisição, não visíveis na URL",
+    "SEND — método nativo HTML5"
+   ],
+   "r": 2,
+   "exp": "POST envia dados no corpo da requisição — não visíveis na URL. GET expõe dados na URL (visíveis, armazenados em logs/histórico). Para login/cadastro/dados sensíveis: sempre POST."
+  },
+  {
+   "tema": "CSS3, layout e design do site",
+   "q": "Qual é a forma RECOMENDADA de aplicar CSS em um projeto profissional?",
+   "op": [
+    "Arquivo externo linkado com <link rel='stylesheet'>",
+    "CSS inline (style='...' na tag)",
+    "Tag <style> dentro do <body>",
+    "Atributo class sem arquivo CSS"
+   ],
+   "r": 0,
+   "exp": "Arquivo externo é o padrão profissional: separa estrutura (HTML) de apresentação (CSS), permite reutilização em múltiplas páginas e facilita manutenção em equipe."
+  },
+  {
+   "tema": "CSS3, layout e design do site",
+   "q": "Qual seletor CSS tem MAIOR especificidade?",
+   "op": [
+    "Seletor de ID (#cabecalho)",
+    "Seletor de tag (p, div)",
+    "Seletor de classe (.menu)",
+    "Seletor universal (*)"
+   ],
+   "r": 0,
+   "exp": "Hierarquia: inline(1000) > ID(100) > classe(10) > tag(1) > universal(0). O seletor de ID (#) tem especificidade 100, muito maior que classe(10) ou tag(1)."
+  },
+  {
+   "tema": "CSS3, layout e design do site",
+   "q": "Qual propriedade CSS controla o alinhamento no eixo PRINCIPAL do Flexbox?",
+   "op": [
+    "justify-content",
+    "align-items",
+    "flex-direction",
+    "align-content"
+   ],
+   "r": 0,
+   "exp": "justify-content controla o eixo principal (horizontal por padrão). align-items controla o eixo cruzado (vertical). Valores: flex-start, flex-end, center, space-between, space-around."
+  },
+  {
+   "tema": "CSS3, layout e design do site",
+   "q": "O que faz grid-template-columns: repeat(3, 1fr) no CSS Grid?",
+   "op": [
+    "Cria 1 coluna que repete 3 vezes",
+    "Define gap de 3fr entre colunas",
+    "Cria 3 linhas de altura igual",
+    "Cria 3 colunas de tamanho igual dividindo o espaço disponível"
+   ],
+   "r": 3,
+   "exp": "repeat(3, 1fr) cria 3 colunas iguais. '1fr' = 1 fração do espaço disponível. Com 900px e gap zero, cada coluna tem 300px. 'fr' distribui proporcionalmente o espaço livre."
+  },
+  {
+   "tema": "CSS3, layout e design do site",
+   "q": "Qual das categorias de sistemas web processa operações com feedback imediato (ex: loja virtual)?",
+   "op": [
+    "Site de conteúdo",
+    "Blog",
+    "Aplicação orientada à transação",
+    "Portal"
+   ],
+   "r": 2,
+   "exp": "Aplicação orientada à transação: processa operações com feedback imediato — lojas virtuais, sistemas bancários online, reservas. Alta interatividade e personalização avançada."
+  },
+  {
+   "tema": "CSS3, layout e design do site",
+   "q": "Qual entregável do processo de design representa o esboço de BAIXA fidelidade da estrutura?",
+   "op": [
+    "Mockup no Figma",
+    "Wireframe",
+    "Sitemap",
+    "Protótipo navegável"
+   ],
+   "r": 1,
+   "exp": "Wireframe é o esboço de baixa fidelidade — mostra estrutura e hierarquia sem visual final. Mockup = visual completo (alta fidelidade). Sitemap = mapa de páginas/hierarquia."
+  },
+  {
+   "tema": "JavaScript, AJAX e ambiente local",
+   "q": "Qual evento JavaScript é disparado quando o DOM está completamente carregado?",
+   "op": [
+    "window.onload",
+    "document.ready",
+    "DOMContentLoaded",
+    "pageLoaded"
+   ],
+   "r": 2,
+   "exp": "DOMContentLoaded dispara quando o DOM está pronto, sem esperar imagens e estilos externos. window.onload espera TODOS os recursos (imagens, CSS). DOMContentLoaded é mais rápido."
+  },
+  {
+   "tema": "JavaScript, AJAX e ambiente local",
+   "q": "Qual método JavaScript seleciona um elemento pelo atributo ID?",
+   "op": [
+    "document.querySelector('#id')",
+    "document.getElementById('id')",
+    "document.getElement('id')",
+    "Ambas A e B estão corretas"
+   ],
+   "r": 3,
+   "exp": "Ambas funcionam: getElementById('id') retorna o elemento diretamente. querySelector('#id') usa seletor CSS. getElementById é mais eficiente para IDs; querySelector é mais flexível (aceita qualquer seletor CSS)."
+  },
+  {
+   "tema": "JavaScript, AJAX e ambiente local",
+   "q": "Por que JSON.parse() é mais seguro que eval() para converter JSON?",
+   "op": [
+    "JSON.parse() é mais rápido",
+    "JSON.parse() interpreta apenas JSON, rejeitando código JS malicioso; eval() executa qualquer expressão",
+    "eval() só aceita JSON válido",
+    "Não há diferença de segurança"
+   ],
+   "r": 1,
+   "exp": "eval() executa qualquer código JavaScript — vulnerável a JS Injection. JSON.parse() aceita SOMENTE JSON válido, rejeitando comandos JS. Para dados externos: sempre JSON.parse()."
+  },
+  {
+   "tema": "JavaScript, AJAX e ambiente local",
+   "q": "Qual readyState do XMLHttpRequest indica que a resposta foi COMPLETAMENTE recebida?",
+   "op": [
+    "0 — não inicializado",
+    "2 — carregado",
+    "3 — interativo",
+    "4 — completo"
+   ],
+   "r": 3,
+   "exp": "readyState 4 = Completo: resposta totalmente recebida. 0=não iniciado, 1=open() chamado, 2=send() chamado/headers disponíveis, 3=recebendo parcialmente, 4=resposta completa."
+  },
+  {
+   "tema": "JavaScript, AJAX e ambiente local",
+   "q": "O que significa o 'M' no acrônimo XAMPP?",
+   "op": [
+    "Mac — suporte ao macOS",
+    "Module — módulo de extensão",
+    "Media — suporte a multimídia",
+    "MySQL/MariaDB — banco de dados"
+   ],
+   "r": 3,
+   "exp": "XAMPP: X=Cross-platform, A=Apache (servidor web), M=MySQL/MariaDB (banco de dados), P=PHP, P=Perl. O XAMPP é o ambiente de desenvolvimento local mais usado para PHP."
+  },
+  {
+   "tema": "PHP: sintaxe e formulários",
+   "q": "Qual superglobal PHP contém os dados enviados via URL (query string)?",
+   "op": [
+    "$_POST",
+    "$_GET",
+    "$_SESSION",
+    "$_SERVER"
+   ],
+   "r": 1,
+   "exp": "$_GET: dados na URL (?nome=Ana&email=...). $_POST: dados no corpo da requisição (formulários POST). $_SESSION: dados de sessão do usuário. $_SERVER: informações do servidor."
+  },
+  {
+   "tema": "PHP: sintaxe e formulários",
+   "q": "Em PHP, qual é o resultado de: 0 == false?",
+   "op": [
+    "true — coerção de tipo: 0 e false são iguais em valor",
+    "false — tipos diferentes",
+    "Erro de tipo",
+    "true apenas com ==="
+   ],
+   "r": 0,
+   "exp": "0 == false retorna TRUE porque == faz coerção de tipo (0 é convertido para false). Já 0 === false retorna FALSE porque === compara tipo também (int ≠ boolean)."
+  },
+  {
+   "tema": "PHP: sintaxe e formulários",
+   "q": "Qual estrutura de repetição PHP garante que o bloco executa ao menos uma vez?",
+   "op": [
+    "while",
+    "for",
+    "do...while",
+    "foreach"
+   ],
+   "r": 2,
+   "exp": "do...while: o bloco executa primeiro, a condição é verificada depois — garante ao menos uma execução. while verifica a condição ANTES, podendo não executar se falsa de início."
+  },
+  {
+   "tema": "PHP: sintaxe e formulários",
+   "q": "Qual é a estrutura correta de um array associativo em PHP?",
+   "op": [
+    "$arr = [0, 1, 2]",
+    "$arr = {nome: 'Ana', idade: 25}",
+    "$arr = ['Ana', 25]",
+    "$arr = array('nome' => 'Ana', 'idade' => 25)"
+   ],
+   "r": 3,
+   "exp": "Array associativo PHP usa a sintaxe chave => valor: array('nome' => 'Ana') ou ['nome' => 'Ana']. Diferente de array indexado ([0,1,2]) e de objeto JS ({})."
+  },
+  {
+   "tema": "PHP: sintaxe e formulários",
+   "q": "Qual função PHP valida e sanitiza dados de formulário contra injeções?",
+   "op": [
+    "htmlspecialchars()",
+    "filter_var()",
+    "validate_input()",
+    "check_form()"
+   ],
+   "r": 1,
+   "exp": "filter_var() com filtros como FILTER_VALIDATE_EMAIL, FILTER_VALIDATE_INT e FILTER_SANITIZE_STRING valida e sanitiza dados. É essencial para segurança em formulários PHP."
+  },
+  {
+   "tema": "PHP: banco de dados, MVC e padrões",
+   "q": "Na estrutura de arquivos de um módulo CRUD PHP, qual arquivo processa o INSERT?",
+   "op": [
+    "index.php",
+    "inclui.php",
+    "inicia.php",
+    "form_inclui.php"
+   ],
+   "r": 1,
+   "exp": "inclui.php: processa o INSERT, valida campos e redireciona após sucesso. form_inclui.php: exibe o formulário HTML. index.php: lista registros (READ). inicia.php: configurações."
+  },
+  {
+   "tema": "PHP: banco de dados, MVC e padrões",
+   "q": "Por que usar PDO em vez das funções mysql_* para conectar ao banco em PHP?",
+   "op": [
+    "mysql_* foram removidas no PHP 7 e PDO usa prepared statements (previne SQL Injection)",
+    "PDO é mais lento mas mais simples",
+    "PDO só funciona com MySQL",
+    "Não há diferença prática"
+   ],
+   "r": 0,
+   "exp": "mysql_* foram removidas no PHP 7+. PDO suporta múltiplos SGBDs e usa prepared statements com ? ou :param, prevenindo SQL Injection — fundamental para segurança."
+  },
+  {
+   "tema": "PHP: banco de dados, MVC e padrões",
+   "q": "No padrão MVC, qual camada recebe as requisições do usuário e coordena Model e View?",
+   "op": [
+    "Model",
+    "View",
+    "Controller",
+    "Router"
+   ],
+   "r": 2,
+   "exp": "Controller: recebe requisições, decide qual Model chamar para dados e qual View renderizar. Model: dados e regras de negócio. View: apresentação (HTML/template)."
+  },
+  {
+   "tema": "PHP: banco de dados, MVC e padrões",
+   "q": "O que é o Composer no ecossistema PHP?",
+   "op": [
+    "Um editor de código PHP",
+    "O servidor web embutido do PHP",
+    "O gerenciador de dependências PHP (como npm para JavaScript)",
+    "Um framework PHP completo"
+   ],
+   "r": 2,
+   "exp": "Composer é o gerenciador de dependências PHP. Instala, atualiza e autocarrega bibliotecas via composer.json/composer.lock. Base de frameworks modernos como Laravel e Symfony."
+  },
+  {
+   "tema": "PHP: banco de dados, MVC e padrões",
+   "q": "Qual Design Pattern garante que uma classe tenha apenas UMA instância em todo o sistema?",
+   "op": [
+    "Factory",
+    "Singleton",
+    "MVC",
+    "Observer"
+   ],
+   "r": 1,
+   "exp": "Singleton: construtor privado + atributo estático + getInstance() que cria a instância apenas se ainda não existir. Usado para conexão com banco, logger, config — recursos compartilhados."
+  },
+  {
+   "tema": "PHP: banco de dados, MVC e padrões",
+   "q": "Qual é o papel do padrão Factory?",
+   "op": [
+    "Garantir uma única instância de classe",
+    "Separar a interface da implementação",
+    "Definir a estrutura MVC da aplicação",
+    "Centralizar a criação de objetos, desacoplando quem cria de quem usa"
+   ],
+   "r": 3,
+   "exp": "Factory centraliza a criação de objetos: em vez de new Classe() espalhado no código, uma fábrica decide qual subclasse instanciar. Desacopla quem usa de quem cria, facilitando extensão."
+  }
+ ],
+ "discursivas": [],
+ "colas": [],
+ "links": [
+  {
+   "nome": "Menu principal",
+   "url": "https://samuelgomezdev.github.io/responsive_web_development/",
+   "desc": "Índice de todos os exercícios publicados"
+  },
+  {
+   "nome": "Aula 01 — Lobo",
+   "url": "https://samuelgomezdev.github.io/responsive_web_development/aula01-lobo/",
+   "desc": "HTML básico: estrutura, imagem, parágrafo e link externo"
+  },
+  {
+   "nome": "Aula 02 — Posicionamento Float",
+   "url": "https://samuelgomezdev.github.io/responsive_web_development/aula02-float/",
+   "desc": "Layout com float: right, clear: both e box-sizing: border-box"
+  },
+  {
+   "nome": "Aula 03 — Seletores CSS",
+   "url": "https://samuelgomezdev.github.io/responsive_web_development/aula03-seletores-css/",
+   "desc": "Seletores de tag, classe e ID; hover e especificidade"
+  },
+  {
+   "nome": "Fórum Temático — Carta do Leitor",
+   "url": "https://samuelgomezdev.github.io/responsive_web_development/forum-tematico/",
+   "desc": "Layout editorial responsivo com gradientes e listas semânticas"
+  },
+  {
+   "nome": "Unidade de Aprendizagem — Estados e Cidades",
+   "url": "https://github.com/samuelgomezdev/responsive_web_development/tree/main/unidade-aprendizagem",
+   "desc": "Select dinâmico com AJAX (XMLHttpRequest) e backend PHP devolvendo JSON"
+  },
+  {
+   "nome": "Calculadora Espacial",
+   "url": "https://samuelgomezdev.github.io/responsive_web_development/calculadora/",
+   "desc": "JS, CSS e HTML: estrelas animadas, sons e efeitos neon"
+  },
+  {
+   "nome": "Repositório no GitHub",
+   "url": "https://github.com/samuelgomezdev/responsive_web_development",
+   "desc": "Código-fonte completo dos exercícios"
+  }
+ ],
+ "resumos": [
+  {
+   "tema": "HTML5 e formulários",
+   "html": "<p><b>&lt;!DOCTYPE html&gt;</b> informa ao navegador que o documento é <b>HTML5</b>, ativando o modo de renderização correto. Sem ele o browser cai no <b>quirks mode</b>, compatibilidade legada de resultado imprevisível.</p><pre>&lt;!DOCTYPE html&gt;\n&lt;html lang=\"pt-BR\"&gt;\n&lt;head&gt;\n  &lt;meta charset=\"UTF-8\"&gt;\n  &lt;meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"&gt;\n  &lt;title&gt;Página&lt;/title&gt;\n&lt;/head&gt;\n&lt;body&gt;&lt;/body&gt;\n&lt;/html&gt;</pre><p><code>lang</code> declara o idioma, <code>charset=\"UTF-8\"</code> garante a acentuação e a <b>meta viewport</b> permite a adaptação à tela — sem ela o celular renderiza a página como desktop reduzido.</p><p>As <b>tags semânticas</b> substituem o <code>&lt;div&gt;</code> genérico e favorecem SEO e acessibilidade:</p><ul><li><b>&lt;header&gt;</b> cabeçalho e <b>&lt;footer&gt;</b> rodapé;</li><li><b>&lt;nav&gt;</b> menu de navegação;</li><li><b>&lt;main&gt;</b> conteúdo principal — <b>único por página</b>;</li><li><b>&lt;article&gt;</b> conteúdo autossuficiente, que faz sentido fora do contexto do site (post, notícia);</li><li><b>&lt;section&gt;</b> seção temática ligada ao contexto da página;</li><li><b>&lt;aside&gt;</b> conteúdo lateral.</li></ul><p>Só <code>&lt;main&gt;</code> não se repete; as demais podem aparecer várias vezes.</p><p><b>Formulários.</b> A tag <code>&lt;form&gt;</code> usa <code>name</code>, <code>method</code> (<b>get</b> ou <b>post</b>) e <code>action</code> (script destino — se omitido, envia para a própria página). <b>GET</b> põe os dados na URL: serve a buscas e filtros, mas expõe tudo em histórico e logs. <b>POST</b> envia no corpo da requisição e é o método de login e senhas.</p><p>O HTML5 trouxe <b>inputs com validação nativa</b>, sem JavaScript: <code>email</code> (formato nome@dominio), <code>url</code>, <code>number</code> (<code>min</code>, <code>max</code>, <code>step</code>), <code>range</code>, <code>date</code>, <code>time</code> e <code>color</code>.</p><pre>&lt;form name=\"contato\" method=\"post\" action=\"salvar.php\"&gt;\n  &lt;input type=\"email\" name=\"email\" required&gt;\n  &lt;input type=\"submit\" value=\"Enviar\"&gt;\n&lt;/form&gt;</pre>"
+  },
+  {
+   "tema": "CSS3, layout e design do site",
+   "html": "<p><b>Três formas de aplicar CSS:</b> <b>externo</b>, com <code>&lt;link rel=\"stylesheet\" href=\"style.css\"&gt;</code> — padrão profissional, separa estrutura de apresentação; <b>interno</b>, no <code>&lt;style&gt;</code> do <code>&lt;head&gt;</code>, para prototipação; <b>inline</b>, no atributo <code>style</code>, a evitar.</p><p><b>Especificidade</b> decide qual regra vence: <b>inline (1000) &gt; ID # (100) &gt; classe, pseudoclasse e atributo (10) &gt; tag (1) &gt; universal * (0)</b>. O <code>!important</code> sobrepõe tudo; em empate, vence a última regra.</p><p><b>Flexbox</b> resolve <b>uma dimensão</b> (linha OU coluna): menus e alinhamento. <code>justify-content</code> alinha no <b>eixo principal</b>, <code>align-items</code> no <b>eixo cruzado</b>. <b>Grid</b> resolve <b>duas dimensões</b> (linhas E colunas), o esqueleto da página.</p><pre>.menu { display: flex; justify-content: space-between; align-items: center; }\n.pagina { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }</pre><p><code>repeat(3, 1fr)</code> cria <b>3 colunas iguais</b>; <code>fr</code> é fração do espaço livre.</p><p><b>Pilares do responsivo:</b> meta viewport; <b>media queries</b> (<code>@media (min-width: 768px)</code>); unidades relativas <code>%</code>, <code>rem</code>, <code>vw</code>, <code>vh</code>; Flexbox e Grid. No <b>Mobile First</b>, parte-se do menor breakpoint.</p><p>A <b>arquitetura web tem 4 camadas</b>: Apresentação (browser) → Processamento da Aplicação (negócio) → Gerenciamento de Dados → Banco de Dados.</p><p><b>Cinco categorias de sistemas web:</b> site de conteúdo; registro de dados; portal (agrega fontes); <b>aplicação orientada à transação</b> — loja virtual, banco, reservas: processa operações com feedback imediato; blog. O <b>site estático</b> tem baixa interatividade e atualização manual; a <b>aplicação web</b>, alta interatividade e conteúdo dinâmico do banco.</p><p><b>Processo de design:</b> briefing (<b>personas</b>) → arquitetura de informação (<b>sitemap</b>, fluxos) → <b>wireframe</b>, esboço de <b>baixa fidelidade</b> sem visual final → identidade visual → <b>mockup</b>/protótipo de alta fidelidade (Figma) → implementação.</p>"
+  },
+  {
+   "tema": "JavaScript, AJAX e ambiente local",
+   "html": "<p>O <b>DOM (Document Object Model)</b> é a representação em árvore do HTML, que o JavaScript lê e altera.</p><pre>document.getElementById(\"titulo\").innerHTML = \"Olá\";\ndocument.querySelector(\".card\").classList.add(\"ativo\");</pre><p><code>getElementById(\"id\")</code> e <code>querySelector(\"#id\")</code> selecionam um elemento pelo id: o primeiro é mais eficiente, o segundo aceita <b>qualquer seletor CSS</b>.</p><p><b>Eventos</b> vão em <code>addEventListener()</code>: <code>click</code>, <code>submit</code>, <code>input</code>, <code>change</code>, <code>keydown</code>, <code>mouseover</code> e <b><code>DOMContentLoaded</code></b>. Este dispara assim que o DOM está montado, sem esperar imagens e CSS; <code>window.onload</code> só dispara com <b>todos</b> os recursos carregados.</p><p><b>AJAX</b> (Asynchronous JavaScript And XML) atualiza partes da página <b>sem recarregá-la</b>: experiência fluida e menos tráfego. Usa <code>XMLHttpRequest</code> ou a <b>Fetch API</b> (moderna, com Promises). Estados do <code>readyState</code>: <b>0</b> não inicializado, <b>1</b> <code>open()</code> chamado, <b>2</b> <code>send()</code> chamado, <b>3</b> recebendo parcialmente, <b>4</b> <b>resposta completa</b> — só aí, com <code>status</code> 200, ela pode ser lida.</p><pre>const xhr = new XMLHttpRequest();\nxhr.open(\"GET\", \"cidades.php?uf=SC\", true);\nxhr.onreadystatechange = function () {\n  if (xhr.readyState === 4 &amp;&amp; xhr.status === 200) {\n    const dados = JSON.parse(xhr.responseText);\n  }\n};\nxhr.send();</pre><p>Converta a resposta com <b><code>JSON.parse()</code></b>, nunca com <code>eval()</code>: <code>eval()</code> executa qualquer expressão JavaScript e permite <b>JS Injection</b>; <code>JSON.parse()</code> aceita somente JSON válido.</p><p><b>XAMPP</b> é o ambiente de desenvolvimento local: <b>X</b> = Cross-platform (Win/Linux/Mac), <b>A</b> = <b>Apache</b> (servidor web), <b>M</b> = <b>MySQL/MariaDB</b> (banco de dados), <b>P</b> = <b>PHP</b>, <b>P</b> = Perl. Roda um servidor web na própria máquina: os arquivos ficam em <code>htdocs</code>, acessados por <code>http://localhost</code> — abrir um <code>.php</code> pelo sistema de arquivos não executa o código.</p>"
+  },
+  {
+   "tema": "PHP: sintaxe e formulários",
+   "html": "<p>O código PHP fica entre <code>&lt;?php ... ?&gt;</code>, roda <b>no servidor</b> e devolve HTML ao navegador.</p><p><b>Superglobais</b> — arrays acessíveis em qualquer escopo:</p><ul><li><code>$_GET</code> — dados vindos pela URL (<code>?nome=Ana</code>);</li><li><code>$_POST</code> — dados no corpo da requisição (<code>method=\"post\"</code>);</li><li><code>$_REQUEST</code> — reúne <code>$_GET</code>, <code>$_POST</code> e <code>$_COOKIE</code>;</li><li><code>$_SESSION</code> — sessão do usuário (com <code>session_start()</code>);</li><li><code>$_COOKIE</code>, <code>$_FILES</code> (upload) e <code>$_SERVER</code>.</li></ul><p><code>==</code> compara só o <b>valor</b>, com coerção de tipo; <code>===</code> compara <b>valor e tipo</b>. Por isso <code>0 == false</code> é <b>true</b>, mas <code>0 === false</code> é <b>false</b>. Em validações, prefira <code>===</code>.</p><p><b>Repetição:</b> <code>while</code> testa a condição <b>antes</b> e pode não executar nenhuma vez; <code>do...while</code> testa <b>depois</b>, garantindo ao menos uma execução; <code>for</code> serve a iterações em número conhecido; <code>foreach</code> percorre arrays. <code>break</code> sai do laço, <code>continue</code> pula a iteração.</p><p><b>Arrays</b> são <b>indexados</b> (<code>[0, 1, 2]</code>), <b>associativos</b> (<code>chave =&gt; valor</code>) ou <b>multidimensionais</b>. Funções <b>variádicas</b> recebem número variável de argumentos com <code>...$args</code>; <b>anônimas</b> (closures) não têm nome e vão em variáveis ou como argumento.</p><pre>$pessoa = ['nome' =&gt; 'Ana', 'idade' =&gt; 25];\nforeach ($pessoa as $chave =&gt; $valor) { echo \"$chave: $valor\"; }\nfunction soma(...$nums) { return array_sum($nums); }\n$dobro = function ($n) { return $n * 2; };</pre><p><b>Nunca confie no dado do formulário.</b> <code>filter_var()</code> valida e sanitiza com filtros como <code>FILTER_VALIDATE_EMAIL</code>, <code>FILTER_VALIDATE_INT</code>, <code>FILTER_VALIDATE_URL</code> e <code>FILTER_SANITIZE_STRING</code> (obsoleto desde o PHP 8.1). Para exibir texto do usuário, use <code>htmlspecialchars()</code>.</p><pre>$email = filter_var($_POST['email'], FILTER_VALIDATE_EMAIL);</pre>"
+  },
+  {
+   "tema": "PHP: banco de dados, MVC e padrões",
+   "html": "<p><b>CRUD</b> é o ciclo de persistência, cada operação com seu SQL: <b>C</b>reate → <code>INSERT INTO</code>, <b>R</b>ead → <code>SELECT</code>, <b>U</b>pdate → <code>UPDATE ... SET</code>, <b>D</b>elete → <code>DELETE FROM</code>. Sem <code>WHERE</code>, <code>UPDATE</code> e <code>DELETE</code> atingem a tabela inteira.</p><p>Arquivos típicos de um <b>módulo CRUD</b> em PHP:</p><ul><li><code>inicia.php</code> — configurações e conexão;</li><li><code>index.php</code> — lista os registros (READ);</li><li><code>form_inclui.php</code> — exibe o formulário;</li><li><b><code>inclui.php</code> — processa o INSERT</b>, valida os campos e redireciona após o sucesso.</li></ul><p><b>PDO (PHP Data Objects)</b> é a camada de abstração de acesso a dados: funciona com vários SGBDs (MySQL, PostgreSQL, SQLite) e usa <b>prepared statements</b> com <code>?</code> ou <code>:parametro</code>, separando comando de dado e <b>prevenindo SQL Injection</b>. As funções <code>mysql_*</code> foram <b>removidas no PHP 7</b>.</p><pre>$pdo = new PDO(\"mysql:host=localhost;dbname=loja\", $usuario, $senha);\n$stmt = $pdo-&gt;prepare(\"SELECT * FROM cliente WHERE email = :email\");\n$stmt-&gt;execute([':email' =&gt; $email]);\n$linhas = $stmt-&gt;fetchAll(PDO::FETCH_ASSOC);</pre><p><b>MVC (Model-View-Controller)</b> separa responsabilidades: o <b>Model</b> cuida dos dados, regras de negócio e banco; a <b>View</b> apresenta o resultado (HTML/PHP); o <b>Controller</b> <b>recebe as requisições</b> e coordena Model e View.</p><p>O <b>Singleton</b> garante <b>uma única instância</b> de uma classe: construtor <b>privado</b>, atributo <b>estático</b> guardando a instância e método estático <code>getInstance()</code>, que só cria o objeto se ele ainda não existir — típico de conexão de banco e logger. O <b>Factory</b> <b>centraliza a criação de objetos</b>: em vez de <code>new</code> espalhado, uma fábrica decide qual classe instanciar, desacoplando quem usa de quem cria.</p><p>O <b>Composer</b> é o <b>gerenciador de dependências do PHP</b>, equivalente ao npm: instala e atualiza bibliotecas declaradas no <code>composer.json</code> e faz o <b>autoload</b> das classes. É a base de Laravel e Symfony.</p>"
+  }
+ ]
+}

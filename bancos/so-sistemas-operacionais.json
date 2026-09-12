@@ -1,0 +1,851 @@
+{
+ "id": "so-sistemas-operacionais",
+ "nome": "SO - Sistemas Operacionais",
+ "periodo": 1,
+ "cor": "#84cc16",
+ "sigla": "SO",
+ "resumos": [
+  {
+   "tema": "Conceitos de Sistema Operacional",
+   "html": "<p>Um <b>programa em execução</b> faz algo muito simples: executa instruções. O processador <b>busca</b> uma instrução da memória, <b>decodifica</b> e <b>executa</b> — bilhões de vezes por segundo. O <b>sistema operacional</b> é o conjunto de softwares que facilita essa execução, permitindo que programas <b>compartilhem</b> memória e dispositivos.</p><p><b>Duas funções centrais:</b></p><ul><li><b>Máquina estendida / virtual</b> — esconde a complexidade do hardware, oferecendo ao programador uma interface limpa (arquivos, processos, sockets) em vez de registradores de controladora de disco.</li><li><b>Gerenciador de recursos</b> — decide quem usa CPU, memória, disco e dispositivos, e quando.</li></ul><p><b>Kernel (núcleo):</b> a parte do SO que roda em <b>modo protegido/supervisor</b>, com acesso total ao hardware. Os programas do usuário rodam em <b>modo usuário</b>, restrito, e pedem serviços ao kernel por meio de <b>chamadas de sistema (system calls)</b>. Essa separação é o que impede um programa de derrubar os outros.</p><p><b>Tipos de kernel:</b> <b>monolítico</b> (todos os serviços no núcleo — rápido, mas grande; Linux), <b>microkernel</b> (só o essencial no núcleo, o resto em processos de usuário — mais seguro e modular, com custo de troca de mensagens; Minix, QNX) e <b>híbrido</b> (Windows NT, macOS).</p><p><b>Evolução:</b> processamento em lote (batch) → multiprogramação (vários programas na memória, a CPU alterna quando um espera E/S) → tempo compartilhado (time-sharing, com vários usuários interativos) → sistemas distribuídos, de tempo real e móveis.</p>"
+  },
+  {
+   "tema": "Gerência de Processos e Escalonamento",
+   "html": "<p><b>Processo é um programa em execução</b> — a unidade básica de trabalho do sistema. O programa é passivo (um arquivo no disco); o processo é ativo, com contador de programa, registradores, pilha, heap e área de dados.</p><p><b>PCB (Process Control Block):</b> a estrutura onde o SO guarda tudo sobre o processo — PID, estado, contador de programa, registradores, prioridade, arquivos abertos. É o que permite a <b>troca de contexto</b>.</p><p><b>Estados do processo:</b> <b>novo</b> → <b>pronto</b> (na fila, esperando CPU) → <b>executando</b> (na CPU) → <b>bloqueado/em espera</b> (esperando E/S ou evento) → volta a pronto → <b>terminado</b>. A CPU só executa um processo por núcleo de cada vez.</p><p><b>Algoritmos de escalonamento:</b></p><ul><li><b>FCFS / FIFO</b> — primeiro a chegar, primeiro a ser servido. Simples, mas sofre do <b>efeito comboio</b>: um processo longo segura todos.</li><li><b>SJF</b> (Shortest Job First) — o menor primeiro. Ótimo para o tempo médio de espera, mas exige prever a duração e pode causar <b>inanição</b> dos longos.</li><li><b>Prioridade</b> — o de maior prioridade primeiro. Risco de inanição, resolvido com <b>aging</b> (envelhecimento aumenta a prioridade de quem espera muito).</li><li><b>Round Robin</b> — cada processo recebe um <b>quantum</b> de tempo e volta ao fim da fila. É o algoritmo dos sistemas de tempo compartilhado; a escolha do quantum equilibra resposta e sobrecarga de troca de contexto.</li><li><b>Filas multinível com realimentação</b> — várias filas com prioridades e quanta diferentes, e os processos migram entre elas conforme o comportamento.</li></ul><p><b>Preemptivo x não preemptivo:</b> no preemptivo o SO pode tirar a CPU de um processo antes que ele termine (Round Robin); no não preemptivo, só quando ele libera voluntariamente.</p><p><b>Thread</b> é o fluxo de execução dentro de um processo. Threads do mesmo processo <b>compartilham</b> código, dados e arquivos abertos, mas cada uma tem sua pilha, registradores e contador de programa. Vantagens: criação e troca mais baratas que as de processo, comunicação direta pela memória compartilhada e paralelismo real em máquinas multicore.</p>"
+  },
+  {
+   "tema": "Gerência de Memória e Memória Virtual",
+   "html": "<p><b>Hierarquia de armazenamento</b> — do mais rápido, caro e pequeno para o mais lento, barato e grande: <b>registradores → cache (L1, L2, L3) → memória principal (RAM) → memória secundária (SSD/HD) → memória terciária (fita, nuvem)</b>. Registradores e cache são voláteis e rápidos; disco é persistente e lento.</p><p><b>Estratégias de gerenciamento:</b></p><ul><li><b>Partições fixas</b> — memória dividida em blocos de tamanho fixo; gera <b>fragmentação interna</b> (sobra dentro da partição).</li><li><b>Partições variáveis</b> — cada processo recebe exatamente o que precisa; gera <b>fragmentação externa</b> (buracos espalhados entre processos).</li><li><b>Paginação</b> — divide a memória física em <b>quadros (frames)</b> e o espaço lógico do processo em <b>páginas</b> do mesmo tamanho. Elimina a fragmentação externa; a <b>tabela de páginas</b> faz o mapeamento e a <b>MMU</b> traduz os endereços em hardware.</li><li><b>Segmentação</b> — divide por unidades lógicas (código, dados, pilha), com tamanhos variáveis.</li></ul><p><b>Memória virtual:</b> combina RAM e espaço em disco para dar aos processos mais memória do que existe fisicamente. O programa é dividido em <b>páginas</b>; só as necessárias ficam na RAM. Quando o processo acessa uma página que não está na memória, ocorre uma <b>falta de página (page fault)</b> e o SO traz a página do disco.</p><p><b>Algoritmos de substituição de página:</b> <b>FIFO</b> (a mais antiga sai — sofre da <b>anomalia de Belady</b>: mais quadros podem causar mais faltas), <b>LRU</b> (a menos recentemente usada — boa aproximação do ótimo), <b>ótimo/OPT</b> (a que será usada mais tarde — impossível de implementar, serve de referência) e <b>segunda chance/relógio</b>.</p><p><b>Thrashing:</b> quando o sistema passa mais tempo trocando páginas do que executando. Sinal de que há processos demais para a memória disponível.</p>"
+  },
+  {
+   "tema": "Entrada, Saída e Deadlocks",
+   "html": "<p>O <b>hardware de E/S</b> permite ao computador interagir com o mundo externo. Cada dispositivo tem uma <b>controladora</b>, e o SO conversa com ela por <b>registradores</b> e <b>buffers</b>.</p><p><b>Técnicas:</b> E/S programada (polling — a CPU consulta em laço e desperdiça tempo), <b>por interrupção</b> (o dispositivo avisa quando está pronto) e <b>DMA</b> (transferência direta dispositivo↔memória, sem passar pela CPU).</p><p><b>Software de E/S em camadas</b>, de cima para baixo: software de nível de usuário → software independente de dispositivo (nomes, buffering, proteção) → <b>drivers</b> (dependentes do dispositivo) → tratadores de interrupção → hardware.</p><p><b>Deadlock (impasse):</b> dois ou mais processos ficam bloqueados para sempre, cada um esperando um recurso que o outro segura.</p><p><b>As 4 condições de Coffman</b> — todas precisam ocorrer simultaneamente:</p><ol><li><b>Exclusão mútua</b> — o recurso só pode ser usado por um processo por vez</li><li><b>Posse e espera</b> — o processo segura um recurso enquanto espera outro</li><li><b>Não preempção</b> — o recurso não pode ser tomado à força; só é liberado voluntariamente</li><li><b>Espera circular</b> — existe um ciclo de processos, cada um esperando o próximo</li></ol><p><b>Como tratar:</b> <b>prevenção</b> (quebrar uma das quatro condições por projeto — por exemplo, ordenar globalmente os recursos para impedir o ciclo), <b>impedimento/anulação</b> (decidir em tempo de execução se conceder o recurso é seguro — algoritmo do banqueiro), <b>detecção e recuperação</b> (deixar acontecer, detectar por grafo de alocação e matar ou reverter processos) e <b>ignorar</b> (o algoritmo do avestruz — o que Windows e Linux fazem na prática para recursos comuns).</p>"
+  },
+  {
+   "tema": "Memória de Massa, Discos e RAID",
+   "html": "<p><b>HD (disco rígido):</b> gravação magnética em pratos que giram, com cabeças de leitura/gravação em um braço. Organização: <b>trilhas</b> (círculos concêntricos), <b>setores</b> (fatias da trilha, tradicionalmente de 512 bytes) e <b>cilindros</b> (mesma trilha em todos os pratos). O <b>tempo de acesso</b> é a soma do <b>tempo de busca</b> (mover o braço), da <b>latência rotacional</b> (esperar o setor passar) e do tempo de transferência.</p><p><b>SSD:</b> memória flash, sem partes móveis — muito mais rápido, silencioso e resistente a impacto, com acesso praticamente uniforme. Tem número limitado de ciclos de escrita, mitigado pelo <b>wear leveling</b> e pelo comando <b>TRIM</b>.</p><p><b>Interfaces:</b> IDE/PATA (antiga, cabo flat paralelo), <b>SATA</b> (serial, dominante em HDs), <b>SAS</b> (servidores), <b>NVMe</b> sobre PCIe (SSDs modernos, muito mais rápido que SATA).</p><p><b>Escalonamento de disco:</b> FCFS, SSTF (menor tempo de busca primeiro), <b>SCAN/elevador</b> (o braço varre em um sentido e volta) e C-SCAN.</p><p><b>RAID</b> (Redundant Array of Independent Disks) — combina vários discos:</p><ul><li><b>RAID 0 (striping)</b> — divide os dados entre os discos. Máximo desempenho e capacidade total, <b>sem nenhuma redundância</b>: se um disco falha, perde-se tudo. Mínimo 2 discos.</li><li><b>RAID 1 (espelhamento)</b> — cópia idêntica em dois discos. Tolera a falha de um; aproveita <b>50%</b> da capacidade. Mínimo 2 discos.</li><li><b>RAID 5</b> — striping com <b>paridade distribuída</b> entre todos os discos. Tolera a falha de <b>1</b> disco; perde a capacidade de 1 disco. Mínimo 3 discos.</li><li><b>RAID 6</b> — dupla paridade. Tolera a falha de <b>2</b> discos. Mínimo 4 discos.</li><li><b>RAID 10 (1+0)</b> — espelha e depois divide. Junta desempenho e segurança; aproveita 50%. Mínimo 4 discos.</li></ul><p><b>Paridade:</b> um bit calculado por <b>XOR</b> entre os bits correspondentes dos demais discos. Se um disco falha, o dado perdido é reconstruído fazendo XOR entre os que sobraram. RAID não substitui backup — ele protege contra falha de disco, não contra exclusão acidental, corrupção ou ransomware.</p>"
+  },
+  {
+   "tema": "Sistemas de Arquivos",
+   "html": "<p>O <b>sistema de arquivos</b> organiza como os dados são guardados e recuperados na memória de massa. Ele define a estrutura de diretórios, os metadados (nome, tamanho, datas, permissões) e como os blocos do disco são alocados.</p><p><b>Métodos de alocação:</b> <b>contígua</b> (blocos em sequência — leitura rápida, mas sofre fragmentação externa e dificulta o crescimento do arquivo), <b>encadeada</b> (cada bloco aponta para o próximo — sem fragmentação externa, mas o acesso direto é ruim) e <b>indexada</b> (um bloco de índice guarda os endereços — é o que o Unix faz com o <b>inode</b>).</p><p><b>Controle de espaço livre:</b> mapa de bits ou lista encadeada de blocos livres.</p><p><b>Principais sistemas:</b> <b>FAT32</b> (universal, mas limitado a arquivos de 4 GB), <b>NTFS</b> (Windows — journaling, permissões, compressão, criptografia), <b>exFAT</b> (pen drives e cartões, sem o limite de 4 GB), <b>ext4</b> (Linux, com journaling), <b>Btrfs</b> e <b>ZFS</b> (snapshots e checksums), <b>APFS</b> (macOS).</p><p><b>Journaling</b> é o registro prévio das operações em um diário: se faltar energia no meio de uma gravação, o sistema consulta o diário e recupera a consistência sem varrer o disco inteiro.</p><p><b>Permissões no Linux:</b> três classes (dono, grupo, outros) e três direitos (r=4, w=2, x=1). <code>chmod 755</code> = dono rwx, grupo r-x, outros r-x.</p>"
+  },
+  {
+   "tema": "Windows, Linux e Aplicações",
+   "html": "<p><b>Windows</b> — desenvolvido e distribuído pela <b>Microsoft</b>, com custo de licença. Código fechado, kernel híbrido, instalável em uma enorme variedade de hardware: de celulares e tablets a consoles, mainframes e supercomputadores. Interface gráfica desde o início, ampla compatibilidade com softwares comerciais e jogos, sistema de arquivos NTFS, e é o alvo preferencial de malware por causa da base de usuários.</p><p><b>Linux</b> — o <b>kernel é desenvolvido pela comunidade</b>, com <b>Linus Torvalds</b> supervisionando o desenvolvimento. Código aberto (licença GPL), pode ser <b>distribuído gratuitamente</b> em revistas, livros ou download. Existem versões pagas, normalmente mais baratas que o Windows. Distribuições: Ubuntu, Debian, Fedora, Red Hat, Arch. Domina servidores, nuvem, supercomputadores e sistemas embarcados; o Android usa kernel Linux.</p><p><b>Comparando:</b> o Linux costuma exigir menos hardware, dá mais controle e é mais fácil de auditar por ser aberto; o Windows tem instalação e uso mais simples para o público geral e melhor suporte a software comercial. Ambos rodam em grande variedade de hardware.</p><p><b>Funcionalidades que todo SO oferece:</b> gerência de processos, gerência de memória, gerência de arquivos, gerência de dispositivos de E/S, segurança e controle de acesso, e interface com o usuário (linha de comando ou gráfica).</p><p><b>Virtualização:</b> um <b>hipervisor</b> permite executar vários sistemas operacionais convidados sobre a mesma máquina física — tipo 1 roda direto no hardware (ESXi, Hyper-V), tipo 2 roda sobre um SO hospedeiro (VirtualBox, VMware Workstation). <b>Contêineres</b> (Docker) são mais leves: compartilham o kernel do hospedeiro e isolam apenas o espaço de usuário.</p>"
+  }
+ ],
+ "colas": [
+  {
+   "titulo": "Estados do processo",
+   "mnemonico": "Mnemônico: Novo → Pronto → Executando → Bloqueado → volta a Pronto → Terminado.",
+   "pontos": [
+    "Pronto: está na fila esperando a CPU. Bloqueado: está esperando E/S ou um evento.",
+    "De Bloqueado NUNCA se vai direto para Executando — passa por Pronto.",
+    "Processo é o programa em EXECUÇÃO; o programa em si é passivo, no disco.",
+    "PCB guarda tudo do processo e é o que permite a troca de contexto."
+   ]
+  },
+  {
+   "titulo": "Escalonamento — quem é quem",
+   "mnemonico": "Mnemônico: FCFS é fila de banco; SJF é 'quem tem menos itens'; RR é rodízio com cronômetro.",
+   "pontos": [
+    "FCFS: primeiro a chegar. Sofre EFEITO COMBOIO — um longo segura todos.",
+    "SJF: menor primeiro. Ótimo tempo médio de espera, mas causa INANIÇÃO dos longos.",
+    "Prioridade: risco de inanição, resolvido com AGING (quem espera vai subindo).",
+    "Round Robin: cada um ganha um QUANTUM e volta pro fim da fila. É o do tempo compartilhado.",
+    "Preemptivo = o SO pode tirar a CPU antes de terminar. Não preemptivo = só quando o processo libera."
+   ]
+  },
+  {
+   "titulo": "Processo x Thread",
+   "mnemonico": "Mnemônico: threads do mesmo processo COMPARTILHAM memória; processos são isolados.",
+   "pontos": [
+    "Thread tem a própria pilha, registradores e contador de programa.",
+    "Thread compartilha código, dados e arquivos abertos com as irmãs.",
+    "Criar e trocar thread é mais barato que processo.",
+    "Como compartilham memória, precisam de sincronização (mutex, semáforo)."
+   ]
+  },
+  {
+   "titulo": "Fragmentação e memória virtual",
+   "mnemonico": "Mnemônico: interna sobra DENTRO do bloco; externa são buracos ENTRE os blocos.",
+   "pontos": [
+    "Partição fixa → fragmentação INTERNA. Partição variável → fragmentação EXTERNA.",
+    "Paginação elimina a fragmentação externa: páginas (lógico) ↔ quadros/frames (físico).",
+    "Page fault = a página pedida não está na RAM; o SO busca no disco.",
+    "FIFO sofre a ANOMALIA DE BELADY (mais quadros, mais faltas). LRU não sofre.",
+    "Thrashing: o sistema passa mais tempo trocando página do que executando."
+   ]
+  },
+  {
+   "titulo": "As 4 condições de deadlock (Coffman)",
+   "mnemonico": "Mnemônico: \"EPNE\" → Exclusão mútua, Posse e espera, Não preempção, Espera circular. Quebrou uma, não tem deadlock.",
+   "pontos": [
+    "Exclusão mútua: um recurso, um processo por vez.",
+    "Posse e espera: segura um e pede outro.",
+    "Não preempção: não dá para tomar o recurso à força.",
+    "Espera circular: P1 espera P2, P2 espera P1.",
+    "Tratamentos: prevenir, impedir (banqueiro), detectar e recuperar, ou ignorar (algoritmo do avestruz)."
+   ]
+  },
+  {
+   "titulo": "Níveis de RAID",
+   "mnemonico": "Mnemônico: 0 = velocidade e ZERO segurança; 1 = espelho; 5 = paridade (perde 1 disco); 10 = os dois.",
+   "pontos": [
+    "RAID 0: striping, mín. 2 discos, 100% da capacidade, tolera 0 falhas.",
+    "RAID 1: espelhamento, mín. 2 discos, 50% da capacidade, tolera 1 falha.",
+    "RAID 5: paridade distribuída, mín. 3 discos, perde 1 disco de capacidade, tolera 1 falha.",
+    "RAID 6: dupla paridade, mín. 4 discos, tolera 2 falhas.",
+    "RAID 10: espelha e divide, mín. 4 discos, 50%, desempenho + segurança.",
+    "Paridade é calculada por XOR — e RAID NÃO substitui backup."
+   ]
+  }
+ ],
+ "flashcards": [
+  {
+   "tema": "Conceitos de Sistema Operacional",
+   "p": "O que faz um programa em execução, em essência?",
+   "r": "Executa instruções: o processador busca uma instrução da memória, decodifica e executa — milhões ou bilhões de vezes por segundo — até que o programa termine."
+  },
+  {
+   "tema": "Conceitos de Sistema Operacional",
+   "p": "Quais são as duas funções centrais de um sistema operacional?",
+   "r": "Ser uma máquina estendida (esconder a complexidade do hardware por trás de abstrações como arquivos e processos) e ser um gerenciador de recursos (decidir quem usa CPU, memória, disco e dispositivos, e quando)."
+  },
+  {
+   "tema": "Conceitos de Sistema Operacional",
+   "p": "Qual a diferença entre modo usuário e modo kernel?",
+   "r": "O kernel roda em modo protegido/supervisor, com acesso total ao hardware. Os programas do usuário rodam em modo restrito e precisam pedir serviços ao kernel por chamadas de sistema. É essa separação que impede um programa de derrubar os outros."
+  },
+  {
+   "tema": "Conceitos de Sistema Operacional",
+   "p": "Qual a diferença entre kernel monolítico e microkernel?",
+   "r": "No monolítico todos os serviços ficam dentro do núcleo — rápido, porém grande (Linux). No microkernel só o essencial fica no núcleo e o resto roda como processos de usuário — mais seguro e modular, com o custo da troca de mensagens (Minix, QNX)."
+  },
+  {
+   "tema": "Conceitos de Sistema Operacional",
+   "p": "O que é multiprogramação?",
+   "r": "Manter vários programas na memória ao mesmo tempo, de modo que quando um bloqueia esperando E/S a CPU passa a executar outro — aumentando o aproveitamento do processador."
+  },
+  {
+   "tema": "Gerência de Processos e Escalonamento",
+   "p": "O que é um processo?",
+   "r": "Um programa em execução — a unidade básica de trabalho do sistema. O programa é passivo (um arquivo no disco); o processo é ativo, com contador de programa, registradores, pilha, heap e dados."
+  },
+  {
+   "tema": "Gerência de Processos e Escalonamento",
+   "p": "O que é o PCB?",
+   "r": "Process Control Block: a estrutura onde o SO guarda tudo sobre o processo — PID, estado, contador de programa, registradores, prioridade e arquivos abertos. É o que torna possível a troca de contexto."
+  },
+  {
+   "tema": "Gerência de Processos e Escalonamento",
+   "p": "Quais são os estados de um processo?",
+   "r": "Novo → pronto (na fila esperando CPU) → executando (na CPU) → bloqueado (esperando E/S ou evento) → volta a pronto → terminado. De bloqueado nunca se vai direto para executando."
+  },
+  {
+   "tema": "Gerência de Processos e Escalonamento",
+   "p": "O que é o efeito comboio no FCFS?",
+   "r": "Quando um processo longo chega primeiro, todos os curtos atrás dele ficam esperando — o tempo médio de espera dispara. É a principal fraqueza do FCFS."
+  },
+  {
+   "tema": "Gerência de Processos e Escalonamento",
+   "p": "Qual algoritmo minimiza o tempo médio de espera e qual seu problema?",
+   "r": "SJF (Shortest Job First). Problemas: exige prever a duração dos processos e pode causar inanição (starvation) dos processos longos, que nunca chegam a executar."
+  },
+  {
+   "tema": "Gerência de Processos e Escalonamento",
+   "p": "Como funciona o Round Robin?",
+   "r": "Cada processo recebe um quantum fixo de tempo de CPU; ao esgotá-lo, volta ao fim da fila. É o algoritmo dos sistemas de tempo compartilhado — a escolha do quantum equilibra tempo de resposta e sobrecarga de troca de contexto."
+  },
+  {
+   "tema": "Gerência de Processos e Escalonamento",
+   "p": "O que é aging no escalonamento por prioridade?",
+   "r": "O envelhecimento: aumentar gradualmente a prioridade dos processos que esperam há muito tempo, para evitar que fiquem em inanição."
+  },
+  {
+   "tema": "Gerência de Processos e Escalonamento",
+   "p": "Qual a diferença entre escalonamento preemptivo e não preemptivo?",
+   "r": "No preemptivo o SO pode retirar a CPU de um processo antes que ele termine (como no Round Robin). No não preemptivo, o processo só perde a CPU quando a libera voluntariamente ou termina."
+  },
+  {
+   "tema": "Gerência de Processos e Escalonamento",
+   "p": "O que uma thread compartilha e o que ela tem de próprio?",
+   "r": "Compartilha com as threads irmãs o código, os dados e os arquivos abertos do processo. Tem de próprio: pilha, registradores e contador de programa."
+  },
+  {
+   "tema": "Gerência de Processos e Escalonamento",
+   "p": "Quais as vantagens de usar threads em vez de processos?",
+   "r": "Criação e troca de contexto muito mais baratas, comunicação direta pela memória compartilhada e paralelismo real em máquinas multicore. Em troca, exigem sincronização (mutex, semáforos)."
+  },
+  {
+   "tema": "Gerência de Memória e Memória Virtual",
+   "p": "Qual é a hierarquia de armazenamento, do mais rápido ao mais lento?",
+   "r": "Registradores → cache (L1, L2, L3) → memória principal (RAM) → memória secundária (SSD/HD) → memória terciária (fita, nuvem). Quanto mais rápido, mais caro e menor."
+  },
+  {
+   "tema": "Gerência de Memória e Memória Virtual",
+   "p": "Qual a diferença entre fragmentação interna e externa?",
+   "r": "Interna: sobra de espaço DENTRO de um bloco alocado (partições fixas). Externa: buracos livres ESPALHADOS entre os processos, que somados dariam memória, mas não são contíguos (partições variáveis)."
+  },
+  {
+   "tema": "Gerência de Memória e Memória Virtual",
+   "p": "Como funciona a paginação?",
+   "r": "A memória física é dividida em quadros (frames) e o espaço lógico do processo em páginas do mesmo tamanho. A tabela de páginas faz o mapeamento e a MMU traduz os endereços em hardware. Elimina a fragmentação externa."
+  },
+  {
+   "tema": "Gerência de Memória e Memória Virtual",
+   "p": "O que é memória virtual?",
+   "r": "A combinação de RAM e espaço em disco que dá aos processos mais memória do que existe fisicamente. O programa é dividido em páginas e só as necessárias ficam na RAM."
+  },
+  {
+   "tema": "Gerência de Memória e Memória Virtual",
+   "p": "O que é um page fault?",
+   "r": "A falta de página: o processo acessa uma página que não está na memória física, e o SO precisa buscá-la no disco — possivelmente removendo outra página para abrir espaço."
+  },
+  {
+   "tema": "Gerência de Memória e Memória Virtual",
+   "p": "O que é a anomalia de Belady?",
+   "r": "O fenômeno em que aumentar o número de quadros de memória AUMENTA o número de faltas de página. Ocorre no algoritmo FIFO; o LRU não sofre desse problema."
+  },
+  {
+   "tema": "Gerência de Memória e Memória Virtual",
+   "p": "O que é thrashing?",
+   "r": "Quando o sistema passa mais tempo trocando páginas entre RAM e disco do que executando processos. É sinal de que há processos demais para a memória disponível."
+  },
+  {
+   "tema": "Entrada, Saída e Deadlocks",
+   "p": "O que é um deadlock?",
+   "r": "Um impasse: dois ou mais processos ficam bloqueados para sempre, cada um esperando um recurso que outro do grupo mantém em sua posse."
+  },
+  {
+   "tema": "Entrada, Saída e Deadlocks",
+   "p": "Quais são as quatro condições de Coffman para o deadlock?",
+   "r": "Exclusão mútua, posse e espera, não preempção e espera circular. As quatro precisam ocorrer simultaneamente — quebrar qualquer uma impede o deadlock."
+  },
+  {
+   "tema": "Entrada, Saída e Deadlocks",
+   "p": "Quais são as estratégias para tratar deadlocks?",
+   "r": "Prevenção (quebrar uma das 4 condições por projeto), impedimento (decidir em execução se a alocação é segura — algoritmo do banqueiro), detecção e recuperação (grafo de alocação, matar ou reverter processos) e ignorar (algoritmo do avestruz, o que Windows e Linux fazem na prática)."
+  },
+  {
+   "tema": "Entrada, Saída e Deadlocks",
+   "p": "Quais são as camadas do software de E/S?",
+   "r": "De cima para baixo: software de nível de usuário → software independente de dispositivo (nomes, buffering, proteção) → drivers (dependentes do dispositivo) → tratadores de interrupção → hardware."
+  },
+  {
+   "tema": "Memória de Massa, Discos e RAID",
+   "p": "Do que se compõe o tempo de acesso a um HD?",
+   "r": "Tempo de busca (mover o braço até a trilha) + latência rotacional (esperar o setor girar até a cabeça) + tempo de transferência dos dados."
+  },
+  {
+   "tema": "Memória de Massa, Discos e RAID",
+   "p": "O que são trilhas, setores e cilindros?",
+   "r": "Trilhas: círculos concêntricos em cada prato. Setores: fatias da trilha, a menor unidade endereçável (tradicionalmente 512 bytes). Cilindro: o conjunto da mesma trilha em todos os pratos empilhados."
+  },
+  {
+   "tema": "Memória de Massa, Discos e RAID",
+   "p": "Quais as vantagens do SSD sobre o HD?",
+   "r": "Sem partes móveis: muito mais rápido, silencioso, resistente a impacto e com tempo de acesso praticamente uniforme. Em troca, tem número limitado de ciclos de escrita, mitigado por wear leveling e pelo comando TRIM."
+  },
+  {
+   "tema": "Memória de Massa, Discos e RAID",
+   "p": "O que é RAID 0 e qual seu risco?",
+   "r": "Striping: divide os dados entre os discos, dando máximo desempenho e 100% da capacidade. Não tem nenhuma redundância — se um único disco falhar, perde-se todo o conjunto."
+  },
+  {
+   "tema": "Memória de Massa, Discos e RAID",
+   "p": "Quantos discos no mínimo o RAID 5 exige e quantas falhas ele tolera?",
+   "r": "Mínimo de 3 discos e tolera a falha de 1 disco. A paridade fica distribuída entre todos, e a capacidade útil equivale ao total menos um disco."
+  },
+  {
+   "tema": "Memória de Massa, Discos e RAID",
+   "p": "Como funciona a paridade no RAID?",
+   "r": "Um bit de paridade é calculado por XOR entre os bits correspondentes dos demais discos. Se um disco falha, o dado perdido é reconstruído fazendo XOR entre os discos que restaram."
+  },
+  {
+   "tema": "Memória de Massa, Discos e RAID",
+   "p": "RAID substitui backup?",
+   "r": "Não. O RAID protege contra falha física de disco, mas não contra exclusão acidental, corrupção de dados, ransomware, incêndio ou roubo — para isso é preciso backup."
+  },
+  {
+   "tema": "Sistemas de Arquivos",
+   "p": "Quais são os métodos de alocação de arquivos?",
+   "r": "Contígua (blocos em sequência — leitura rápida, mas com fragmentação externa), encadeada (cada bloco aponta para o próximo — acesso direto ruim) e indexada (um bloco de índice guarda os endereços; é o inode do Unix)."
+  },
+  {
+   "tema": "Sistemas de Arquivos",
+   "p": "O que é journaling?",
+   "r": "O registro prévio das operações em um diário. Se faltar energia no meio de uma gravação, o sistema consulta o diário e recupera a consistência sem precisar varrer o disco inteiro. NTFS e ext4 usam journaling."
+  },
+  {
+   "tema": "Sistemas de Arquivos",
+   "p": "Qual a principal limitação do FAT32?",
+   "r": "Não armazena arquivos maiores que 4 GB. O exFAT foi criado justamente para remover esse limite em pen drives e cartões de memória."
+  },
+  {
+   "tema": "Sistemas de Arquivos",
+   "p": "O que significa chmod 755 no Linux?",
+   "r": "Dono com rwx (4+2+1=7), grupo com r-x (4+0+1=5) e outros com r-x (5). Os direitos valem r=4, w=2, x=1, somados por classe."
+  },
+  {
+   "tema": "Windows, Linux e Aplicações",
+   "p": "Quem desenvolve o kernel do Linux?",
+   "r": "A comunidade, com Linus Torvalds — criador do Linux — supervisionando o desenvolvimento. O código é aberto sob licença GPL."
+  },
+  {
+   "tema": "Windows, Linux e Aplicações",
+   "p": "O Linux é sempre gratuito?",
+   "r": "Não. Ele pode ser distribuído e baixado gratuitamente, mas existem versões pagas (com suporte comercial, como Red Hat) — normalmente mais baratas que o Windows."
+  },
+  {
+   "tema": "Windows, Linux e Aplicações",
+   "p": "Quais funcionalidades todo sistema operacional oferece?",
+   "r": "Gerência de processos, de memória, de arquivos e de dispositivos de E/S, além de segurança/controle de acesso e interface com o usuário (linha de comando ou gráfica)."
+  },
+  {
+   "tema": "Windows, Linux e Aplicações",
+   "p": "Qual a diferença entre hipervisor tipo 1 e tipo 2?",
+   "r": "O tipo 1 (bare metal) roda direto sobre o hardware — ESXi, Hyper-V. O tipo 2 roda sobre um sistema operacional hospedeiro — VirtualBox, VMware Workstation."
+  },
+  {
+   "tema": "Windows, Linux e Aplicações",
+   "p": "Qual a diferença entre máquina virtual e contêiner?",
+   "r": "A máquina virtual carrega um sistema operacional convidado completo sobre um hipervisor. O contêiner (Docker) compartilha o kernel do hospedeiro e isola apenas o espaço de usuário — muito mais leve e rápido de subir."
+  }
+ ],
+ "questoes": [
+  {
+   "tema": "Conceitos de Sistema Operacional",
+   "q": "Qual é o papel do sistema operacional em relação aos programas?",
+   "op": [
+    "Compilar o código-fonte dos programas antes de executá-los",
+    "Substituir o processador na execução das instruções",
+    "Facilitar a execução dos programas, permitindo que compartilhem memória e dispositivos",
+    "Armazenar permanentemente o código dos programas"
+   ],
+   "r": 2,
+   "exp": "O SO é o conjunto de softwares responsável por facilitar a execução de programas, permitindo que compartilhem memória e dispositivos com segurança."
+  },
+  {
+   "tema": "Conceitos de Sistema Operacional",
+   "q": "Quando o SO é descrito como 'máquina estendida', isso significa que ele:",
+   "op": [
+    "Aumenta fisicamente a capacidade do hardware",
+    "Estende a vida útil dos componentes",
+    "Esconde a complexidade do hardware por trás de abstrações como arquivos e processos",
+    "Permite acoplar mais dispositivos ao computador"
+   ],
+   "r": 2,
+   "exp": "A máquina estendida (ou virtual) oferece ao programador uma interface limpa — arquivos, processos, sockets — em vez dos registradores das controladoras de hardware."
+  },
+  {
+   "tema": "Conceitos de Sistema Operacional",
+   "q": "O que separa o modo usuário do modo kernel?",
+   "op": [
+    "A velocidade de execução das instruções",
+    "A linguagem de programação usada",
+    "O nível de privilégio de acesso ao hardware",
+    "A quantidade de memória disponível"
+   ],
+   "r": 2,
+   "exp": "O kernel roda em modo protegido, com acesso total ao hardware; os programas rodam em modo restrito e pedem serviços por chamadas de sistema. É isso que impede um programa de derrubar os outros."
+  },
+  {
+   "tema": "Conceitos de Sistema Operacional",
+   "q": "Qual a característica do microkernel?",
+   "op": [
+    "Todos os serviços do sistema ficam dentro do núcleo",
+    "Apenas o essencial fica no núcleo; o resto roda como processos de usuário",
+    "Não possui chamadas de sistema",
+    "É exclusivo de sistemas de tempo real"
+   ],
+   "r": 1,
+   "exp": "O microkernel mantém no núcleo apenas o essencial, ganhando modularidade e segurança ao custo da troca de mensagens. O Linux, ao contrário, tem kernel monolítico."
+  },
+  {
+   "tema": "Conceitos de Sistema Operacional",
+   "q": "Qual foi o ganho trazido pela multiprogramação?",
+   "op": [
+    "Permitir que um único programa use toda a memória",
+    "Eliminar a necessidade de sistema de arquivos",
+    "Aproveitar a CPU executando outro programa quando um bloqueia esperando E/S",
+    "Reduzir o número de instruções de cada programa"
+   ],
+   "r": 2,
+   "exp": "Com vários programas na memória, quando um bloqueia esperando entrada/saída a CPU passa a executar outro, elevando muito o aproveitamento do processador."
+  },
+  {
+   "tema": "Gerência de Processos e Escalonamento",
+   "q": "O que é um processo?",
+   "op": [
+    "Um arquivo executável armazenado no disco",
+    "Um programa em execução, a unidade básica de trabalho do sistema",
+    "Um trecho de código dentro de uma função",
+    "Um dispositivo de entrada e saída virtual"
+   ],
+   "r": 1,
+   "exp": "O programa é passivo, um arquivo no disco. O processo é ativo: o programa em execução, com contador de programa, registradores, pilha e dados próprios."
+  },
+  {
+   "tema": "Gerência de Processos e Escalonamento",
+   "q": "Para que serve o PCB (Process Control Block)?",
+   "op": [
+    "Armazenar o código-fonte do programa",
+    "Controlar o acesso ao disco rígido",
+    "Definir a prioridade de todos os processos do sistema",
+    "Guardar as informações do processo — PID, estado, registradores, prioridade — permitindo a troca de contexto"
+   ],
+   "r": 3,
+   "exp": "O PCB é a ficha do processo. Sem ele o SO não teria como salvar e restaurar a situação de um processo ao alternar entre eles."
+  },
+  {
+   "tema": "Gerência de Processos e Escalonamento",
+   "q": "Um processo que está esperando a conclusão de uma operação de leitura em disco encontra-se em qual estado?",
+   "op": [
+    "Pronto",
+    "Executando",
+    "Terminado",
+    "Bloqueado (em espera)"
+   ],
+   "r": 3,
+   "exp": "Bloqueado é o estado de quem espera E/S ou um evento. Pronto é quem já poderia executar e só aguarda a CPU ficar livre."
+  },
+  {
+   "tema": "Gerência de Processos e Escalonamento",
+   "q": "Qual transição de estado NÃO existe?",
+   "op": [
+    "Executando → Pronto",
+    "Bloqueado → Pronto",
+    "Bloqueado → Executando",
+    "Pronto → Executando"
+   ],
+   "r": 2,
+   "exp": "Ao ser desbloqueado, o processo volta para a fila de PRONTO — só entra em execução quando o escalonador o escolher. Não há salto direto de bloqueado para executando."
+  },
+  {
+   "tema": "Gerência de Processos e Escalonamento",
+   "q": "O efeito comboio é uma desvantagem de qual algoritmo de escalonamento?",
+   "op": [
+    "FCFS (primeiro a chegar, primeiro a ser servido)",
+    "Round Robin",
+    "SJF",
+    "Filas multinível"
+   ],
+   "r": 0,
+   "exp": "No FCFS, se um processo longo chega primeiro todos os curtos ficam presos atrás dele, elevando muito o tempo médio de espera."
+  },
+  {
+   "tema": "Gerência de Processos e Escalonamento",
+   "q": "Qual algoritmo de escalonamento minimiza o tempo médio de espera, mas pode causar inanição?",
+   "op": [
+    "FCFS",
+    "SJF (Shortest Job First)",
+    "Round Robin",
+    "Filas multinível com realimentação"
+   ],
+   "r": 1,
+   "exp": "O SJF é ótimo para o tempo médio de espera, mas processos longos podem nunca ser escolhidos se sempre chegarem processos curtos — é a inanição (starvation)."
+  },
+  {
+   "tema": "Gerência de Processos e Escalonamento",
+   "q": "O que é o quantum no Round Robin?",
+   "op": [
+    "A prioridade atribuída a cada processo",
+    "O número máximo de processos na memória",
+    "O tempo total de execução previsto para o processo",
+    "A fatia de tempo de CPU concedida a cada processo antes de ele voltar ao fim da fila"
+   ],
+   "r": 3,
+   "exp": "Cada processo recebe um quantum; ao esgotá-lo é preemptado e vai para o fim da fila. Quantum muito pequeno gera excesso de troca de contexto; muito grande, o Round Robin degenera em FCFS."
+  },
+  {
+   "tema": "Gerência de Processos e Escalonamento",
+   "q": "O que é aging (envelhecimento) no escalonamento?",
+   "op": [
+    "Remover processos antigos da memória",
+    "Aumentar gradualmente a prioridade de processos que esperam há muito tempo",
+    "Reduzir o quantum conforme o processo executa",
+    "Encerrar processos que excedem o tempo limite"
+   ],
+   "r": 1,
+   "exp": "O aging combate a inanição no escalonamento por prioridade: quem espera muito vai subindo de prioridade até ser atendido."
+  },
+  {
+   "tema": "Gerência de Processos e Escalonamento",
+   "q": "O que threads do mesmo processo compartilham entre si?",
+   "op": [
+    "O código, os dados e os arquivos abertos",
+    "A pilha e os registradores",
+    "O contador de programa",
+    "Nada — são totalmente isoladas"
+   ],
+   "r": 0,
+   "exp": "Threads irmãs compartilham código, dados e arquivos abertos do processo. Cada uma tem sua própria pilha, registradores e contador de programa."
+  },
+  {
+   "tema": "Gerência de Processos e Escalonamento",
+   "q": "Qual é uma vantagem das threads sobre os processos?",
+   "op": [
+    "Isolamento total de memória entre elas",
+    "Criação e troca de contexto mais baratas, com comunicação direta pela memória compartilhada",
+    "Dispensam qualquer mecanismo de sincronização",
+    "Executam sempre em um único núcleo"
+   ],
+   "r": 1,
+   "exp": "Justamente por compartilharem o espaço de endereçamento, as threads são mais leves de criar e trocar. Em compensação, exigem sincronização (mutex, semáforos)."
+  },
+  {
+   "tema": "Gerência de Memória e Memória Virtual",
+   "q": "Qual é a ordem correta da hierarquia de armazenamento, do mais rápido ao mais lento?",
+   "op": [
+    "RAM → cache → registradores → disco",
+    "Registradores → cache → RAM → disco",
+    "Cache → registradores → disco → RAM",
+    "Disco → RAM → cache → registradores"
+   ],
+   "r": 1,
+   "exp": "Registradores → cache (L1, L2, L3) → memória principal (RAM) → memória secundária (SSD/HD). Quanto mais rápido, mais caro e menor a capacidade."
+  },
+  {
+   "tema": "Gerência de Memória e Memória Virtual",
+   "q": "A sobra de espaço não utilizado DENTRO de uma partição alocada é chamada de:",
+   "op": [
+    "Fragmentação externa",
+    "Thrashing",
+    "Page fault",
+    "Fragmentação interna"
+   ],
+   "r": 3,
+   "exp": "Fragmentação interna é a sobra dentro do bloco alocado, típica de partições fixas. A externa são buracos livres espalhados ENTRE os processos."
+  },
+  {
+   "tema": "Gerência de Memória e Memória Virtual",
+   "q": "Qual problema a paginação resolve?",
+   "op": [
+    "A fragmentação interna",
+    "O thrashing",
+    "A fragmentação externa",
+    "Os deadlocks"
+   ],
+   "r": 2,
+   "exp": "Como páginas e quadros têm tamanho igual, qualquer quadro livre serve para qualquer página — não sobram buracos inutilizáveis. Pode restar uma pequena fragmentação interna na última página."
+  },
+  {
+   "tema": "Gerência de Memória e Memória Virtual",
+   "q": "O que ocorre em uma falta de página (page fault)?",
+   "op": [
+    "O SO precisa trazer do disco a página que não está na memória física",
+    "O processo é encerrado por erro de memória",
+    "A memória virtual é desativada",
+    "A tabela de páginas é reconstruída do zero"
+   ],
+   "r": 0,
+   "exp": "É um evento normal do funcionamento da memória virtual: o SO busca a página no disco, possivelmente removendo outra para abrir espaço."
+  },
+  {
+   "tema": "Gerência de Memória e Memória Virtual",
+   "q": "Qual algoritmo de substituição de página sofre a anomalia de Belady?",
+   "op": [
+    "LRU",
+    "Ótimo (OPT)",
+    "Segunda chance",
+    "FIFO"
+   ],
+   "r": 3,
+   "exp": "Na anomalia de Belady, aumentar o número de quadros AUMENTA as faltas de página. Ocorre no FIFO; o LRU não sofre desse problema."
+  },
+  {
+   "tema": "Gerência de Memória e Memória Virtual",
+   "q": "O que caracteriza o thrashing?",
+   "op": [
+    "A perda de dados na memória por falta de energia",
+    "O sistema passar mais tempo trocando páginas do que executando processos",
+    "A fragmentação excessiva do disco rígido",
+    "A execução simultânea de threads em vários núcleos"
+   ],
+   "r": 1,
+   "exp": "É o colapso de desempenho por excesso de paginação — sinal de que há processos demais para a memória física disponível."
+  },
+  {
+   "tema": "Entrada, Saída e Deadlocks",
+   "q": "O que é um deadlock?",
+   "op": [
+    "A falha de um dispositivo de entrada e saída",
+    "A perda de dados por falta de memória",
+    "O bloqueio permanente de processos, cada um esperando um recurso que outro mantém",
+    "A execução de um processo com prioridade máxima"
+   ],
+   "r": 2,
+   "exp": "É o impasse: um ciclo de espera em que nenhum processo consegue prosseguir porque o recurso de que precisa está com outro do grupo."
+  },
+  {
+   "tema": "Entrada, Saída e Deadlocks",
+   "q": "Quais são as quatro condições necessárias para ocorrer um deadlock?",
+   "op": [
+    "Exclusão mútua, posse e espera, não preempção e espera circular",
+    "Paginação, segmentação, fragmentação e realocação",
+    "Inanição, envelhecimento, preempção e prioridade",
+    "Leitura, escrita, execução e exclusão"
+   ],
+   "r": 0,
+   "exp": "São as condições de Coffman. Todas precisam ocorrer ao mesmo tempo — quebrar qualquer uma delas impede o deadlock."
+  },
+  {
+   "tema": "Entrada, Saída e Deadlocks",
+   "q": "Qual condição de deadlock é quebrada ao se estabelecer uma ordem global de solicitação de recursos?",
+   "op": [
+    "Exclusão mútua",
+    "Posse e espera",
+    "Espera circular",
+    "Não preempção"
+   ],
+   "r": 2,
+   "exp": "Se todo processo precisa pedir os recursos em uma ordem numérica crescente, torna-se impossível formar o ciclo — a espera circular deixa de existir."
+  },
+  {
+   "tema": "Entrada, Saída e Deadlocks",
+   "q": "A estratégia de simplesmente ignorar a possibilidade de deadlock, adotada na prática por Windows e Linux, é conhecida como:",
+   "op": [
+    "Algoritmo do banqueiro",
+    "Detecção por grafo de alocação",
+    "Prevenção estática",
+    "Algoritmo do avestruz"
+   ],
+   "r": 3,
+   "exp": "O algoritmo do avestruz consiste em enfiar a cabeça na areia: como deadlocks em recursos comuns são raros e o custo de preveni-los é alto, os sistemas de propósito geral simplesmente ignoram."
+  },
+  {
+   "tema": "Entrada, Saída e Deadlocks",
+   "q": "Qual técnica de E/S transfere dados diretamente entre o dispositivo e a memória, sem passar pela CPU?",
+   "op": [
+    "DMA",
+    "Polling",
+    "Interrupção",
+    "Buffering"
+   ],
+   "r": 0,
+   "exp": "O DMA (Direct Memory Access) libera a CPU durante a transferência, avisando-a apenas ao final. É essencial em disco, rede e vídeo."
+  },
+  {
+   "tema": "Memória de Massa, Discos e RAID",
+   "q": "O tempo de acesso a um disco rígido é composto por:",
+   "op": [
+    "Apenas o tempo de leitura do setor",
+    "Tempo de compilação e tempo de execução",
+    "Latência de rede e tempo de resposta",
+    "Tempo de busca, latência rotacional e tempo de transferência"
+   ],
+   "r": 3,
+   "exp": "Tempo de busca é mover o braço até a trilha; latência rotacional é esperar o setor girar até a cabeça; e então ocorre a transferência dos dados."
+  },
+  {
+   "tema": "Memória de Massa, Discos e RAID",
+   "q": "O que é um cilindro em um disco rígido?",
+   "op": [
+    "Uma fatia da trilha, a menor unidade endereçável",
+    "O conjunto formado pela mesma trilha em todos os pratos empilhados",
+    "O motor que gira os pratos",
+    "A área reservada para o sistema de arquivos"
+   ],
+   "r": 1,
+   "exp": "O cilindro é o conjunto das trilhas de mesma posição em todos os pratos — todas acessíveis sem mover o braço. A fatia da trilha é o setor."
+  },
+  {
+   "tema": "Memória de Massa, Discos e RAID",
+   "q": "Qual nível de RAID oferece máximo desempenho, mas NENHUMA redundância?",
+   "op": [
+    "RAID 1",
+    "RAID 5",
+    "RAID 6",
+    "RAID 0"
+   ],
+   "r": 3,
+   "exp": "RAID 0 faz apenas striping: divide os dados entre os discos, aproveitando 100% da capacidade. Se um disco falha, todo o conjunto é perdido."
+  },
+  {
+   "tema": "Memória de Massa, Discos e RAID",
+   "q": "Qual o número mínimo de discos e a tolerância a falhas do RAID 5?",
+   "op": [
+    "2 discos, tolera 1 falha",
+    "3 discos, tolera 1 falha",
+    "3 discos, tolera 2 falhas",
+    "4 discos, tolera 2 falhas"
+   ],
+   "r": 1,
+   "exp": "RAID 5 exige no mínimo 3 discos e tolera a falha de 1, com paridade distribuída entre todos. Quem tolera 2 falhas é o RAID 6, com no mínimo 4 discos."
+  },
+  {
+   "tema": "Memória de Massa, Discos e RAID",
+   "q": "Qual percentual da capacidade total é aproveitado no RAID 1?",
+   "op": [
+    "100%",
+    "75%",
+    "50%",
+    "25%"
+   ],
+   "r": 2,
+   "exp": "No espelhamento, metade dos discos guarda a cópia idêntica da outra metade — logo, apenas 50% da capacidade fica disponível. O RAID 10 tem o mesmo aproveitamento."
+  },
+  {
+   "tema": "Memória de Massa, Discos e RAID",
+   "q": "Como o dado de um disco que falhou é reconstruído em um RAID com paridade?",
+   "op": [
+    "Copiando de um backup automático interno",
+    "Fazendo XOR entre os bits dos discos restantes",
+    "Somando os valores dos demais discos",
+    "Recuperando de um disco reserva pré-gravado"
+   ],
+   "r": 1,
+   "exp": "A paridade é calculada por XOR. Como o XOR é reversível, basta aplicá-lo entre os discos sobreviventes para recuperar o conteúdo do disco perdido."
+  },
+  {
+   "tema": "Memória de Massa, Discos e RAID",
+   "q": "É correto afirmar que um sistema RAID dispensa a realização de backups?",
+   "op": [
+    "Sim, o RAID já é um backup automático",
+    "Sim, desde que seja RAID 6 ou superior",
+    "Não — o RAID protege contra falha de disco, mas não contra exclusão acidental, corrupção ou ransomware",
+    "Não, porque o RAID só funciona com HDs, não com SSDs"
+   ],
+   "r": 2,
+   "exp": "RAID garante disponibilidade diante de falha física. Se um arquivo é apagado ou criptografado por ransomware, a alteração é replicada em todos os discos imediatamente."
+  },
+  {
+   "tema": "Sistemas de Arquivos",
+   "q": "Qual método de alocação de arquivos é usado pelo inode do Unix?",
+   "op": [
+    "Contígua",
+    "Encadeada",
+    "Aleatória",
+    "Indexada"
+   ],
+   "r": 3,
+   "exp": "A alocação indexada guarda em um bloco de índice os endereços de todos os blocos do arquivo — permitindo acesso direto sem fragmentação externa. É o modelo do inode."
+  },
+  {
+   "tema": "Sistemas de Arquivos",
+   "q": "Para que serve o journaling em um sistema de arquivos?",
+   "op": [
+    "Registrar previamente as operações para recuperar a consistência após uma queda de energia",
+    "Compactar os arquivos para economizar espaço",
+    "Criptografar o conteúdo dos arquivos",
+    "Indexar os arquivos para acelerar a busca"
+   ],
+   "r": 0,
+   "exp": "O diário permite ao sistema, após uma falha, consultar o que estava em andamento e restaurar a consistência sem varrer todo o disco. NTFS e ext4 usam journaling."
+  },
+  {
+   "tema": "Sistemas de Arquivos",
+   "q": "Qual a principal limitação do sistema de arquivos FAT32?",
+   "op": [
+    "Não suporta nomes longos de arquivo",
+    "Só funciona em discos de até 1 GB",
+    "Não é reconhecido pelo Windows",
+    "Não armazena arquivos maiores que 4 GB"
+   ],
+   "r": 3,
+   "exp": "O limite de 4 GB por arquivo é a restrição mais conhecida do FAT32 — e a razão pela qual o exFAT foi criado para pen drives e cartões."
+  },
+  {
+   "tema": "Sistemas de Arquivos",
+   "q": "No Linux, o comando chmod 755 concede quais permissões?",
+   "op": [
+    "Dono rw-, grupo rw-, outros r--",
+    "Dono rwx, grupo rwx, outros rwx",
+    "Dono rwx, grupo r-x, outros r-x",
+    "Dono r--, grupo r--, outros r--"
+   ],
+   "r": 2,
+   "exp": "Os direitos valem r=4, w=2, x=1. Assim 7 = 4+2+1 = rwx para o dono, e 5 = 4+1 = r-x para grupo e outros."
+  },
+  {
+   "tema": "Windows, Linux e Aplicações",
+   "q": "Quem supervisiona o desenvolvimento do kernel do Linux?",
+   "op": [
+    "A Microsoft",
+    "Linus Torvalds",
+    "A Free Software Foundation",
+    "A Canonical"
+   ],
+   "r": 1,
+   "exp": "O kernel do Linux é desenvolvido pela comunidade, e Linus Torvalds — seu criador — supervisiona esse desenvolvimento."
+  },
+  {
+   "tema": "Windows, Linux e Aplicações",
+   "q": "Sobre a distribuição do Linux, é correto afirmar que:",
+   "op": [
+    "É sempre gratuito, sem exceção",
+    "Só pode ser adquirido comercialmente",
+    "Não pode ser distribuído em revistas e livros",
+    "Pode ser obtido gratuitamente, mas também existem versões pagas, normalmente mais baratas que o Windows"
+   ],
+   "r": 3,
+   "exp": "O Linux pode ser distribuído por revistas, livros e download gratuitamente; existem também versões pagas com suporte comercial, em geral mais baratas que as do Windows."
+  },
+  {
+   "tema": "Windows, Linux e Aplicações",
+   "q": "Qual destas NÃO é uma funcionalidade típica de um sistema operacional?",
+   "op": [
+    "Compilação do código-fonte dos aplicativos do usuário",
+    "Gerência de processos e de memória",
+    "Gerência de arquivos e de dispositivos de E/S",
+    "Segurança e controle de acesso"
+   ],
+   "r": 0,
+   "exp": "Compilar é tarefa do compilador, uma ferramenta de desenvolvimento — não do sistema operacional, que gerencia recursos e oferece serviços aos programas já compilados."
+  },
+  {
+   "tema": "Windows, Linux e Aplicações",
+   "q": "Qual a diferença entre um hipervisor tipo 1 e um tipo 2?",
+   "op": [
+    "O tipo 1 roda diretamente sobre o hardware; o tipo 2 roda sobre um sistema operacional hospedeiro",
+    "O tipo 1 é gratuito e o tipo 2 é pago",
+    "O tipo 1 só virtualiza Linux e o tipo 2 só Windows",
+    "Não há diferença técnica, apenas comercial"
+   ],
+   "r": 0,
+   "exp": "Tipo 1 (bare metal): ESXi, Hyper-V — roda direto no hardware, com melhor desempenho. Tipo 2: VirtualBox, VMware Workstation — roda como aplicativo sobre um SO hospedeiro."
+  },
+  {
+   "tema": "Windows, Linux e Aplicações",
+   "q": "Por que contêineres são mais leves que máquinas virtuais?",
+   "op": [
+    "Porque compartilham o kernel do sistema hospedeiro, isolando apenas o espaço de usuário",
+    "Porque usam menos espaço em disco para os arquivos de log",
+    "Porque não permitem executar aplicações completas",
+    "Porque rodam apenas em processadores ARM"
+   ],
+   "r": 0,
+   "exp": "A máquina virtual carrega um sistema operacional convidado inteiro; o contêiner reaproveita o kernel do hospedeiro e isola só o espaço de usuário — sobe em segundos e ocupa muito menos."
+  },
+  {
+   "tema": "Sistemas de Arquivos",
+   "q": "Qual é a principal desvantagem da alocação contígua de arquivos?",
+   "op": [
+    "Sofre fragmentação externa e dificulta o crescimento do arquivo já gravado",
+    "Torna o acesso direto praticamente inviável, pois é preciso percorrer bloco a bloco",
+    "Consome um bloco extra por arquivo apenas para guardar endereços",
+    "Impede o armazenamento de metadados como datas e permissões"
+   ],
+   "r": 0,
+   "exp": "Na alocação contígua os blocos ficam em sequência, o que dá leitura rápida, mas sobram lacunas pequenas entre os arquivos (fragmentação externa) e não há espaço adjacente para o arquivo crescer. Percorrer bloco a bloco é o problema da alocação encadeada, e o bloco extra de endereços é o custo da indexada."
+  }
+ ],
+ "discursivas": [
+  {
+   "tema": "Gerência de Processos e Escalonamento",
+   "q": "Explique a diferença entre processo e thread e aponte as vantagens do uso de threads.",
+   "r": "Processo é um programa em execução — a unidade básica de trabalho do sistema — com seu próprio espaço de endereçamento, contendo código, dados, pilha e heap, além do PCB onde o SO guarda seu estado. Thread é um fluxo de execução dentro de um processo: as threads de um mesmo processo compartilham o código, os dados e os arquivos abertos, mas cada uma mantém sua própria pilha, seus registradores e seu contador de programa. As vantagens de usar threads são: criação e troca de contexto muito mais baratas do que entre processos, já que não é preciso trocar o espaço de endereçamento; comunicação direta e rápida entre elas, pois a memória é compartilhada e dispensa mecanismos de comunicação entre processos; melhor tempo de resposta, porque enquanto uma thread bloqueia esperando E/S outra continua trabalhando; e paralelismo real em máquinas multicore, com threads diferentes executando em núcleos diferentes. O custo é a necessidade de sincronização — mutexes, semáforos e monitores — já que o acesso concorrente à memória compartilhada pode gerar condições de corrida, e um erro grave em uma thread pode derrubar o processo inteiro."
+  },
+  {
+   "tema": "Gerência de Memória e Memória Virtual",
+   "q": "Explique o funcionamento da memória virtual e o que é o thrashing.",
+   "r": "A memória virtual é uma combinação de espaço em disco rígido e RAM que funciona como a memória disponível aos processos, permitindo que eles usem mais memória do que existe fisicamente instalada. O espaço lógico do processo é dividido em blocos de tamanho fixo chamados páginas, e a memória física é dividida em quadros do mesmo tamanho. Apenas as páginas efetivamente necessárias são carregadas na RAM; as demais permanecem no disco. A tabela de páginas mantém o mapeamento entre páginas e quadros, e a MMU faz a tradução dos endereços em hardware. Quando o processo acessa uma página que não está na memória física, ocorre uma falta de página (page fault): o SO interrompe o processo, busca a página no disco, escolhe — se necessário — uma página vítima para remover, usando algoritmos como FIFO, LRU ou segunda chance, e retoma a execução. O thrashing ocorre quando há processos demais competindo por memória insuficiente: cada um precisa constantemente de páginas que acabaram de ser retiradas, e o sistema entra num ciclo em que gasta mais tempo movendo páginas entre disco e RAM do que executando instruções úteis. O desempenho despenca, e a solução é reduzir o grau de multiprogramação ou aumentar a memória física."
+  },
+  {
+   "tema": "Entrada, Saída e Deadlocks",
+   "q": "Descreva as quatro condições necessárias para a ocorrência de um deadlock e explique as estratégias de tratamento.",
+   "r": "Um deadlock ocorre quando dois ou mais processos ficam bloqueados indefinidamente, cada um esperando um recurso que outro do grupo mantém. As quatro condições de Coffman precisam ocorrer simultaneamente: (1) exclusão mútua — o recurso só pode ser usado por um processo por vez; (2) posse e espera — o processo mantém a posse de um recurso enquanto solicita outro; (3) não preempção — o recurso não pode ser retirado à força, só liberado voluntariamente por quem o detém; (4) espera circular — existe uma cadeia fechada de processos, cada um esperando um recurso que o próximo da cadeia possui. As estratégias de tratamento são quatro. A prevenção ataca o projeto do sistema para que ao menos uma das condições nunca se verifique — por exemplo, exigir que todo processo solicite os recursos em uma ordem global crescente elimina a espera circular, ou exigir que peça todos de uma vez elimina a posse e espera. O impedimento (ou anulação) avalia em tempo de execução, a cada solicitação, se conceder o recurso deixa o sistema em estado seguro, sendo o algoritmo do banqueiro o exemplo clássico. A detecção e recuperação permite que o deadlock aconteça, identifica-o periodicamente por meio de um grafo de alocação de recursos e o resolve encerrando processos ou revertendo-os a um ponto anterior. Por fim, ignorar — o chamado algoritmo do avestruz — é o que Windows e Linux fazem na prática para recursos comuns, por considerarem que a raridade do problema não justifica o custo de tratá-lo."
+  }
+ ]
+}

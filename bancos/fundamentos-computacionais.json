@@ -1,0 +1,513 @@
+{
+ "id": "fundamentos-computacionais",
+ "nome": "Fundamentos Computacionais",
+ "periodo": 1,
+ "cor": "#f59e0b",
+ "sigla": "FC",
+ "resumos": [
+  {
+   "tema": "Sistemas de Numeração",
+   "html": "<p>A necessidade de contar é tão antiga quanto as primeiras civilizações — há evidências arqueológicas de contagem há 50 mil anos. O fato de termos cinco dedos em cada mão explica o sistema <b>decimal</b> ter se tornado natural para nós. Na computação, o principal sistema é o <b>binário</b>.</p><p>Todo sistema <b>posicional</b> tem uma <b>base</b>: o valor de cada dígito depende da posição que ele ocupa, multiplicando o dígito pela base elevada à posição.</p><table><tr><th>Sistema</th><th>Base</th><th>Dígitos</th></tr><tr><td>Binário</td><td>2</td><td>0, 1</td></tr><tr><td>Octal</td><td>8</td><td>0 a 7</td></tr><tr><td>Decimal</td><td>10</td><td>0 a 9</td></tr><tr><td>Hexadecimal</td><td>16</td><td>0 a 9 e A a F</td></tr></table><p><b>Qualquer base → decimal:</b> multiplique cada dígito pela base elevada à sua posição (começando em 0 à direita) e some.</p><pre>1011₂ = 1·2³ + 0·2² + 1·2¹ + 1·2⁰ = 8+0+2+1 = 11\n2AF₁₆ = 2·16² + 10·16¹ + 15·16⁰ = 512+160+15 = 687</pre><p><b>Decimal → qualquer base:</b> divisões sucessivas pela base, lendo os restos de baixo para cima.</p><pre>25 ÷ 2 = 12 resto 1\n12 ÷ 2 =  6 resto 0\n 6 ÷ 2 =  3 resto 0\n 3 ÷ 2 =  1 resto 1\n 1 ÷ 2 =  0 resto 1   →  11001₂</pre><p><b>Atalhos:</b> como 8 = 2³ e 16 = 2⁴, a conversão entre binário e octal/hexadecimal é direta — agrupe os bits de 3 em 3 (octal) ou de 4 em 4 (hexadecimal), da direita para a esquerda.</p><pre>1101 1010₂ → 1101=D  1010=A  → DA₁₆\n011 011 010₂ → 3 3 2 → 332₈</pre><p><b>Aritmética binária:</b> 0+0=0, 0+1=1, 1+0=1, <b>1+1=10</b> (zero e vai um), 1+1+1=11.</p>"
+  },
+  {
+   "tema": "Portas Lógicas e Circuitos Digitais",
+   "html": "<p><b>Portas lógicas</b> são a base construtiva de qualquer sistema digital. O termo <b>porta</b> descreve um circuito que realiza uma operação lógica básica. Processadores e microcontroladores, por mais complexos que sejam, foram projetados internamente com várias portas lógicas.</p><p><b>As portas básicas e suas tabelas-verdade:</b></p><pre>A B │ AND  OR  NAND  NOR  XOR  XNOR\n0 0 │  0   0    1     1    0     1\n0 1 │  0   1    1     0    1     0\n1 0 │  0   1    1     0    1     0\n1 1 │  1   1    0     0    0     1</pre><ul><li><b>AND (E)</b> — S = A·B. Só 1 se todas as entradas forem 1.</li><li><b>OR (OU)</b> — S = A+B. 1 se ao menos uma entrada for 1.</li><li><b>NOT (NÃO)</b> — S = Ā. Uma entrada só; inverte.</li><li><b>NAND</b> — AND negado. <b>Porta universal.</b></li><li><b>NOR</b> — OR negado. <b>Porta universal.</b></li><li><b>XOR</b> — 1 quando as entradas são diferentes. Base do somador.</li><li><b>XNOR</b> — 1 quando as entradas são iguais. Comparador.</li></ul><p><b>Propriedades da álgebra de Boole:</b> identidade (A+0=A, A·1=A), elemento nulo (A+1=1, A·0=0), idempotência (A+A=A, A·A=A), complemento (A+Ā=1, A·Ā=0), comutativa, associativa, distributiva e as <b>leis de De Morgan</b>: (A·B)' = A'+B' e (A+B)' = A'·B'.</p><p><b>Circuitos derivados:</b> o <b>meio somador</b> (half adder) soma dois bits usando XOR para a soma e AND para o vai-um; o <b>somador completo</b> (full adder) acrescenta o vem-um da posição anterior. Também se constroem multiplexadores, decodificadores, codificadores e comparadores.</p>"
+  },
+  {
+   "tema": "Memória RAM e Cache",
+   "html": "<p><b>Memória volátil</b> perde o conteúdo quando a energia acaba (RAM, cache, registradores). <b>Não volátil</b> mantém o conteúdo (ROM, SSD, HD, pen drive).</p><p><b>Hierarquia:</b> registradores → cache L1, L2, L3 → RAM → armazenamento secundário. Quanto mais perto do processador, mais rápido, mais caro e menor.</p><p><b>DRAM x SRAM:</b></p><ul><li><b>DRAM</b> (Dynamic RAM) — cada bit é um capacitor que perde carga e precisa de <b>refresh</b> constante. Mais lenta, mais barata e mais densa. É a memória principal (RAM do computador).</li><li><b>SRAM</b> (Static RAM) — cada bit usa um flip-flop com vários transistores; não precisa de refresh. Muito mais rápida e cara, ocupa mais espaço. É a <b>memória cache</b>.</li></ul><p><b>Cache:</b> memória pequena e rápida entre o processador e a RAM, que guarda as informações mais usadas. Funciona pelo <b>princípio da localidade</b>: <b>temporal</b> (o que foi acessado tende a ser acessado de novo em breve) e <b>espacial</b> (dados vizinhos tendem a ser acessados em seguida). Quando o dado procurado está na cache, ocorre um <b>hit</b>; quando não está, um <b>miss</b> e é preciso buscar na RAM.</p><p><b>Níveis:</b> <b>L1</b> — a menor e mais rápida, dentro de cada núcleo, geralmente separada em instruções e dados. <b>L2</b> — maior e um pouco mais lenta, também por núcleo. <b>L3</b> — a maior, compartilhada entre todos os núcleos.</p><p><b>Evolução da RAM:</b> SDR → DDR → DDR2 → DDR3 → DDR4 → DDR5. <b>DDR</b> significa <i>Double Data Rate</i>: transfere dados nas duas bordas do clock, dobrando a taxa. A cada geração sobem a frequência e a densidade e cai a tensão. <b>ROM</b> guarda o firmware (BIOS/UEFI) e tem variantes PROM, EPROM, EEPROM e memória flash.</p>"
+  },
+  {
+   "tema": "Linguagens de Alto e Baixo Nível",
+   "html": "<p><b>Nível</b>, aqui, mede a distância entre a linguagem e o hardware — não a qualidade nem a dificuldade.</p><p><b>Baixo nível:</b> próxima da máquina. Inclui a <b>linguagem de máquina</b> (o binário que o processador executa) e o <b>Assembly</b>, que substitui os códigos binários por mnemônicos (MOV, ADD, JMP) traduzidos por um <b>montador (assembler)</b>. Vantagens: controle total sobre o hardware, código extremamente eficiente e enxuto. Desvantagens: difícil de escrever e manter, e <b>dependente da arquitetura</b> — código Assembly de x86 não roda em ARM.</p><p><b>Alto nível:</b> próxima da linguagem humana, com abstrações como variáveis, funções, classes e estruturas de controle. Python, Java, C#, JavaScript, C. Vantagens: produtividade, legibilidade, manutenção e <b>portabilidade</b>. Desvantagem: menos controle fino sobre memória e hardware. (C é frequentemente chamada de médio nível, por combinar abstrações de alto nível com manipulação direta de memória por ponteiros.)</p><p><b>Como o código chega à máquina:</b></p><ul><li><b>Compilação</b> — traduz o programa inteiro para código de máquina antes de executar, gerando um executável. Execução rápida; precisa recompilar a cada mudança e para cada plataforma. Ex.: C, C++, Go, Rust.</li><li><b>Interpretação</b> — traduz e executa linha a linha, em tempo de execução. Mais lenta, porém mais portátil e flexível. Ex.: Python, JavaScript, PHP.</li><li><b>Híbrida</b> — compila para um código intermediário (bytecode) executado por uma máquina virtual, muitas vezes com compilação <b>JIT</b> em tempo de execução. Ex.: Java (JVM) e C# (CLR).</li></ul>"
+  }
+ ],
+ "colas": [
+  {
+   "titulo": "Conversão entre bases",
+   "mnemonico": "Mnemônico: para DECIMAL, multiplica pelos pesos e soma. Saindo do decimal, DIVIDE e lê os restos de baixo para cima.",
+   "pontos": [
+    "Binário → decimal: some as potências de 2 onde há 1. 1011 = 8+2+1 = 11.",
+    "Decimal → binário: divisões sucessivas por 2, restos de baixo para cima.",
+    "Binário ↔ hexadecimal: agrupe de 4 em 4 bits, da direita para a esquerda.",
+    "Binário ↔ octal: agrupe de 3 em 3 bits.",
+    "Hexadecimal: A=10, B=11, C=12, D=13, E=14, F=15."
+   ]
+  },
+  {
+   "titulo": "Tabela-verdade das portas básicas",
+   "mnemonico": "Mnemônico: AND multiplica, OR soma, XOR é 'diferente dá 1'. As negadas são só o inverso.",
+   "pontos": [
+    "AND: 1 só em 1·1. OR: 0 só em 0+0.",
+    "NAND: 0 só em 1·1 (o inverso do AND). NOR: 1 só em 0+0 (o inverso do OR).",
+    "XOR: 1 quando as entradas são diferentes. XNOR: 1 quando iguais.",
+    "NAND e NOR são universais — dá para montar qualquer circuito só com elas.",
+    "De Morgan: (A·B)' = A'+B'   e   (A+B)' = A'·B'."
+   ]
+  },
+  {
+   "titulo": "DRAM x SRAM",
+   "mnemonico": "Mnemônico: D de Dinâmica e de 'Deve dar refresh'. S de Estática e de 'Sem refresh, e é a cache'.",
+   "pontos": [
+    "DRAM: capacitor, precisa de refresh, lenta, barata, densa → é a RAM principal.",
+    "SRAM: flip-flop, sem refresh, rápida, cara, ocupa espaço → é a CACHE.",
+    "L1 é a menor e mais rápida (por núcleo); L3 é a maior e compartilhada.",
+    "Cache funciona por localidade TEMPORAL (o mesmo de novo) e ESPACIAL (o vizinho).",
+    "Achou na cache = hit. Não achou = miss.",
+    "DDR = Double Data Rate: transfere nas DUAS bordas do clock."
+   ]
+  },
+  {
+   "titulo": "Alto x baixo nível",
+   "mnemonico": "Mnemônico: 'nível' mede a distância do HARDWARE, não a dificuldade. Baixo nível = perto da máquina.",
+   "pontos": [
+    "Baixo nível: linguagem de máquina e Assembly. Eficiente, mas DEPENDENTE da arquitetura.",
+    "Alto nível: Python, Java, C#. Portável, produtiva, menos controle do hardware.",
+    "Compilada: traduz tudo antes (C, C++, Go). Interpretada: linha a linha (Python, JS).",
+    "Híbrida: bytecode + máquina virtual (Java/JVM, C#/CLR), com JIT em execução.",
+    "Assembler é o tradutor do Assembly; compilador é o do alto nível."
+   ]
+  }
+ ],
+ "flashcards": [
+  {
+   "tema": "Sistemas de Numeração",
+   "p": "O que é um sistema de numeração posicional?",
+   "r": "Aquele em que o valor de cada dígito depende da posição que ele ocupa: multiplica-se o dígito pela base elevada à sua posição, contada da direita para a esquerda a partir de 0."
+  },
+  {
+   "tema": "Sistemas de Numeração",
+   "p": "Quais são os dígitos de cada base usada em computação?",
+   "r": "Binária (base 2): 0 e 1. Octal (base 8): 0 a 7. Decimal (base 10): 0 a 9. Hexadecimal (base 16): 0 a 9 e A a F."
+  },
+  {
+   "tema": "Sistemas de Numeração",
+   "p": "Como converter um número de qualquer base para decimal?",
+   "r": "Multiplicando cada dígito pela base elevada à sua posição e somando tudo. Ex.: 1011₂ = 1·2³+0·2²+1·2¹+1·2⁰ = 11."
+  },
+  {
+   "tema": "Sistemas de Numeração",
+   "p": "Como converter decimal para binário?",
+   "r": "Divisões sucessivas por 2, anotando os restos e lendo-os de baixo para cima. Ex.: 25 → 11001."
+  },
+  {
+   "tema": "Sistemas de Numeração",
+   "p": "Qual o atalho para converter binário em hexadecimal?",
+   "r": "Agrupar os bits de 4 em 4, da direita para a esquerda, e converter cada grupo. 1101 1010 → D A → DA₁₆. Para octal, agrupa-se de 3 em 3."
+  },
+  {
+   "tema": "Sistemas de Numeração",
+   "p": "Quanto vale 2AF em hexadecimal, em decimal?",
+   "r": "687 — porque 2·16² + 10·16¹ + 15·16⁰ = 512 + 160 + 15."
+  },
+  {
+   "tema": "Sistemas de Numeração",
+   "p": "Quanto é 1 + 1 em binário?",
+   "r": "10 — resultado 0 com vai-um. E 1+1+1 = 11. As demais somas são diretas: 0+0=0, 0+1=1, 1+0=1."
+  },
+  {
+   "tema": "Portas Lógicas e Circuitos Digitais",
+   "p": "O que é uma porta lógica?",
+   "r": "Um circuito que realiza uma operação lógica básica. As portas são a base construtiva de qualquer sistema digital — processadores e microcontroladores são projetados internamente com elas."
+  },
+  {
+   "tema": "Portas Lógicas e Circuitos Digitais",
+   "p": "Qual a saída da porta NAND para as entradas 1 e 1?",
+   "r": "0. A NAND é o inverso do AND: sua saída só é 0 quando todas as entradas são 1; nos demais casos vale 1."
+  },
+  {
+   "tema": "Portas Lógicas e Circuitos Digitais",
+   "p": "Qual porta produz 1 apenas quando todas as entradas são 0?",
+   "r": "A NOR — inverso do OR. Já a NAND produz 0 apenas quando todas as entradas são 1."
+  },
+  {
+   "tema": "Portas Lógicas e Circuitos Digitais",
+   "p": "Quais são as propriedades de complemento na álgebra de Boole?",
+   "r": "A + Ā = 1 (algo ou sua negação sempre dá verdadeiro) e A · Ā = 0 (algo e sua negação nunca são verdadeiros ao mesmo tempo)."
+  },
+  {
+   "tema": "Portas Lógicas e Circuitos Digitais",
+   "p": "Quais portas formam um meio somador (half adder)?",
+   "r": "XOR para o bit de soma e AND para o vai-um (carry). O somador completo acrescenta o tratamento do vem-um vindo da posição anterior."
+  },
+  {
+   "tema": "Portas Lógicas e Circuitos Digitais",
+   "p": "Por que NAND e NOR são chamadas de universais?",
+   "r": "Porque qualquer função lógica — inclusive AND, OR e NOT — pode ser construída usando apenas uma delas, o que simplifica a fabricação de circuitos integrados."
+  },
+  {
+   "tema": "Memória RAM e Cache",
+   "p": "Qual a diferença entre memória volátil e não volátil?",
+   "r": "A volátil perde o conteúdo ao faltar energia (RAM, cache, registradores). A não volátil mantém o conteúdo (ROM, SSD, HD, pen drive)."
+  },
+  {
+   "tema": "Memória RAM e Cache",
+   "p": "Qual a diferença entre DRAM e SRAM?",
+   "r": "DRAM usa capacitores que perdem carga e precisam de refresh constante — mais lenta, barata e densa, é a memória principal. SRAM usa flip-flops e não precisa de refresh — muito mais rápida e cara, é usada na cache."
+  },
+  {
+   "tema": "Memória RAM e Cache",
+   "p": "O que é o princípio da localidade?",
+   "r": "A base do funcionamento da cache. Localidade temporal: o que foi acessado tende a ser acessado de novo em breve. Localidade espacial: dados vizinhos tendem a ser acessados em seguida."
+  },
+  {
+   "tema": "Memória RAM e Cache",
+   "p": "O que são cache hit e cache miss?",
+   "r": "Hit é quando o dado procurado está na cache (acesso rápido). Miss é quando não está e é preciso buscá-lo na memória principal, que é bem mais lenta."
+  },
+  {
+   "tema": "Memória RAM e Cache",
+   "p": "Qual a diferença entre os níveis L1, L2 e L3 de cache?",
+   "r": "L1 é a menor e mais rápida, dentro de cada núcleo, geralmente separada em instruções e dados. L2 é maior e um pouco mais lenta, também por núcleo. L3 é a maior e é compartilhada entre todos os núcleos."
+  },
+  {
+   "tema": "Memória RAM e Cache",
+   "p": "O que significa DDR na memória RAM?",
+   "r": "Double Data Rate: transfere dados nas duas bordas do sinal de clock (subida e descida), dobrando a taxa em relação à SDR."
+  },
+  {
+   "tema": "Memória RAM e Cache",
+   "p": "Qual o papel da memória ROM no computador?",
+   "r": "Guardar o firmware — BIOS/UEFI — que inicializa o hardware antes de o sistema operacional carregar. É não volátil, com variantes PROM, EPROM, EEPROM e flash."
+  },
+  {
+   "tema": "Linguagens de Alto e Baixo Nível",
+   "p": "O que 'nível' significa ao classificar uma linguagem de programação?",
+   "r": "A distância entre a linguagem e o hardware — não a dificuldade nem a qualidade. Baixo nível é perto da máquina; alto nível é perto da linguagem humana."
+  },
+  {
+   "tema": "Linguagens de Alto e Baixo Nível",
+   "p": "Qual a principal desvantagem do Assembly?",
+   "r": "É difícil de escrever e manter, e é dependente da arquitetura: código Assembly escrito para x86 não roda em ARM. Em troca, dá controle total sobre o hardware e gera código muito eficiente."
+  },
+  {
+   "tema": "Linguagens de Alto e Baixo Nível",
+   "p": "Qual a diferença entre compilação e interpretação?",
+   "r": "A compilação traduz o programa inteiro para código de máquina antes de executar, gerando um executável rápido. A interpretação traduz e executa linha a linha em tempo de execução — mais lenta, porém mais portátil e flexível."
+  },
+  {
+   "tema": "Linguagens de Alto e Baixo Nível",
+   "p": "Como funciona a abordagem híbrida de Java e C#?",
+   "r": "O código é compilado para um código intermediário (bytecode/CIL) executado por uma máquina virtual (JVM/CLR), muitas vezes com compilação JIT em tempo de execução — unindo portabilidade e desempenho."
+  },
+  {
+   "tema": "Linguagens de Alto e Baixo Nível",
+   "p": "Por que a linguagem C é às vezes chamada de médio nível?",
+   "r": "Porque combina abstrações de alto nível (funções, estruturas, tipos) com manipulação direta da memória por meio de ponteiros, característica típica das linguagens de baixo nível."
+  }
+ ],
+ "questoes": [
+  {
+   "tema": "Sistemas de Numeração",
+   "q": "Qual é o valor decimal do número binário 1011?",
+   "op": [
+    "9",
+    "11",
+    "13",
+    "15"
+   ],
+   "r": 1,
+   "exp": "1·2³ + 0·2² + 1·2¹ + 1·2⁰ = 8 + 0 + 2 + 1 = 11."
+  },
+  {
+   "tema": "Sistemas de Numeração",
+   "q": "Qual é a representação binária do número decimal 25?",
+   "op": [
+    "10011",
+    "11010",
+    "10101",
+    "11001"
+   ],
+   "r": 3,
+   "exp": "Divisões sucessivas por 2 dão restos 1,0,0,1,1 — lidos de baixo para cima: 11001. Conferindo: 16+8+1 = 25."
+  },
+  {
+   "tema": "Sistemas de Numeração",
+   "q": "Quais são os dígitos válidos no sistema hexadecimal?",
+   "op": [
+    "0 a 9 apenas",
+    "0 a 9 e A a F",
+    "0 a 7",
+    "0 a 15 escritos por extenso"
+   ],
+   "r": 1,
+   "exp": "Base 16 exige 16 símbolos: os algarismos 0 a 9 mais as letras A (10), B (11), C (12), D (13), E (14) e F (15)."
+  },
+  {
+   "tema": "Sistemas de Numeração",
+   "q": "Convertendo 1101 1010₂ para hexadecimal, obtém-se:",
+   "op": [
+    "AD",
+    "DA",
+    "BC",
+    "D8"
+   ],
+   "r": 1,
+   "exp": "Agrupa-se de 4 em 4: 1101 = D e 1010 = A → DA. A conversão é direta porque 16 = 2⁴."
+  },
+  {
+   "tema": "Sistemas de Numeração",
+   "q": "Quanto vale 2AF₁₆ em decimal?",
+   "op": [
+    "575",
+    "687",
+    "703",
+    "751"
+   ],
+   "r": 1,
+   "exp": "2·16² + A(10)·16¹ + F(15)·16⁰ = 512 + 160 + 15 = 687."
+  },
+  {
+   "tema": "Sistemas de Numeração",
+   "q": "Quantos bits são necessários para representar um dígito octal?",
+   "op": [
+    "2 bits",
+    "3 bits",
+    "4 bits",
+    "8 bits"
+   ],
+   "r": 1,
+   "exp": "A base 8 = 2³, logo cada dígito octal corresponde a exatamente 3 bits. Já cada dígito hexadecimal (16 = 2⁴) corresponde a 4 bits."
+  },
+  {
+   "tema": "Sistemas de Numeração",
+   "q": "Em aritmética binária, quanto é 1 + 1?",
+   "op": [
+    "1",
+    "2",
+    "10",
+    "11"
+   ],
+   "r": 2,
+   "exp": "Em binário 1+1 = 10: escreve-se 0 e vai um para a posição seguinte. Já 1+1+1 = 11."
+  },
+  {
+   "tema": "Portas Lógicas e Circuitos Digitais",
+   "q": "O que é uma porta lógica?",
+   "op": [
+    "Um conector físico da placa-mãe",
+    "Um registrador interno do processador",
+    "Um circuito que realiza uma operação lógica básica",
+    "Um tipo de memória volátil"
+   ],
+   "r": 2,
+   "exp": "O termo porta descreve um circuito que realiza uma operação lógica básica. As portas são a base construtiva de todo sistema digital."
+  },
+  {
+   "tema": "Portas Lógicas e Circuitos Digitais",
+   "q": "Qual é a saída de uma porta NAND quando ambas as entradas valem 1?",
+   "op": [
+    "0",
+    "1",
+    "Indefinida",
+    "Depende do clock"
+   ],
+   "r": 0,
+   "exp": "A NAND é o AND negado: sua saída só vale 0 quando todas as entradas são 1. Em todas as outras combinações ela vale 1."
+  },
+  {
+   "tema": "Portas Lógicas e Circuitos Digitais",
+   "q": "Qual porta lógica tem saída 1 SOMENTE quando todas as entradas são 0?",
+   "op": [
+    "AND",
+    "OR",
+    "XOR",
+    "NOR"
+   ],
+   "r": 3,
+   "exp": "A NOR é o OR negado: só produz 1 quando nenhuma entrada é 1, isto é, quando todas valem 0."
+  },
+  {
+   "tema": "Portas Lógicas e Circuitos Digitais",
+   "q": "Na álgebra de Boole, quanto vale A + Ā?",
+   "op": [
+    "1",
+    "0",
+    "A",
+    "Ā"
+   ],
+   "r": 0,
+   "exp": "É a propriedade do complemento: algo OU sua negação é sempre verdadeiro. Já A · Ā = 0, pois algo e sua negação nunca são verdadeiros simultaneamente."
+  },
+  {
+   "tema": "Portas Lógicas e Circuitos Digitais",
+   "q": "Quais portas compõem um meio somador (half adder)?",
+   "op": [
+    "Duas portas AND",
+    "XOR para a soma e AND para o vai-um",
+    "OR para a soma e NOT para o vai-um",
+    "NAND e NOR em série"
+   ],
+   "r": 1,
+   "exp": "O XOR produz o bit de soma (1 quando as entradas diferem) e o AND produz o vai-um (1 só quando ambas são 1)."
+  },
+  {
+   "tema": "Portas Lógicas e Circuitos Digitais",
+   "q": "Na álgebra de Boole, A + 1 é igual a:",
+   "op": [
+    "A",
+    "0",
+    "1",
+    "Ā"
+   ],
+   "r": 2,
+   "exp": "É a propriedade do elemento nulo do OU: qualquer coisa OU verdadeiro dá verdadeiro. Analogamente, A · 0 = 0."
+  },
+  {
+   "tema": "Memória RAM e Cache",
+   "q": "Qual destas memórias é volátil?",
+   "op": [
+    "RAM",
+    "ROM",
+    "SSD",
+    "Pen drive"
+   ],
+   "r": 0,
+   "exp": "A RAM perde todo o conteúdo quando falta energia — assim como cache e registradores. ROM, SSD e pen drive são não voláteis."
+  },
+  {
+   "tema": "Memória RAM e Cache",
+   "q": "Por que a DRAM precisa de refresh constante?",
+   "op": [
+    "Porque seus dados são criptografados a cada ciclo",
+    "Porque precisa sincronizar com o disco rígido",
+    "Porque o sistema operacional exige",
+    "Porque cada bit é armazenado em um capacitor que perde carga com o tempo"
+   ],
+   "r": 3,
+   "exp": "Na DRAM cada bit é um capacitor que se descarrega, exigindo recarga periódica. A SRAM usa flip-flops e por isso dispensa refresh."
+  },
+  {
+   "tema": "Memória RAM e Cache",
+   "q": "Qual tipo de memória é usado na cache do processador?",
+   "op": [
+    "DRAM",
+    "Flash",
+    "SRAM",
+    "EEPROM"
+   ],
+   "r": 2,
+   "exp": "A SRAM é muito mais rápida e não precisa de refresh — ideal para cache. Em contrapartida é cara e ocupa mais espaço, por isso não serve como memória principal."
+  },
+  {
+   "tema": "Memória RAM e Cache",
+   "q": "O princípio da localidade espacial afirma que:",
+   "op": [
+    "Dados vizinhos aos acessados tendem a ser acessados em seguida",
+    "Dados acessados tendem a ser acessados novamente em breve",
+    "A memória deve ficar fisicamente perto do processador",
+    "Cada processo deve ocupar espaços contíguos de memória"
+   ],
+   "r": 0,
+   "exp": "Localidade espacial: os vizinhos tendem a ser usados logo (por isso a cache traz blocos inteiros). A localidade temporal é a que trata do mesmo dado ser reacessado."
+  },
+  {
+   "tema": "Memória RAM e Cache",
+   "q": "O que é um cache miss?",
+   "op": [
+    "Quando o dado procurado não está na cache e precisa ser buscado na memória principal",
+    "Quando o dado procurado está na cache",
+    "Quando a cache está corrompida",
+    "Quando dois núcleos acessam a mesma posição"
+   ],
+   "r": 0,
+   "exp": "Miss é a falha de cache: obriga a buscar o dado na RAM, que é muito mais lenta. Hit é o acerto, quando o dado já estava lá."
+  },
+  {
+   "tema": "Memória RAM e Cache",
+   "q": "Qual nível de cache é normalmente compartilhado entre todos os núcleos do processador?",
+   "op": [
+    "L3",
+    "L1",
+    "L2",
+    "Nenhum — todas são exclusivas por núcleo"
+   ],
+   "r": 0,
+   "exp": "L1 e L2 são normalmente exclusivas de cada núcleo; a L3, maior e um pouco mais lenta, é compartilhada por todos."
+  },
+  {
+   "tema": "Memória RAM e Cache",
+   "q": "O que significa a sigla DDR nas memórias RAM?",
+   "op": [
+    "Direct Data Register",
+    "Dynamic Data Refresh",
+    "Double Data Rate",
+    "Dual Density RAM"
+   ],
+   "r": 2,
+   "exp": "Double Data Rate: a memória transfere dados nas duas bordas do sinal de clock — subida e descida — dobrando a taxa em relação à SDR."
+  },
+  {
+   "tema": "Linguagens de Alto e Baixo Nível",
+   "q": "O que a classificação em 'alto' e 'baixo' nível expressa numa linguagem de programação?",
+   "op": [
+    "A dificuldade de aprendizado",
+    "A velocidade de execução do programa",
+    "O ano em que a linguagem foi criada",
+    "A distância entre a linguagem e o hardware"
+   ],
+   "r": 3,
+   "exp": "Nível mede proximidade com a máquina: baixo nível é perto do hardware (Assembly), alto nível é perto da linguagem humana (Python, Java)."
+  },
+  {
+   "tema": "Linguagens de Alto e Baixo Nível",
+   "q": "Qual é a principal desvantagem da linguagem Assembly?",
+   "op": [
+    "Gera código lento e ineficiente",
+    "Não permite acessar a memória diretamente",
+    "É difícil de escrever e manter, e é dependente da arquitetura do processador",
+    "Não pode ser traduzida para linguagem de máquina"
+   ],
+   "r": 2,
+   "exp": "Assembly gera código muito eficiente e dá controle total, mas é trabalhoso e não é portável: o código de x86 não roda em ARM."
+  },
+  {
+   "tema": "Linguagens de Alto e Baixo Nível",
+   "q": "Qual a diferença fundamental entre um compilador e um interpretador?",
+   "op": [
+    "O compilador só funciona com linguagens de baixo nível",
+    "O interpretador gera um arquivo executável independente",
+    "Não há diferença — são sinônimos",
+    "O compilador traduz o programa inteiro antes de executar; o interpretador traduz e executa linha a linha"
+   ],
+   "r": 3,
+   "exp": "A compilação produz um executável antes da execução (C, C++, Go); a interpretação traduz durante a execução (Python, JavaScript, PHP)."
+  },
+  {
+   "tema": "Linguagens de Alto e Baixo Nível",
+   "q": "Java e C# usam qual abordagem de execução?",
+   "op": [
+    "Híbrida: compilação para bytecode executado por uma máquina virtual",
+    "Puramente compilada para código nativo",
+    "Puramente interpretada",
+    "Tradução direta para Assembly pelo programador"
+   ],
+   "r": 0,
+   "exp": "O código vira bytecode (Java) ou CIL (C#), executado pela JVM ou pelo CLR, muitas vezes com compilação JIT em tempo de execução — unindo portabilidade e desempenho."
+  },
+  {
+   "tema": "Linguagens de Alto e Baixo Nível",
+   "q": "Qual programa traduz código Assembly para linguagem de máquina?",
+   "op": [
+    "O compilador",
+    "O interpretador",
+    "O linker",
+    "O montador (assembler)"
+   ],
+   "r": 3,
+   "exp": "O montador (assembler) converte os mnemônicos como MOV e ADD nos códigos binários correspondentes. Compilador é o tradutor das linguagens de alto nível."
+  }
+ ],
+ "discursivas": [
+  {
+   "tema": "Sistemas de Numeração",
+   "q": "Explique por que a conversão entre binário e hexadecimal é direta, e demonstre com um exemplo.",
+   "r": "A conversão é direta porque 16 é uma potência de 2: 16 = 2⁴. Isso significa que cada dígito hexadecimal representa exatamente quatro dígitos binários, sem sobra nem arredondamento. Por isso não é preciso passar pelo decimal: basta agrupar os bits de quatro em quatro, da direita para a esquerda, completando com zeros à esquerda se faltar, e converter cada grupo isoladamente. Exemplo: 1101 1010₂ → o grupo 1101 vale 8+4+0+1 = 13 = D, e o grupo 1010 vale 8+0+2+0 = 10 = A, resultando em DA₁₆. O caminho inverso é igualmente simples: cada dígito hexadecimal vira quatro bits. A mesma lógica vale para o octal, com a diferença de que 8 = 2³, logo cada dígito octal corresponde a três bits e o agrupamento é de três em três. É justamente essa correspondência exata que faz do hexadecimal a notação preferida para representar conteúdo de memória, endereços e cores: ele é compacto de ler e converte-se em binário mentalmente."
+  },
+  {
+   "tema": "Memória RAM e Cache",
+   "q": "Explique o que é a memória cache, por que ela existe e como o princípio da localidade justifica seu funcionamento.",
+   "r": "A cache é uma memória pequena, muito rápida e cara, posicionada entre o processador e a memória principal, que guarda cópias das informações mais utilizadas. Ela existe porque há uma diferença enorme de velocidade entre o processador e a RAM: sem a cache, a CPU passaria a maior parte do tempo ociosa esperando dados. Como não é viável economicamente construir toda a memória com a tecnologia rápida da cache (SRAM, feita de flip-flops, cara e volumosa), a solução é uma hierarquia — registradores, L1, L2, L3, RAM, disco — em que cada nível é maior, mais lento e mais barato que o anterior. O que torna essa estratégia eficaz é o princípio da localidade, que tem duas faces. A localidade temporal diz que um dado recém-acessado tem alta probabilidade de ser acessado novamente em breve — pense em uma variável de contador dentro de um laço. A localidade espacial diz que dados vizinhos ao acessado tendem a ser usados logo em seguida — pense em percorrer um vetor elemento a elemento. Por isso a cache não traz apenas o byte pedido, mas um bloco inteiro de posições vizinhas. Quando o dado buscado está na cache ocorre um hit, e o acesso é quase instantâneo; quando não está ocorre um miss, e é preciso buscar na RAM, com penalidade de tempo. Na prática, a taxa de acerto costuma ser muito alta, e é isso que sustenta o desempenho dos processadores modernos."
+  }
+ ]
+}

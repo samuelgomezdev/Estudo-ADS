@@ -1,0 +1,549 @@
+{
+ "id": "software-design",
+ "nome": "Software Design",
+ "periodo": 3,
+ "cor": "#8b5cf6",
+ "sigla": "SD",
+ "flashcards": [
+  {
+   "tema": "Arquitetura, SOA e serviços web",
+   "p": "O que é arquitetura de software?",
+   "r": "A estrutura fundamental de um sistema — decisões estruturais que definem componentes, como se comunicam e princípios que guiam sua evolução. Invisível ao usuário, mas determina desempenho, custo e segurança."
+  },
+  {
+   "tema": "Arquitetura, SOA e serviços web",
+   "p": "Qual é a 'Primeira Lei da Arquitetura' (Robert C. Martin)?",
+   "r": "'Tudo na arquitetura de software é um trade-off.' Não existe arquitetura perfeita — existem opções otimizadas para contextos específicos."
+  },
+  {
+   "tema": "Arquitetura, SOA e serviços web",
+   "p": "Quando usar arquitetura Monolítica vs Microsserviços?",
+   "r": "Monolítica: times pequenos, MVPs, domínios indefinidos. Microsserviços: demanda diferenciada por módulo, times grandes, cloud-native — mas com alta complexidade operacional."
+  },
+  {
+   "tema": "Arquitetura, SOA e serviços web",
+   "p": "O que é arquitetura Orientada a Eventos?",
+   "r": "Componentes se comunicam de forma assíncrona via broker (Kafka, RabbitMQ). Vantagem: desacoplamento extremo, absorve picos. Desvantagem: rastreabilidade difícil, consistência eventual."
+  },
+  {
+   "tema": "Processo de projeto, requisitos e protótipos",
+   "p": "Quais são as 4 atividades do projeto de software?",
+   "r": "1) Projeto Arquitetural (estrutura geral), 2) Projeto de Interface (entre componentes), 3) Projeto de Componente (lógica interna), 4) Projeto de Banco de Dados (persistência)."
+  },
+  {
+   "tema": "Processo de projeto, requisitos e protótipos",
+   "p": "Qual é a saída (output) da fase de Projeto/Modelagem?",
+   "r": "Diagramas UML, arquitetura técnica e DER (Diagrama Entidade-Relacionamento). Entrada: modelo de análise; saída: especificação técnica para implementação."
+  },
+  {
+   "tema": "Processo de projeto, requisitos e protótipos",
+   "p": "Quais são as 7 seções do Plano de Projeto?",
+   "r": "1) Introdução, 2) Organização do projeto, 3) Análise de riscos, 4) Requisitos de hw/sw, 5) Divisão de trabalho (WBS), 6) Cronograma, 7) Monitoração e relatórios."
+  },
+  {
+   "tema": "Processo de projeto, requisitos e protótipos",
+   "p": "O que é WBS (Work Breakdown Structure)?",
+   "r": "A partição do projeto em atividades, milestones e entregáveis. Permite estimar tempo e alocar pessoas a cada tarefa. É uma das 7 seções do Plano de Projeto."
+  },
+  {
+   "tema": "Arquitetura, SOA e serviços web",
+   "p": "Quais são as 5 características da arquitetura de software?",
+   "r": "1) Atender stakeholders, 2) Separação de necessidades (vistas), 3) Orientada pela qualidade (RNFs), 4) Estilos recorrentes (padrões), 5) Integridade conceitual."
+  },
+  {
+   "tema": "Processo de projeto, requisitos e protótipos",
+   "p": "Quais são os 3 tipos de projeto de software?",
+   "r": "1) Estrutural (alto — visão abstrata do sistema), 2) Alto nível (médio — subsistemas e módulos), 3) Detalhado (baixo — algoritmos e estruturas de dados)."
+  },
+  {
+   "tema": "Arquitetura, SOA e serviços web",
+   "p": "O que é ESB (Enterprise Service Bus)?",
+   "r": "O barramento central do SOA: roteia mensagens, transforma formatos, aplica segurança (XML Encryption) e monitora o tráfego. Elimina a integração ponto-a-ponto (N×(N-1) conexões)."
+  },
+  {
+   "tema": "Arquitetura, SOA e serviços web",
+   "p": "Quais são os dois principais custos de adotar SOA?",
+   "r": "1) Mudança cara nos modelos existentes (redesenho de sistemas legados), 2) Sistemas que já funcionam não justificam o investimento — análise custo-benefício é obrigatória."
+  },
+  {
+   "tema": "Arquitetura, SOA e serviços web",
+   "p": "Quais são as 4 camadas da arquitetura de serviços web?",
+   "r": "1) Cliente (interface/browser), 2) Web/Container Web (recebe HTTP), 3) Negócio/EJB (lógica e orquestração), 4) EIS — Enterprise Information Systems (dados e sistemas legados)."
+  },
+  {
+   "tema": "Arquitetura, SOA e serviços web",
+   "p": "Quais verbos HTTP mapeiam para o padrão HTTPServlet?",
+   "r": "GET → doGet() (leitura), POST → doPost() (criação), PUT → doPut() (atualização completa), DELETE → doDelete() (remoção), HEAD → doHead() (verificar existência)."
+  },
+  {
+   "tema": "Modelagem: análise estruturada e UML",
+   "p": "Quais são os 4 componentes de um DFD?",
+   "r": "1) Bolha de Processo (retângulo arredondado — transforma dados), 2) Fluxo de Dados (seta nomeada), 3) Entidade Externa (quadrado duplo — fora do sistema), 4) Depósito de Dados (retângulo aberto — armazenamento)."
+  },
+  {
+   "tema": "Modelagem: análise estruturada e UML",
+   "p": "O que é o Dicionário de Dados (DD) e qual símbolo usa?",
+   "r": "Documenta o significado de cada dado no sistema. Símbolos: '=' (é composto por), '+' (e), '()' (opcional), '[|]' (alternativas/ou), '{}' (repete), '@' (chave primária)."
+  },
+  {
+   "tema": "Modelagem: análise estruturada e UML",
+   "p": "Quais são os 4 pilares da Orientação a Objetos?",
+   "r": "1) Encapsulamento (ocultar estado interno), 2) Herança (reutilizar e especializar), 3) Polimorfismo (mesmo método, comportamentos diferentes), 4) Abstração (modelar essência, ignorar detalhes irrelevantes)."
+  },
+  {
+   "tema": "Modelagem: análise estruturada e UML",
+   "p": "Qual a diferença entre Agregação e Composição em UML?",
+   "r": "Agregação (losango vazio): 'tem um' — parte pode existir sem o todo. Ex: Departamento ◇ Funcionário. Composição (losango cheio): parte depende do todo. Ex: Pedido ◆ ItemPedido."
+  },
+  {
+   "tema": "Processo de projeto, requisitos e protótipos",
+   "p": "Qual a diferença entre protótipo Horizontal e Vertical?",
+   "r": "Horizontal: grande variedade de funções com poucos detalhes em cada (visão ampla). Vertical: poucas funções, cada uma detalhada ao máximo (aprofundamento de módulo crítico)."
+  },
+  {
+   "tema": "Processo de projeto, requisitos e protótipos",
+   "p": "Qual a diferença entre Design Conceitual e Físico?",
+   "r": "Design Conceitual: define o que o sistema faz do ponto de vista do usuário, sem tecnologia. Design Físico: define como será implementado — tecnologias, estrutura de telas, acessibilidade."
+  },
+  {
+   "tema": "Processo de projeto, requisitos e protótipos",
+   "p": "Quais são os 3 níveis de fidelidade de protótipos?",
+   "r": "Baixo: papel/post-its, sem semelhança visual — para validar fluxos. Médio: computadorizado com visual parcial. Alto: materiais reais, banco de homologação — igual ao produto final."
+  },
+  {
+   "tema": "Processo de projeto, requisitos e protótipos",
+   "p": "Qual a diferença entre protótipo Descartável e Evolutivo?",
+   "r": "Descartável: criado para explorar ideias e descartado após — não vira o sistema final. Evolutivo: refinado iterativamente até se tornar o produto de produção."
+  },
+  {
+   "tema": "Modelagem: análise estruturada e UML",
+   "p": "Quais são os símbolos de visibilidade em UML?",
+   "r": "+ público (qualquer lugar), - privado (só dentro da classe), # protegido (classe e subclasses), ~ pacote (classes no mesmo pacote)."
+  },
+  {
+   "tema": "Modelagem: análise estruturada e UML",
+   "p": "O que significam as multiplicidades 0..1, 1, 1..*, e *?",
+   "r": "0..1 = no máximo um (pode ser zero), 1 = exatamente um, 1..* = um ou mais, * = zero ou mais (qualquer quantidade)."
+  },
+  {
+   "tema": "Modelagem: análise estruturada e UML",
+   "p": "O que é um componente em UML?",
+   "r": "Pedaço reutilizável de funcionalidade do sistema. Possui interfaces fornecidas (o que oferece) e requeridas (o que precisa). Representado por retângulo com estereótipo <<component>>."
+  },
+  {
+   "tema": "Modelagem: análise estruturada e UML",
+   "p": "O que é Interface Fornecida vs Interface Requerida?",
+   "r": "Fornecida (círculo/bola): operações que o componente implementa e oferece. Requerida (semicírculo/soquete): operações que o componente precisa de outros para funcionar."
+  },
+  {
+   "tema": "Modelagem: análise estruturada e UML",
+   "p": "Quais são os tipos de mensagens no Diagrama de Sequência?",
+   "r": "Síncrona (seta sólida cheia — aguarda resposta), Assíncrona (seta aberta — não aguarda), Retorno (tracejada aberta), Self (auto-delegação), Criação (tracejada → retângulo), Destruição (seta com X)."
+  },
+  {
+   "tema": "Modelagem: análise estruturada e UML",
+   "p": "O que são Fragmentos Combinados no Diagrama de Sequência?",
+   "r": "Estruturas de controle: [alt] = if/else, [opt] = if sem else, [loop] = for/while, [par] = paralelo/threads, [break] = retorno antecipado, [neg] = sequência inválida/proibida."
+  },
+  {
+   "tema": "Banco de dados relacional",
+   "p": "Quais são os 4 tipos de JOIN no SQL?",
+   "r": "INNER JOIN: só com correspondência em ambas as tabelas. LEFT JOIN: todos da esquerda + correspondências. RIGHT JOIN: todos da direita + correspondências. FULL JOIN: todos de ambas."
+  },
+  {
+   "tema": "Banco de dados relacional",
+   "p": "Qual a diferença entre Chave Primária (PK) e Chave Estrangeira (FK)?",
+   "r": "PK: identificador único de cada registro da tabela — não nulo, não duplicado. FK: referência a uma PK de outra tabela, garantindo integridade referencial (registro não pode ser órfão)."
+  },
+  {
+   "tema": "Banco de dados relacional",
+   "p": "Quais são os símbolos básicos do DER?",
+   "r": "Retângulo = Entidade, Elipse = Atributo, Elipse sublinhada = Atributo-chave (PK), Elipse dupla = Atributo multivalorado, Losango = Relacionamento, Retângulo duplo = Entidade fraca."
+  },
+  {
+   "tema": "Banco de dados relacional",
+   "p": "Quais são as 3 cardinalidades do DER?",
+   "r": "1:1 (um para um — ex: pessoa ↔ passaporte), 1:N (um para muitos — ex: cliente ↔ pedidos), N:N (muitos para muitos — ex: alunos ↔ disciplinas — gera tabela intermediária)."
+  },
+  {
+   "tema": "Banco de dados relacional",
+   "p": "Quais são as constraints essenciais do MER/SQL?",
+   "r": "PRIMARY KEY (unicidade + não nulo), FOREIGN KEY (integridade referencial), NOT NULL (campo obrigatório), UNIQUE (valor único na tabela), DEFAULT (valor padrão), CHECK (validação de regra de negócio)."
+  },
+  {
+   "tema": "Banco de dados relacional",
+   "p": "Qual a diferença entre MER e DER?",
+   "r": "MER (Modelo): abstrato/conceitual — independe de tecnologia, comunica com cliente. DER (Diagrama): representação gráfica — lógico/físico, base para implementação do banco."
+  }
+ ],
+ "questoes": [
+  {
+   "tema": "Arquitetura, SOA e serviços web",
+   "q": "Qual estilo arquitetural é mais adequado para um MVP com time pequeno?",
+   "op": [
+    "Monolítico",
+    "Microsserviços com Kubernetes",
+    "SOA com ESB",
+    "Orientada a Eventos com Kafka"
+   ],
+   "r": 0,
+   "exp": "A arquitetura Monolítica é recomendada para times pequenos, MVPs e domínios indefinidos: desenvolvimento simples, fácil de testar, baixa barreira de entrada."
+  },
+  {
+   "tema": "Arquitetura, SOA e serviços web",
+   "q": "Na arquitetura em Camadas, qual é a ordem correta do topo para a base?",
+   "op": [
+    "Dados → Negócio → Apresentação",
+    "Negócio → Apresentação → Dados",
+    "Apresentação → Dados → Negócio",
+    "Apresentação → Negócio → Dados"
+   ],
+   "r": 3,
+   "exp": "Apresentação (interface com usuário) → Negócio (regras) → Dados (persistência). Cada camada comunica apenas com a imediatamente adjacente."
+  },
+  {
+   "tema": "Processo de projeto, requisitos e protótipos",
+   "q": "O que são Requisitos Não Funcionais (RNF) e qual seu papel na arquitetura?",
+   "op": [
+    "Descrevem funcionalidades do usuário — irrelevantes para arquitetura",
+    "Não descrevem o que o sistema faz, mas como se comporta — determinam a escolha arquitetural",
+    "São apenas requisitos de desempenho isolados",
+    "Definem o banco de dados a ser usado"
+   ],
+   "r": 1,
+   "exp": "RNFs (escalabilidade, segurança, manutenibilidade) definem COMO o sistema se comporta e são o fator principal na escolha da arquitetura."
+  },
+  {
+   "tema": "Processo de projeto, requisitos e protótipos",
+   "q": "Qual é a principal saída (output) da fase de Projeto/Modelagem no ciclo de vida do software?",
+   "op": [
+    "Diagramas UML, arquitetura e DER",
+    "Especificação de requisitos do cliente",
+    "Código-fonte da aplicação",
+    "Produto final validado e testado"
+   ],
+   "r": 0,
+   "exp": "A fase de Projeto/Modelagem recebe o modelo de análise e produz: Diagramas UML, arquitetura técnica e DER — especificação técnica para a equipe de implementação."
+  },
+  {
+   "tema": "Processo de projeto, requisitos e protótipos",
+   "q": "Qual das quatro atividades do projeto define a estrutura geral do sistema?",
+   "op": [
+    "Projeto de Interface",
+    "Projeto de Componente",
+    "Projeto Arquitetural",
+    "Projeto de Banco de Dados"
+   ],
+   "r": 2,
+   "exp": "O Projeto Arquitetural identifica os componentes principais (subsistemas/módulos), seus relacionamentos e como são distribuídos — é a visão estrutural de mais alto nível."
+  },
+  {
+   "tema": "Processo de projeto, requisitos e protótipos",
+   "q": "Qual seção do Plano de Projeto contém a partição em atividades e milestones?",
+   "op": [
+    "Análise de riscos",
+    "WBS — Divisão de trabalho",
+    "Cronograma do projeto",
+    "Monitoração e relatórios"
+   ],
+   "r": 1,
+   "exp": "A WBS (Work Breakdown Structure) é a seção que partição o projeto em atividades, milestones e entregáveis, permitindo estimar tempo e alocar pessoas."
+  },
+  {
+   "tema": "Arquitetura, SOA e serviços web",
+   "q": "Qual das 5 características garante que novas adições ao sistema se alinhem com a visão geral?",
+   "op": [
+    "Integridade conceitual",
+    "Separação de necessidades",
+    "Orientada pela qualidade",
+    "Atender stakeholders"
+   ],
+   "r": 0,
+   "exp": "A Integridade Conceitual garante que a arquitetura mantém uma visão geral coerente e que todas as adições estejam alinhadas com ela — papel do arquiteto de software."
+  },
+  {
+   "tema": "Arquitetura, SOA e serviços web",
+   "q": "O que o ESB (Enterprise Service Bus) resolve no SOA?",
+   "op": [
+    "Autenticação de usuários no sistema",
+    "A integração ponto-a-ponto onde cada serviço se conectaria a todos os outros",
+    "O armazenamento centralizado de dados",
+    "A transformação de HTML em XML"
+   ],
+   "r": 1,
+   "exp": "Sem ESB, N serviços precisariam de N×(N-1) conexões diretas. O ESB centraliza: todos falam com o barramento, que roteia, transforma e monitora as mensagens."
+  },
+  {
+   "tema": "Arquitetura, SOA e serviços web",
+   "q": "Em qual era/paradigma o SOA surgiu?",
+   "op": [
+    "Até anos 70 — programação estruturada",
+    "Anos 2000 — para integrar sistemas heterogêneos",
+    "Anos 80-90 — orientação a objetos",
+    "Anos 2010+ — cloud native"
+   ],
+   "r": 1,
+   "exp": "O SOA surgiu nos anos 2000 para resolver o problema de integrar sistemas heterogêneos e expor lógica de negócio como serviço reutilizável."
+  },
+  {
+   "tema": "Arquitetura, SOA e serviços web",
+   "q": "Na arquitetura de serviços web em 4 camadas, qual camada abriga a lógica de negócio?",
+   "op": [
+    "Camada Cliente",
+    "Camada Web (Container Web)",
+    "Camada EIS",
+    "Camada de Negócio (EJB)"
+   ],
+   "r": 3,
+   "exp": "A Camada de Negócio (EJB/Business Tier) é responsável pela lógica de negócio, orquestração de serviços e transações. A camada Web recebe o HTTP e delega para ela."
+  },
+  {
+   "tema": "Arquitetura, SOA e serviços web",
+   "q": "Qual método HTTPServlet é mapeado para o verbo HTTP DELETE?",
+   "op": [
+    "doGet()",
+    "doPost()",
+    "doDelete()",
+    "doPut()"
+   ],
+   "r": 2,
+   "exp": "Mapeamento REST-Servlet: GET→doGet (leitura), POST→doPost (criação), PUT→doPut (atualização), DELETE→doDelete (remoção), HEAD→doHead (verificar existência)."
+  },
+  {
+   "tema": "Modelagem: análise estruturada e UML",
+   "q": "No DFD, qual elemento representa uma fonte ou destino de dados FORA do sistema?",
+   "op": [
+    "Entidade Externa",
+    "Bolha de Processo",
+    "Fluxo de Dados",
+    "Depósito de Dados"
+   ],
+   "r": 0,
+   "exp": "A Entidade Externa (quadrado duplo) representa fontes ou destinos de dados fora do sistema (usuários, outros sistemas). Não é processada pelo sistema — apenas interage com ele."
+  },
+  {
+   "tema": "Modelagem: análise estruturada e UML",
+   "q": "No Dicionário de Dados, o símbolo [ | ] representa:",
+   "op": [
+    "Alternativas (OU entre opções)",
+    "Concatenação de campos",
+    "Componente opcional",
+    "Campo que se repete"
+   ],
+   "r": 0,
+   "exp": "[ | ] representa alternativas/seleção: o campo pode assumir um dos valores listados. Ex: tipo = [físico | jurídico]. Já () = opcional, {} = repete, + = e/concatenação."
+  },
+  {
+   "tema": "Modelagem: análise estruturada e UML",
+   "q": "O que representa uma Composição (losango cheio) no Diagrama de Classes UML?",
+   "op": [
+    "Herança — 'é um tipo de'",
+    "Agregação — parte pode existir sem o todo",
+    "Realização de interface",
+    "Composição — parte depende totalmente do todo para existir"
+   ],
+   "r": 3,
+   "exp": "Composição (losango cheio ◆): parte não pode existir sem o todo. Ex: ItemPedido não existe sem Pedido. Já Agregação (losango vazio ◇): parte pode existir independente (Funcionário sem Departamento)."
+  },
+  {
+   "tema": "Modelagem: análise estruturada e UML",
+   "q": "Qual dos 4 pilares OO permite que o mesmo método tenha comportamentos diferentes em subclasses?",
+   "op": [
+    "Encapsulamento",
+    "Herança",
+    "Polimorfismo",
+    "Abstração"
+   ],
+   "r": 2,
+   "exp": "Polimorfismo: o mesmo método (ex: calcularSalario()) tem comportamentos diferentes em cada subclasse (FuncionarioCLT, FuncionarioPJ). Permite tratar objetos diferentes de forma uniforme."
+  },
+  {
+   "tema": "Processo de projeto, requisitos e protótipos",
+   "q": "Qual é a principal diferença entre protótipo Horizontal e Vertical?",
+   "op": [
+    "Horizontal tem mais detalhes por função; Vertical tem mais funções",
+    "Horizontal tem grande variedade de funções com poucos detalhes; Vertical tem poucas funções com máximo detalhe",
+    "Horizontal é em papel; Vertical é digital",
+    "Horizontal é descartável; Vertical é evolutivo"
+   ],
+   "r": 1,
+   "exp": "Horizontal: breadth — muitas funções, poucos detalhes (visão ampla do sistema). Vertical: depth — poucas funções, máximo detalhamento (aprofundamento de módulo crítico)."
+  },
+  {
+   "tema": "Processo de projeto, requisitos e protótipos",
+   "q": "Qual nível de prototipação usa os mesmos materiais do produto final e banco de homologação?",
+   "op": [
+    "Baixo nível",
+    "Alto nível",
+    "Médio nível",
+    "Ultra fidelidade"
+   ],
+   "r": 1,
+   "exp": "Alto nível: usa os mesmos materiais do produto final com banco de dados de homologação — semelhança idêntica ao produto real. Baixo = papel; Médio = computadorizado parcial."
+  },
+  {
+   "tema": "Processo de projeto, requisitos e protótipos",
+   "q": "Qual tipo de protótipo é criado para explorar ideias e NÃO se torna o sistema final?",
+   "op": [
+    "Descartável",
+    "Evolutivo",
+    "Vertical",
+    "De alto nível"
+   ],
+   "r": 0,
+   "exp": "Protótipo Descartável: criado para explorar e validar ideias rapidamente, descartado após aprendizagem. Evolutivo: refinado iterativamente até virar o produto de produção."
+  },
+  {
+   "tema": "Modelagem: análise estruturada e UML",
+   "q": "Qual símbolo UML representa visibilidade 'private' em um Diagrama de Classes?",
+   "op": [
+    "+ (mais)",
+    "# (cerquilha/hash)",
+    "- (menos/hífen)",
+    "~ (til)"
+   ],
+   "r": 2,
+   "exp": "Visibilidade em UML: + = public (qualquer lugar), - = private (só na própria classe), # = protected (classe e subclasses), ~ = package (mesmo pacote)."
+  },
+  {
+   "tema": "Modelagem: análise estruturada e UML",
+   "q": "O que significa a multiplicidade '1..*' em um Diagrama de Classes?",
+   "op": [
+    "Um ou mais (pelo menos um)",
+    "No máximo um",
+    "Exatamente um",
+    "Zero ou mais"
+   ],
+   "r": 0,
+   "exp": "1..* = um ou mais — pelo menos um é obrigatório. 0..1 = no máximo um. 1 = exatamente um. * ou 0..* = zero ou mais (qualquer quantidade)."
+  },
+  {
+   "tema": "Modelagem: análise estruturada e UML",
+   "q": "O que é uma Interface Requerida em um Diagrama de Componentes?",
+   "op": [
+    "Operações que o componente implementa e oferece a outros",
+    "Operações que o componente precisa de outros para funcionar",
+    "Dependência entre dois componentes do mesmo pacote",
+    "Uma porta de comunicação entre o sistema e o usuário"
+   ],
+   "r": 1,
+   "exp": "Interface Requerida (semicírculo/soquete): operações que o componente PRECISA de outros para funcionar. Interface Fornecida (círculo/bola): operações que o componente IMPLEMENTA e oferece."
+  },
+  {
+   "tema": "Modelagem: análise estruturada e UML",
+   "q": "No Diagrama de Sequência, o fragmento [alt] equivale a qual estrutura de código?",
+   "op": [
+    "for / while (laço)",
+    "try / catch (tratamento de erro)",
+    "if / else if / else (condicional)",
+    "break / return (saída antecipada)"
+   ],
+   "r": 2,
+   "exp": "[alt] = alternativa — if/else if/else. [loop] = for/while. [opt] = if sem else. [break] = saída antecipada. [par] = processamento paralelo/threads."
+  },
+  {
+   "tema": "Modelagem: análise estruturada e UML",
+   "q": "Qual tipo de mensagem no Diagrama de Sequência NÃO aguarda resposta antes de continuar?",
+   "op": [
+    "Síncrona",
+    "Retorno",
+    "Self (auto-delegação)",
+    "Assíncrona"
+   ],
+   "r": 3,
+   "exp": "Mensagem Assíncrona (seta aberta): o objeto continua processando sem aguardar resposta. Síncrona (seta sólida cheia): bloqueia aguardando retorno antes de prosseguir."
+  },
+  {
+   "tema": "Banco de dados relacional",
+   "q": "Qual tipo de JOIN retorna APENAS registros com correspondência em AMBAS as tabelas?",
+   "op": [
+    "LEFT JOIN",
+    "RIGHT JOIN",
+    "FULL JOIN",
+    "INNER JOIN"
+   ],
+   "r": 3,
+   "exp": "INNER JOIN: só retorna registros que têm correspondência em ambas as tabelas. LEFT/RIGHT JOIN incluem todos de um lado + null do outro. FULL JOIN inclui todos de ambos."
+  },
+  {
+   "tema": "Banco de dados relacional",
+   "q": "Qual a função da FOREIGN KEY em um banco relacional?",
+   "op": [
+    "Identificar unicamente cada registro da tabela",
+    "Acelerar as consultas SELECT",
+    "Garantir integridade referencial — impede registros órfãos",
+    "Definir o campo obrigatório da tabela"
+   ],
+   "r": 2,
+   "exp": "FOREIGN KEY garante integridade referencial: um registro filho não pode referenciar uma PK que não existe na tabela pai. Impede 'registros órfãos'."
+  },
+  {
+   "tema": "Banco de dados relacional",
+   "q": "No DER, qual símbolo representa um Relacionamento entre entidades?",
+   "op": [
+    "Retângulo",
+    "Losango",
+    "Elipse",
+    "Retângulo duplo"
+   ],
+   "r": 1,
+   "exp": "Losango = Relacionamento (associação entre entidades). Retângulo = Entidade. Elipse = Atributo. Elipse sublinhada = Atributo-chave (PK). Retângulo duplo = Entidade fraca."
+  },
+  {
+   "tema": "Banco de dados relacional",
+   "q": "Uma relação N:N (muitos para muitos) no DER exige o quê na implementação?",
+   "op": [
+    "Uma FK em uma das tabelas",
+    "Duas FKs na tabela de maior cardinalidade",
+    "Uma tabela intermediária (associativa) com as FKs de ambas",
+    "Apenas um índice composto nas duas tabelas"
+   ],
+   "r": 2,
+   "exp": "N:N gera uma tabela intermediária/associativa com as FKs de ambas as entidades envolvidas. Ex: Alunos ↔ Disciplinas → tabela Matriculas(id_aluno, id_disciplina)."
+  },
+  {
+   "tema": "Banco de dados relacional",
+   "q": "Qual constraint SQL garante que um campo nunca pode ser nulo?",
+   "op": [
+    "UNIQUE",
+    "DEFAULT",
+    "CHECK",
+    "NOT NULL"
+   ],
+   "r": 3,
+   "exp": "NOT NULL garante que o campo é obrigatório. UNIQUE = valor único na tabela. DEFAULT = valor padrão quando não informado. CHECK = valida regra de negócio (ex: preco > 0)."
+  },
+  {
+   "tema": "Banco de dados relacional",
+   "q": "Qual tipo de dado SQL deve ser usado para valores monetários? Por quê?",
+   "op": [
+    "FLOAT — precisão de ponto flutuante",
+    "INT — arredonda automaticamente",
+    "VARCHAR — flexibilidade de formato",
+    "DECIMAL(p,s) — precisão exata sem erros de arredondamento"
+   ],
+   "r": 3,
+   "exp": "DECIMAL(p,s) garante precisão exata. FLOAT e DOUBLE usam ponto flutuante binário, que pode gerar erros de arredondamento em valores monetários (ex: 0.1 + 0.2 ≠ 0.3 em float)."
+  }
+ ],
+ "discursivas": [],
+ "colas": [],
+ "resumos": [
+  {
+   "tema": "Arquitetura, SOA e serviços web",
+   "html": "<p><b>Arquitetura de software</b> é a estrutura fundamental do sistema: as decisões que definem os componentes, como eles se comunicam e os princípios que guiam sua evolução. Invisível ao usuário, mas determina desempenho, custo e segurança. A <b>Primeira Lei da Arquitetura</b> (Robert C. Martin): <i>tudo na arquitetura de software é um trade-off</i> — não existe arquitetura perfeita, só opções otimizadas por contexto.</p><p><b>As 5 características da arquitetura:</b></p><ul><li>atender aos <b>stakeholders</b>;</li><li><b>separação de necessidades</b> (vistas);</li><li><b>orientada pela qualidade</b> — os RNFs mandam;</li><li><b>estilos recorrentes</b> (padrões);</li><li><b>integridade conceitual</b>, alinhando toda adição à visão geral — papel do arquiteto.</li></ul><p><b>Estilos.</b> O <b>monolítico</b> serve a times pequenos, MVPs e domínios indefinidos: simples de desenvolver e testar. <b>Microsserviços</b> pedem demanda diferenciada por módulo, times grandes e cloud-native, com alta complexidade operacional. Na arquitetura <b>em camadas</b>, do topo para a base: <b>Apresentação → Negócio → Dados</b>, cada camada falando só com a adjacente. A <b>orientada a eventos</b> é assíncrona via broker (Kafka, RabbitMQ): desacoplamento extremo e absorção de picos, mas rastreabilidade difícil e consistência eventual.</p><p><b>SOA</b> surgiu nos <b>anos 2000</b> para integrar sistemas heterogêneos e expor a lógica de negócio como serviço reutilizável. Seu núcleo é o <b>ESB (Enterprise Service Bus)</b>: barramento que roteia mensagens, transforma formatos, aplica segurança e monitora o tráfego, eliminando a integração ponto-a-ponto, que exigiria <code>N×(N-1)</code> conexões. Custos: mudança cara nos modelos existentes (redesenho de legados) e sistemas que já funcionam não justificarem o investimento.</p><p><b>Serviços web em 4 camadas:</b> Cliente → Web (recebe o HTTP) → Negócio (EJB: lógica e orquestração) → EIS (dados e sistemas legados). Verbos HTTP e <code>HTTPServlet</code>:</p><pre>GET    -&gt; doGet()     leitura\nPOST   -&gt; doPost()    criação\nPUT    -&gt; doPut()     atualização\nDELETE -&gt; doDelete()  remoção\nHEAD   -&gt; doHead()    existência</pre>"
+  },
+  {
+   "tema": "Processo de projeto, requisitos e protótipos",
+   "html": "<p>O <b>projeto (design)</b> recebe o modelo de análise e entrega a especificação técnica da implementação. A <b>saída da fase de Projeto/Modelagem</b> são os <b>diagramas UML, a arquitetura técnica e o DER</b> — não código nem requisitos do cliente.</p><p><b>As 4 atividades do projeto de software:</b></p><ul><li><b>Projeto Arquitetural</b> — estrutura geral: componentes principais, relacionamentos e distribuição;</li><li><b>Projeto de Interface</b> — comunicação entre os componentes;</li><li><b>Projeto de Componente</b> — lógica interna de cada módulo;</li><li><b>Projeto de Banco de Dados</b> — persistência.</li></ul><p><b>Os 3 tipos de projeto:</b> <b>estrutural</b> (visão abstrata do sistema), <b>alto nível</b> (subsistemas e módulos) e <b>detalhado</b> (algoritmos e estruturas de dados).</p><p><b>Requisitos Não Funcionais (RNF)</b> não descrevem o que o sistema faz, e sim <b>como ele se comporta</b>: escalabilidade, segurança, desempenho, manutenibilidade. São o fator principal na escolha da arquitetura.</p><p><b>As 7 seções do Plano de Projeto:</b> 1) Introdução; 2) Organização do projeto; 3) Análise de riscos; 4) Requisitos de hardware e software; 5) <b>WBS</b> — divisão de trabalho; 6) Cronograma; 7) Monitoração e relatórios. A <b>WBS (Work Breakdown Structure)</b> parte o projeto em <b>atividades, milestones e entregáveis</b>, permitindo estimar tempo e alocar pessoas a cada tarefa.</p><p><b>Design conceitual x físico:</b> o conceitual define <i>o que</i> o sistema faz para o usuário, sem tecnologia; o físico define <i>como</i> será implementado — tecnologias, estrutura de telas, acessibilidade.</p><p><b>Protótipos</b> — três eixos:</p><ul><li><b>Horizontal x Vertical</b>: o horizontal cobre muitas funções com poucos detalhes em cada; o vertical detalha ao máximo poucas funções, aprofundando um módulo crítico.</li><li><b>Descartável x Evolutivo</b>: o descartável explora ideias e é descartado depois; o evolutivo é refinado até virar o produto de produção.</li><li><b>Fidelidade</b>: <b>baixa</b> (papel, sem semelhança visual, valida fluxos), <b>média</b> (visual parcial) e <b>alta</b> (mesmos materiais do produto final e banco de homologação).</li></ul>"
+  },
+  {
+   "tema": "Modelagem: análise estruturada e UML",
+   "html": "<p><b>Análise estruturada — DFD</b> (Diagrama de Fluxo de Dados). Os 4 componentes:</p><ul><li><b>bolha de processo</b> (retângulo arredondado) — transforma dados;</li><li><b>fluxo de dados</b> — seta nomeada;</li><li><b>entidade externa</b> (quadrado duplo) — fonte ou destino <b>fora</b> do sistema;</li><li><b>depósito de dados</b> (retângulo aberto) — armazenamento.</li></ul><p>O <b>Dicionário de Dados</b> documenta o significado de cada dado:</p><pre>=     é composto por\n+     e (concatenação)\n( )   opcional\n[ | ] alternativas (ou)\n{ }   repetição\n@     chave primária\n\ntipo = [ físico | jurídico ]</pre><p><b>Os 4 pilares da OO:</b> <b>encapsulamento</b> (ocultar o estado interno), <b>herança</b> (reutilizar e especializar), <b>polimorfismo</b> (o mesmo método com comportamento diferente em cada subclasse) e <b>abstração</b> (modelar a essência, ignorando detalhes irrelevantes).</p><p><b>Diagrama de Classes.</b> Visibilidade: <b>+</b> público, <b>-</b> privado (só na classe), <b>#</b> protegido (classe e subclasses), <b>~</b> pacote. Multiplicidades: <b>0..1</b> no máximo um, <b>1</b> exatamente um, <b>1..*</b> um ou mais, <b>*</b> zero ou mais. <b>Agregação</b> (losango vazio): a parte existe sem o todo — Departamento e Funcionário. <b>Composição</b> (losango cheio): a parte não existe sem o todo — Pedido e ItemPedido.</p><p><b>Diagrama de Componentes.</b> Um componente é um pedaço reutilizável de funcionalidade (retângulo com o estereótipo <code>&lt;&lt;component&gt;&gt;</code>). A <b>interface fornecida</b> (círculo/bola) são as operações que ele oferece; a <b>requerida</b> (semicírculo/soquete), as que ele precisa de outros para funcionar.</p><p><b>Diagrama de Sequência.</b> Mensagens: <b>síncrona</b> (seta sólida cheia, aguarda resposta), <b>assíncrona</b> (seta aberta, segue sem esperar), <b>retorno</b> (tracejada aberta), <b>self</b>, <b>criação</b> e <b>destruição</b> (seta com X). <b>Fragmentos combinados</b> são estruturas de controle: <code>alt</code> = if/else, <code>opt</code> = if sem else, <code>loop</code> = for/while, <code>par</code> = paralelo, <code>break</code> = saída antecipada, <code>neg</code> = sequência inválida.</p>"
+  },
+  {
+   "tema": "Banco de dados relacional",
+   "html": "<p><b>MER x DER:</b> o <b>MER</b> (Modelo Entidade-Relacionamento) é abstrato e conceitual, independe de tecnologia e serve para comunicar com o cliente; o <b>DER</b> é a representação gráfica em nível lógico/físico, base direta para implementar o banco.</p><p><b>Símbolos do DER:</b></p><ul><li>retângulo = <b>entidade</b>;</li><li>losango = <b>relacionamento</b>;</li><li>elipse = atributo; elipse sublinhada = atributo-chave (PK); elipse dupla = atributo multivalorado;</li><li>retângulo duplo = <b>entidade fraca</b>.</li></ul><p><b>Cardinalidades:</b> <b>1:1</b> (pessoa e passaporte), <b>1:N</b> (cliente e pedidos) e <b>N:N</b> (alunos e disciplinas). Na implementação, 1:N coloca a FK do lado N; já <b>N:N exige uma tabela intermediária (associativa)</b> com as FKs das duas entidades, como <code>Matriculas(id_aluno, id_disciplina)</code>.</p><p><b>Chaves:</b> a <b>PRIMARY KEY</b> identifica unicamente cada registro — não nula e não duplicada. A <b>FOREIGN KEY</b> referencia a PK de outra tabela e garante a <b>integridade referencial</b>: um registro filho não pode apontar para uma chave inexistente, o que impede registros órfãos.</p><p><b>Constraints essenciais:</b> <code>PRIMARY KEY</code>, <code>FOREIGN KEY</code>, <code>NOT NULL</code> (obrigatório), <code>UNIQUE</code> (valor único na tabela), <code>DEFAULT</code> (valor padrão) e <code>CHECK</code> (valida regra de negócio).</p><pre>CREATE TABLE produto (\n  id     INT PRIMARY KEY,\n  nome   VARCHAR(100) NOT NULL,\n  sku    VARCHAR(20) UNIQUE,\n  preco  DECIMAL(10,2) NOT NULL CHECK (preco &gt; 0),\n  ativo  BOOLEAN DEFAULT TRUE,\n  id_cat INT REFERENCES categoria(id)\n);</pre><p>Para valores monetários use sempre <b><code>DECIMAL(p,s)</code></b>, que garante precisão exata: <code>FLOAT</code> e <code>DOUBLE</code> usam ponto flutuante binário e produzem erros de arredondamento.</p><p><b>Os 4 JOINs:</b> <code>INNER JOIN</code> retorna apenas as linhas com correspondência nas <b>duas</b> tabelas; <code>LEFT JOIN</code> traz todas as da esquerda mais as correspondências; <code>RIGHT JOIN</code> faz o simétrico; <code>FULL JOIN</code> traz todas as linhas de ambas.</p>"
+  }
+ ]
+}

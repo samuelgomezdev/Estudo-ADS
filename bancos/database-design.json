@@ -1,0 +1,901 @@
+{
+ "id": "database-design",
+ "nome": "Database Design for Apps",
+ "periodo": 3,
+ "cor": "#2563eb",
+ "sigla": "DDA",
+ "flashcards": [
+  {
+   "tema": "Arquitetura de SGBD e modelos de dados",
+   "p": "Quem formalizou o modelo relacional e em que ano?",
+   "r": "Edgar F. Codd, pesquisador da IBM, em artigo de 1970, propondo organizar os dados em relações (tabelas) manipuladas por álgebra e cálculo relacional."
+  },
+  {
+   "tema": "Arquitetura de SGBD e modelos de dados",
+   "p": "O que significam relação, tupla, atributo, domínio e esquema?",
+   "r": "Relação é a tabela; tupla é a linha (uma ocorrência); atributo é a coluna; domínio é o conjunto de valores permitidos na coluna; esquema é a estrutura da relação, não os dados."
+  },
+  {
+   "tema": "Arquitetura de SGBD e modelos de dados",
+   "p": "Quais são os três níveis da arquitetura ANSI/SPARC?",
+   "r": "Externo: as views, a porção do banco visível a cada grupo de usuários, que garante a independência lógica de dados. Conceitual: a estrutura global da organização, com entidades, relacionamentos e restrições. Interno: o armazenamento físico, arquivos e índices."
+  },
+  {
+   "tema": "Arquitetura de SGBD e modelos de dados",
+   "p": "Qual a diferença entre o modelo hierárquico e o modelo em rede?",
+   "r": "No hierárquico os registros formam uma árvore e cada registro tem apenas uma raiz. No modelo em rede (CODASYL/DBTG) os relacionamentos são links e apontadores ligando registros proprietários a membros em conjuntos (sets), com navegação explícita."
+  },
+  {
+   "tema": "Arquitetura de SGBD e modelos de dados",
+   "p": "Qual a diferença entre arquitetura centralizada e cliente/servidor?",
+   "r": "Na centralizada todo o processamento ocorre em uma única máquina. Na cliente/servidor, tipicamente em 3 camadas, ele se divide entre servidor de banco (armazenamento e consultas), servidor de aplicação (lógica de negócio) e cliente (interface)."
+  },
+  {
+   "tema": "Arquitetura de SGBD e modelos de dados",
+   "p": "Os bancos NoSQL surgiram para substituir os relacionais?",
+   "r": "Não: surgiram como alternativa complementar, voltada a escalabilidade e a dados não estruturados ou semiestruturados. Relacional e NoSQL coexistem na mesma arquitetura de persistência."
+  },
+  {
+   "tema": "Modelagem ER e normalização",
+   "p": "O que são entidades, atributos e relacionamentos no modelo ER?",
+   "r": "Entidades são os objetos do mundo real a representar; atributos são as propriedades que descrevem uma entidade ou um relacionamento, como PrecoProd em Produto; relacionamentos são as associações entre entidades."
+  },
+  {
+   "tema": "Modelagem ER e normalização",
+   "p": "Quais são as três fases do projeto de banco de dados, na ordem?",
+   "r": "Modelagem conceitual (o DER, abstrato e independente de SGBD); projeto lógico (converte o conceitual em tabelas, colunas, PKs e FKs do SGBD escolhido); projeto físico ou tuning (índices, particionamento e detalhes de desempenho)."
+  },
+  {
+   "tema": "Modelagem ER e normalização",
+   "p": "Em um relacionamento N:1, em qual tabela fica a chave estrangeira?",
+   "r": "Sempre no lado N: em Produto x TipoDeProduto a FK fica em Produto, referenciando TipoDeProduto, pois cada produto tem um único tipo. Tabela associativa só é obrigatória em relacionamentos N:N."
+  },
+  {
+   "tema": "Modelagem ER e normalização",
+   "p": "Quais anomalias a normalização evita?",
+   "r": "Anomalia de atualização (alterar um dado duplicado em vários lugares), de inserção (não conseguir inserir um dado sem outro relacionado) e de exclusão (perder informação ao apagar um registro)."
+  },
+  {
+   "tema": "Modelagem ER e normalização",
+   "p": "O que cada uma das três primeiras formas normais exige?",
+   "r": "1FN: todo atributo atômico, sem listas ou grupos repetitivos. 2FN: 1FN mais a eliminação de dependências parciais de uma PK composta. 3FN: 2FN mais a eliminação de dependências transitivas. Mnemônico: atomiza, tira o parcial, tira o transitivo."
+  },
+  {
+   "tema": "Modelagem ER e normalização",
+   "p": "Qual a diferença entre dependência parcial e dependência transitiva?",
+   "r": "Na parcial, um atributo não-chave depende apenas de parte de uma PK composta, e ela é resolvida na 2FN. Na transitiva, um atributo não-chave depende de outro atributo não-chave, e ela é resolvida na 3FN, extraindo-os para nova tabela ligada por FK."
+  },
+  {
+   "tema": "Modelagem ER e normalização",
+   "p": "O que é engenharia reversa de banco de dados?",
+   "r": "É partir do banco físico já existente, lendo tabelas, colunas, chaves e restrições, para reconstruir o modelo lógico e conceitual não documentado. É o caminho inverso da engenharia direta."
+  },
+  {
+   "tema": "SQL: DDL, DML e DQL",
+   "p": "Quais são as sublinguagens da SQL e os comandos de cada uma?",
+   "r": "DDL (definição): CREATE, ALTER, DROP, TRUNCATE; DML (manipulação): INSERT, UPDATE, DELETE; DQL (consulta): SELECT; DCL (controle de acesso): GRANT, REVOKE; DTL (transação): BEGIN TRANSACTION, COMMIT, ROLLBACK."
+  },
+  {
+   "tema": "SQL: DDL, DML e DQL",
+   "p": "Qual a diferença entre DELETE, TRUNCATE e DROP?",
+   "r": "DELETE é DML, remove linhas específicas com WHERE, é logado linha a linha e aceita rollback. TRUNCATE é DDL, apaga todas as linhas mais rápido, sem WHERE, mantendo a estrutura. DROP remove a tabela inteira, estrutura incluída."
+  },
+  {
+   "tema": "SQL: DDL, DML e DQL",
+   "p": "O que a opção CASCADE faz em um DROP TABLE?",
+   "r": "Propaga a remoção para os objetos dependentes, como FKs de outras tabelas, views e demais referências. Sem ela vale o padrão RESTRICT, que bloqueia a exclusão por integridade referencial."
+  },
+  {
+   "tema": "SQL: DDL, DML e DQL",
+   "p": "Para que serve o ALTER TABLE ... ADD?",
+   "r": "Para acrescentar uma nova coluna ou restrição à definição de uma tabela já existente, sem recriá-la, como em ALTER TABLE Produto ADD dtCadastro DATE. Inserir linhas é tarefa do INSERT, que não altera o esquema."
+  },
+  {
+   "tema": "SQL: DDL, DML e DQL",
+   "p": "Como copiar dados de uma tabela para outra em um único comando?",
+   "r": "Combinando INSERT com uma subconsulta: INSERT INTO tabela_Y (col1, col2) SELECT col1, col2 FROM tabela_X WHERE (condição). As listas de colunas e os tipos precisam ser compatíveis."
+  },
+  {
+   "tema": "SQL: DDL, DML e DQL",
+   "p": "Qual a função de JOIN, GROUP BY, HAVING e ORDER BY?",
+   "r": "JOIN combina linhas de tabelas diferentes por um predicado de junção, em geral a igualdade entre FK e PK; GROUP BY agrupa linhas; HAVING filtra grupos; ORDER BY apenas ordena o resultado."
+  },
+  {
+   "tema": "SQL: DDL, DML e DQL",
+   "p": "O que significa dizer que a SQL é declarativa?",
+   "r": "O programador diz apenas o que quer obter e o otimizador do SGBD decide como, escolhendo índices, algoritmos de junção e ordem das operações. Uma linguagem procedural exigiria definir o caminho de acesso."
+  },
+  {
+   "tema": "DCL, segurança e controle de acesso",
+   "p": "O que fazem GRANT e REVOKE, e por que a ordem entre eles importa?",
+   "r": "GRANT concede um privilégio a um usuário ou papel sobre um objeto; REVOKE remove um privilégio previamente concedido. A ordem importa porque só se pode revogar o que antes foi concedido."
+  },
+  {
+   "tema": "DCL, segurança e controle de acesso",
+   "p": "Quais são os privilégios típicos concedidos por GRANT?",
+   "r": "SELECT (consultar dados), INSERT (inserir novas linhas), UPDATE (alterar dados existentes), DELETE (remover linhas), EXECUTE (executar procedures) e REFERENCES (criar FKs referenciando a tabela)."
+  },
+  {
+   "tema": "DCL, segurança e controle de acesso",
+   "p": "O que a cláusula WITH GRANT OPTION acrescenta?",
+   "r": "Concede o privilégio junto com o direito de repassá-lo: quem recebeu pode conceder o mesmo privilégio a terceiros, formando uma cadeia de concessões. Em papéis, o análogo é WITH ADMIN OPTION, que permite administrar o papel e não só usá-lo."
+  },
+  {
+   "tema": "DCL, segurança e controle de acesso",
+   "p": "Qual privilégio é preciso ter para criar uma FK que aponte para a tabela de outro usuário?",
+   "r": "REFERENCES. A confusão comum é pedir SELECT, mas ler os dados é outra coisa: criar a restrição de integridade referencial exige o privilégio específico de referenciar a tabela."
+  },
+  {
+   "tema": "DCL, segurança e controle de acesso",
+   "p": "Qual a diferença entre controle de acesso discricionário (DAC) e obrigatório (MAC)?",
+   "r": "No DAC o dono do objeto decide quem acessa, usando GRANT, views e papéis; é o modelo da SQL padrão e dos SGBDs comerciais. No MAC a regra é da organização: cada objeto tem classificação e cada usuário uma credencial, e o acesso exige níveis compatíveis."
+  },
+  {
+   "tema": "Transações, ACID e concorrência",
+   "p": "O que é uma transação e quais comandos a controlam?",
+   "r": "É uma unidade lógica de trabalho composta por várias operações, tratada como um todo. BEGIN TRANSACTION inicia, COMMIT confirma e torna permanente, ROLLBACK desfaz as alterações."
+  },
+  {
+   "tema": "Transações, ACID e concorrência",
+   "p": "Quais são as propriedades ACID?",
+   "r": "Atomicidade (tudo ou nada), Consistência (o banco vai de um estado válido a outro), Isolamento (transações concorrentes não enxergam o trabalho incompleto umas das outras) e Durabilidade (após o COMMIT os efeitos persistem). Mnemônico: A Casa Inteira Dura."
+  },
+  {
+   "tema": "Transações, ACID e concorrência",
+   "p": "O que acontece quando uma transação falha no meio da execução?",
+   "r": "Ela vai para o estado de falha e o gerenciador aciona o rollback, desfazendo todas as alterações já realizadas, pois confirmar operações parciais violaria a atomicidade. Só no estado confirmado, após o commit, as alterações se tornam permanentes."
+  },
+  {
+   "tema": "Transações, ACID e concorrência",
+   "p": "Qual a diferença entre bloqueio compartilhado e bloqueio exclusivo?",
+   "r": "O compartilhado é como uma biblioteca: várias transações leem o mesmo dado ao mesmo tempo, mas nenhuma escreve. O exclusivo é necessário para escrita e impede leitura ou escrita concorrente até o fim da transação."
+  },
+  {
+   "tema": "Transações, ACID e concorrência",
+   "p": "O que é um deadlock e como o SGBD o resolve?",
+   "r": "É o impasse circular em que cada transação mantém um bloqueio e espera indefinidamente por um recurso bloqueado pela outra. O SGBD detecta o ciclo e aborta uma delas, escolhida como vítima, liberando os recursos."
+  },
+  {
+   "tema": "Transações, ACID e concorrência",
+   "p": "O que é o MVCC?",
+   "r": "Multiversion Concurrency Control: mantém múltiplas versões de cada dado e entrega a cada transação o instantâneo consistente do seu início, de modo que leitores não bloqueiam escritores nem são bloqueados por eles. É usado no PostgreSQL e no Oracle."
+  },
+  {
+   "tema": "Transações, ACID e concorrência",
+   "p": "O que garante o nível de isolamento serializável?",
+   "r": "É o nível mais restritivo do padrão SQL: o resultado da execução concorrente equivale a alguma execução sequencial, evitando leitura suja, leitura não repetível e leitura fantasma. O preço é menos concorrência e mais conflitos."
+  },
+  {
+   "tema": "Otimização, NoSQL, rotinas e administração de dados",
+   "p": "O que é um índice e qual é o seu custo?",
+   "r": "É uma estrutura auxiliar ordenada, tipicamente uma árvore B, que evita a varredura completa da tabela em colunas muito usadas no WHERE. Em troca ocupa espaço extra e é atualizada a cada INSERT, UPDATE e DELETE, degradando a escrita."
+  },
+  {
+   "tema": "Otimização, NoSQL, rotinas e administração de dados",
+   "p": "O que significa NoSQL e quais são os quatro tipos?",
+   "r": "Significa Not Only SQL: não se limita ao relacional e convive com ele. Os tipos são chave-valor (Redis), documento (MongoDB, BSON em coleções), colunas (Cassandra) e grafo (Neo4j)."
+  },
+  {
+   "tema": "Otimização, NoSQL, rotinas e administração de dados",
+   "p": "O que diz o teorema CAP?",
+   "r": "Em sistemas distribuídos só é possível garantir duas de três propriedades: Consistência, Disponibilidade e Tolerância à partição. Havendo partição de rede, escolhe-se entre consistência e disponibilidade."
+  },
+  {
+   "tema": "Otimização, NoSQL, rotinas e administração de dados",
+   "p": "O que caracteriza o modelo BASE em relação ao ACID?",
+   "r": "O BASE, comum em NoSQL, prioriza disponibilidade e tolerância a partição e aceita consistência eventual: as réplicas convergem com o tempo, em vez de ficarem consistentes de imediato como garante o ACID."
+  },
+  {
+   "tema": "Otimização, NoSQL, rotinas e administração de dados",
+   "p": "Quais são as três etapas do ETL?",
+   "r": "Extração dos dados nas fontes; Transformação, com limpeza, padronização, deduplicação e regras de negócio; e Carga dos dados no destino, como um data warehouse."
+  },
+  {
+   "tema": "Otimização, NoSQL, rotinas e administração de dados",
+   "p": "Qual a diferença entre procedure e function?",
+   "r": "A function sempre retorna valor e por isso pode ser usada em expressões e consultas. A procedure executa uma tarefa sem retorno obrigatório e é chamada por CALL ou EXECUTE."
+  },
+  {
+   "tema": "Otimização, NoSQL, rotinas e administração de dados",
+   "p": "Como um trigger é disparado e o que muda entre FOR EACH ROW e FOR EACH STATEMENT?",
+   "r": "O trigger dispara automaticamente no evento configurado, nunca por chamada explícita. FOR EACH ROW executa uma vez para cada linha afetada; FOR EACH STATEMENT executa uma única vez por instrução."
+  },
+  {
+   "tema": "Otimização, NoSQL, rotinas e administração de dados",
+   "p": "Qual a diferença entre o DA e o DBA?",
+   "r": "O administrador de dados (DA) é estratégico e corporativo: políticas, padrões, dicionário e modelo de dados global, independentes de tecnologia. O DBA é técnico e operacional, ligado a um SGBD: desempenho, índices, backup, recuperação e segurança."
+  }
+ ],
+ "questoes": [
+  {
+   "tema": "Arquitetura de SGBD e modelos de dados",
+   "q": "Quem propôs formalmente o Modelo Relacional de bancos de dados?",
+   "op": [
+    "Bill Gates",
+    "Larry Ellison",
+    "Edgar F. Codd",
+    "James Gosling"
+   ],
+   "r": 2,
+   "exp": "O modelo relacional foi formalizado por Edgar F. Codd, pesquisador da IBM, no artigo de 1970 que propôs organizar os dados em relações (tabelas) manipuladas por álgebra e cálculo relacional. Os demais nomes citados estão ligados a empresas ou linguagens, não à fundamentação teórica do modelo."
+  },
+  {
+   "tema": "Arquitetura de SGBD e modelos de dados",
+   "q": "Na arquitetura ANSI/SPARC de três esquemas, qual nível corresponde às \"views\" (visões) que diferentes usuários têm do banco?",
+   "op": [
+    "Esquema interno",
+    "Esquema conceitual",
+    "Esquema externo",
+    "Esquema físico-distribuído"
+   ],
+   "r": 2,
+   "exp": "As views correspondem ao esquema externo da arquitetura ANSI/SPARC, que descreve a porção do banco visível a cada grupo de usuários e garante a independência lógica de dados. O esquema conceitual descreve a estrutura global da organização, e o interno trata do armazenamento físico."
+  },
+  {
+   "tema": "Arquitetura de SGBD e modelos de dados",
+   "q": "(V ou F) No modelo hierárquico, cada tipo de registro pode ter múltiplas raízes simultâneas.",
+   "op": [
+    "Verdadeiro",
+    "Falso"
+   ],
+   "r": 1,
+   "exp": "Cada registro tem apenas uma raiz, em estrutura de árvore."
+  },
+  {
+   "tema": "Arquitetura de SGBD e modelos de dados",
+   "q": "O modelo em rede (CODASYL/DBTG) representa relacionamentos entre registros por meio de:",
+   "op": [
+    "Links (apontadores) entre conjuntos de registros",
+    "Tabelas normalizadas",
+    "Documentos JSON",
+    "Chave-valor"
+   ],
+   "r": 0,
+   "exp": "No modelo em rede do CODASYL/DBTG a navegação é feita por apontadores que ligam registros proprietários a registros membros em conjuntos (sets), exigindo percurso explícito pelos caminhos definidos. Tabelas normalizadas e documentos JSON pertencem, respectivamente, aos modelos relacional e NoSQL."
+  },
+  {
+   "tema": "Arquitetura de SGBD e modelos de dados",
+   "q": "Qual arquitetura de SGBD distribui o processamento entre máquina de banco de dados, servidor de aplicação e cliente, normalmente em 3 camadas?",
+   "op": [
+    "Centralizada",
+    "Paralela apenas",
+    "Mainframe único",
+    "Cliente/Servidor"
+   ],
+   "r": 3,
+   "exp": "A arquitetura cliente/servidor separa as funções em camadas distintas: o servidor de banco cuida do armazenamento e processamento das consultas, o servidor de aplicação da lógica de negócio e o cliente da interface. Na arquitetura centralizada todo o processamento ocorre em uma única máquina."
+  },
+  {
+   "tema": "Arquitetura de SGBD e modelos de dados",
+   "q": "(V ou F) Bancos de dados NoSQL surgiram para substituir completamente os bancos relacionais.",
+   "op": [
+    "Verdadeiro",
+    "Falso"
+   ],
+   "r": 1,
+   "exp": "Surgiram como alternativa complementar, não substituta, voltada a escalabilidade e dados não estruturados/semiestruturados."
+  },
+  {
+   "tema": "Modelagem ER e normalização",
+   "q": "Em um relacionamento N:1 entre Produto e TipoDeProduto, a chave estrangeira (FK) deve ficar:",
+   "op": [
+    "Na tabela TipoDeProduto, referenciando Produto",
+    "Na tabela Produto, referenciando TipoDeProduto",
+    "Em uma tabela associativa nova obrigatoriamente",
+    "Em ambas as tabelas simultaneamente"
+   ],
+   "r": 1,
+   "exp": "Em um relacionamento N:1, a chave estrangeira vai sempre no lado N, ou seja, na tabela Produto, porque cada produto se associa a um único tipo, e assim um mesmo valor de tipo pode se repetir em várias linhas. Tabela associativa só é necessária em relacionamentos N:N."
+  },
+  {
+   "tema": "Modelagem ER e normalização",
+   "q": "(V ou F) Atributos são propriedades que descrevem uma entidade no modelo ER, como \"PrecoProd\" na entidade Produto.",
+   "op": [
+    "Verdadeiro",
+    "Falso"
+   ],
+   "r": 0,
+   "exp": "Atributos são justamente as propriedades que caracterizam uma entidade ou um relacionamento no modelo entidade-relacionamento, e PrecoProd é um atributo simples e monovalorado de Produto, que na implementação vira uma coluna da tabela."
+  },
+  {
+   "tema": "Modelagem ER e normalização",
+   "q": "Uma tabela que viola a 1ª Forma Normal apresenta qual problema?",
+   "op": [
+    "Dependência transitiva",
+    "Dependência parcial de chave composta",
+    "Ausência de chave estrangeira",
+    "Atributos multivalorados/não atômicos em uma célula"
+   ],
+   "r": 3,
+   "exp": "A primeira forma normal exige que todo atributo seja atômico, isto é, que cada célula contenha um único valor indivisível, sem listas, grupos repetitivos ou campos multivalorados. Dependência parcial e dependência transitiva só são tratadas na segunda e na terceira formas normais."
+  },
+  {
+   "tema": "Modelagem ER e normalização",
+   "q": "Uma dependência parcial (atributo não-chave depende de apenas parte de uma PK composta) é resolvida ao se elevar a tabela para a:",
+   "op": [
+    "1FN",
+    "2FN",
+    "3FN",
+    "Forma Normal de Boyce-Codd apenas"
+   ],
+   "r": 1,
+   "exp": "A segunda forma normal exige que a tabela já esteja na primeira e que todo atributo não-chave dependa da chave primária inteira, eliminando dependências parciais pela separação dos atributos que dependem só de parte da chave composta. Por isso o problema não aparece em tabelas cuja chave é simples."
+  },
+  {
+   "tema": "Modelagem ER e normalização",
+   "q": "Dependência transitiva (atributo não-chave dependendo de outro atributo não-chave) é eliminada ao atingir a:",
+   "op": [
+    "1FN",
+    "3FN",
+    "2FN",
+    "Nenhuma forma normal resolve isso"
+   ],
+   "r": 1,
+   "exp": "A terceira forma normal exige que nenhum atributo não-chave dependa de outro atributo não-chave, eliminando dependências transitivas com a extração desses atributos para uma nova tabela ligada por chave estrangeira. A segunda forma normal trata apenas de dependências parciais da chave composta."
+  },
+  {
+   "tema": "Modelagem ER e normalização",
+   "q": "(V ou F) Engenharia reversa em banco de dados consiste em partir do banco físico existente para reconstruir o modelo conceitual/lógico.",
+   "op": [
+    "Verdadeiro",
+    "Falso"
+   ],
+   "r": 0,
+   "exp": "A engenharia reversa parte do esquema físico já existente, lendo tabelas, colunas, chaves e restrições, para reconstruir o modelo lógico e conceitual que não foi documentado. É o caminho inverso da engenharia direta, que vai do modelo conceitual até a implementação física."
+  },
+  {
+   "tema": "SQL: DDL, DML e DQL",
+   "q": "Qual comando DDL remove permanentemente uma tabela e sua estrutura do banco de dados?",
+   "op": [
+    "DELETE",
+    "TRUNCATE",
+    "DROP",
+    "ALTER"
+   ],
+   "r": 2,
+   "exp": "DROP é o comando da DDL que elimina o objeto e sua definição do catálogo do banco, removendo estrutura e dados de uma vez. DELETE e TRUNCATE pertencem à manipulação de dados e apagam apenas as linhas, preservando a tabela, enquanto ALTER só modifica a estrutura existente."
+  },
+  {
+   "tema": "SQL: DDL, DML e DQL",
+   "q": "O comando ALTER TABLE ... ADD é utilizado para:",
+   "op": [
+    "Adicionar uma nova coluna à estrutura da tabela",
+    "Inserir uma nova linha de dados",
+    "Adicionar um novo banco de dados",
+    "Criar uma nova chave primária automaticamente"
+   ],
+   "r": 0,
+   "exp": "ALTER TABLE atua sobre a definição do objeto, e a cláusula ADD acrescenta uma nova coluna (ou restrição) à estrutura já existente, sem recriar a tabela. Inserir linhas é tarefa do INSERT, que pertence à DML e não altera o esquema."
+  },
+  {
+   "tema": "SQL: DDL, DML e DQL",
+   "q": "(V ou F) DROP TABLE NomeTabela CASCADE remove a tabela e também os objetos que dependem dela (como FKs em outras tabelas referenciando-a).",
+   "op": [
+    "Verdadeiro",
+    "Falso"
+   ],
+   "r": 0,
+   "exp": "A opção CASCADE propaga a remoção para os objetos dependentes, como restrições de chave estrangeira, views e demais referências ao objeto excluído, evitando que a operação seja recusada por violação de integridade referencial. Sem ela, o comportamento padrão RESTRICT bloqueia a exclusão."
+  },
+  {
+   "tema": "SQL: DDL, DML e DQL",
+   "q": "Qual comando SQL pertence ao DML e é usado para inserir dados em uma tabela?",
+   "op": [
+    "CREATE",
+    "INSERT",
+    "GRANT",
+    "ALTER"
+   ],
+   "r": 1,
+   "exp": "INSERT pertence à DML, a parte da SQL que manipula o conteúdo das tabelas, e acrescenta novas linhas sem alterar a estrutura do banco. CREATE e ALTER são comandos de definição (DDL) e GRANT é de controle de acesso (DCL)."
+  },
+  {
+   "tema": "SQL: DDL, DML e DQL",
+   "q": "O comando que combina INSERT com uma consulta SELECT para copiar dados de uma tabela para outra tem a sintaxe geral:",
+   "op": [
+    "UPDATE tabela_Y SET * FROM tabela_X",
+    "DELETE FROM tabela_Y USING tabela_X",
+    "MERGE tabela_X INTO tabela_Y",
+    "INSERT INTO tabela_Y (col1, col2) SELECT col1, col2 FROM tabela_X WHERE (condição)"
+   ],
+   "r": 3,
+   "exp": "A combinação de INSERT INTO com uma subconsulta SELECT insere na tabela de destino o conjunto de linhas retornado pela consulta, desde que a lista de colunas e os tipos sejam compatíveis, o que permite copiar ou carregar dados entre tabelas em um único comando, sem informar valores literais."
+  },
+  {
+   "tema": "SQL: DDL, DML e DQL",
+   "q": "(V ou F) Uma linguagem de consulta declarativa (como SQL) especifica apenas o que se deseja obter, deixando o \"como\" para o otimizador do SGBD decidir.",
+   "op": [
+    "Verdadeiro",
+    "Falso"
+   ],
+   "r": 0,
+   "exp": "Em uma linguagem declarativa como a SQL o programador descreve o resultado desejado, e cabe ao otimizador do SGBD escolher o plano de execução, decidindo índices, algoritmos de junção e ordem das operações. Linguagens procedurais, ao contrário, exigem que o caminho de acesso seja especificado."
+  },
+  {
+   "tema": "SQL: DDL, DML e DQL",
+   "q": "Qual cláusula SQL é usada para combinar linhas de duas tabelas com base em uma condição de relacionamento (ex.: chave estrangeira)?",
+   "op": [
+    "GROUP BY",
+    "ORDER BY",
+    "HAVING",
+    "JOIN"
+   ],
+   "r": 3,
+   "exp": "O JOIN combina linhas de tabelas diferentes segundo um predicado de junção, normalmente a igualdade entre chave estrangeira e chave primária, reconstituindo a informação distribuída pela normalização. GROUP BY agrupa linhas, HAVING filtra grupos e ORDER BY apenas ordena o resultado."
+  },
+  {
+   "tema": "DCL, segurança e controle de acesso",
+   "q": "Qual comando SQL concede um privilégio a um usuário ou papel?",
+   "op": [
+    "GRANT",
+    "REVOKE",
+    "DENY",
+    "CREATE ROLE"
+   ],
+   "r": 0,
+   "exp": "GRANT é o comando da DCL que concede privilégios, como SELECT, INSERT ou EXECUTE, a usuários ou papéis sobre objetos do banco. REVOKE faz o oposto, retirando privilégios já concedidos."
+  },
+  {
+   "tema": "DCL, segurança e controle de acesso",
+   "q": "A cláusula WITH GRANT OPTION ao final de um GRANT permite que o usuário receptor:",
+   "op": [
+    "Apenas utilize o privilégio, sem repassá-lo",
+    "Repasse esse mesmo privilégio para outros usuários",
+    "Revogue privilégios de qualquer outro usuário do banco",
+    "Crie novas tabelas automaticamente"
+   ],
+   "r": 1,
+   "exp": "Com WITH GRANT OPTION o privilégio é concedido junto com o direito de repassá-lo, permitindo que quem recebeu conceda o mesmo privilégio a terceiros e criando uma cadeia de concessões. Sem essa cláusula o usuário pode apenas exercer o privilégio, nunca propagá-lo."
+  },
+  {
+   "tema": "DCL, segurança e controle de acesso",
+   "q": "(V ou F) No controle de acesso discricionário, os privilégios geralmente são atribuídos por meio de views e papéis (roles), sendo o modelo mais comum em SGBDs comerciais.",
+   "op": [
+    "Verdadeiro",
+    "Falso"
+   ],
+   "r": 0,
+   "exp": "No controle de acesso discricionário o dono do objeto decide quem pode acessá-lo, concedendo privilégios com GRANT e restringindo a visibilidade dos dados por meio de views e papéis, que agrupam permissões e simplificam a administração. É o modelo adotado pela SQL padrão e pelos SGBDs comerciais."
+  },
+  {
+   "tema": "DCL, segurança e controle de acesso",
+   "q": "No controle de acesso obrigatório (mandatório), o acesso é determinado por:",
+   "op": [
+    "Views criadas pelo DBA",
+    "Apenas pelo endereço IP do usuário",
+    "Níveis de classificação de segurança (ex.: confidencial, secreto, ultra-secreto)",
+    "Quantidade de tabelas que o usuário possui"
+   ],
+   "r": 2,
+   "exp": "No controle de acesso obrigatório a decisão não fica a cargo do dono do dado: cada objeto recebe uma classificação e cada usuário uma credencial de segurança, e o acesso só ocorre quando os níveis são compatíveis segundo regras fixas da organização. Views e GRANT pertencem ao modelo discricionário."
+  },
+  {
+   "tema": "Transações, ACID e concorrência",
+   "q": "A propriedade ACID que garante que uma transação seja executada totalmente ou não seja executada de forma alguma é:",
+   "op": [
+    "Atomicidade",
+    "Consistência",
+    "Isolamento",
+    "Durabilidade"
+   ],
+   "r": 0,
+   "exp": "A atomicidade trata a transação como unidade indivisível: ou todas as suas operações são efetivadas, ou nenhuma permanece, e o sistema desfaz o trabalho parcial por rollback. A consistência garante que o banco passe de um estado válido a outro, o que é um efeito diferente."
+  },
+  {
+   "tema": "Transações, ACID e concorrência",
+   "q": "Qual propriedade ACID garante que, após o commit, os dados não se perdem mesmo em caso de queda do sistema?",
+   "op": [
+    "Atomicidade",
+    "Isolamento",
+    "Consistência",
+    "Durabilidade"
+   ],
+   "r": 3,
+   "exp": "A durabilidade assegura que, uma vez confirmada a transação, seus efeitos persistem mesmo diante de falha de energia ou queda do sistema, o que os SGBDs implementam com log de transações e técnicas de recuperação. O isolamento diz respeito à interferência entre transações concorrentes, não à permanência."
+  },
+  {
+   "tema": "Transações, ACID e concorrência",
+   "q": "(V ou F) Durante o estado \"ativo\" de uma transação, ela pode realizar qualquer número de operações de leitura e/ou escrita no banco de dados.",
+   "op": [
+    "Verdadeiro",
+    "Falso"
+   ],
+   "r": 0,
+   "exp": "O estado ativo é aquele em que a transação está em execução e pode realizar quantas leituras e escritas forem necessárias, ainda sem efeito definitivo no banco. Só ao chegar ao estado confirmado, após o commit, as alterações se tornam permanentes e visíveis às demais transações."
+  },
+  {
+   "tema": "Transações, ACID e concorrência",
+   "q": "Quando uma transação falha ao executar uma de suas operações, o sistema de gerenciamento de transações deve:",
+   "op": [
+    "Confirmar parcialmente as operações já feitas",
+    "Acionar um rollback, desfazendo todas as alterações da transação",
+    "Ignorar o erro e continuar normalmente",
+    "Excluir o banco de dados inteiro"
+   ],
+   "r": 1,
+   "exp": "Como a transação é uma unidade atômica, a falha em qualquer operação leva ao estado de falha e obriga o rollback, que desfaz todas as alterações já realizadas e devolve o banco ao estado anterior ao início da transação. Confirmar operações parciais violaria a atomicidade."
+  },
+  {
+   "tema": "Transações, ACID e concorrência",
+   "q": "Um \"deadlock\" (impasse) ocorre quando:",
+   "op": [
+    "Uma transação é confirmada com sucesso",
+    "Uma transação é revertida automaticamente",
+    "Duas ou mais transações ficam bloqueadas esperando indefinidamente por recursos que a outra possui",
+    "O SGBD reinicia espontaneamente"
+   ],
+   "r": 2,
+   "exp": "O deadlock é um impasse circular: cada transação mantém um bloqueio sobre um recurso e aguarda outro que está bloqueado pela concorrente, de modo que nenhuma consegue avançar. O SGBD costuma detectar o ciclo e abortar uma das transações, escolhida como vítima, para liberar os recursos."
+  },
+  {
+   "tema": "Transações, ACID e concorrência",
+   "q": "O MVCC (Multiversion Concurrency Control) permite controle de concorrência:",
+   "op": [
+    "Apenas bloqueando todas as outras transações durante uma escrita",
+    "Impedindo qualquer transação concorrente de ser iniciada",
+    "Apenas em bancos NoSQL",
+    "Sem uso de locks, mantendo múltiplas versões do dado para permitir leitura e escrita simultâneas"
+   ],
+   "r": 3,
+   "exp": "O MVCC mantém várias versões de cada dado e entrega a cada transação o instantâneo consistente correspondente ao seu início, de modo que leitores não bloqueiam escritores nem são bloqueados por eles, dispensando os bloqueios de leitura. É usado em SGBDs relacionais como PostgreSQL e Oracle."
+  },
+  {
+   "tema": "Transações, ACID e concorrência",
+   "q": "(V ou F) O nível de isolamento \"serializável\" é o mais restritivo entre os níveis padrão, simulando execução sequencial mesmo havendo concorrência real.",
+   "op": [
+    "Verdadeiro",
+    "Falso"
+   ],
+   "r": 0,
+   "exp": "O nível serializável é o mais rigoroso do padrão SQL porque garante que o resultado da execução concorrente seja equivalente a alguma execução sequencial das transações, evitando leitura suja, leitura não repetível e leitura fantasma. O preço é menor grau de concorrência e mais conflitos."
+  },
+  {
+   "tema": "Otimização, NoSQL, rotinas e administração de dados",
+   "q": "A principal vantagem de criar um índice em uma coluna frequentemente usada em WHERE é:",
+   "op": [
+    "Acelerar a busca de registros, evitando varredura completa da tabela",
+    "Reduzir o espaço em disco ocupado pela tabela",
+    "Eliminar a necessidade de chave primária",
+    "Impedir inserções duplicadas automaticamente"
+   ],
+   "r": 0,
+   "exp": "Um índice cria uma estrutura auxiliar ordenada, tipicamente uma árvore B, que leva direto às linhas que satisfazem o predicado, dispensando a leitura sequencial de toda a tabela e reduzindo muito o número de acessos a disco. Ele não diminui o espaço ocupado, pelo contrário, ocupa espaço extra."
+  },
+  {
+   "tema": "Otimização, NoSQL, rotinas e administração de dados",
+   "q": "(V ou F) Índices aceleram apenas SELECT e não trazem custo adicional para INSERT/UPDATE/DELETE.",
+   "op": [
+    "Verdadeiro",
+    "Falso"
+   ],
+   "r": 1,
+   "exp": "Índices também precisam ser atualizados em operações de escrita, gerando overhead."
+  },
+  {
+   "tema": "Otimização, NoSQL, rotinas e administração de dados",
+   "q": "Excesso de índices em uma tabela pode causar qual problema?",
+   "op": [
+    "Maior consumo de espaço em disco e degradação de desempenho em INSERT/UPDATE/DELETE",
+    "Melhoria total e sem custos no desempenho de escrita",
+    "Impossibilidade de realizar consultas SELECT",
+    "Perda automática de dados"
+   ],
+   "r": 0,
+   "exp": "Cada índice precisa ser armazenado e atualizado, de modo que muitos índices aumentam o espaço em disco e encarecem toda operação de escrita, pois INSERT, UPDATE e DELETE passam a manter várias estruturas além da tabela. O ganho fica restrito às consultas que realmente usam esses índices."
+  },
+  {
+   "tema": "Otimização, NoSQL, rotinas e administração de dados",
+   "q": "O termo NoSQL significa, na interpretação mais aceita atualmente:",
+   "op": [
+    "\"Not Only SQL\", indicando que não se limita ao modelo relacional, mas pode coexistir com ele",
+    "\"No SQL\", ou seja, nenhuma linguagem de consulta é usada",
+    "Uma nova versão do padrão SQL ANSI",
+    "Um substituto obrigatório para todo banco relacional"
+   ],
+   "r": 0,
+   "exp": "A leitura consagrada de NoSQL é Not Only SQL: são bancos que não se limitam ao modelo relacional e oferecem outros modelos, como documentos, chave-valor, colunas e grafos, mas convivem com bancos relacionais em arquiteturas de persistência poliglota. Muitos deles têm linguagens de consulta próprias."
+  },
+  {
+   "tema": "Otimização, NoSQL, rotinas e administração de dados",
+   "q": "O MongoDB é um exemplo de banco de dados NoSQL do tipo:",
+   "op": [
+    "Chave-valor",
+    "Orientado a documentos",
+    "Orientado a colunas",
+    "Orientado a grafos"
+   ],
+   "r": 1,
+   "exp": "O MongoDB armazena documentos no formato BSON, derivado do JSON, agrupados em coleções sem esquema rígido, o que permite estruturas aninhadas e campos variáveis entre documentos. Bancos chave-valor como o Redis guardam apenas pares opacos, sem consultar o conteúdo interno do valor."
+  },
+  {
+   "tema": "Otimização, NoSQL, rotinas e administração de dados",
+   "q": "Segundo o Teorema CAP, só é possível garantir simultaneamente duas das três propriedades. Quais são elas?",
+   "op": [
+    "Atomicidade, Consistência e Durabilidade",
+    "Isolamento, Atomicidade e Disponibilidade",
+    "Consistência, Disponibilidade e Tolerância à Partição",
+    "Backup, Replicação e Sharding"
+   ],
+   "r": 2,
+   "exp": "O teorema CAP trata de sistemas distribuídos e afirma que, diante de uma partição de rede, é preciso escolher entre consistência e disponibilidade, sendo impossível garantir as três propriedades ao mesmo tempo. Atomicidade, isolamento e durabilidade pertencem ao ACID das transações, não ao CAP."
+  },
+  {
+   "tema": "Otimização, NoSQL, rotinas e administração de dados",
+   "q": "(V ou F) O modelo BASE, comum em NoSQL, garante consistência imediata em todas as réplicas, assim como o ACID.",
+   "op": [
+    "Verdadeiro",
+    "Falso"
+   ],
+   "r": 1,
+   "exp": "BASE prioriza disponibilidade e tolerância a partição, aceitando consistência eventual."
+  },
+  {
+   "tema": "Otimização, NoSQL, rotinas e administração de dados",
+   "q": "Na migração de um relacional para um NoSQL orientado a documentos (ex.: MongoDB), uma tabela relacional é tipicamente mapeada para:",
+   "op": [
+    "Uma chave única",
+    "Uma coleção de documentos",
+    "Um grafo de vértices",
+    "Um arquivo de log binário"
+   ],
+   "r": 1,
+   "exp": "Em um banco orientado a documentos a coleção faz o papel da tabela e cada documento equivale a uma linha, com a diferença de que dados relacionados podem ser embutidos no próprio documento em vez de exigir junções. Por isso a migração costuma envolver desnormalização, e não uma cópia direta."
+  },
+  {
+   "tema": "Otimização, NoSQL, rotinas e administração de dados",
+   "q": "No processo ETL, a etapa \"Transform\" é responsável por:",
+   "op": [
+    "Aplicar regras de limpeza, padronização e conformidade aos dados extraídos",
+    "Apenas mover os dados sem qualquer alteração",
+    "Excluir os dados de origem permanentemente",
+    "Criar índices automaticamente no destino"
+   ],
+   "r": 0,
+   "exp": "A etapa de transformação do ETL trata os dados extraídos antes da carga, aplicando limpeza, padronização de formatos, conversão de tipos, deduplicação, cálculo de derivações e verificação de regras de negócio, de modo a entregar dados íntegros e conformes ao modelo do destino."
+  },
+  {
+   "tema": "Otimização, NoSQL, rotinas e administração de dados",
+   "q": "Qual é a principal diferença entre procedure e function em SQL?",
+   "op": [
+    "Procedure sempre retorna um valor; function nunca retorna",
+    "Ambos são idênticos, apenas com nomes diferentes",
+    "Function sempre retorna um ou mais valores; procedure executa uma tarefa sem retorno obrigatório",
+    "Procedure só pode ser usada em triggers"
+   ],
+   "r": 2,
+   "exp": "A função é criada para retornar um valor e por isso pode ser usada dentro de expressões e consultas, enquanto a procedure executa um bloco de comandos como uma tarefa, sem retorno obrigatório, devolvendo dados apenas por parâmetros de saída quando necessário, e é chamada por CALL ou EXECUTE."
+  },
+  {
+   "tema": "Otimização, NoSQL, rotinas e administração de dados",
+   "q": "Um trigger configurado como AFTER INSERT ... FOR EACH ROW será disparado:",
+   "op": [
+    "Antes de cada inserção, uma única vez por instrução",
+    "Apenas quando uma tabela for removida (DROP)",
+    "Depois de cada linha inserida, individualmente para cada linha afetada",
+    "Somente em comandos SELECT"
+   ],
+   "r": 2,
+   "exp": "O trigger AFTER INSERT dispara depois que a linha já foi gravada, e FOR EACH ROW define granularidade de linha, isto é, uma execução para cada linha afetada pelo comando. Um gatilho declarado por instrução (FOR EACH STATEMENT) executaria uma única vez, independentemente do número de linhas."
+  },
+  {
+   "tema": "Otimização, NoSQL, rotinas e administração de dados",
+   "q": "(V ou F) Triggers exigem que o usuário ou aplicação os chame explicitamente, assim como uma procedure via CALL.",
+   "op": [
+    "Verdadeiro",
+    "Falso"
+   ],
+   "r": 1,
+   "exp": "Triggers são executados automaticamente pelo SGBD quando o evento configurado ocorre."
+  },
+  {
+   "tema": "Otimização, NoSQL, rotinas e administração de dados",
+   "q": "Qual alternativa é uma responsabilidade típica do DBA, e não do DA?",
+   "op": [
+    "Negociar contratos com fornecedores de SGBD",
+    "Definir o planejamento estratégico de TI de longo prazo da corporação",
+    "Desenvolver o modelo de dados corporativo abrangendo todos os sistemas",
+    "Monitorar desempenho e criar declarações de segurança específicas do SGBD em uso"
+   ],
+   "r": 3,
+   "exp": "O DBA atua no nível técnico e operacional, cuidando de desempenho, índices, backup, recuperação e da implementação da segurança nos comandos e recursos do SGBD utilizado. Definir o modelo de dados corporativo e o planejamento estratégico de informação é atribuição do administrador de dados."
+  },
+  {
+   "tema": "Otimização, NoSQL, rotinas e administração de dados",
+   "q": "(V ou F) O DA atua em nível mais estratégico/corporativo, enquanto o DBA atua em nível mais técnico/operacional vinculado a um SGBD específico.",
+   "op": [
+    "Verdadeiro",
+    "Falso"
+   ],
+   "r": 0,
+   "exp": "O administrador de dados trabalha no nível estratégico e corporativo, tratando dos dados como recurso da organização: políticas, padrões, dicionário e modelo de dados global, independentemente de tecnologia. O DBA é o papel técnico que implementa e mantém esse modelo em um SGBD específico."
+  },
+  {
+   "tema": "DCL, segurança e controle de acesso",
+   "q": "Um desenvolvedor precisa criar, em sua própria tabela, uma chave estrangeira que aponte para a tabela Produto, pertencente a outro usuário. Qual privilégio ele precisa receber sobre Produto?",
+   "op": [
+    "SELECT",
+    "UPDATE",
+    "EXECUTE",
+    "REFERENCES"
+   ],
+   "r": 3,
+   "exp": "REFERENCES é o privilégio que autoriza criar chaves estrangeiras apontando para a tabela. A confusão comum é pedir SELECT, mas ler os dados é outra coisa: a restrição de integridade referencial exige o privilégio específico de referenciar."
+  }
+ ],
+ "discursivas": [
+  {
+   "tema": "Arquitetura de SGBD e modelos de dados",
+   "q": "Explique a diferença entre modelo conceitual e modelo lógico de dados.",
+   "r": "O modelo conceitual é abstrato e independente de SGBD, representando entidades, atributos e relacionamentos do mundo real (DER). O modelo lógico transforma o conceitual em estruturas específicas (ex.: tabelas) adequadas a um SGBD particular, mas ainda sem detalhes de implementação física (índices, tuning)."
+  },
+  {
+   "tema": "Modelagem ER e normalização",
+   "q": "Descreva as três fases do projeto de banco de dados, na ordem correta.",
+   "r": "1) Modelagem conceitual (DER, independente de implementação); 2) Projeto lógico (transforma o conceitual em modelo específico do SGBD, ex.: tabelas relacionais); 3) Projeto físico (acrescenta detalhes de desempenho/armazenamento, processo também chamado de \"tuning\")."
+  },
+  {
+   "tema": "Modelagem ER e normalização",
+   "q": "Por que a normalização é importante para a integridade dos dados? Cite ao menos uma anomalia evitada.",
+   "r": "A normalização reduz redundância e evita anomalias de atualização (inconsistência ao alterar um dado duplicado em vários lugares), de inserção (impossibilidade de inserir um dado sem outro relacionado) e de exclusão (perda involuntária de informação ao excluir um registro)."
+  },
+  {
+   "tema": "SQL: DDL, DML e DQL",
+   "q": "Explique a diferença entre DELETE e TRUNCATE.",
+   "r": "DELETE é um comando DML que remove linhas específicas (ou todas) de uma tabela, podendo usar WHERE, é logado linha a linha e pode ser revertido (rollback) em transação. TRUNCATE é um comando DDL que remove todas as linhas de forma mais rápida, sem WHERE, geralmente sem log por linha e sem rollback fácil — mantém a estrutura da tabela."
+  },
+  {
+   "tema": "SQL: DDL, DML e DQL",
+   "q": "Diferencie DROP TABLE de DELETE quanto à granularidade da operação.",
+   "r": "DROP (DDL) elimina a tabela inteira, incluindo sua estrutura/definição. DELETE (DML) apaga apenas os dados (linhas), preservando a estrutura da tabela."
+  },
+  {
+   "tema": "SQL: DDL, DML e DQL",
+   "q": "O que caracteriza o modelo relacional quanto à forma de armazenamento e recuperação dos dados?",
+   "r": "Os dados são armazenados em tabelas (relações) compostas por linhas (tuplas) e colunas (atributos), com esquema bem definido. A recuperação ocorre por consultas declarativas em SQL, podendo combinar dados de múltiplas tabelas via joins baseados em PK/FK."
+  },
+  {
+   "tema": "DCL, segurança e controle de acesso",
+   "q": "Explique a diferença entre GRANT e REVOKE, e por que a ordem lógica entre eles importa.",
+   "r": "GRANT concede um privilégio a um usuário/papel; REVOKE remove um privilégio previamente concedido. A ordem importa porque é necessário que um privilégio tenha sido concedido antes de poder ser revogado."
+  },
+  {
+   "tema": "DCL, segurança e controle de acesso",
+   "q": "Cite e explique três privilégios distintos que podem ser concedidos via GRANT em SQL.",
+   "r": "SELECT (consultar dados), INSERT (inserir novas linhas), UPDATE (alterar dados existentes), DELETE (remover linhas), EXECUTE (executar procedures), REFERENCES (criar FKs referenciando a tabela)."
+  },
+  {
+   "tema": "Transações, ACID e concorrência",
+   "q": "Usando o exemplo de um caixa eletrônico (saque), explique por que a atomicidade é essencial.",
+   "r": "O saque envolve várias etapas (verificar saldo, debitar, atualizar, liberar dinheiro). A atomicidade garante que, se qualquer etapa falhar, nenhuma alteração parcial (como o débito) seja confirmada — evitando cobrar o cliente sem entregar o dinheiro."
+  },
+  {
+   "tema": "Transações, ACID e concorrência",
+   "q": "Quais são os comandos SQL típicos usados para controlar transações?",
+   "r": "BEGIN TRANSACTION (inicia), COMMIT (confirma e torna permanente) e ROLLBACK (desfaz as alterações em caso de erro)."
+  },
+  {
+   "tema": "Transações, ACID e concorrência",
+   "q": "Explique o que é um bloqueio (lock) compartilhado e um bloqueio exclusivo, e quando cada um é utilizado.",
+   "r": "O lock compartilhado permite múltiplas transações lerem o mesmo dado simultaneamente, mas nenhuma pode escrevê-lo. O lock exclusivo é usado para escrita, impedindo qualquer leitura ou escrita concorrente até a conclusão da transação."
+  },
+  {
+   "tema": "Otimização, NoSQL, rotinas e administração de dados",
+   "q": "O que é o \"projeto físico\" (tuning) de um banco de dados e como se relaciona com a otimização?",
+   "r": "É a terceira fase do projeto de BD: adiciona detalhes de implementação voltados a desempenho (índices, particionamento, ajustes de armazenamento) a partir do modelo lógico, visando otimizar tempo de resposta e uso de recursos."
+  },
+  {
+   "tema": "Otimização, NoSQL, rotinas e administração de dados",
+   "q": "Cite três motivos que levam uma empresa a considerar a migração de um banco relacional para um NoSQL.",
+   "r": "Necessidade de maior escalabilidade horizontal; alto volume de dados não estruturados; limitações de desempenho do relacional em alta concorrência; necessidade de esquema dinâmico/flexível."
+  },
+  {
+   "tema": "Otimização, NoSQL, rotinas e administração de dados",
+   "q": "Quais são os principais riscos de uma migração de banco relacional para NoSQL mal planejada?",
+   "r": "Perda de informação durante a migração; incompatibilidade de tipos de dados/caracteres; falhas catastróficas/indisponibilidade prolongada; perda da integridade referencial."
+  },
+  {
+   "tema": "Otimização, NoSQL, rotinas e administração de dados",
+   "q": "Diferencie migração on-line e off-line de banco de dados, citando uma vantagem e uma desvantagem de cada.",
+   "r": "On-line: mantém a aplicação em execução durante a transferência (menos indisponibilidade), mas exige programação avançada. Off-line: desconecta a aplicação durante o processo (mais simples), mas gera indisponibilidade do sistema."
+  },
+  {
+   "tema": "Otimização, NoSQL, rotinas e administração de dados",
+   "q": "Explique as três etapas do processo ETL.",
+   "r": "Extração (extrai dados de fontes variadas); Transformação (limpeza, padronização e regras de qualidade); Carregamento (grava os dados transformados no destino, ex.: data warehouse)."
+  }
+ ],
+ "colas": [
+  {
+   "titulo": "ACID (Transações)",
+   "mnemonico": "Mnemônico: \"A Casa Inteira Dura\" → Atomicidade, Consistência, Isolamento, Durabilidade.",
+   "pontos": [
+    "Atomicidade: tudo ou nada — não existe meio-termo confirmado.",
+    "Consistência: o banco nunca fica num estado inválido.",
+    "Isolamento: transações concorrentes não se enxergam no meio do caminho.",
+    "Durabilidade: depois do COMMIT, nem uma queda de energia desfaz."
+   ]
+  },
+  {
+   "titulo": "Teorema CAP (NoSQL)",
+   "mnemonico": "Mnemônico: \"CAP, escolha 2 de 3 — nunca os 3 juntos.\"",
+   "pontos": [
+    "Consistência: todo nó vê o mesmo dado ao mesmo tempo.",
+    "Availability (disponibilidade): sistema sempre responde.",
+    "Partition tolerance: continua funcionando mesmo com a rede partida.",
+    "Sistemas distribuídos sempre sacrificam uma das três."
+   ]
+  },
+  {
+   "titulo": "Formas Normais — ordem 1FN → 2FN → 3FN",
+   "mnemonico": "Mnemônico: \"Atomiza, tira o Parcial, tira o Transitivo.\"",
+   "pontos": [
+    "1FN: elimina valores repetidos/multivalorados → atributos atômicos.",
+    "2FN: 1FN + elimina dependência PARCIAL (de parte de uma chave composta).",
+    "3FN: 2FN + elimina dependência TRANSITIVA (não-chave dependendo de não-chave)."
+   ]
+  },
+  {
+   "titulo": "DDL · DML · DCL · DTL",
+   "mnemonico": "Mnemônico: \"Define, Manipula, Controla, Transaciona.\"",
+   "pontos": [
+    "DDL (Define): CREATE, ALTER, DROP — estrutura.",
+    "DML (Manipula): INSERT, UPDATE, DELETE, SELECT — dados.",
+    "DCL (Controla acesso): GRANT, REVOKE — permissões.",
+    "DTL (Transação): COMMIT, ROLLBACK, BEGIN TRANSACTION."
+   ]
+  },
+  {
+   "titulo": "Locks: Compartilhado vs Exclusivo",
+   "mnemonico": "Mnemônico: \"Compartilhado é biblioteca (todos leem); Exclusivo é banheiro (um de cada vez).\"",
+   "pontos": [
+    "Compartilhado (shared): várias transações podem ler ao mesmo tempo.",
+    "Exclusivo: só uma transação acessa (necessário para escrever)."
+   ]
+  },
+  {
+   "titulo": "NoSQL — os 4 tipos",
+   "mnemonico": "Mnemônico: pense num exemplo fixo para cada tipo.",
+   "pontos": [
+    "Chave-valor → Redis (busca rápida por chave única).",
+    "Documento → MongoDB (JSON/BSON, schema-less).",
+    "Coluna/família de colunas → Cassandra (big data distribuído).",
+    "Grafo → Neo4j (relacionamentos complexos, redes sociais)."
+   ]
+  },
+  {
+   "titulo": "GRANT / REVOKE / WITH GRANT OPTION",
+   "mnemonico": "Mnemônico: \"GRANT dá, REVOKE tira; WITH GRANT OPTION deixa repassar o presente.\"",
+   "pontos": [
+    "GRANT concede um privilégio; REVOKE remove um privilégio já concedido.",
+    "WITH GRANT OPTION: quem recebeu pode repassar o mesmo privilégio a outros.",
+    "WITH ADMIN OPTION (em ROLE): pode administrar o papel, não só usá-lo."
+   ]
+  }
+ ],
+ "resumos": [
+  {
+   "tema": "Arquitetura de SGBD e modelos de dados",
+   "html": "<p>O <b>SGBD</b> é a camada de software entre os usuários e os arquivos físicos: oferece linguagens de definição e manipulação, controle de concorrência, segurança, integridade e recuperação. O <b>Modelo Relacional</b> foi formalizado por <b>Edgar F. Codd</b>, pesquisador da IBM, em artigo de <b>1970</b>, propondo organizar os dados em relações manipuladas por álgebra e cálculo relacional.</p><p><b>Vocabulário relacional:</b></p><ul><li><b>relação</b> = tabela;</li><li><b>tupla</b> = linha (uma ocorrência);</li><li><b>atributo</b> = coluna;</li><li><b>domínio</b> = conjunto de valores permitidos na coluna;</li><li><b>esquema</b> = a estrutura da relação, não os dados.</li></ul><p>Dados em tabelas com esquema bem definido, recuperados por consultas declarativas em SQL que combinam tabelas por <b>joins</b> entre PK e FK.</p><p><b>Arquitetura ANSI/SPARC — três esquemas:</b></p><ul><li><b>Externo</b>: as <b>views</b>, a porção do banco visível a cada grupo de usuários; garante a <b>independência lógica de dados</b>;</li><li><b>Conceitual</b>: estrutura global da organização — entidades, relacionamentos e restrições;</li><li><b>Interno</b>: armazenamento físico, arquivos, índices e caminhos de acesso.</li></ul><p><b>Modelos de dados anteriores ao relacional:</b></p><ul><li><b>Hierárquico</b>: registros em <b>árvore</b>; cada registro tem <b>apenas uma raiz</b> — nunca múltiplas raízes simultâneas;</li><li><b>Em rede (CODASYL/DBTG)</b>: relacionamentos por <b>links/apontadores</b> ligando registros proprietários a registros membros em <b>conjuntos (sets)</b>; a navegação é explícita pelos caminhos definidos.</li></ul><p><b>Arquiteturas de SGBD:</b> na <b>centralizada</b> todo o processamento ocorre em uma única máquina; na <b>cliente/servidor</b>, tipicamente em <b>3 camadas</b>, o processamento se divide entre servidor de banco (armazenamento e consultas), servidor de aplicação (lógica de negócio) e cliente (interface).</p><p>Bancos <b>NoSQL</b> surgiram como alternativa <b>complementar</b>, não substituta, voltada a escalabilidade e a dados não estruturados ou semiestruturados. Relacional e NoSQL coexistem.</p>"
+  },
+  {
+   "tema": "Modelagem ER e normalização",
+   "html": "<p>No <b>Modelo Entidade-Relacionamento</b>, <b>entidades</b> são os objetos do mundo real a representar, <b>atributos</b> são as propriedades que descrevem uma entidade ou um relacionamento (por exemplo <code>PrecoProd</code> em Produto, atributo simples e monovalorado que vira uma coluna) e <b>relacionamentos</b> são as associações entre entidades.</p><p><b>As três fases do projeto de banco, nesta ordem:</b></p><ul><li><b>Modelagem conceitual</b>: o DER, abstrato e independente de SGBD;</li><li><b>Projeto lógico</b>: converte o conceitual no modelo do SGBD escolhido — tabelas, colunas, PKs e FKs;</li><li><b>Projeto físico</b> (<b>tuning</b>): acrescenta detalhes de desempenho e armazenamento, como índices e particionamento.</li></ul><p><b>Cardinalidade e chave estrangeira:</b> em um relacionamento <b>N:1</b> a FK vai sempre no <b>lado N</b> — em Produto x TipoDeProduto, a FK fica em <code>Produto</code> referenciando <code>TipoDeProduto</code>, pois cada produto tem um único tipo e o mesmo tipo se repete em várias linhas. <b>Tabela associativa</b> só é obrigatória em relacionamentos <b>N:N</b>.</p><p><b>Normalização</b> reduz redundância e evita <b>anomalias de atualização</b> (alterar um dado duplicado em vários lugares), <b>de inserção</b> (não conseguir inserir um dado sem outro relacionado) e <b>de exclusão</b> (perder informação ao apagar um registro).</p><p><b>Formas normais — atomiza, tira o parcial, tira o transitivo:</b></p><ul><li><b>1FN</b>: todo atributo <b>atômico</b>; nada de células com listas, grupos repetitivos ou valores multivalorados;</li><li><b>2FN</b>: 1FN + nenhum atributo não-chave dependendo de <b>parte</b> de uma PK composta (<b>dependência parcial</b>); o problema nem aparece quando a chave é simples;</li><li><b>3FN</b>: 2FN + nenhum atributo não-chave dependendo de outro atributo não-chave (<b>dependência transitiva</b>), extraindo-os para nova tabela ligada por FK.</li></ul><p><b>Engenharia reversa</b> é o caminho inverso da engenharia direta: parte do <b>banco físico já existente</b>, lendo tabelas, colunas, chaves e restrições, para reconstruir o modelo lógico e conceitual não documentado.</p>"
+  },
+  {
+   "tema": "SQL: DDL, DML e DQL",
+   "html": "<p>A SQL se divide em sublinguagens:</p><ul><li><b>DDL</b> (definição): <code>CREATE</code>, <code>ALTER</code>, <code>DROP</code>, <code>TRUNCATE</code>;</li><li><b>DML</b> (manipulação): <code>INSERT</code>, <code>UPDATE</code>, <code>DELETE</code>;</li><li><b>DQL</b> (consulta): <code>SELECT</code>;</li><li><b>DCL</b> (controle de acesso): <code>GRANT</code>, <code>REVOKE</code>;</li><li><b>DTL</b> (transação): <code>BEGIN TRANSACTION</code>, <code>COMMIT</code>, <code>ROLLBACK</code>.</li></ul><p><b>DDL.</b> <code>DROP</code> elimina o objeto e sua definição do catálogo — estrutura e dados de uma vez. <code>ALTER TABLE ... ADD</code> atua sobre a definição, acrescentando uma <b>nova coluna</b> ou restrição sem recriar a tabela.</p><pre>ALTER TABLE Produto ADD dtCadastro DATE;\nDROP TABLE TipoDeProduto CASCADE;</pre><p><b>CASCADE</b> propaga a remoção para os objetos dependentes (FKs de outras tabelas, views, demais referências); sem ela vale o padrão <b>RESTRICT</b>, que bloqueia a exclusão por integridade referencial.</p><p><b>DELETE x TRUNCATE x DROP:</b> <code>DELETE</code> é DML, remove linhas específicas com <code>WHERE</code>, é logado linha a linha e aceita rollback; <code>TRUNCATE</code> é DDL, apaga todas as linhas mais rápido, sem <code>WHERE</code>, e mantém a estrutura; <code>DROP</code> remove a tabela inteira, estrutura incluída.</p><p><b>DML.</b> <code>INSERT</code> acrescenta linhas sem alterar a estrutura. Combinado a uma subconsulta, copia dados entre tabelas em um único comando, desde que colunas e tipos sejam compatíveis:</p><pre>INSERT INTO tabela_Y (col1, col2)\nSELECT col1, col2\nFROM tabela_X\nWHERE (condição);</pre><p><b>DQL.</b> O <code>JOIN</code> combina linhas de tabelas diferentes por um predicado de junção, em geral a igualdade entre FK e PK, reconstituindo a informação que a normalização distribuiu. <code>GROUP BY</code> agrupa linhas, <code>HAVING</code> filtra grupos, <code>ORDER BY</code> apenas ordena o resultado.</p><pre>SELECT p.nomeProd, t.descTipo\nFROM Produto p\nJOIN TipoDeProduto t ON p.idTipo = t.idTipo\nORDER BY p.nomeProd;</pre><p>SQL é <b>declarativa</b>: o programador diz <b>o que</b> quer obter e o <b>otimizador</b> do SGBD decide <b>como</b> — índices, algoritmos de junção e ordem das operações. Linguagens procedurais exigiriam definir o caminho de acesso.</p>"
+  },
+  {
+   "tema": "DCL, segurança e controle de acesso",
+   "html": "<p>A <b>DCL</b> controla quem pode fazer o quê no banco. <b>GRANT dá, REVOKE tira.</b></p><ul><li><code>GRANT</code> concede um privilégio a um usuário ou <b>papel (role)</b> sobre um objeto;</li><li><code>REVOKE</code> remove um privilégio previamente concedido — por isso a ordem importa: só se revoga o que já foi concedido.</li></ul><pre>GRANT SELECT, INSERT ON Produto TO usuario_vendas;\nREVOKE INSERT ON Produto FROM usuario_vendas;</pre><p><b>Privilégios típicos:</b></p><ul><li><b>SELECT</b>: consultar dados;</li><li><b>INSERT</b>: inserir novas linhas;</li><li><b>UPDATE</b>: alterar dados existentes;</li><li><b>DELETE</b>: remover linhas;</li><li><b>EXECUTE</b>: executar procedures;</li><li><b>REFERENCES</b>: criar FKs referenciando a tabela.</li></ul><p><b>WITH GRANT OPTION</b> concede o privilégio <b>junto com o direito de repassá-lo</b>: quem recebeu pode conceder o mesmo privilégio a terceiros, formando uma cadeia de concessões. Sem a cláusula, o usuário apenas exerce o privilégio, nunca o propaga. Em papéis, o análogo é <b>WITH ADMIN OPTION</b>, que permite administrar o papel e não só utilizá-lo.</p><pre>GRANT SELECT ON Produto TO gerente WITH GRANT OPTION;</pre><p><b>Controle de acesso discricionário (DAC):</b> o <b>dono do objeto decide</b> quem o acessa, concedendo privilégios com <code>GRANT</code> e restringindo a visibilidade dos dados por meio de <b>views</b> e <b>papéis</b>, que agrupam permissões e simplificam a administração. É o modelo da SQL padrão e o mais comum nos SGBDs comerciais.</p><p><b>Controle de acesso obrigatório ou mandatório (MAC):</b> a decisão <b>não</b> fica a cargo do dono do dado. Cada objeto recebe uma <b>classificação de segurança</b> (por exemplo confidencial, secreto, ultrassecreto) e cada usuário uma <b>credencial</b>; o acesso só ocorre quando os níveis são compatíveis, segundo regras fixas da organização. Views e <code>GRANT</code> pertencem ao modelo discricionário, não a este.</p>"
+  },
+  {
+   "tema": "Transações, ACID e concorrência",
+   "html": "<p>Uma <b>transação</b> é uma unidade lógica de trabalho composta por várias operações. Comandos de controle: <code>BEGIN TRANSACTION</code> inicia, <code>COMMIT</code> confirma e torna permanente, <code>ROLLBACK</code> desfaz.</p><p><b>ACID — \"A Casa Inteira Dura\":</b></p><ul><li><b>Atomicidade</b>: tudo ou nada; a transação é indivisível, e o trabalho parcial é desfeito por rollback. No saque em caixa eletrônico é ela que impede debitar sem entregar o dinheiro;</li><li><b>Consistência</b>: o banco vai de um estado válido a outro, nunca fica inválido;</li><li><b>Isolamento</b>: transações concorrentes não enxergam o trabalho incompleto umas das outras;</li><li><b>Durabilidade</b>: depois do <code>COMMIT</code> os efeitos persistem mesmo com queda de energia ou do sistema, garantido por <b>log de transações</b> e técnicas de recuperação.</li></ul><p><b>Estados.</b> No estado <b>ativo</b> a transação está em execução e pode fazer <b>quantas leituras e escritas quiser</b>, ainda sem efeito definitivo. Ao falhar em qualquer operação, vai para o estado de falha e o gerenciador aciona o <b>rollback</b>, desfazendo todas as alterações — confirmar operações parciais violaria a atomicidade. Só no estado confirmado, após o commit, as alterações se tornam permanentes e visíveis.</p><p><b>Bloqueios (locks).</b> O <b>compartilhado</b> é como uma biblioteca: várias transações leem o mesmo dado ao mesmo tempo, mas nenhuma escreve. O <b>exclusivo</b> é necessário para escrita e impede leitura ou escrita concorrente até o fim da transação.</p><p><b>Deadlock</b> é o impasse circular: cada transação mantém um bloqueio e espera indefinidamente por um recurso bloqueado pela outra. O SGBD detecta o ciclo e aborta uma delas, escolhida como <b>vítima</b>, liberando os recursos.</p><p><b>MVCC</b> (Multiversion Concurrency Control) mantém <b>múltiplas versões</b> de cada dado e entrega a cada transação o instantâneo consistente do seu início; leitores não bloqueiam escritores nem são bloqueados por eles, dispensando bloqueios de leitura. É usado em relacionais como PostgreSQL e Oracle.</p><p><b>Isolamento serializável</b> é o nível mais restritivo do padrão SQL: o resultado da execução concorrente equivale a alguma execução sequencial, evitando <b>leitura suja</b>, <b>leitura não repetível</b> e <b>leitura fantasma</b>. O preço é menos concorrência e mais conflitos.</p>"
+  },
+  {
+   "tema": "Otimização, NoSQL, rotinas e administração de dados",
+   "html": "<p><b>Índices.</b> Estrutura auxiliar ordenada, tipicamente uma <b>árvore B</b>, que evita a <b>varredura completa da tabela</b> em colunas muito usadas no <code>WHERE</code>. Em troca, <b>ocupa espaço extra</b> e é atualizada a cada <code>INSERT</code>, <code>UPDATE</code> e <code>DELETE</code>. <b>Excesso de índices</b> gasta disco e degrada a escrita — por isso indexar faz parte do <b>tuning</b>.</p><p><b>NoSQL</b> é <b>Not Only SQL</b>: não se limita ao relacional e convive com ele. Os <b>quatro tipos</b>:</p><ul><li><b>chave-valor</b> — Redis, busca por chave;</li><li><b>documento</b> — MongoDB, <b>BSON</b> (derivado do JSON) em <b>coleções</b>, sem esquema rígido;</li><li><b>colunas</b> — Cassandra, big data;</li><li><b>grafo</b> — Neo4j, relacionamentos complexos.</li></ul><p><b>Teorema CAP</b>: em sistemas distribuídos só se garantem <b>duas de três</b> — <b>Consistência</b>, <b>Disponibilidade</b> e <b>Tolerância à partição</b>: havendo partição de rede, escolhe-se entre as duas primeiras. O modelo <b>BASE</b> prioriza disponibilidade e tolerância a partição, aceitando <b>consistência eventual</b>, não imediata.</p><p><b>Migração para documentos</b>: a tabela vira <b>coleção</b> e a linha, <b>documento</b>, com dados relacionados embutidos em vez de junções: há <b>desnormalização</b>. Riscos: perda de informação, tipos incompatíveis e quebra da integridade referencial. A migração <b>on-line</b> mantém a aplicação no ar; a <b>off-line</b> a desconecta.</p><p><b>ETL</b>: <b>Extração</b>, <b>Transformação</b> (limpeza, padronização, deduplicação, regras de negócio) e <b>Carga</b> no destino, como um data warehouse.</p><p><b>Procedure x function</b>: a <b>function</b> sempre retorna valor e serve em expressões e consultas; a <b>procedure</b> executa uma tarefa sem retorno obrigatório e é chamada por <code>CALL</code> ou <code>EXECUTE</code>. <b>Triggers</b> disparam <b>automaticamente</b> no evento configurado, nunca por chamada explícita: <code>AFTER INSERT ... FOR EACH ROW</code> roda uma vez por linha afetada; <code>FOR EACH STATEMENT</code>, uma vez por instrução.</p><p><b>DA x DBA</b>: o <b>administrador de dados</b> é estratégico e corporativo — políticas, padrões, dicionário e modelo de dados global, independente de tecnologia. O <b>DBA</b> é técnico e operacional, ligado a um SGBD: desempenho, índices, backup, recuperação e segurança.</p>"
+  }
+ ]
+}

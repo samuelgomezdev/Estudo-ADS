@@ -1,0 +1,721 @@
+{
+ "id": "inovacao-disruptiva",
+ "nome": "Inovação Disruptiva",
+ "periodo": 2,
+ "cor": "#ec4899",
+ "sigla": "ID",
+ "resumos": [
+  {
+   "tema": "Invenção, Inovação e Tipos",
+   "html": "<p><b>Invenção</b> é a criação de uma ideia nova. <b>Inovação</b> é a <b>aplicação</b> dessa ideia de modo que gere <b>valor social e econômico</b>. Nem toda invenção vira inovação — muitas nunca encontram aplicação prática, mercado ou aceitação. Exemplos clássicos: os carros voadores dos anos 50 e o Google Glass, lançado mas sem aceitação comercial ampla.</p><p><b>Fórmula de Barbieri (2003):</b> <b>Inovação = Invenção + Implementação + Valor econômico/social.</b> Falta qualquer um dos três e não há inovação.</p><p><b>Os 4 tipos de inovação (Manual de Oslo):</b></p><ul><li><b>Produto</b> — bem ou serviço novo ou significativamente melhorado. Ex.: iPhone, novos medicamentos.</li><li><b>Processo</b> — novo método de produção ou distribuição. Ex.: implantação de corte a laser na produção, automação fabril.</li><li><b>Marketing</b> — novo método de comercialização: design, embalagem, posicionamento, promoção ou preço. Ex.: garrafa retornável da Coca-Cola com design novo para atrair jovens.</li><li><b>Organizacional</b> — novo método nas práticas de negócio, na organização do trabalho ou nas relações externas. Ex.: equipes interdisciplinares, novo método de gestão do conhecimento.</li></ul><p><b>Classificação pelo grau de ruptura:</b></p><ul><li><b>Incremental</b> — pequenas melhorias contínuas. É o tipo <b>mais comum</b> no dia a dia das empresas. Ex.: atualização anual de celulares, aperfeiçoamento de softwares de georreferenciamento.</li><li><b>Radical</b> — quebra tecnológica <b>dentro do mesmo mercado</b>. Ex.: substituição do vinil pelo CD; o iPhone em 2007.</li><li><b>Disruptiva</b> — <b>muda o mercado</b>, substituindo empresas consolidadas. Ex.: Netflix, Uber, Nubank.</li></ul><p><b>Radical x disruptiva — a distinção que mais cai:</b> a radical é uma ruptura <b>tecnológica</b> que ocorre dentro do mercado existente; a disruptiva é uma ruptura de <b>mercado</b>, que derruba os incumbentes. Nem toda inovação radical é disruptiva.</p><p><b>Teóricos:</b> <b>Joseph Schumpeter</b> — a inovação como <b>destruição criativa</b>: novos produtos e processos substituem os antigos. <b>Clayton Christensen</b> — popularizou o termo <b>inovação disruptiva</b>, mostrando que ela costuma começar por um nicho desatendido ou de baixa margem, é ignorada pelos líderes e sobe até dominar o mercado.</p>"
+  },
+  {
+   "tema": "Ecossistemas de Inovação",
+   "html": "<p><b>Ecossistema de inovação</b> é um ambiente que conecta empresas, governo, universidades e consumidores para fomentar a inovação. A característica essencial (Seed, 2016) é justamente essa <b>conexão</b> entre os atores — nenhum deles inova sozinho.</p><p><b>Tríplice hélice:</b> o modelo que articula <b>governo + empresas + universidades</b>. O governo dá políticas públicas e financiamento; as empresas dão o mercado e a escala; as universidades dão pesquisa e talento. Algumas versões acrescentam uma quarta hélice: a sociedade.</p><p><b>Vale do Silício</b> é o exemplo clássico porque integra universidades de ponta (Stanford, Berkeley), investidores de risco, um denso tecido de startups, apoio governamental e — talvez o mais difícil de replicar — uma <b>cultura empreendedora</b> que tolera o fracasso.</p><p><b>Elementos de um ecossistema:</b> universidades e institutos de pesquisa, empresas âncora, startups, investidores (anjo, venture capital), incubadoras e aceleradoras, parques tecnológicos, políticas públicas e marco legal, e capital humano qualificado.</p><p><b>Barreiras à inovação nas organizações:</b> <b>resistência cultural</b> (medo do novo e do erro), falta de investimento, <b>burocracia</b> e excesso de processos, foco excessivo no curto prazo, estrutura hierárquica rígida, ausência de tolerância ao erro e falta de tempo dedicado à exploração.</p><p><b>Habilidades do profissional inovador:</b> <b>curiosidade</b>, <b>resiliência</b>, <b>boa comunicação</b>, trabalho em equipe, pensamento crítico e capacidade de aprender continuamente.</p><p><b>Inovação aberta (open innovation)</b> — conceito de Henry Chesbrough: a empresa usa fluxos internos <b>e externos</b> de conhecimento, colaborando com startups, universidades, fornecedores e até concorrentes, em vez de tentar inovar apenas com P&D interno.</p><p><b>Por que a inovação é chave para a competitividade:</b> gera diferenciação, aumenta a produtividade, abre novos mercados e cria vantagem sobre os concorrentes.</p>"
+  },
+  {
+   "tema": "Design Thinking",
+   "html": "<p><b>Design Thinking</b> é uma abordagem para a <b>solução criativa de problemas</b>, <b>centrada no ser humano</b>, que busca a formulação de questionamentos pela <b>compreensão profunda dos fenômenos</b> e das necessidades das pessoas, com <b>empatia</b> e <b>cocriação</b>.</p><p><b>O que ele NÃO é</b> — as pegadinhas mais comuns:</p><ul><li>Não é uma ferramenta <b>tradicional</b> de resolver problemas</li><li>Não segue processo <b>linear e rígido</b> — é iterativo, permite voltar etapas</li><li>Não investiga a experiência do cliente apenas por <b>dados estatísticos</b> — usa pesquisa qualitativa e observação</li><li>Não se restringe ao <b>design gráfico</b></li><li>Não <b>dispensa testes</b> e validações</li></ul><p><b>As etapas (modelo em três fases, comum no Brasil):</b></p><ol><li><b>Imersão / compreensão do problema</b> — pesquisa, observação, entrevistas em profundidade, mapa de empatia, jornada do usuário. Aqui se questiona até o próprio enunciado do problema.</li><li><b>Ideação</b> — geração ampla de alternativas, sem julgamento prévio: brainstorming, brainwriting, analogias, matriz de ideias.</li><li><b>Prototipagem e testagem</b> — materializar rápido e barato para aprender, testar com usuários reais e iterar.</li></ol><p>No modelo da d.school as cinco fases são: <b>empatizar, definir, idear, prototipar e testar</b>.</p><p><b>Divergir e convergir</b> (duplo diamante): abre-se o leque de possibilidades e depois afunila-se — duas vezes, uma sobre o problema e outra sobre a solução.</p><p><b>Confiança criativa</b> (David Kelley, fundador da IDEO): a crença de que se é capaz de criar. Kelley argumenta que a criatividade não é dom de poucos, mas capacidade que se desenvolve — e que o principal obstáculo é o <b>medo do julgamento</b>.</p><p><b>Brainstorming x brainwriting:</b> no brainstorming as ideias são ditas em voz alta, em grupo, sem julgamento. No brainwriting cada um <b>escreve</b> antes de compartilhar, o que reduz a influência dos mais falantes e a inibição dos mais tímidos, gerando mais ideias independentes.</p>"
+  },
+  {
+   "tema": "Tecnologias Emergentes",
+   "html": "<p><b>Impressão 3D e manufatura aditiva</b> — construção de objetos <b>camada por camada</b> a partir de um modelo digital, o oposto da manufatura subtrativa (que remove material). Vantagens: prototipagem rápida e barata, geometrias impossíveis pelos métodos tradicionais, personalização em massa, produção sob demanda sem estoque e menos desperdício de material. Aplicações: protótipos, próteses e implantes personalizados, peças de reposição, construção civil, bioimpressão.</p><p><b>Internet das Coisas (IoT)</b> — objetos do cotidiano com sensores, processamento e conectividade, capazes de coletar e trocar dados. Camadas típicas: percepção (sensores e atuadores) → rede (conectividade) → processamento (nuvem/borda) → aplicação. Desafios: <b>segurança</b>, privacidade, padronização e consumo de energia.</p><p><b>Sistemas embarcados e microcontroladores</b> — um <b>microprocessador</b> é apenas a CPU e depende de componentes externos; um <b>microcontrolador</b> integra em um único chip CPU, memória e periféricos de entrada e saída, sendo feito para uma aplicação específica com baixo consumo. O <b>Arduino</b> nasceu em 2005 no Interaction Design Institute de Ivrea, na Itália, como plataforma aberta de prototipagem para não engenheiros: hardware e software livres, IDE simples, pinos digitais e analógicos, e uma enorme comunidade — o que o tornou a porta de entrada de quase todo projeto maker.</p><p><b>Realidade Virtual (RV) x Realidade Aumentada (RA)</b> — a RV <b>substitui</b> o ambiente real por um ambiente totalmente digital, exigindo headset e isolando o usuário. A RA <b>sobrepõe</b> elementos digitais ao ambiente real, sem isolá-lo, e funciona no próprio celular. A <b>Realidade Mista (RM)</b> vai além: os elementos digitais interagem com o ambiente físico e reconhecem suas superfícies. O termo guarda-chuva é <b>Realidade Estendida (XR)</b>.</p><p><b>Gamificação</b> — o uso de <b>elementos de jogos em contextos que não são jogos</b>, para aumentar engajamento e motivação. Elementos: pontos, medalhas, rankings (a tríade PBL), níveis, desafios, missões, feedback imediato, narrativa e recompensas. Aplicada em educação, saúde, treinamento corporativo e fidelização. O <b>Foursquare</b> é o exemplo histórico com seus check-ins, badges e o título de \"prefeito\". Risco: gamificação superficial, que apenas adiciona pontos sem tocar a motivação intrínseca.</p><p><b>Organizações virtuais</b> — estruturas em que pessoas e equipes colaboram por plataformas digitais, sem depender de um espaço físico comum. Exigem comunicação interna eficaz, confiança e gestão por resultados; a pandemia acelerou fortemente esse modelo.</p><p><b>Customer experience (CX)</b> — a soma de todas as percepções do cliente em todos os pontos de contato com a marca, ao longo de toda a jornada. Diferente da UX, que se concentra na interação com o produto.</p>"
+  }
+ ],
+ "colas": [
+  {
+   "titulo": "Invenção x Inovação",
+   "mnemonico": "Mnemônico Barbieri: Inovação = Invenção + Implementação + VALOR. Sem valor gerado, é só invenção.",
+   "pontos": [
+    "Invenção: ideia nova (protótipo, patente). Inovação: aplicação com valor econômico/social.",
+    "Nem toda invenção vira inovação — Google Glass, carro voador.",
+    "Schumpeter: DESTRUIÇÃO CRIATIVA. Christensen: popularizou INOVAÇÃO DISRUPTIVA.",
+    "Manter processos antigos sem alteração NÃO é inovação (pega muito em prova)."
+   ]
+  },
+  {
+   "titulo": "Os 4 tipos (Manual de Oslo)",
+   "mnemonico": "Mnemônico: \"PPMO\" → Produto, Processo, Marketing, Organizacional.",
+   "pontos": [
+    "Produto: iPhone, novo medicamento.",
+    "Processo: corte a laser, automação fabril.",
+    "Marketing: nova embalagem, novo design para atrair público (Coca-Cola retornável).",
+    "Organizacional: equipes interdisciplinares, novo método de gestão do conhecimento."
+   ]
+  },
+  {
+   "titulo": "Incremental x Radical x Disruptiva",
+   "mnemonico": "Mnemônico de ouro: melhoria pequena = INCREMENTAL. Quebra tecnológica no MESMO mercado = RADICAL. Derruba o mercado antigo = DISRUPTIVA.",
+   "pontos": [
+    "Incremental: atualização de celulares, softwares. É a MAIS COMUM no dia a dia.",
+    "Radical: vinil → CD; iPhone 2007.",
+    "Disruptiva: Netflix, Uber, Nubank.",
+    "Nubank: simplificou serviços bancários e forçou os bancos tradicionais a mudar.",
+    "Sempre associe exemplos reais na resposta."
+   ]
+  },
+  {
+   "titulo": "Ecossistema de inovação",
+   "mnemonico": "Mnemônico tríplice hélice: GOVERNO + EMPRESAS + UNIVERSIDADES.",
+   "pontos": [
+    "Ecossistema: conecta empresas, governo, universidades e consumidores.",
+    "Vale do Silício: universidades + investidores + startups + governo + cultura empreendedora.",
+    "Barreiras: resistência cultural, falta de investimento, burocracia.",
+    "Habilidades do inovador: curiosidade, resiliência, boa comunicação, trabalho em equipe.",
+    "Inovação aberta (Chesbrough): usa conhecimento interno E externo."
+   ]
+  },
+  {
+   "titulo": "Design Thinking — o que ele NÃO é",
+   "mnemonico": "Mnemônico: centrado no HUMANO, ITERATIVO, com EMPATIA e COCRIAÇÃO.",
+   "pontos": [
+    "NÃO é ferramenta tradicional; NÃO é linear e rígido.",
+    "NÃO investiga o cliente só por dados estatísticos — usa pesquisa qualitativa.",
+    "NÃO é restrito ao design gráfico; NÃO dispensa testes.",
+    "5 fases (d.school): empatizar, definir, idear, prototipar, testar.",
+    "3 fases (Brasil): imersão, ideação, prototipação.",
+    "David Kelley (IDEO): CONFIANÇA CRIATIVA — o obstáculo é o medo do julgamento."
+   ]
+  },
+  {
+   "titulo": "Tecnologias emergentes",
+   "mnemonico": "Mnemônico RV/RA: Virtual SUBSTITUI o mundo; Aumentada SOBREPÕE ao mundo.",
+   "pontos": [
+    "Manufatura aditiva: constrói CAMADA POR CAMADA (o oposto de subtrair material).",
+    "Microprocessador = só CPU. Microcontrolador = CPU + memória + E/S no MESMO chip.",
+    "Arduino: 2005, Ivrea (Itália), hardware e software ABERTOS, para não engenheiros.",
+    "Gamificação: elementos de jogos em contextos que NÃO são jogos. Tríade PBL: pontos, badges, leaderboard.",
+    "Foursquare: check-in, badges e 'prefeito' — caso clássico de gamificação."
+   ]
+  }
+ ],
+ "flashcards": [
+  {
+   "tema": "Invenção, Inovação e Tipos",
+   "p": "Qual a diferença entre invenção e inovação?",
+   "r": "A invenção é a criação de uma ideia nova; a inovação é a aplicação dessa ideia de modo que gere valor social e econômico."
+  },
+  {
+   "tema": "Invenção, Inovação e Tipos",
+   "p": "Por que nem toda invenção se transforma em inovação?",
+   "r": "Porque muitas invenções não encontram aplicação prática, mercado ou aceitação. Exemplos: os carros voadores dos anos 50 e o Google Glass, que foi lançado mas não teve aceitação comercial ampla."
+  },
+  {
+   "tema": "Invenção, Inovação e Tipos",
+   "p": "Qual é a fórmula de Barbieri para a inovação?",
+   "r": "Inovação = Invenção + Implementação + Valor econômico/social. Faltando qualquer um dos três, não há inovação."
+  },
+  {
+   "tema": "Invenção, Inovação e Tipos",
+   "p": "Quais são os quatro tipos de inovação segundo o Manual de Oslo?",
+   "r": "Produto, processo, marketing e organizacional."
+  },
+  {
+   "tema": "Invenção, Inovação e Tipos",
+   "p": "A implementação de corte a laser na produção é exemplo de que tipo de inovação?",
+   "r": "Inovação de processo — um novo método de produção ou distribuição."
+  },
+  {
+   "tema": "Invenção, Inovação e Tipos",
+   "p": "Um novo design de embalagem para atrair um público diferente é qual tipo de inovação?",
+   "r": "Inovação de marketing. Exemplo real: a garrafa retornável da Coca-Cola com novo design para atrair o público jovem."
+  },
+  {
+   "tema": "Invenção, Inovação e Tipos",
+   "p": "Estabelecer equipes interdisciplinares é exemplo de qual tipo de inovação?",
+   "r": "Inovação organizacional — novo método nas práticas de negócio, na organização do trabalho ou nas relações externas. Um novo método de gestão do conhecimento também se enquadra aqui."
+  },
+  {
+   "tema": "Invenção, Inovação e Tipos",
+   "p": "A melhoria contínua dos celulares a cada geração é exemplo de quê?",
+   "r": "Inovação incremental — pequenas melhorias sucessivas. É o tipo mais comum no dia a dia das empresas."
+  },
+  {
+   "tema": "Invenção, Inovação e Tipos",
+   "p": "A substituição do vinil pelo CD é exemplo de quê?",
+   "r": "Inovação radical — uma quebra tecnológica dentro do mesmo mercado (o de música gravada)."
+  },
+  {
+   "tema": "Invenção, Inovação e Tipos",
+   "p": "O surgimento do streaming com a Netflix é exemplo de quê?",
+   "r": "Inovação disruptiva — mudou o mercado e substituiu empresas consolidadas, como as locadoras de vídeo."
+  },
+  {
+   "tema": "Invenção, Inovação e Tipos",
+   "p": "Qual a diferença entre inovação radical e disruptiva?",
+   "r": "Radical é uma quebra tecnológica dentro do mesmo mercado. Disruptiva muda o mercado, substituindo empresas consolidadas. Nem toda inovação radical é disruptiva."
+  },
+  {
+   "tema": "Invenção, Inovação e Tipos",
+   "p": "O iPhone em 2007 foi exemplo de qual tipo de inovação?",
+   "r": "Inovação radical — uma quebra tecnológica que redefiniu o que era um telefone celular dentro do próprio mercado de telefonia."
+  },
+  {
+   "tema": "Invenção, Inovação e Tipos",
+   "p": "Cite uma inovação disruptiva brasileira e seu impacto.",
+   "r": "O Nubank — simplificou os serviços bancários, eliminou tarifas e agências e forçou os bancos tradicionais a mudar suas práticas."
+  },
+  {
+   "tema": "Invenção, Inovação e Tipos",
+   "p": "Quem popularizou o termo 'inovação disruptiva'?",
+   "r": "Clayton Christensen. Ele mostrou que a disrupção costuma começar em um nicho desatendido ou de baixa margem, é ignorada pelos líderes de mercado e sobe até dominá-lo."
+  },
+  {
+   "tema": "Invenção, Inovação e Tipos",
+   "p": "Segundo Schumpeter, a inovação está ligada a qual conceito?",
+   "r": "À destruição criativa: novos produtos e processos substituem os antigos, e é justamente essa destruição que impulsiona o desenvolvimento econômico."
+  },
+  {
+   "tema": "Invenção, Inovação e Tipos",
+   "p": "Qual é o papel da criatividade na inovação?",
+   "r": "Gerar ideias novas que possam ser aplicadas em soluções viáveis. A criatividade produz a ideia; a inovação exige que ela seja implementada e gere valor."
+  },
+  {
+   "tema": "Ecossistemas de Inovação",
+   "p": "O que é um ecossistema de inovação?",
+   "r": "Um ambiente que conecta empresas, governo, universidades e consumidores para fomentar a inovação. A característica essencial é a conexão entre esses atores."
+  },
+  {
+   "tema": "Ecossistemas de Inovação",
+   "p": "Quem compõe a tríplice hélice da inovação?",
+   "r": "Governo, empresas e universidades. Algumas versões acrescentam uma quarta hélice: a sociedade."
+  },
+  {
+   "tema": "Ecossistemas de Inovação",
+   "p": "Por que o Vale do Silício é considerado um ecossistema de inovação?",
+   "r": "Porque integra universidades de ponta, investidores de risco, um denso tecido de startups, apoio governamental e uma cultura empreendedora que tolera o fracasso."
+  },
+  {
+   "tema": "Ecossistemas de Inovação",
+   "p": "Cite barreiras comuns à inovação nas organizações.",
+   "r": "Resistência cultural (medo do novo e do erro), falta de investimento, burocracia e excesso de processos, foco no curto prazo e estrutura hierárquica rígida."
+  },
+  {
+   "tema": "Ecossistemas de Inovação",
+   "p": "Quais habilidades são essenciais em profissionais inovadores?",
+   "r": "Curiosidade, resiliência, boa comunicação e trabalho em equipe — além de pensamento crítico e capacidade de aprender continuamente."
+  },
+  {
+   "tema": "Ecossistemas de Inovação",
+   "p": "O que é inovação aberta (open innovation)?",
+   "r": "Conceito de Henry Chesbrough: a empresa combina fluxos internos e externos de conhecimento, colaborando com startups, universidades, fornecedores e até concorrentes, em vez de inovar apenas com P&D interno."
+  },
+  {
+   "tema": "Ecossistemas de Inovação",
+   "p": "Por que a inovação é chave para a competitividade?",
+   "r": "Porque gera diferenciação, aumenta a produtividade, abre novos mercados e cria vantagem sobre os concorrentes."
+  },
+  {
+   "tema": "Design Thinking",
+   "p": "O que é Design Thinking?",
+   "r": "Uma abordagem de solução criativa de problemas centrada no ser humano, que busca a formulação de questionamentos pela compreensão profunda dos fenômenos e das necessidades das pessoas, com empatia e cocriação."
+  },
+  {
+   "tema": "Design Thinking",
+   "p": "O Design Thinking segue um processo linear e rígido?",
+   "r": "Não. Ele é iterativo: permite voltar a etapas anteriores conforme se aprende com os testes. Também não se restringe ao design gráfico nem dispensa testes e validações."
+  },
+  {
+   "tema": "Design Thinking",
+   "p": "Quais são as cinco fases do Design Thinking no modelo da d.school?",
+   "r": "Empatizar, definir, idear, prototipar e testar. No Brasil também se usa o modelo em três etapas: imersão (compreensão do problema), ideação e prototipação/testagem."
+  },
+  {
+   "tema": "Design Thinking",
+   "p": "O que se faz na fase de imersão ou empatia?",
+   "r": "Pesquisa e observação profundas do usuário: entrevistas, mapa de empatia, jornada. É a fase em que se questiona até o próprio enunciado do problema."
+  },
+  {
+   "tema": "Design Thinking",
+   "p": "O que é o duplo diamante?",
+   "r": "O modelo de divergir e convergir duas vezes: primeiro explora-se amplamente o problema e afunila-se para defini-lo, depois geram-se muitas soluções e afunila-se para escolher uma."
+  },
+  {
+   "tema": "Design Thinking",
+   "p": "O que David Kelley entende por confiança criativa?",
+   "r": "A crença de que se é capaz de criar. Kelley, fundador da IDEO, argumenta que a criatividade não é dom de poucos, mas capacidade que se desenvolve — e que o principal obstáculo a superar é o medo do julgamento."
+  },
+  {
+   "tema": "Design Thinking",
+   "p": "Qual a diferença entre brainstorming e brainwriting?",
+   "r": "No brainstorming as ideias são ditas em voz alta, em grupo. No brainwriting cada um escreve individualmente antes de compartilhar, o que reduz a influência dos mais falantes e a inibição dos mais tímidos."
+  },
+  {
+   "tema": "Tecnologias Emergentes",
+   "p": "O que é manufatura aditiva?",
+   "r": "A construção de objetos camada por camada a partir de um modelo digital — o oposto da manufatura subtrativa, que remove material de um bloco. A impressão 3D é sua expressão mais conhecida."
+  },
+  {
+   "tema": "Tecnologias Emergentes",
+   "p": "Quais as vantagens da impressão 3D?",
+   "r": "Prototipagem rápida e barata, geometrias impossíveis pelos métodos tradicionais, personalização em massa, produção sob demanda sem estoque e menor desperdício de material."
+  },
+  {
+   "tema": "Tecnologias Emergentes",
+   "p": "O que é Internet das Coisas (IoT)?",
+   "r": "Objetos do cotidiano equipados com sensores, processamento e conectividade, capazes de coletar e trocar dados. Seus principais desafios são segurança, privacidade, padronização e consumo de energia."
+  },
+  {
+   "tema": "Tecnologias Emergentes",
+   "p": "Qual a diferença entre microprocessador e microcontrolador?",
+   "r": "O microprocessador é apenas a CPU e depende de componentes externos (memória, E/S). O microcontrolador integra CPU, memória e periféricos de entrada e saída em um único chip, voltado a uma aplicação específica com baixo consumo."
+  },
+  {
+   "tema": "Tecnologias Emergentes",
+   "p": "Onde e quando surgiu o Arduino, e qual sua proposta?",
+   "r": "Surgiu em 2005 no Interaction Design Institute de Ivrea, na Itália, como plataforma aberta de prototipagem eletrônica voltada a não engenheiros — hardware e software livres, IDE simples e comunidade ampla."
+  },
+  {
+   "tema": "Tecnologias Emergentes",
+   "p": "Qual a diferença entre realidade virtual e realidade aumentada?",
+   "r": "A RV substitui completamente o ambiente real por um ambiente digital, exigindo headset e isolando o usuário. A RA sobrepõe elementos digitais ao ambiente real, sem isolá-lo, e funciona no próprio celular."
+  },
+  {
+   "tema": "Tecnologias Emergentes",
+   "p": "O que é realidade mista?",
+   "r": "Um estágio além da RA: os elementos digitais não apenas se sobrepõem, mas interagem com o ambiente físico e reconhecem suas superfícies. O termo guarda-chuva para todas essas tecnologias é Realidade Estendida (XR)."
+  },
+  {
+   "tema": "Tecnologias Emergentes",
+   "p": "O que é gamificação?",
+   "r": "O uso de elementos de jogos em contextos que NÃO são jogos, para aumentar engajamento e motivação — pontos, medalhas, rankings, níveis, desafios, feedback imediato e narrativa."
+  },
+  {
+   "tema": "Tecnologias Emergentes",
+   "p": "Qual é o exemplo histórico clássico de gamificação?",
+   "r": "O Foursquare, com seus check-ins, badges e o título de 'prefeito' do local — que transformou a simples marcação de presença em uma disputa social."
+  },
+  {
+   "tema": "Tecnologias Emergentes",
+   "p": "Qual é o principal risco de uma implementação de gamificação?",
+   "r": "A gamificação superficial: apenas acrescentar pontos e medalhas sem tocar a motivação intrínseca das pessoas, o que gera engajamento momentâneo e depois abandono."
+  },
+  {
+   "tema": "Tecnologias Emergentes",
+   "p": "O que são organizações virtuais?",
+   "r": "Estruturas em que pessoas e equipes colaboram por plataformas digitais, sem depender de um espaço físico comum. Exigem comunicação interna eficaz, confiança e gestão por resultados."
+  }
+ ],
+ "questoes": [
+  {
+   "tema": "Invenção, Inovação e Tipos",
+   "q": "Qual a diferença entre invenção e inovação?",
+   "op": [
+    "São sinônimos no contexto empresarial",
+    "A invenção é a criação de uma ideia nova; a inovação é a aplicação dessa ideia gerando valor social e econômico",
+    "A invenção exige patente; a inovação, não",
+    "A inovação vem sempre antes da invenção"
+   ],
+   "r": 1,
+   "exp": "Pela fórmula de Barbieri: Inovação = Invenção + Implementação + Valor econômico/social. Sem aplicação e sem valor gerado, permanece apenas invenção."
+  },
+  {
+   "tema": "Invenção, Inovação e Tipos",
+   "q": "Por que o Google Glass é citado como invenção que não se transformou em inovação?",
+   "op": [
+    "Porque nunca chegou a ser fabricado",
+    "Porque foi lançado, mas não teve aceitação comercial ampla",
+    "Porque a patente foi negada",
+    "Porque a tecnologia não funcionava"
+   ],
+   "r": 1,
+   "exp": "Muitas invenções não encontram aplicação prática, mercado ou aceitação. Sem valor social e econômico efetivamente gerado, não há inovação."
+  },
+  {
+   "tema": "Invenção, Inovação e Tipos",
+   "q": "Quais são os quatro tipos de inovação segundo o Manual de Oslo?",
+   "op": [
+    "Incremental, radical, disruptiva e aberta",
+    "Tecnológica, social, ambiental e econômica",
+    "Produto, processo, marketing e organizacional",
+    "Interna, externa, colaborativa e individual"
+   ],
+   "r": 2,
+   "exp": "Produto, processo, marketing e organizacional. As classificações incremental, radical e disruptiva referem-se ao GRAU de ruptura, não ao tipo."
+  },
+  {
+   "tema": "Invenção, Inovação e Tipos",
+   "q": "A implementação de corte a laser na linha de produção é exemplo de inovação de:",
+   "op": [
+    "Processo",
+    "Produto",
+    "Marketing",
+    "Organizacional"
+   ],
+   "r": 0,
+   "exp": "Inovação de processo é a adoção de um novo método de produção ou distribuição — como a automação fabril."
+  },
+  {
+   "tema": "Invenção, Inovação e Tipos",
+   "q": "A garrafa retornável da Coca-Cola com novo design para atrair jovens é exemplo de inovação de:",
+   "op": [
+    "Marketing",
+    "Produto",
+    "Processo",
+    "Organizacional"
+   ],
+   "r": 0,
+   "exp": "Inovação de marketing envolve novo método de comercialização — design, embalagem, posicionamento, promoção ou preço."
+  },
+  {
+   "tema": "Invenção, Inovação e Tipos",
+   "q": "Estabelecer equipes interdisciplinares e um novo método de gestão do conhecimento são exemplos de inovação:",
+   "op": [
+    "De produto",
+    "De processo",
+    "De marketing",
+    "Organizacional"
+   ],
+   "r": 3,
+   "exp": "Inovação organizacional trata de novos métodos nas práticas de negócio, na organização do trabalho ou nas relações externas da empresa."
+  },
+  {
+   "tema": "Invenção, Inovação e Tipos",
+   "q": "A melhoria contínua dos celulares a cada geração caracteriza inovação:",
+   "op": [
+    "Radical",
+    "Disruptiva",
+    "Incremental",
+    "Organizacional"
+   ],
+   "r": 2,
+   "exp": "Pequenas melhorias sucessivas configuram inovação incremental — o tipo mais comum no cotidiano das empresas."
+  },
+  {
+   "tema": "Invenção, Inovação e Tipos",
+   "q": "A substituição do vinil pelo CD é exemplo de inovação:",
+   "op": [
+    "Incremental",
+    "Disruptiva",
+    "Radical",
+    "De marketing"
+   ],
+   "r": 2,
+   "exp": "Houve quebra tecnológica dentro do mesmo mercado — o da música gravada. A mudança de tecnologia não alterou quem eram os players dominantes."
+  },
+  {
+   "tema": "Invenção, Inovação e Tipos",
+   "q": "O surgimento do streaming com a Netflix é exemplo de inovação:",
+   "op": [
+    "Incremental",
+    "Radical",
+    "Disruptiva",
+    "De processo"
+   ],
+   "r": 2,
+   "exp": "A Netflix mudou o mercado e substituiu empresas consolidadas — as locadoras de vídeo. Disrupção é ruptura de MERCADO, não apenas de tecnologia."
+  },
+  {
+   "tema": "Invenção, Inovação e Tipos",
+   "q": "Qual a diferença entre inovação radical e disruptiva?",
+   "op": [
+    "Radical é mais recente que disruptiva",
+    "Radical ocorre em produtos e disruptiva em serviços",
+    "Radical é quebra tecnológica dentro do mesmo mercado; disruptiva muda o mercado e substitui empresas consolidadas",
+    "São a mesma coisa com nomes diferentes"
+   ],
+   "r": 2,
+   "exp": "Essa é a distinção mais cobrada. Nem toda inovação radical é disruptiva: pode haver ruptura tecnológica sem que os líderes de mercado sejam derrubados."
+  },
+  {
+   "tema": "Invenção, Inovação e Tipos",
+   "q": "Quem popularizou o termo 'inovação disruptiva'?",
+   "op": [
+    "Clayton Christensen",
+    "Joseph Schumpeter",
+    "Henry Chesbrough",
+    "David Kelley"
+   ],
+   "r": 0,
+   "exp": "Christensen popularizou o conceito. Schumpeter é o da destruição criativa; Chesbrough, o da inovação aberta; Kelley, o da confiança criativa."
+  },
+  {
+   "tema": "Invenção, Inovação e Tipos",
+   "q": "Segundo Schumpeter, a inovação está associada ao conceito de:",
+   "op": [
+    "Vantagem comparativa",
+    "Vantagem competitiva sustentável",
+    "Destruição criativa",
+    "Curva de aprendizagem"
+   ],
+   "r": 2,
+   "exp": "Destruição criativa: novos produtos e processos substituem os antigos, e é essa destruição que impulsiona o desenvolvimento econômico."
+  },
+  {
+   "tema": "Invenção, Inovação e Tipos",
+   "q": "Qual das alternativas NÃO representa inovação?",
+   "op": [
+    "Adotar um novo método de gestão do conhecimento",
+    "Manter os processos antigos sem nenhuma alteração",
+    "Lançar uma embalagem com design inédito",
+    "Automatizar a linha de produção com corte a laser"
+   ],
+   "r": 1,
+   "exp": "Inovação exige novidade aplicada que gere valor. Manter tudo como está é justamente a ausência de inovação."
+  },
+  {
+   "tema": "Invenção, Inovação e Tipos",
+   "q": "O Nubank é frequentemente citado como exemplo de qual tipo de inovação, e por quê?",
+   "op": [
+    "Incremental, por melhorar aplicativos bancários existentes",
+    "De processo, por automatizar a análise de crédito",
+    "Organizacional, por adotar times ágeis",
+    "Disruptiva, por simplificar serviços bancários e forçar os bancos tradicionais a mudar"
+   ],
+   "r": 3,
+   "exp": "Ao eliminar tarifas e agências e atender um público insatisfeito, deslocou a lógica do mercado e obrigou os incumbentes a reagir — o padrão descrito por Christensen."
+  },
+  {
+   "tema": "Ecossistemas de Inovação",
+   "q": "O que caracteriza um ecossistema de inovação?",
+   "op": [
+    "A concentração de empresas de tecnologia em uma mesma cidade",
+    "O volume de investimento público em pesquisa",
+    "A existência de leis de incentivo fiscal",
+    "A conexão entre empresas, governo, universidades e consumidores"
+   ],
+   "r": 3,
+   "exp": "A característica essencial (Seed, 2016) é a conexão entre os atores — nenhum deles inova sozinho, e é a articulação entre eles que gera o ambiente fértil."
+  },
+  {
+   "tema": "Ecossistemas de Inovação",
+   "q": "A tríplice hélice da inovação envolve:",
+   "op": [
+    "Governo, empresas e universidades",
+    "Startups, investidores e aceleradoras",
+    "Pesquisa, desenvolvimento e produção",
+    "Produto, processo e mercado"
+   ],
+   "r": 0,
+   "exp": "Governo (políticas e financiamento), empresas (mercado e escala) e universidades (pesquisa e talento). Algumas versões acrescentam a sociedade como quarta hélice."
+  },
+  {
+   "tema": "Ecossistemas de Inovação",
+   "q": "Por que o Vale do Silício é o exemplo clássico de ecossistema de inovação?",
+   "op": [
+    "Porque concentra as maiores empresas de tecnologia do mundo",
+    "Porque possui a maior carga de incentivos fiscais dos EUA",
+    "Porque integra universidades, investidores, startups, governo e uma cultura empreendedora",
+    "Porque tem o maior número de patentes registradas"
+   ],
+   "r": 2,
+   "exp": "Não é apenas a concentração de empresas: é a articulação entre os atores somada a uma cultura que tolera o fracasso — o elemento mais difícil de replicar."
+  },
+  {
+   "tema": "Ecossistemas de Inovação",
+   "q": "Qual destas é uma barreira comum à inovação nas organizações?",
+   "op": [
+    "Excesso de tolerância ao erro",
+    "Resistência cultural, falta de investimento e burocracia",
+    "Estrutura organizacional horizontal",
+    "Investimento contínuo em pesquisa"
+   ],
+   "r": 1,
+   "exp": "Medo do novo, escassez de recursos e excesso de processos travam a inovação. Tolerância ao erro e estruturas horizontais, ao contrário, a favorecem."
+  },
+  {
+   "tema": "Ecossistemas de Inovação",
+   "q": "Quais habilidades são apontadas como essenciais no profissional inovador?",
+   "op": [
+    "Especialização técnica profunda e trabalho isolado",
+    "Curiosidade, resiliência e boa comunicação",
+    "Obediência a processos e aversão ao risco",
+    "Domínio exclusivo de ferramentas de gestão"
+   ],
+   "r": 1,
+   "exp": "Curiosidade gera as perguntas, resiliência sustenta as tentativas frustradas e comunicação permite que a ideia sobreviva fora da cabeça de quem a teve."
+  },
+  {
+   "tema": "Ecossistemas de Inovação",
+   "q": "O que é inovação aberta (open innovation)?",
+   "op": [
+    "Publicar todo o código-fonte da empresa",
+    "Combinar fluxos internos e externos de conhecimento, colaborando com startups, universidades e parceiros",
+    "Inovar apenas com a equipe interna de P&D",
+    "Permitir que qualquer funcionário proponha ideias"
+   ],
+   "r": 1,
+   "exp": "Conceito de Henry Chesbrough: a empresa reconhece que nem todo o conhecimento útil está dentro dela e estrutura a colaboração com o ambiente externo."
+  },
+  {
+   "tema": "Design Thinking",
+   "q": "Assinale a alternativa correta sobre o Design Thinking:",
+   "op": [
+    "Busca a formulação de questionamentos pela compreensão dos fenômenos",
+    "É uma ferramenta tradicional de resolver problemas",
+    "A investigação da experiência do cliente ocorre por meio de dados estatísticos",
+    "Não é possível a cocriação de soluções"
+   ],
+   "r": 0,
+   "exp": "O Design Thinking se fundamenta na compreensão profunda das necessidades humanas, na formulação de questionamentos e na cocriação — não em levantamento estatístico."
+  },
+  {
+   "tema": "Design Thinking",
+   "q": "Sobre a abordagem do Design Thinking, é correto afirmar que:",
+   "op": [
+    "Segue um processo linear e rígido",
+    "Coloca o ser humano no centro do processo, buscando soluções por meio da empatia e da cocriação",
+    "É restrito ao design gráfico",
+    "Dispensa testes e validações"
+   ],
+   "r": 1,
+   "exp": "O Design Thinking é centrado no ser humano e iterativo, permitindo ajustes constantes a partir do que se aprende nos testes."
+  },
+  {
+   "tema": "Design Thinking",
+   "q": "Quais são as cinco fases do Design Thinking no modelo da d.school?",
+   "op": [
+    "Planejar, executar, controlar, encerrar e revisar",
+    "Pesquisar, projetar, construir, lançar e medir",
+    "Observar, analisar, decidir, implantar e auditar",
+    "Empatizar, definir, idear, prototipar e testar"
+   ],
+   "r": 3,
+   "exp": "Empatizar → Definir → Idear → Prototipar → Testar. No Brasil também se usa o modelo em três etapas: imersão, ideação e prototipação."
+  },
+  {
+   "tema": "Design Thinking",
+   "q": "O que se busca na fase de imersão ou empatia?",
+   "op": [
+    "Selecionar a melhor solução entre as alternativas geradas",
+    "Construir o protótipo funcional",
+    "Validar o produto com métricas de mercado",
+    "Compreender profundamente o usuário e questionar até o próprio enunciado do problema"
+   ],
+   "r": 3,
+   "exp": "É a fase de pesquisa qualitativa: entrevistas, observação, mapa de empatia e jornada. Frequentemente ela revela que o problema declarado não era o problema real."
+  },
+  {
+   "tema": "Design Thinking",
+   "q": "O que representa o modelo do duplo diamante?",
+   "op": [
+    "Duas equipes trabalhando em paralelo sobre o mesmo problema",
+    "A comparação entre duas alternativas de solução",
+    "As duas fases obrigatórias: análise e implementação",
+    "Divergir e convergir duas vezes: uma sobre o problema e outra sobre a solução"
+   ],
+   "r": 3,
+   "exp": "Primeiro se abre a exploração do problema e se afunila para defini-lo; depois se abre a geração de soluções e se afunila para escolher uma."
+  },
+  {
+   "tema": "Design Thinking",
+   "q": "Segundo David Kelley, o principal obstáculo à criatividade é:",
+   "op": [
+    "A falta de talento inato",
+    "A ausência de recursos financeiros",
+    "O medo do julgamento",
+    "A falta de formação em design"
+   ],
+   "r": 2,
+   "exp": "Kelley, fundador da IDEO, defende que a criatividade é capacidade que se desenvolve — o que a bloqueia é o receio de ser avaliado, não a ausência de dom."
+  },
+  {
+   "tema": "Design Thinking",
+   "q": "Qual a principal vantagem do brainwriting sobre o brainstorming?",
+   "op": [
+    "Reduz a influência dos participantes mais falantes e a inibição dos mais tímidos",
+    "Produz menos ideias, facilitando a seleção",
+    "Elimina a necessidade de um facilitador",
+    "Só funciona com equipes pequenas"
+   ],
+   "r": 0,
+   "exp": "Ao escrever antes de compartilhar, cada participante formula sua ideia sem ser ancorado pela primeira sugestão nem constrangido pela hierarquia do grupo."
+  },
+  {
+   "tema": "Tecnologias Emergentes",
+   "q": "O que caracteriza a manufatura aditiva?",
+   "op": [
+    "A remoção de material de um bloco bruto",
+    "A moldagem por injeção em alta temperatura",
+    "A montagem automatizada de peças pré-fabricadas",
+    "A construção do objeto camada por camada a partir de um modelo digital"
+   ],
+   "r": 3,
+   "exp": "É o oposto da manufatura subtrativa. Daí decorrem suas vantagens: geometrias impossíveis por outros métodos, personalização e menos desperdício."
+  },
+  {
+   "tema": "Tecnologias Emergentes",
+   "q": "Qual a diferença entre microprocessador e microcontrolador?",
+   "op": [
+    "O microprocessador é sempre mais barato",
+    "O microcontrolador não pode ser programado",
+    "O microcontrolador integra CPU, memória e periféricos de E/S em um único chip",
+    "O microprocessador só existe em sistemas embarcados"
+   ],
+   "r": 2,
+   "exp": "O microprocessador é apenas a CPU e depende de componentes externos. O microcontrolador é um sistema completo em um chip, voltado a aplicações específicas com baixo consumo."
+  },
+  {
+   "tema": "Tecnologias Emergentes",
+   "q": "Onde e com que proposta surgiu o Arduino?",
+   "op": [
+    "Nos EUA, em 2010, como produto comercial fechado",
+    "No Japão, em 1998, para automação industrial",
+    "Na Alemanha, em 2012, como padrão para IoT",
+    "Na Itália, em 2005, como plataforma aberta de prototipagem voltada a não engenheiros"
+   ],
+   "r": 3,
+   "exp": "Nasceu no Interaction Design Institute de Ivrea, na Itália. Hardware e software abertos, IDE simples e comunidade ampla o tornaram a porta de entrada do movimento maker."
+  },
+  {
+   "tema": "Tecnologias Emergentes",
+   "q": "Qual a diferença entre realidade virtual e realidade aumentada?",
+   "op": [
+    "A RV sobrepõe elementos ao mundo real; a RA substitui o mundo real",
+    "A RV substitui o ambiente real por um digital; a RA sobrepõe elementos digitais ao ambiente real",
+    "A RV é usada apenas em jogos; a RA apenas na indústria",
+    "Não há diferença técnica entre elas"
+   ],
+   "r": 1,
+   "exp": "A RV isola o usuário em um ambiente totalmente digital, exigindo headset. A RA mantém o mundo real visível e acrescenta camadas digitais, funcionando até no celular."
+  },
+  {
+   "tema": "Tecnologias Emergentes",
+   "q": "O que é gamificação?",
+   "op": [
+    "O desenvolvimento de jogos digitais para entretenimento",
+    "A conversão de qualquer processo em um jogo completo",
+    "A aplicação de inteligência artificial em jogos",
+    "O uso de elementos de jogos em contextos que não são jogos, para aumentar engajamento"
+   ],
+   "r": 3,
+   "exp": "Gamificação não é criar um jogo: é usar mecânicas de jogo — pontos, medalhas, rankings, desafios, feedback imediato — em educação, saúde, trabalho ou fidelização."
+  },
+  {
+   "tema": "Tecnologias Emergentes",
+   "q": "Qual aplicativo é o exemplo histórico clássico de gamificação?",
+   "op": [
+    "Foursquare",
+    "Instagram",
+    "WhatsApp",
+    "Netflix"
+   ],
+   "r": 0,
+   "exp": "O Foursquare transformou o simples check-in em disputa social com badges e o título de 'prefeito' do local — tornando-se o caso de estudo mais citado."
+  },
+  {
+   "tema": "Tecnologias Emergentes",
+   "q": "Qual é o principal desafio da Internet das Coisas?",
+   "op": [
+    "Segurança e privacidade dos dados coletados",
+    "A falta de dispositivos disponíveis no mercado",
+    "A impossibilidade de conectar objetos à internet",
+    "O custo proibitivo dos sensores"
+   ],
+   "r": 0,
+   "exp": "Dispositivos numerosos, baratos e raramente atualizados formam uma superfície de ataque enorme — e coletam dados sensíveis sobre a rotina das pessoas."
+  }
+ ],
+ "discursivas": [
+  {
+   "tema": "Invenção, Inovação e Tipos",
+   "q": "Diferencie inovação incremental, radical e disruptiva, apresentando um exemplo real de cada uma.",
+   "r": "A inovação incremental consiste em pequenas melhorias contínuas sobre algo que já existe, sem alterar a lógica do produto nem a estrutura do mercado. É o tipo mais comum no dia a dia das empresas, porque é de menor risco e aproveita a base instalada — o exemplo típico é a atualização anual dos celulares, com câmera um pouco melhor e bateria um pouco maior, ou o aperfeiçoamento sucessivo de softwares de georreferenciamento. A inovação radical envolve uma quebra tecnológica significativa, mas que ocorre dentro do mesmo mercado: muda-se profundamente como algo é feito, sem que necessariamente os líderes do setor sejam derrubados. A substituição do vinil pelo CD é o caso clássico, assim como o iPhone em 2007, que redefiniu o que era um telefone celular. Já a inovação disruptiva altera a própria lógica do mercado, criando um novo modelo de negócio que torna obsoletos os incumbentes e frequentemente os elimina. Segundo Clayton Christensen, que popularizou o conceito, a disrupção costuma começar em um nicho desatendido ou de baixa margem — por isso é inicialmente ignorada pelos líderes, que não a veem como ameaça — e vai subindo até dominar o mercado principal. A Netflix é o exemplo mais citado, tendo substituído as locadoras de vídeo; o Uber transformou o transporte urbano individual; e, no Brasil, o Nubank simplificou os serviços bancários e forçou os bancos tradicionais a mudar suas práticas de tarifas e atendimento. A distinção que mais se cobra é justamente entre radical e disruptiva: a primeira é ruptura tecnológica dentro do mercado existente, a segunda é ruptura do próprio mercado — e nem toda inovação radical chega a ser disruptiva."
+  },
+  {
+   "tema": "Design Thinking",
+   "q": "Explique o que é o Design Thinking, suas etapas e por que ele é considerado centrado no ser humano.",
+   "r": "O Design Thinking é uma abordagem voltada à solução criativa de problemas que se fundamenta na compreensão profunda das necessidades humanas e na formulação de questionamentos sobre os fenômenos observados, em vez de partir direto para a solução. Ele é centrado no ser humano porque coloca as pessoas afetadas pelo problema no centro do processo: a investigação da experiência do usuário se dá principalmente por pesquisa qualitativa — entrevistas em profundidade, observação, mapa de empatia e jornada do usuário — e não por dados estatísticos, e as soluções são construídas em cocriação com esses usuários, não apenas para eles. Suas etapas, no modelo da d.school, são cinco: empatizar, definir, idear, prototipar e testar; no Brasil também se usa o modelo em três fases — imersão ou compreensão do problema, ideação e prototipação com testagem. Na imersão, pesquisa-se profundamente o contexto, chegando com frequência à conclusão de que o problema declarado não era o problema real. Na definição, sintetiza-se o achado em um enunciado claro. Na ideação, gera-se o maior número possível de alternativas sem julgamento prévio, com técnicas como brainstorming e brainwriting. Na prototipação, materializa-se a ideia de forma rápida e barata para poder testá-la, e na testagem valida-se com usuários reais. Um traço decisivo é que o processo não é linear nem rígido: ele é iterativo, permitindo voltar a etapas anteriores sempre que os testes revelam algo novo, o que se representa também pelo duplo diamante — divergir e convergir duas vezes, uma sobre o problema e outra sobre a solução. Vale registrar o que o Design Thinking não é, pois costuma ser cobrado: não é uma ferramenta tradicional de resolução de problemas, não se restringe ao design gráfico e não dispensa testes e validações."
+  }
+ ]
+}
