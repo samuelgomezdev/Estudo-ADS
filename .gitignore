@@ -1,5 +1,6 @@
-# versão local: aponta para os PDFs que ficam no seu computador
-index.html
+# versão local da raiz: aponta para os PDFs que ficam no seu computador
+# (a barra inicial garante que só o index.html da raiz é ignorado, não o docs/index.html)
+/index.html
 
 # lixo do sistema
 Thumbs.db
