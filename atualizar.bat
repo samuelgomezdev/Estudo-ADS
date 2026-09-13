@@ -67,5 +67,5 @@ if errorlevel 1 (
 rem ---------- 3. abrir a versao local ----------
 echo.
 echo  Pronto. Abrindo o site local...
-timeout /t 1 >nul
+ping -n 2 127.0.0.1 >nul
 start "" "index.html"
