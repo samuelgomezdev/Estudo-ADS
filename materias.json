@@ -104,7 +104,8 @@
       "nome": "Responsive Web Development",
       "periodo": 3,
       "sigla": "RWD",
-      "cor": "#06b6d4"
+      "cor": "#06b6d4",
+      "sem_pasta": true
     }
   }
 }
