@@ -7,12 +7,6 @@
    "href": "../UI%20e%20UX/A%20import%C3%A2ncia%20dos%20prot%C3%B3tipos%20no%20desenvolvimento%20de%20sistemas%20_%20ThiagoNasc.com.pdf"
   },
   {
-   "nome": "afetividademundos3d",
-   "ext": "pdf",
-   "tam": "627 KB",
-   "href": "../UI%20e%20UX/afetividademundos3d.pdf"
-  },
-  {
    "nome": "ANÁLISE E PROPOSTA DE MELHORIAS na empresa",
    "ext": "pdf",
    "tam": "466 KB",
@@ -61,18 +55,6 @@
    "href": "../UI%20e%20UX/F%C3%B3rum%20Tem%C3%A1tico%20-%20UX%20Design%5B1%5D.pdf"
   },
   {
-   "nome": "frameworkinterfaceeducativa",
-   "ext": "pdf",
-   "tam": "3.1 MB",
-   "href": "../UI%20e%20UX/frameworkinterfaceeducativa.pdf"
-  },
-  {
-   "nome": "graficoatividade",
-   "ext": "pdf",
-   "tam": "1.1 MB",
-   "href": "../UI%20e%20UX/graficoatividade.pdf"
-  },
-  {
    "nome": "Home _ Web Accessibility Initiative (WAI) _ W3C",
    "ext": "pdf",
    "tam": "561 KB",
@@ -115,16 +97,16 @@
    "href": "../UI%20e%20UX/Origami%20Studio%20%E2%80%94%20Origami%20Studio%203.pdf"
   },
   {
-   "nome": "Pesquisadores criam interface que faz cérebro 'sentir' a presença de próteses - Olhar Digital",
-   "ext": "pdf",
-   "tam": "11.2 MB",
-   "href": "../UI%20e%20UX/Pesquisadores%20criam%20interface%20que%20faz%20c%C3%A9rebro%20%27sentir%27%20a%20presen%C3%A7a%20de%20pr%C3%B3teses%20-%20Olhar%20Digital.pdf"
-  },
-  {
    "nome": "PMKB _ Tipos de interfaces conhecidas e gerenciadas em projetos - PMKB Project Management _ Gestão de Projetos",
    "ext": "pdf",
    "tam": "1.1 MB",
    "href": "../UI%20e%20UX/PMKB%20_%20Tipos%20de%20interfaces%20conhecidas%20e%20gerenciadas%20em%20projetos%20-%20PMKB%20Project%20Management%20_%20Gest%C3%A3o%20de%20Projetos.pdf"
+  },
+  {
+   "nome": "Pesquisadores criam interface que faz cérebro 'sentir' a presença de próteses - Olhar Digital",
+   "ext": "pdf",
+   "tam": "11.2 MB",
+   "href": "../UI%20e%20UX/Pesquisadores%20criam%20interface%20que%20faz%20c%C3%A9rebro%20%27sentir%27%20a%20presen%C3%A7a%20de%20pr%C3%B3teses%20-%20Olhar%20Digital.pdf"
   },
   {
    "nome": "Processos de design de IHC I",
@@ -175,22 +157,10 @@
    "href": "../UI%20e%20UX/Samsung%20desenvolve%20alternativa%20%C3%A0%20barra%20de%20navega%C3%A7%C3%A3o%20do%20Android%20-%20Olhar%20Digital.pdf"
   },
   {
-   "nome": "SciELO Brasil - Metodologia para avaliação do nível de usabilidade de bibliotecas digitais_ um estudo na Biblioteca Virtual de Saúde",
-   "ext": "pdf",
-   "tam": "728 KB",
-   "href": "../UI%20e%20UX/SciELO%20Brasil%20-%20Metodologia%20para%20avalia%C3%A7%C3%A3o%20do%20n%C3%ADvel%20de%20usabilidade%20de%20bibliotecas%20digitais_%20um%20estudo%20na%20Biblioteca%20Virtual%20de%20Sa%C3%BAde.pdf"
-  },
-  {
-   "nome": "SciELO Brasil - Planejamento da assistência de enfermagem_ proposta de um software-protótipo",
+   "nome": "SciELO Brasil - Planejamento da assistência de enfermagem_ proposta de um software-protótipo Planejamento da assistência de enfermagem_ proposta de um software-protótipo",
    "ext": "pdf",
    "tam": "2.2 MB",
-   "href": "../UI%20e%20UX/SciELO%20Brasil%20-%20Planejamento%20da%20assist%C3%AAncia%20de%20enfermagem_%20proposta%20de%20um%20software-prot%C3%B3tipo.pdf"
-  },
-  {
-   "nome": "SciELO Brasil - Recomendações de usabilidade e acessibilidade para interface de telefone celular visando o público idoso",
-   "ext": "pdf",
-   "tam": "5.1 MB",
-   "href": "../UI%20e%20UX/SciELO%20Brasil%20-%20Recomenda%C3%A7%C3%B5es%20de%20usabilidade%20e%20acessibilidade%20para%20interface%20de%20telefone%20celular%20visando%20o%20p%C3%BAblico%20idoso.pdf"
+   "href": "../UI%20e%20UX/SciELO%20Brasil%20-%20Planejamento%20da%20assist%C3%AAncia%20de%20enfermagem_%20proposta%20de%20um%20software-prot%C3%B3tipo%20Planejamento%20da%20assist%C3%AAncia%20de%20enfermagem_%20proposta%20de%20um%20software-prot%C3%B3tipo.pdf"
   },
   {
    "nome": "Seleção do Comportamento",
@@ -215,6 +185,24 @@
    "ext": "pdf",
    "tam": "4.1 MB",
    "href": "../UI%20e%20UX/Webflow_%20Create%20a%20custom%20website%20_%20Visual%20website%20builder.pdf"
+  },
+  {
+   "nome": "afetividademundos3d",
+   "ext": "pdf",
+   "tam": "627 KB",
+   "href": "../UI%20e%20UX/afetividademundos3d.pdf"
+  },
+  {
+   "nome": "frameworkinterfaceeducativa",
+   "ext": "pdf",
+   "tam": "3.1 MB",
+   "href": "../UI%20e%20UX/frameworkinterfaceeducativa.pdf"
+  },
+  {
+   "nome": "graficoatividade",
+   "ext": "pdf",
+   "tam": "1.1 MB",
+   "href": "../UI%20e%20UX/graficoatividade.pdf"
   }
  ],
  "Arquitetura de Computadores": [
@@ -1471,24 +1459,6 @@
    "ext": "pdf",
    "tam": "5.2 MB",
    "href": "../Inova%C3%A7%C3%A3o%20Disruptiva/Saib%20mais%20sobre%20as%20Placas%20Arduino%20-%20Hist%C3%B3ria%20at%C3%A9%20o%20Arduino%20UNO.pdf"
-  },
-  {
-   "nome": "SciELO - Saúde Pública - Desenvolvimento de um dispositivo eletrônico para organizar medicamentos e promover a adesão medicamentosa Desenvolvimento de um dispositivo eletrônico para organizar medicamentos e promover a adesão medicamentosa",
-   "ext": "pdf",
-   "tam": "221 KB",
-   "href": "../Inova%C3%A7%C3%A3o%20Disruptiva/SciELO%20-%20Sa%C3%BAde%20P%C3%BAblica%20-%20Desenvolvimento%20de%20um%20dispositivo%20eletr%C3%B4nico%20para%20organizar%20medicamentos%20e%20promover%20a%20ades%C3%A3o%20medicamentosa%20Desenvolvimento%20de%20um%20dispositivo%20eletr%C3%B4nico%20para%20organizar%20medicamentos%20e%20promover%20a%20ades%C3%A3o%20medicamentosa.pdf"
-  },
-  {
-   "nome": "SciELO - Saúde Pública - Política de Ciência, Tecnologia e Inovação em Saúde (CT&I_S)_ uma atualização para debate Política de Ciência, Tecnologia e Inovação em Saúde (CT&I_S)_ uma atualização para debate",
-   "ext": "pdf",
-   "tam": "302 KB",
-   "href": "../Inova%C3%A7%C3%A3o%20Disruptiva/SciELO%20-%20Sa%C3%BAde%20P%C3%BAblica%20-%20Pol%C3%ADtica%20de%20Ci%C3%AAncia%2C%20Tecnologia%20e%20Inova%C3%A7%C3%A3o%20em%20Sa%C3%BAde%20%28CT%26I_S%29_%20uma%20atualiza%C3%A7%C3%A3o%20para%20debate%20Pol%C3%ADtica%20de%20Ci%C3%AAncia%2C%20Tecnologia%20e%20Inova%C3%A7%C3%A3o%20em%20Sa%C3%BAde%20%28CT%26I_S%29_%20uma%20atualiza%C3%A7%C3%A3o%20para%20debate.pdf"
-  },
-  {
-   "nome": "SciELO Brasil - A organização do ambiente virtual de aprendizagem na EaD_ o ponto de vista dos estudantes A organização do ambiente virtual de aprendizagem na EaD_ o ponto de vista dos estudantes",
-   "ext": "pdf",
-   "tam": "3.8 MB",
-   "href": "../Inova%C3%A7%C3%A3o%20Disruptiva/SciELO%20Brasil%20-%20A%20organiza%C3%A7%C3%A3o%20do%20ambiente%20virtual%20de%20aprendizagem%20na%20EaD_%20o%20ponto%20de%20vista%20dos%20estudantes%20A%20organiza%C3%A7%C3%A3o%20do%20ambiente%20virtual%20de%20aprendizagem%20na%20EaD_%20o%20ponto%20de%20vista%20dos%20estudantes.pdf"
   },
   {
    "nome": "TN_STO_265_522_36488",
