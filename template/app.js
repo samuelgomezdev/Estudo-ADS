@@ -10,6 +10,7 @@
 
   var ABAS = [
     ["resumo", "Resumo", function (m) { return m.resumos.length; }],
+    ["lab", "Laboratório", function (m) { return (m.labs || []).length; }],
     ["cards", "Flashcards", function (m) { return m.flashcards.length; }],
     ["quiz", "Quiz", function (m) { return m.questoes.length; }],
     ["simulado", "Simulado", function (m) { return m.questoes.length >= 5 ? m.questoes.length : 0; }],
@@ -388,7 +389,7 @@
 
     ABAS.forEach(function (a) { $("#pane-" + a[0]).classList.toggle("on", a[0] === aba); });
 
-    ({ resumo: renderResumo, cards: renderCards, quiz: telaQuiz, simulado: telaSimulado,
+    ({ resumo: renderResumo, lab: renderLab, cards: renderCards, quiz: telaQuiz, simulado: telaSimulado,
        disc: renderDisc, colas: renderColas, material: renderMaterial })[aba](m);
   }
 
@@ -427,6 +428,220 @@
       caixas.forEach(function (d) { d.classList.toggle("open", tudoAberto); });
       bAbrir.textContent = tudoAberto ? "Fechar todos" : "Abrir todos";
     };
+  }
+
+  // ---------------------------------------------------------- laboratório (empirismo)
+  // Modo "aprender fazendo": roda o código de verdade num Web Worker (thread
+  // separada, sem acesso ao DOM) para poder cronometrar e matar um loop
+  // infinito sem travar a página. Se o navegador não tiver Worker (ou a
+  // criação falhar, ex.: alguma política de CSP), cai para execução direta.
+  var CHAVE_LAB = "estudo-ads-lab:";
+  var rascunhosLab = null;
+
+  function carregaRascunhosLab() {
+    if (!rascunhosLab) rascunhosLab = lerLS(CHAVE_LAB, {}) || {};
+    return rascunhosLab;
+  }
+  function salvaRascunhoLab(mid, i, codigo, original) {
+    var r = carregaRascunhosLab();
+    var chave = mid + "#" + i;
+    if (codigo && codigo !== original) r[chave] = codigo;
+    else delete r[chave];
+    return gravarLS(CHAVE_LAB, r);
+  }
+  function leRascunhoLab(mid, i, original) {
+    var v = carregaRascunhosLab()[mid + "#" + i];
+    return v == null ? original : v;
+  }
+
+  function formatarValor(v) {
+    if (typeof v === "string") return v;
+    if (v === undefined) return "undefined";
+    try { return JSON.stringify(v); } catch (e) { return String(v); }
+  }
+
+  var TIMEOUT_LAB = 3000;
+
+  function rodarNoWorker(codigo, cb) {
+    var src = [
+      "self.onmessage = function (ev) {",
+      "  var linhas = [];",
+      "  function fmt(v) {",
+      "    if (typeof v === 'string') return v;",
+      "    if (v === undefined) return 'undefined';",
+      "    try { return JSON.stringify(v); } catch (e) { return String(v); }",
+      "  }",
+      "  function empilha(prefixo, args) {",
+      "    linhas.push({ tipo: prefixo, texto: Array.prototype.map.call(args, fmt).join(' ') });",
+      "  }",
+      "  var consoleFalso = {",
+      "    log: function () { empilha('log', arguments); },",
+      "    info: function () { empilha('log', arguments); },",
+      "    warn: function () { empilha('warn', arguments); },",
+      "    error: function () { empilha('error', arguments); }",
+      "  };",
+      "  try {",
+      "    (new Function('console', ev.data))(consoleFalso);",
+      "    self.postMessage({ ok: true, linhas: linhas });",
+      "  } catch (e) {",
+      "    self.postMessage({ ok: false, linhas: linhas, erro: e.message });",
+      "  }",
+      "};"
+    ].join("\n");
+    var url;
+    try {
+      url = URL.createObjectURL(new Blob([src], { type: "application/javascript" }));
+      var worker = new Worker(url);
+    } catch (e) {
+      if (url) URL.revokeObjectURL(url);
+      return false;
+    }
+    var pronto = false;
+    var tempo = setTimeout(function () {
+      if (pronto) return;
+      pronto = true;
+      worker.terminate();
+      URL.revokeObjectURL(url);
+      cb({ ok: false, linhas: [], erro: "Tempo esgotado (mais de 3s) — pode ter um loop infinito." });
+    }, TIMEOUT_LAB);
+    worker.onmessage = function (ev) {
+      if (pronto) return;
+      pronto = true;
+      clearTimeout(tempo);
+      worker.terminate();
+      URL.revokeObjectURL(url);
+      cb(ev.data);
+    };
+    worker.onerror = function (ev) {
+      if (pronto) return;
+      pronto = true;
+      ev.preventDefault();
+      clearTimeout(tempo);
+      worker.terminate();
+      URL.revokeObjectURL(url);
+      cb({ ok: false, linhas: [], erro: ev.message || "Erro ao executar." });
+    };
+    worker.postMessage(codigo);
+    return true;
+  }
+
+  function rodarNaMesmaThread(codigo, cb) {
+    var linhas = [];
+    function empilha(tipo) {
+      return function () {
+        linhas.push({ tipo: tipo, texto: Array.prototype.map.call(arguments, formatarValor).join(" ") });
+      };
+    }
+    var consoleFalso = { log: empilha("log"), info: empilha("log"), warn: empilha("warn"), error: empilha("error") };
+    try {
+      (new Function("console", codigo))(consoleFalso);
+      cb({ ok: true, linhas: linhas });
+    } catch (e) {
+      cb({ ok: false, linhas: linhas, erro: e.message });
+    }
+  }
+
+  function rodarCodigo(codigo, cb) {
+    var usouWorker = typeof Worker !== "undefined" && rodarNoWorker(codigo, cb);
+    if (!usouWorker) rodarNaMesmaThread(codigo, cb);
+  }
+
+  var labTema = null;
+  function renderLab(m) {
+    var h = $("#pane-lab"); h.innerHTML = "";
+    var labs = m.labs || [];
+    if (!labs.length) return vazio(h, "Sem laboratório ainda",
+      "Acrescente a chave \"labs\" em bancos/" + m.id + ".json e rode o atualizar.bat.");
+
+    h.appendChild(el("p", "sub",
+      "Aprenda fazendo: leia o código, rode, altere o que o enunciado pedir e rode de novo para ver o efeito na prática. O código roda de verdade, aqui no navegador."));
+
+    var temas = temasDe(labs);
+    if (labTema && temas.indexOf(labTema) < 0) labTema = null;
+    h.appendChild(barraChips(temas, labs, labTema, function (t) { labTema = t; renderLab(m); }));
+
+    var lista = labTema ? labs.filter(function (l) { return l.tema === labTema; }) : labs;
+    lista.forEach(function (lab) {
+      h.appendChild(montaLab(m, lab, labs.indexOf(lab)));
+    });
+  }
+
+  function montaLab(m, lab, i) {
+    var c = el("div", "lab");
+    c.appendChild(el("div", "fc-t", lab.tema));
+    c.appendChild(el("div", "lab-titulo", lab.titulo));
+    c.appendChild(el("p", "lab-enun", lab.enunciado));
+
+    var ta = el("textarea", "lab-code");
+    ta.spellcheck = false;
+    ta.setAttribute("aria-label", "Código de: " + lab.titulo);
+    ta.value = leRascunhoLab(m.id, i, lab.code);
+    c.appendChild(ta);
+
+    var linha = el("div", "row lab-acoes");
+    var bRodar = el("button", "btn sm pri", "Rodar ▶");
+    var bReset = el("button", "btn sm", "Restaurar original");
+    var status = el("span", "dica");
+    if (ta.value !== lab.code) status.textContent = "código alterado (salvo neste navegador)";
+    linha.appendChild(bRodar); linha.appendChild(bReset); linha.appendChild(status);
+    c.appendChild(linha);
+
+    var saida = el("pre", "lab-saida");
+    saida.hidden = true;
+    saida.setAttribute("role", "status");
+    saida.setAttribute("aria-live", "polite");
+    c.appendChild(saida);
+
+    var bExp = el("button", "btn sm", "Ver explicação");
+    var exp = el("div", "exp lab-exp");
+    exp.hidden = true;
+    exp.textContent = lab.explicacao;
+
+    var espera = null;
+    ta.addEventListener("input", function () {
+      clearTimeout(espera);
+      status.textContent = "digitando…";
+      espera = setTimeout(function () {
+        var ok = salvaRascunhoLab(m.id, i, ta.value, lab.code);
+        status.textContent = ta.value === lab.code ? ""
+          : ok ? "código alterado (salvo neste navegador)" : "código alterado (não consegui salvar neste navegador)";
+      }, 500);
+    });
+
+    function pintaSaida(res) {
+      saida.hidden = false;
+      saida.innerHTML = "";
+      res.linhas.forEach(function (l) {
+        saida.appendChild(el("div", "lab-l lab-l-" + l.tipo, l.texto));
+      });
+      if (!res.ok) saida.appendChild(el("div", "lab-l lab-l-error", "Erro: " + res.erro));
+      if (!res.linhas.length && res.ok) saida.appendChild(el("div", "lab-l lab-l-vazio", "(rodou sem nenhum console.log)"));
+    }
+
+    bRodar.onclick = function () {
+      bRodar.disabled = true;
+      bRodar.textContent = "Rodando…";
+      rodarCodigo(ta.value, function (res) {
+        bRodar.disabled = false;
+        bRodar.textContent = "Rodar ▶";
+        pintaSaida(res);
+      });
+    };
+    bReset.onclick = function () {
+      if (ta.value !== lab.code && !confirm("Descartar suas alterações e voltar ao código original?")) return;
+      ta.value = lab.code;
+      salvaRascunhoLab(m.id, i, ta.value, lab.code);
+      status.textContent = "";
+      saida.hidden = true;
+    };
+    bExp.onclick = function () {
+      exp.hidden = !exp.hidden;
+      bExp.textContent = exp.hidden ? "Ver explicação" : "Ocultar explicação";
+    };
+
+    c.appendChild(bExp);
+    c.appendChild(exp);
+    return c;
   }
 
   // ---------------------------------------------------------- flashcards

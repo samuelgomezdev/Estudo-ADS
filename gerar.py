@@ -392,6 +392,7 @@ def montar(cfg):
             "questoes": b.get("questoes", []),
             "discursivas": b.get("discursivas", []),
             "colas": b.get("colas", []),
+            "labs": b.get("labs", []),
         })
     try:
         with open(CACHE, "w", encoding="utf-8") as f:

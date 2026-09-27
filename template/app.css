@@ -251,6 +251,24 @@ h3{font-size:.95rem;margin:20px 0 9px;color:var(--tx2)}
 .timer.urgente{color:var(--err);border-color:var(--err);animation:pulse 1s infinite}
 @keyframes pulse{50%{opacity:.55}}
 
+/* ---------- laboratório (empirismo) ---------- */
+.lab{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:18px;margin-bottom:14px}
+.lab-titulo{font-weight:650;font-size:1rem;margin:6px 0 8px;letter-spacing:-.2px}
+.lab-enun{color:var(--tx2);font-size:.88rem;line-height:1.6;margin-bottom:13px;max-width:76ch}
+.lab-code{width:100%;min-height:160px;background:#0a0f1e;border:1px solid var(--line);
+  border-radius:var(--rs);padding:14px 16px;color:#c9d8ff;font-family:var(--mono);
+  font-size:.85rem;line-height:1.55;resize:vertical;tab-size:2}
+.lab-code:focus{outline:none;border-color:var(--ac)}
+.lab-acoes{margin:11px 0}
+.lab-saida{margin-top:4px;background:#05070f;border:1px solid var(--line);border-left:3px solid var(--ac);
+  border-radius:var(--rs);padding:12px 15px;font-family:var(--mono);font-size:.83rem;line-height:1.7;
+  white-space:pre-wrap;word-break:break-word;max-height:320px;overflow-y:auto}
+.lab-l{white-space:pre-wrap}
+.lab-l-warn{color:var(--warn)}
+.lab-l-error{color:var(--err)}
+.lab-l-vazio{color:var(--tx3);font-style:italic}
+.lab-exp{margin-top:12px}
+
 /* ---------- discursivas ---------- */
 .disc{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:18px;margin-bottom:12px}
 .disc-q{font-weight:600;line-height:1.5;margin-bottom:12px;max-width:72ch}
