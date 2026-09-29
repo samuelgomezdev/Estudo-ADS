@@ -16,10 +16,15 @@ import json, os, re, sys, unicodedata, datetime, difflib
 from urllib.parse import quote
 
 AQUI = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, AQUI)
+from labs import ler_labs                         # noqa: E402
+
 RAIZ = os.path.dirname(AQUI)                      # a pasta Univali
 CFG = os.path.join(AQUI, "materias.json")
 BANCOS = os.path.join(AQUI, "bancos")
+LABS = os.path.join(BANCOS, "labs")
 TEMPLATE = os.path.join(AQUI, "template")
+TEMPLATE_LAB = os.path.join(TEMPLATE, "lab")
 
 EXTS = (".pdf", ".docx", ".doc", ".pptx", ".ppt", ".xlsx", ".md", ".txt", ".sql", ".puml", ".drawio")
 
@@ -374,6 +379,7 @@ def montar(cfg):
             a["href"] = href_de(pasta, a["nome"] + "." + a["ext"])
         if arqs:
             cache[pasta] = arqs          # guarda para quando o OneDrive estiver offline
+        labs, lab_bancos = ler_labs(os.path.join(LABS, meta["id"] + ".lab"), AVISOS)
         materias.append({
             "id": meta["id"],
             # o cadastro manda no título: é ele que acompanha a pasta quando você
@@ -392,7 +398,8 @@ def montar(cfg):
             "questoes": b.get("questoes", []),
             "discursivas": b.get("discursivas", []),
             "colas": b.get("colas", []),
-            "labs": b.get("labs", []),
+            "labs": labs,
+            "labBancos": lab_bancos,
         })
     try:
         with open(CACHE, "w", encoding="utf-8") as f:
@@ -434,6 +441,18 @@ def escrever(materias, destino, local):
         css = f.read()
     with open(os.path.join(TEMPLATE, "app.js"), encoding="utf-8") as f:
         js = f.read()
+    # o laboratório vive em template/lab/: os .js entram antes do app.js (que
+    # chama window.LAB) e os .css depois do app.css, em ordem alfabética
+    if os.path.isdir(TEMPLATE_LAB):
+        partes_js, partes_css = [], []
+        for arq in sorted(os.listdir(TEMPLATE_LAB)):
+            with open(os.path.join(TEMPLATE_LAB, arq), encoding="utf-8") as f:
+                if arq.endswith(".js"):
+                    partes_js.append(f.read())
+                elif arq.endswith(".css"):
+                    partes_css.append(f.read())
+        js = "\n".join(partes_js + [js])
+        css = "\n".join([css] + partes_css)
 
     dados = {
         "materias": materias,
@@ -487,16 +506,16 @@ def main():
 
     materias = montar(cfg)
 
-    print("%-38s %6s %6s %6s %6s %6s" % ("MATÉRIA", "quest", "cards", "resum", "colas", "arqs"))
-    print("-" * 76)
-    tot = [0, 0, 0, 0, 0]
+    print("%-38s %6s %6s %6s %6s %6s %6s" % ("MATÉRIA", "quest", "cards", "resum", "colas", "labs", "arqs"))
+    print("-" * 83)
+    tot = [0, 0, 0, 0, 0, 0]
     for m in materias:
         v = [len(m["questoes"]), len(m["flashcards"]), len(m["resumos"]), len(m["colas"]),
-             len(m["arquivos"]) + len(m["links"])]
+             len(m["labs"]), len(m["arquivos"]) + len(m["links"])]
         tot = [a + b for a, b in zip(tot, v)]
-        print("%-38s %6d %6d %6d %6d %6d" % (m["nome"][:38], v[0], v[1], v[2], v[3], v[4]))
-    print("-" * 76)
-    print("%-38s %6d %6d %6d %6d %6d" % ("TOTAL (%d matérias)" % len(materias), *tot))
+        print("%-38s %6d %6d %6d %6d %6d %6d" % (m["nome"][:38], *v))
+    print("-" * 83)
+    print("%-38s %6d %6d %6d %6d %6d %6d" % ("TOTAL (%d matérias)" % len(materias), *tot))
 
     if AVISOS:
         print("\nAvisos:")

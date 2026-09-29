@@ -1,0 +1,711 @@
+# Laboratório — SO - Sistemas Operacionais (simulações em JavaScript)
+# Confira tudo com #/m/so-sistemas-operacionais/lab/autoteste
+
+# =====================================================================
+# Conceitos de Sistema Operacional
+# =====================================================================
+
+=== lab so-modo-kernel
+tipo: explorar
+tema: Conceitos de Sistema Operacional
+nivel: 1
+linguagem: js
+titulo: Modo usuário, modo kernel e chamadas de sistema
+
+--- enunciado
+Simulação da separação que protege o sistema: o programa do usuário **não** mexe no hardware direto — ele pede ao kernel por uma **chamada de sistema**. Rode e depois tente o experimento do acesso direto.
+
+--- codigo
+const hardware = { disco: ["boot.cfg", "notas.txt"], acessos: 0 };
+
+const kernel = {
+  modo: "usuário",
+  // a única porta de entrada: chamadas de sistema
+  syscall(nome, ...args) {
+    this.modo = "kernel";                       // troca de modo (trap)
+    let r;
+    if (nome === "listar") r = hardware.disco.slice();
+    else if (nome === "criar") { hardware.disco.push(args[0]); r = "ok"; }
+    else r = "chamada desconhecida";
+    hardware.acessos++;
+    this.modo = "usuário";                      // volta ao modo usuário
+    return r;
+  }
+};
+
+function programaDoUsuario() {
+  console.log("arquivos:", kernel.syscall("listar"));
+  kernel.syscall("criar", "trabalho.docx");
+  console.log("depois de criar:", kernel.syscall("listar"));
+}
+
+programaDoUsuario();
+console.log("acessos ao hardware, todos via kernel:", hardware.acessos, "| modo agora:", kernel.modo);
+
+--- experimentos
+- Dentro de `programaDoUsuario`, faça `hardware.disco.length = 0` direto. Num SO de verdade, o que impediria isso? (Dica: o processador em modo usuário não executa instruções privilegiadas.)
+- Acrescente a chamada `"apagar"` ao kernel, com uma regra: não pode apagar `boot.cfg`.
+
+--- explicacao
+O kernel roda em **modo supervisor**, com acesso total; os programas rodam em **modo usuário**, restrito, e pedem serviços por **system calls** — a troca de modo acontece a cada chamada. Como toda operação passa pelo kernel, ele pode aplicar regras (permissões, cotas) e um programa com defeito não derruba os outros. Na simulação isso é só disciplina; no hardware real, é o processador que recusa instruções privilegiadas fora do modo kernel. É também a ideia de **máquina estendida**: o programa vê "arquivos", não setores e registradores de controladora.
+
+# =====================================================================
+# Gerência de Processos e Escalonamento
+# =====================================================================
+
+=== lab proc-estados
+tipo: passo
+tema: Gerência de Processos e Escalonamento
+nivel: 1
+linguagem: js
+titulo: O ciclo de vida de um processo
+pergunta: Quando a E/S termina, para qual estado o processo vai?
+resposta: pronto
+
+--- enunciado
+Avance e acompanhe a variável `estado` do processo e o `historico`. Repare em quais transições são permitidas — e qual é recusada.
+
+--- codigo
+const permitidas = {
+  novo: ["pronto"],
+  pronto: ["executando"],
+  executando: ["pronto", "bloqueado", "terminado"],
+  bloqueado: ["pronto"],
+  terminado: []
+};
+
+const processo = { pid: 42, estado: "novo", historico: ["novo"] };
+
+function mudar(para) {
+  if (!permitidas[processo.estado].includes(para)) {
+    console.log("recusado:", processo.estado, "→", para);
+    return;
+  }
+  processo.estado = para;
+  processo.historico.push(para);
+}
+
+mudar("pronto");        // admitido
+mudar("executando");    // o escalonador deu a CPU
+mudar("bloqueado");     // pediu leitura de disco
+mudar("executando");    // pode voltar direto para a CPU?
+mudar("pronto");        // a E/S terminou
+mudar("executando");
+mudar("terminado");
+console.log(processo.historico.join(" → "));
+
+--- opcoes
+- executando
+- pronto
+- bloqueado
+- terminado
+
+--- explicacao
+Ao terminar a E/S, o processo volta para **pronto**, não direto para a CPU: ele entra na fila e espera o escalonador. Por isso `bloqueado → executando` foi recusado. As transições `executando → pronto` acontecem quando o quantum acaba (preempção), e `executando → bloqueado` quando o processo pede algo lento. Tudo isso fica registrado no **PCB**, que é o que permite a troca de contexto.
+
+=== lab esc-fcfs-sjf
+tipo: desafio
+tema: Gerência de Processos e Escalonamento
+nivel: 2
+linguagem: js
+titulo: FCFS x SJF: tempo médio de espera
+
+--- enunciado
+Todos os processos chegam no instante 0. Implemente `esperaMedia(processos, algoritmo)`: com `"FCFS"` atende na ordem da lista; com `"SJF"` atende do mais curto para o mais longo. A espera de cada processo é o tempo que ele passou na fila antes de começar.
+
+--- codigo
+const lote = [
+  { id: "P1", duracao: 24 },
+  { id: "P2", duracao: 3 },
+  { id: "P3", duracao: 3 }
+];
+
+function esperaMedia(processos, algoritmo) {
+  return 0;
+}
+
+console.log("FCFS:", esperaMedia(lote, "FCFS"), "| SJF:", esperaMedia(lote, "SJF"));
+
+--- solucao
+const lote = [
+  { id: "P1", duracao: 24 },
+  { id: "P2", duracao: 3 },
+  { id: "P3", duracao: 3 }
+];
+
+function esperaMedia(processos, algoritmo) {
+  const fila = algoritmo === "SJF"
+    ? [...processos].sort((a, b) => a.duracao - b.duracao)
+    : processos;
+  let relogio = 0, totalEspera = 0;
+  for (const p of fila) {
+    totalEspera += relogio;       // esperou até agora
+    relogio += p.duracao;         // e usou a CPU
+  }
+  return totalEspera / fila.length;
+}
+
+console.log("FCFS:", esperaMedia(lote, "FCFS"), "| SJF:", esperaMedia(lote, "SJF"));
+
+--- testes
+esperaMedia(lote, "FCFS") ==> 17
+esperaMedia(lote, "SJF") ==> 3
+esperaMedia([{ id: "A", duracao: 6 }, { id: "B", duracao: 8 }, { id: "C", duracao: 7 }, { id: "D", duracao: 3 }], "SJF") ==> 7
+esperaMedia([{ id: "A", duracao: 6 }, { id: "B", duracao: 8 }, { id: "C", duracao: 7 }, { id: "D", duracao: 3 }], "FCFS") ==> 10.25
+
+--- dicas
+Mantenha um `relogio`. Antes de cada processo começar, a espera dele é o valor atual do relógio.
+
+Para o SJF, ordene uma **cópia** da lista pela duração: `[...processos].sort((a, b) => a.duracao - b.duracao)`.
+
+--- explicacao
+No FCFS o P1 (24) na frente faz P2 e P3 esperarem 24 e 27: média **17** — o **efeito comboio**. O SJF põe os curtos na frente: esperas 0, 3 e 6, média **3**. O SJF é ótimo para a espera média, mas exige saber a duração de antemão e pode deixar um processo longo esperando para sempre (**inanição**) se sempre chegarem curtos.
+
+=== lab esc-round-robin
+tipo: explorar
+tema: Gerência de Processos e Escalonamento
+nivel: 2
+linguagem: js
+titulo: Round Robin e o tamanho do quantum
+
+--- enunciado
+Cada processo recebe um **quantum** de CPU e, se não terminar, volta para o fim da fila. O código desenha a linha do tempo (cada caractere = 1 unidade de tempo) e conta as trocas de contexto. Rode e brinque com o quantum.
+
+--- codigo
+const processos = [
+  { id: "A", restante: 5 },
+  { id: "B", restante: 3 },
+  { id: "C", restante: 1 }
+];
+const QUANTUM = 2;
+
+const fila = processos.map(p => ({ ...p }));
+let linha = "", trocas = 0, ultimo = null;
+const termino = {};
+let t = 0;
+
+while (fila.length) {
+  const p = fila.shift();
+  const fatia = Math.min(QUANTUM, p.restante);
+  if (ultimo && ultimo !== p.id) trocas++;
+  linha += p.id.repeat(fatia);
+  t += fatia;
+  p.restante -= fatia;
+  ultimo = p.id;
+  if (p.restante > 0) fila.push(p);       // volta para o fim da fila
+  else termino[p.id] = t;
+}
+
+console.log("linha do tempo:", linha);
+console.log("término de cada um:", termino);
+console.log("trocas de contexto:", trocas);
+
+--- experimentos
+- Quantum = 1: a resposta melhora, mas quantas trocas de contexto acontecem?
+- Quantum = 10: o Round Robin vira qual outro algoritmo?
+- Acrescente um processo longo (`{ id: "D", restante: 12 }`) e veja se os curtos ainda terminam cedo.
+
+--- explicacao
+Com quantum 2 a linha é `AABBCAABA`: ninguém espera muito para ser atendido — é o algoritmo dos sistemas de **tempo compartilhado**, e é **preemptivo**. O quantum é o equilíbrio: pequeno demais multiplica as trocas de contexto (sobrecarga pura, a CPU salvando e restaurando PCBs); grande demais faz o Round Robin virar **FCFS**.
+
+=== lab esc-rr-prever
+tipo: prever
+tema: Gerência de Processos e Escalonamento
+nivel: 2
+linguagem: js
+titulo: Quem termina primeiro no Round Robin?
+
+--- enunciado
+Round Robin com quantum 2. P1 precisa de 5 unidades de CPU, P2 de 3 e P3 de 1, e a fila começa em P1, P2, P3. Simule no papel e preveja a **ordem de término**.
+
+--- codigo
+const fila = [{ id: "P1", r: 5 }, { id: "P2", r: 3 }, { id: "P3", r: 1 }];
+const ordem = [];
+while (fila.length) {
+  const p = fila.shift();
+  p.r -= Math.min(2, p.r);
+  if (p.r > 0) fila.push(p);
+  else ordem.push(p.id);
+}
+console.log("término:", ordem.join(" "));
+
+--- opcoes
+- término: P3 P2 P1
+- término: P1 P2 P3
+- término: P3 P1 P2
+- término: P2 P3 P1
+
+--- explicacao
+P1 roda 2 (sobram 3), P2 roda 2 (sobra 1), P3 roda 1 e **termina**; P1 roda mais 2 (sobra 1), P2 roda 1 e **termina**; P1 roda o último e **termina**. O mais curto sai primeiro mesmo estando no fim da fila — é assim que o Round Robin dá boa resposta aos processos interativos sem precisar saber a duração de ninguém.
+
+# =====================================================================
+# Gerência de Memória e Memória Virtual
+# =====================================================================
+
+=== lab mem-paginacao
+tipo: explorar
+tema: Gerência de Memória e Memória Virtual
+nivel: 2
+linguagem: js
+titulo: Tradução de endereço com tabela de páginas
+
+--- enunciado
+Com **paginação**, o endereço lógico se divide em **número da página** e **deslocamento**. A MMU consulta a tabela de páginas e troca a página pelo **quadro** físico. Rode e veja um endereço traduzido e uma **falta de página**.
+
+--- codigo
+const TAM_PAGINA = 4096;                 // 4 KB
+// página → quadro (null = a página está no disco, não na RAM)
+const tabelaDePaginas = [5, 2, null, 7];
+
+function traduzir(enderecoLogico) {
+  const pagina = Math.floor(enderecoLogico / TAM_PAGINA);
+  const deslocamento = enderecoLogico % TAM_PAGINA;
+  const quadro = tabelaDePaginas[pagina];
+  if (quadro === undefined) return "erro: fora do espaço do processo";
+  if (quadro === null) return "FALTA DE PÁGINA na página " + pagina + " → o SO busca no disco";
+  return "página " + pagina + " + desl. " + deslocamento + " → quadro " + quadro + " → físico " + (quadro * TAM_PAGINA + deslocamento);
+}
+
+for (const e of [100, 5000, 9000, 20000]) {
+  console.log(e, "→", traduzir(e));
+}
+
+--- experimentos
+- Simule o SO tratando a falta: coloque a página 2 no quadro 1 (`tabelaDePaginas[2] = 1`) e traduza 9000 de novo.
+- Mude o tamanho da página para 1024. Os mesmos endereços caem em quais páginas?
+
+--- explicacao
+O endereço 5000 está na página 1 (5000 ÷ 4096) com deslocamento 904; a página 1 está no quadro 2, então o físico é 2 × 4096 + 904. O **deslocamento nunca muda** — só a página vira quadro. Quando a entrada da tabela diz que a página não está na RAM, acontece a **falta de página**: o SO traz a página do disco, atualiza a tabela e o programa continua sem perceber. É isso que permite a **memória virtual** — processos maiores que a RAM.
+
+=== lab mem-fifo-lru
+tipo: desafio
+tema: Gerência de Memória e Memória Virtual
+nivel: 2
+linguagem: js
+titulo: Conte as faltas de página: FIFO e LRU
+
+--- enunciado
+Implemente `faltasFIFO(referencias, quadros)` e `faltasLRU(referencias, quadros)`: começando com a memória vazia, conte quantas **faltas de página** a sequência provoca. No FIFO sai a página que **entrou** há mais tempo; no LRU, a que foi **usada** há mais tempo.
+
+--- codigo
+const ref = [7, 0, 1, 2, 0, 3, 0, 4, 2, 3, 0, 3, 2, 1, 2, 0, 1, 7, 0, 1];
+
+function faltasFIFO(referencias, quadros) {
+  return 0;
+}
+
+function faltasLRU(referencias, quadros) {
+  return 0;
+}
+
+console.log("FIFO:", faltasFIFO(ref, 3), "| LRU:", faltasLRU(ref, 3));
+
+--- solucao
+const ref = [7, 0, 1, 2, 0, 3, 0, 4, 2, 3, 0, 3, 2, 1, 2, 0, 1, 7, 0, 1];
+
+function faltasFIFO(referencias, quadros) {
+  const memoria = [];
+  let faltas = 0;
+  for (const p of referencias) {
+    if (memoria.includes(p)) continue;
+    faltas++;
+    if (memoria.length === quadros) memoria.shift();   // sai a mais antiga
+    memoria.push(p);
+  }
+  return faltas;
+}
+
+function faltasLRU(referencias, quadros) {
+  const memoria = [];                  // do menos para o mais recentemente usado
+  let faltas = 0;
+  for (const p of referencias) {
+    const i = memoria.indexOf(p);
+    if (i >= 0) memoria.splice(i, 1);  // usada agora: vai para o fim
+    else {
+      faltas++;
+      if (memoria.length === quadros) memoria.shift();
+    }
+    memoria.push(p);
+  }
+  return faltas;
+}
+
+console.log("FIFO:", faltasFIFO(ref, 3), "| LRU:", faltasLRU(ref, 3));
+
+--- testes
+faltasFIFO(ref, 3) ==> 15
+faltasLRU(ref, 3) ==> 12
+faltasFIFO([1, 2, 1, 2], 2) ==> 2
+faltasLRU([1, 2, 3, 1, 4], 3) ==> 4
+faltasFIFO([1, 2, 3, 4, 1, 2, 5, 1, 2, 3, 4, 5], 4) ==> 10
+
+--- dicas
+Use um array como a memória. Se a página já está lá, não há falta.
+
+FIFO: quando lotar, `memoria.shift()` tira a primeira que entrou.
+
+LRU: quando uma página já presente é usada, tire-a e coloque no fim (`splice` + `push`). Assim o início do array é sempre a menos recente.
+
+--- explicacao
+Com a sequência clássica (Silberschatz) e 3 quadros, o FIFO dá **15** faltas e o LRU **12**: o LRU aproveita a **localidade temporal** — o que foi usado há pouco tende a ser usado de novo. O algoritmo **ótimo** (tirar a página que será usada mais tarde) daria 9, mas exige conhecer o futuro; serve só de referência.
+
+=== lab mem-belady
+tipo: prever
+tema: Gerência de Memória e Memória Virtual
+nivel: 3
+linguagem: js
+titulo: A anomalia de Belady
+
+--- enunciado
+Intuição: mais memória, menos faltas. Esta sequência roda no FIFO com **3** e depois com **4** quadros. Preveja.
+
+--- codigo
+function faltasFIFO(ref, quadros) {
+  const m = [];
+  let f = 0;
+  for (const p of ref) {
+    if (m.includes(p)) continue;
+    f++;
+    if (m.length === quadros) m.shift();
+    m.push(p);
+  }
+  return f;
+}
+
+const ref = [1, 2, 3, 4, 1, 2, 5, 1, 2, 3, 4, 5];
+console.log("3 quadros:", faltasFIFO(ref, 3), "| 4 quadros:", faltasFIFO(ref, 4));
+
+--- opcoes
+- 3 quadros: 9 | 4 quadros: 10
+- 3 quadros: 10 | 4 quadros: 9
+- 3 quadros: 9 | 4 quadros: 8
+- 3 quadros: 12 | 4 quadros: 12
+
+--- experimentos
+- Troque por LRU (tire a página e recoloque no fim quando ela for usada). A anomalia acontece?
+
+--- explicacao
+Com FIFO, dar **mais** quadros causou **mais** faltas (9 → 10): é a **anomalia de Belady**. Acontece porque o FIFO tira a página mais antiga sem olhar para o uso — o conjunto de páginas na memória com 4 quadros não contém o de 3. Algoritmos de "pilha", como o LRU e o ótimo, nunca sofrem dessa anomalia.
+
+# =====================================================================
+# Entrada, Saída e Deadlocks
+# =====================================================================
+
+=== lab dl-grafo-espera
+tipo: explorar
+tema: Entrada, Saída e Deadlocks
+nivel: 2
+linguagem: js
+titulo: Detectando deadlock no grafo de espera
+
+--- enunciado
+Quem segura o quê e quem espera o quê vira um **grafo de espera**: uma seta de P1 para P2 significa "P1 espera um recurso que P2 segura". Existe deadlock se o grafo tem um **ciclo**. Rode e experimente.
+
+--- codigo
+const segura = { impressora: "P1", scanner: "P2", disco: "P3" };
+const espera = { P1: "scanner", P2: "disco", P3: "impressora" };
+
+// grafo: processo → processo que ele espera
+const grafo = {};
+for (const [proc, recurso] of Object.entries(espera)) grafo[proc] = segura[recurso];
+
+function acharCiclo(inicio) {
+  const caminho = [];
+  let atual = inicio;
+  while (atual && !caminho.includes(atual)) {
+    caminho.push(atual);
+    atual = grafo[atual];
+  }
+  return atual ? caminho.slice(caminho.indexOf(atual)).concat(atual) : null;
+}
+
+console.log("grafo de espera:", grafo);
+const ciclo = acharCiclo("P1");
+console.log(ciclo ? "DEADLOCK: " + ciclo.join(" → ") : "sem deadlock");
+
+--- experimentos
+- Faça o P3 não esperar nada (`delete espera.P3`). O ciclo some?
+- **Prevenção por ordenação:** se todos pedissem os recursos na mesma ordem (impressora < scanner < disco), o P3 poderia esperar a impressora segurando o disco?
+
+--- explicacao
+Os três processos formam o ciclo P1 → P2 → P3 → P1: é a **espera circular**, uma das quatro condições de Coffman (com exclusão mútua, posse e espera e não preempção). Todas precisam valer ao mesmo tempo, então basta quebrar uma para evitar o deadlock — ordenar globalmente os recursos, por exemplo, torna o ciclo impossível. Detectar o ciclo, como aqui, é a estratégia de **detecção e recuperação**.
+
+=== lab dl-banqueiro
+tipo: desafio
+tema: Entrada, Saída e Deadlocks
+nivel: 3
+linguagem: js
+titulo: O algoritmo do banqueiro
+
+--- enunciado
+Implemente `sequenciaSegura(disponivel, alocado, maximo)`. Repita: ache um processo ainda não terminado cuja **necessidade** (máximo − alocado) caiba no disponível; finja que ele termina e **devolve** o que tinha alocado. Se todos terminarem, devolva a ordem (ex.: `["P1", "P3", ...]`); se travar antes, devolva `null` (estado inseguro). Percorra os processos sempre a partir do P0.
+
+--- codigo
+const alocado = [[0, 1, 0], [2, 0, 0], [3, 0, 2], [2, 1, 1], [0, 0, 2]];
+const maximo  = [[7, 5, 3], [3, 2, 2], [9, 0, 2], [2, 2, 2], [4, 3, 3]];
+
+function sequenciaSegura(disponivel, alocado, maximo) {
+  return null;
+}
+
+console.log(sequenciaSegura([3, 3, 2], alocado, maximo));
+
+--- solucao
+const alocado = [[0, 1, 0], [2, 0, 0], [3, 0, 2], [2, 1, 1], [0, 0, 2]];
+const maximo  = [[7, 5, 3], [3, 2, 2], [9, 0, 2], [2, 2, 2], [4, 3, 3]];
+
+function sequenciaSegura(disponivel, alocado, maximo) {
+  const livre = disponivel.slice();
+  const terminou = alocado.map(() => false);
+  const ordem = [];
+  let avancou = true;
+  while (avancou) {
+    avancou = false;
+    for (let i = 0; i < alocado.length; i++) {
+      if (terminou[i]) continue;
+      const cabe = maximo[i].every((m, r) => m - alocado[i][r] <= livre[r]);
+      if (cabe) {
+        alocado[i].forEach((a, r) => (livre[r] += a));   // devolve tudo ao terminar
+        terminou[i] = true;
+        ordem.push("P" + i);
+        avancou = true;
+      }
+    }
+  }
+  return terminou.every(Boolean) ? ordem : null;
+}
+
+console.log(sequenciaSegura([3, 3, 2], alocado, maximo));
+
+--- testes
+sequenciaSegura([3, 3, 2], alocado, maximo) ==> ["P1", "P3", "P4", "P0", "P2"]
+sequenciaSegura([0, 0, 1], alocado, maximo) ==> null
+sequenciaSegura([1, 1], [[1, 0], [0, 1]], [[2, 1], [1, 2]]) ==> ["P0", "P1"]
+
+--- dicas
+Necessidade do processo i no recurso r: `maximo[i][r] - alocado[i][r]`. Ele pode rodar se isso for ≤ `livre[r]` para todo r.
+
+Quando um processo "termina", some `alocado[i]` ao `livre`.
+
+Use um `while` que continua enquanto alguém tiver conseguido terminar na última passada.
+
+--- explicacao
+O banqueiro (Dijkstra) é a estratégia de **impedimento**: antes de conceder um recurso, o SO simula se ainda existiria **alguma ordem** em que todos terminam. Com disponível [3, 3, 2] a ordem P1, P3, P4, P0, P2 existe — estado **seguro**. Com [0, 0, 1] ninguém consegue começar — estado **inseguro** (não necessariamente deadlock ainda, mas o SO não arrisca). O custo é saber de antemão o máximo que cada processo vai pedir.
+
+=== lab es-camadas
+tipo: parsons
+tema: Entrada, Saída e Deadlocks
+nivel: 1
+linguagem: texto
+titulo: As camadas do software de E/S
+
+--- enunciado
+Um programa pede para ler um arquivo. Ordene as camadas por onde o pedido passa, **de cima (usuário) para baixo (hardware)**. Uma afirmação está errada.
+
+--- linhas
+Software de nível de usuário (a biblioteca que o programa chama, como read ou fopen)
+Software independente de dispositivo (nomes, buffering, proteção, tamanho de bloco)
+Driver do dispositivo (fala os comandos específicos daquela controladora)
+Tratador de interrupções (acorda quem esperava quando o dispositivo termina)
+Hardware (a controladora e o dispositivo)
+
+--- distratores
+O programa do usuário escreve direto nos registradores da controladora
+
+--- explicacao
+Cada camada esconde os detalhes da de baixo: o programa não sabe qual é o disco; a camada independente de dispositivo não sabe os comandos da controladora — isso é do **driver**. Quando o dispositivo termina, gera uma **interrupção**, e o tratador desbloqueia o processo. Ninguém no modo usuário toca a controladora diretamente.
+
+# =====================================================================
+# Memória de Massa, Discos e RAID
+# =====================================================================
+
+=== lab raid-paridade
+tipo: desafio
+tema: Memória de Massa, Discos e RAID
+nivel: 2
+linguagem: js
+titulo: Paridade XOR: reconstruindo um disco perdido
+
+--- enunciado
+No RAID 5 a paridade é o **XOR** bit a bit dos discos de dados. Implemente `paridade(discos)` (recebe uma lista de discos, cada um uma lista de bits, e devolve o disco de paridade) e `reconstruir(sobreviventes)` (recebe os discos que sobraram, **incluindo** a paridade, e devolve o que se perdeu).
+
+--- codigo
+const d1 = [1, 0, 1, 1];
+const d2 = [0, 1, 1, 0];
+const d3 = [1, 1, 0, 0];
+
+function paridade(discos) {
+  return [];
+}
+
+function reconstruir(sobreviventes) {
+  return [];
+}
+
+const p = paridade([d1, d2, d3]);
+console.log("paridade:", p, "| d2 reconstruído:", reconstruir([d1, d3, p]));
+
+--- solucao
+const d1 = [1, 0, 1, 1];
+const d2 = [0, 1, 1, 0];
+const d3 = [1, 1, 0, 0];
+
+function paridade(discos) {
+  return discos[0].map((_, i) => discos.reduce((x, disco) => x ^ disco[i], 0));
+}
+
+// XOR dos que sobraram (dados + paridade) devolve o que falta
+function reconstruir(sobreviventes) {
+  return paridade(sobreviventes);
+}
+
+const p = paridade([d1, d2, d3]);
+console.log("paridade:", p, "| d2 reconstruído:", reconstruir([d1, d3, p]));
+
+--- testes
+paridade([d1, d2, d3]) ==> [0, 0, 0, 1]
+reconstruir([d1, d3, paridade([d1, d2, d3])]) ==> [0, 1, 1, 0]
+reconstruir([d2, d3, paridade([d1, d2, d3])]) ==> [1, 0, 1, 1]
+paridade([[1, 1], [1, 1]]) ==> [0, 0]
+
+--- dicas
+Em JavaScript o XOR de dois bits é `a ^ b`.
+
+Para cada posição i, faça o XOR de `disco[i]` de todos os discos: `discos.reduce((x, d) => x ^ d[i], 0)`.
+
+Reconstruir é a mesma conta: XOR de tudo o que sobrou.
+
+--- explicacao
+O XOR tem a propriedade mágica `a ^ b ^ b = a`: como a paridade é `d1 ^ d2 ^ d3`, fazer XOR dela com os discos que sobraram "cancela" os presentes e deixa só o que falta. Por isso o RAID 5 tolera **um** disco perdido gastando só **um** disco de capacidade. Dois discos perdidos já não dá — é o que o RAID 6, com dupla paridade, resolve. E nada disso protege contra apagar um arquivo sem querer: RAID não é backup.
+
+=== lab raid-capacidade
+tipo: prever
+tema: Memória de Massa, Discos e RAID
+nivel: 1
+linguagem: js
+titulo: Quanto espaço sobra em cada RAID?
+
+--- enunciado
+Quatro discos de 2 TB. A função calcula a capacidade útil em cada nível de RAID. Preveja a saída.
+
+--- codigo
+function capacidadeUtil(nivel, discos, tb) {
+  if (nivel === 0) return discos * tb;          // só striping
+  if (nivel === 5) return (discos - 1) * tb;    // um disco de paridade
+  if (nivel === 6) return (discos - 2) * tb;    // dupla paridade
+  if (nivel === 10) return (discos / 2) * tb;   // espelha e divide
+}
+
+console.log([0, 5, 6, 10].map(n => n + ":" + capacidadeUtil(n, 4, 2)).join(" "));
+
+--- opcoes
+- 0:8 5:6 6:4 10:4
+- 0:8 5:4 6:2 10:4
+- 0:4 5:6 6:4 10:8
+- 0:8 5:6 6:6 10:2
+
+--- explicacao
+RAID 0 usa tudo (8 TB) mas não tolera falha nenhuma. RAID 5 "gasta" um disco em paridade (6 TB) e tolera 1 falha; RAID 6 gasta dois (4 TB) e tolera 2; RAID 10 espelha, aproveitando metade (4 TB), com o melhor desempenho entre os redundantes. É sempre a troca **capacidade × tolerância × desempenho**.
+
+# =====================================================================
+# Sistemas de Arquivos
+# =====================================================================
+
+=== lab fs-chmod
+tipo: prever
+tema: Sistemas de Arquivos
+nivel: 1
+linguagem: js
+titulo: chmod em octal
+
+--- enunciado
+No Linux, cada dígito octal do `chmod` é a soma de r=4, w=2, x=1, para dono, grupo e outros. A função converte o número para o formato do `ls -l`. Preveja.
+
+--- codigo
+function rwx(octal) {
+  return String(octal).split("").map(d => {
+    const n = Number(d);
+    return (n & 4 ? "r" : "-") + (n & 2 ? "w" : "-") + (n & 1 ? "x" : "-");
+  }).join("");
+}
+
+console.log(rwx(755), rwx(640));
+
+--- opcoes
+- rwxr-xr-x rw-r-----
+- rwxrwxrwx rw-r--r--
+- rwxr-xr-x rwxr-----
+- r-xr-xr-x rw-rw----
+
+--- experimentos
+- Qual número dá `rw-------` (só o dono lê e escreve, típico de chave SSH)?
+- Escreva a função inversa: de `"rwxr-xr-x"` para 755.
+
+--- explicacao
+7 = 4+2+1 = `rwx`; 5 = 4+1 = `r-x`; 6 = 4+2 = `rw-`; 4 = `r--`; 0 = `---`. Então 755 é "dono faz tudo, grupo e outros leem e executam" (típico de programas e pastas) e 640 é "dono lê e escreve, grupo só lê, outros nada" (típico de arquivos de configuração). O bit x numa **pasta** significa poder entrar nela.
+
+=== lab fs-alocacao
+tipo: explorar
+tema: Sistemas de Arquivos
+nivel: 2
+linguagem: js
+titulo: Alocação contígua, encadeada e indexada
+
+--- enunciado
+O mesmo arquivo de 3 blocos guardado de três jeitos num disco de 12 blocos. Rode e compare quantos blocos cada método precisa **ler** para chegar ao **último** bloco do arquivo.
+
+--- codigo
+// contígua: início + tamanho
+const contigua = { inicio: 4, tamanho: 3 };
+// encadeada: cada bloco guarda o próximo (-1 = fim)
+const proximo = { 2: 9, 9: 5, 5: -1 };
+const encadeada = { inicio: 2 };
+// indexada (inode): um bloco de índice lista os blocos
+const indexada = { indice: [7, 1, 10] };
+
+function ultimoContigua(a) { return { bloco: a.inicio + a.tamanho - 1, leituras: 1 }; }
+function ultimoEncadeada(a) {
+  let b = a.inicio, leituras = 1;
+  while (proximo[b] !== -1) { b = proximo[b]; leituras++; }
+  return { bloco: b, leituras };
+}
+function ultimoIndexada(a) { return { bloco: a.indice[a.indice.length - 1], leituras: 2 }; } // índice + bloco
+
+console.log("contígua:", ultimoContigua(contigua));
+console.log("encadeada:", ultimoEncadeada(encadeada));
+console.log("indexada:", ultimoIndexada(indexada));
+
+--- experimentos
+- Imagine um arquivo de 1000 blocos. Quantas leituras a encadeada precisa para chegar ao último?
+- Na contígua, o arquivo quer crescer mas o bloco 7 está ocupado por outro. O que acontece?
+
+--- explicacao
+A **contígua** acessa qualquer bloco com uma conta (rápida), mas sofre **fragmentação externa** e dificulta o crescimento. A **encadeada** não fragmenta, mas o acesso direto é ruim: para chegar ao fim é preciso seguir a corrente. A **indexada** — o **inode** do Unix — guarda os endereços num bloco de índice: acesso direto com uma leitura extra. O FAT é uma encadeada com a tabela de "próximos" guardada à parte.
+
+# =====================================================================
+# Windows, Linux e Aplicações
+# =====================================================================
+
+=== lab so-vm-conteiner
+tipo: parsons
+tema: Windows, Linux e Aplicações
+nivel: 2
+linguagem: texto
+titulo: Da máquina física ao contêiner
+
+--- enunciado
+Monte as camadas de uma máquina que roda **contêineres Docker dentro de uma máquina virtual**, de baixo (hardware) para cima (aplicação). Uma afirmação é falsa.
+
+--- linhas
+Hardware físico (CPU, RAM, disco, rede)
+Hipervisor tipo 1, direto no hardware (ex.: ESXi, Hyper-V)
+Sistema operacional convidado da VM (ex.: Linux), com o seu próprio kernel
+Motor de contêineres (Docker), rodando no SO convidado
+Contêineres: cada um isola só o espaço de usuário e compartilha o kernel do SO convidado
+A aplicação dentro do contêiner
+
+--- distratores
+Cada contêiner traz e inicializa um kernel próprio, como uma VM
+
+--- explicacao
+Uma **VM** virtualiza o hardware: cada convidada tem seu kernel completo. Um **contêiner** virtualiza só o espaço de usuário: todos compartilham o kernel do hospedeiro — por isso sobem em segundos e ocupam megabytes, não gigabytes. Hipervisor tipo 1 roda direto no hardware; tipo 2 (VirtualBox) roda sobre um SO hospedeiro.

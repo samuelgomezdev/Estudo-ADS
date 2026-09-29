@@ -1,0 +1,450 @@
+# Laboratório — UI e UX
+# Confira tudo com #/m/ui-e-ux/lab/autoteste
+
+# =====================================================================
+# IHC, Interface, Usabilidade e Experiência
+# =====================================================================
+
+=== lab ux-contraste
+tipo: desafio
+tema: IHC, Interface, Usabilidade e Experiência
+nivel: 2
+linguagem: js
+titulo: Calcule o contraste WCAG
+
+--- enunciado
+A WCAG exige contraste mínimo de **4,5:1** para texto normal (nível AA). Implemente `luminancia(hex)` e `contraste(cor1, cor2)`:
+
+1. cada canal (R, G, B) vira um número de 0 a 1 (`valor / 255`);
+2. linearize: se `c <= 0.03928` use `c / 12.92`, senão `((c + 0.055) / 1.055) ** 2.4`;
+3. luminância = `0.2126·R + 0.7152·G + 0.0722·B`;
+4. contraste = `(L_clara + 0.05) / (L_escura + 0.05)`.
+
+--- codigo
+function luminancia(hex) {
+  return 0;
+}
+
+function contraste(cor1, cor2) {
+  return 1;
+}
+
+const passaAA = (a, b) => contraste(a, b) >= 4.5;
+console.log(contraste("#000000", "#ffffff"), passaAA("#777777", "#ffffff"), passaAA("#767676", "#ffffff"));
+
+--- solucao
+function luminancia(hex) {
+  const canais = [1, 3, 5].map(i => parseInt(hex.slice(i, i + 2), 16) / 255);
+  const [r, g, b] = canais.map(c => (c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4));
+  return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+}
+
+function contraste(cor1, cor2) {
+  const [clara, escura] = [luminancia(cor1), luminancia(cor2)].sort((a, b) => b - a);
+  return (clara + 0.05) / (escura + 0.05);
+}
+
+const passaAA = (a, b) => contraste(a, b) >= 4.5;
+console.log(contraste("#000000", "#ffffff"), passaAA("#777777", "#ffffff"), passaAA("#767676", "#ffffff"));
+
+--- testes
+contraste("#000000", "#ffffff") ==> 21
+Math.round(contraste("#777777", "#ffffff") * 100) / 100 ==> 4.48
+passaAA("#777777", "#ffffff") ==> false
+passaAA("#767676", "#ffffff") ==> true
+contraste("#ffffff", "#000000") ==> 21
+
+--- dicas
+Os canais de `"#2563eb"` estão nas posições 1–2, 3–4 e 5–6: `parseInt(hex.slice(i, i + 2), 16)`.
+
+O contraste não depende da ordem dos argumentos: descubra qual luminância é a maior antes de dividir.
+
+--- explicacao
+Preto sobre branco dá o máximo, **21:1**. O cinza `#777777` fica em 4,48 — **reprova** no AA por um fio —, enquanto `#767676`, visualmente idêntico, passa com 4,54. É por isso que contraste se **mede**, não se estima no olho. Contraste suficiente é o "P" (Perceptível) do POUR, e ajuda todo mundo: quem enxerga pouco, quem está no sol, quem usa tela barata.
+
+=== lab ux-acessivel
+tipo: desafio
+tema: IHC, Interface, Usabilidade e Experiência
+nivel: 2
+linguagem: web
+titulo: Conserte a acessibilidade da página
+
+--- enunciado
+A página "funciona" para quem enxerga e usa mouse, mas falha para leitor de tela. Conserte: `lang` no `<html>`, `alt` descritivo na foto, o botão da lupa com nome acessível (`aria-label`), o campo de busca com `<label>` e o link com texto que faça sentido fora de contexto (nada de "clique aqui").
+
+--- codigo
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"></head>
+<body style="font-family: sans-serif">
+  <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='80'%3E%3Crect width='120' height='80' fill='%2322c55e'/%3E%3C/svg%3E">
+  <p>
+    <input id="busca" placeholder="Buscar">
+    <button>🔍</button>
+  </p>
+  <p>Para ver o regulamento, <a href="#regulamento">clique aqui</a>.</p>
+</body>
+</html>
+
+--- solucao
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head><meta charset="utf-8"></head>
+<body style="font-family: sans-serif">
+  <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='80'%3E%3Crect width='120' height='80' fill='%2322c55e'/%3E%3C/svg%3E" alt="Campo de futebol do clube">
+  <p>
+    <label for="busca">Buscar no site</label>
+    <input id="busca">
+    <button aria-label="Pesquisar">🔍</button>
+  </p>
+  <p><a href="#regulamento">Ler o regulamento do clube</a></p>
+</body>
+</html>
+
+--- testes
+O html declara o idioma :: document.documentElement.lang.length >= 2
+A imagem tem texto alternativo :: !!$('img') && $('img').alt.trim().length > 3
+O botão tem nome acessível :: !!$('button') && ($('button').getAttribute('aria-label') || '').trim().length > 2
+O campo tem um label ligado a ele :: !!$('#busca') && !!$('label[for="busca"]')
+O link não diz "clique aqui" :: todos('a').length > 0 && todos('a').every(a => !/clique aqui/i.test(a.textContent))
+
+--- dicas
+`<html lang="pt-BR">` diz ao leitor de tela em que idioma pronunciar.
+
+`alt` descreve a imagem para quem não a vê; o emoji do botão é lido de forma estranha — dê um `aria-label`.
+
+Placeholder não substitui label: ele some quando a pessoa começa a digitar.
+
+--- explicacao
+Quem usa leitor de tela navega pulando de link em link e de campo em campo: "clique aqui, link" não diz nada; "Ler o regulamento do clube, link" diz. O `alt` é o texto da imagem, o `label` é o nome do campo e o `aria-label` dá nome a um botão só com ícone. São os princípios **Perceptível** e **Compreensível** da WCAG — e, pelo efeito meio-fio, beneficiam todo mundo (o label clicável aumenta a área de toque, por exemplo).
+
+# =====================================================================
+# Heurísticas e Avaliação em IHC
+# =====================================================================
+
+=== lab ux-status
+tipo: explorar
+tema: Heurísticas e Avaliação em IHC
+nivel: 1
+linguagem: web
+titulo: Heurística 1: visibilidade do status do sistema
+
+--- enunciado
+Dois botões de "Enviar" fazem a mesma coisa demorada. Um não dá nenhum sinal; o outro mostra o que está acontecendo. Clique nos dois (e várias vezes seguidas no primeiro) e compare como você se sente.
+
+--- codigo
+<style>
+  body { font-family: sans-serif; margin: 12px; }
+  button { padding: 8px 14px; margin: 6px 0; }
+  .ok { color: #15803d; }
+</style>
+
+<p><b>Sem feedback</b></p>
+<button id="ruim">Enviar</button>
+<p id="r1"></p>
+
+<p><b>Com feedback</b></p>
+<button id="bom">Enviar</button>
+<p id="r2"></p>
+
+<script>
+  let enviosRuim = 0;
+  document.getElementById("ruim").onclick = () => {
+    enviosRuim++;
+    setTimeout(() => { document.getElementById("r1").textContent = "Enviado (" + enviosRuim + " vezes!)"; }, 2000);
+  };
+
+  const bom = document.getElementById("bom");
+  bom.onclick = () => {
+    bom.disabled = true;
+    bom.textContent = "Enviando…";
+    document.getElementById("r2").textContent = "Aguarde, estamos enviando seu formulário.";
+    setTimeout(() => {
+      bom.disabled = false;
+      bom.textContent = "Enviar";
+      const r = document.getElementById("r2");
+      r.textContent = "✓ Formulário enviado com sucesso.";
+      r.className = "ok";
+    }, 2000);
+  };
+</script>
+
+--- experimentos
+- Qual outra heurística o botão "bom" aplica ao se desabilitar durante o envio? (Dica: evitar o erro antes que ele aconteça.)
+- Acrescente uma barra de progresso ou um tempo estimado.
+
+--- explicacao
+Sem feedback, a pessoa não sabe se o clique funcionou — clica de novo e envia o formulário várias vezes. A **visibilidade do status** (heurística 1 de Nielsen) informa o que está acontecendo em tempo razoável; desabilitar o botão enquanto envia é **prevenção de erros** (heurística 5). As duas juntas trocam ansiedade por confiança sem mudar nada na funcionalidade.
+
+=== lab ux-nielsen-usuarios
+tipo: prever
+tema: Heurísticas e Avaliação em IHC
+nivel: 2
+linguagem: js
+titulo: Quantos usuários testar?
+
+--- enunciado
+Nielsen e Landauer modelaram a proporção de problemas de usabilidade encontrados com n usuários como `1 − (1 − L)ⁿ`, com L ≈ 31% (a chance de um usuário esbarrar num problema). Preveja o resultado para 5 e 15 usuários.
+
+--- codigo
+const L = 0.31;
+const encontrados = n => Math.round((1 - (1 - L) ** n) * 100);
+console.log("5 usuários:", encontrados(5) + "% | 15 usuários:", encontrados(15) + "%");
+
+--- opcoes
+- 5 usuários: 84% | 15 usuários: 100%
+- 5 usuários: 31% | 15 usuários: 93%
+- 5 usuários: 50% | 15 usuários: 100%
+- 5 usuários: 84% | 15 usuários: 93%
+
+--- experimentos
+- Imprima a curva de 1 a 15 usuários. A partir de quantos o ganho de cada novo usuário fica pequeno?
+
+--- explicacao
+Com **5 usuários** já se acham ~**85%** dos problemas; os 10 seguintes acrescentam pouco, porque tendem a tropeçar nos mesmos buracos. Daí a regra prática: vários testes **pequenos e iterativos** (5 pessoas, corrige, testa de novo) rendem mais do que um teste grande. Testar com usuários reais (**observação**) revela o que a avaliação por inspeção de especialistas não prevê.
+
+=== lab ux-sus
+tipo: desafio
+tema: Heurísticas e Avaliação em IHC
+nivel: 2
+linguagem: js
+titulo: Calcule a nota SUS
+
+--- enunciado
+O questionário **SUS** tem 10 afirmações respondidas de 1 a 5. Nos itens **ímpares** (1º, 3º...) a contribuição é `resposta − 1`; nos **pares**, `5 − resposta`. A nota é a soma das contribuições × 2,5 (de 0 a 100). Implemente `sus(respostas)` e `classificar(nota)`: `"acima da média"` se a nota for maior que 68, senão `"abaixo da média"`.
+
+--- codigo
+function sus(respostas) {
+  return 0;
+}
+
+function classificar(nota) {
+  return "";
+}
+
+const r = [4, 2, 5, 1, 4, 2, 5, 2, 4, 1];
+console.log(sus(r), classificar(sus(r)));
+
+--- solucao
+function sus(respostas) {
+  const soma = respostas.reduce((s, resp, i) => s + (i % 2 === 0 ? resp - 1 : 5 - resp), 0);
+  return soma * 2.5;
+}
+
+function classificar(nota) {
+  return nota > 68 ? "acima da média" : "abaixo da média";
+}
+
+const r = [4, 2, 5, 1, 4, 2, 5, 2, 4, 1];
+console.log(sus(r), classificar(sus(r)));
+
+--- testes
+sus([4, 2, 5, 1, 4, 2, 5, 2, 4, 1]) ==> 85
+sus([5, 1, 5, 1, 5, 1, 5, 1, 5, 1]) ==> 100
+sus([3, 3, 3, 3, 3, 3, 3, 3, 3, 3]) ==> 50
+classificar(85) ==> "acima da média"
+classificar(50) ==> "abaixo da média"
+
+--- dicas
+Cuidado com o índice: o 1º item tem índice 0 no array. Então "item ímpar" é `i % 2 === 0`.
+
+`reduce` soma as contribuições; multiplique o total por 2.5.
+
+--- explicacao
+Os itens pares do SUS são escritos **negativos** ("achei o sistema desnecessariamente complexo"), então a escala se inverte: concordar muito com eles (5) contribui 0. Isso evita que a pessoa responda tudo no automático. A média de referência é **68**: acima disso a usabilidade percebida é boa. É uma **avaliação por questionamento** — mede percepção, não comportamento.
+
+# =====================================================================
+# Processo de Design de IHC e Design Thinking
+# =====================================================================
+
+=== lab ux-dcu
+tipo: parsons
+tema: Processo de Design de IHC e Design Thinking
+nivel: 1
+linguagem: texto
+titulo: O ciclo do design centrado no usuário (ISO 9241-210)
+
+--- enunciado
+Ordene as etapas do ciclo de design centrado no usuário. Uma afirmação contradiz a ideia do método.
+
+--- linhas
+Compreender e especificar o contexto de uso (quem usa, para quê, onde)
+Especificar os requisitos do usuário
+Produzir soluções de design (wireframes, protótipos)
+Avaliar as soluções com usuários — e voltar ao início quantas vezes for preciso
+
+--- distratores
+Entregar o produto pronto e só então ouvir o usuário
+
+--- explicacao
+O DCU é **iterativo** e o usuário participa do início ao fim: a avaliação alimenta uma nova volta do ciclo. Deixar o usuário para depois da entrega é justamente o que o método evita — descobrir o problema na prototipação custa uma tarde; em produção, custa o projeto.
+
+=== lab ux-design-thinking
+tipo: parsons
+tema: Processo de Design de IHC e Design Thinking
+nivel: 1
+linguagem: texto
+titulo: As 5 fases do Design Thinking (d.school)
+
+--- enunciado
+Ordene as fases do modelo da d.school. Um bloco é uma pegadinha comum de prova.
+
+--- linhas
+Empatizar — entender profundamente o usuário (observação, entrevistas, mapa de empatia)
+Definir — sintetizar o que se aprendeu num problema claro
+Idear — gerar o máximo de ideias, sem julgar
+Prototipar — materializar rápido e barato
+Testar — validar com usuários reais e iterar
+
+--- distratores
+Testar — etapa opcional, dispensável quando a equipe confia na ideia
+
+--- explicacao
+Design Thinking é iterativo (dá para voltar etapas), centrado no ser humano e **não dispensa testes** — a fase de testar é o que fecha o ciclo de aprendizado. Na ideação vale divergir (quantidade, sem julgamento); na definição e na escolha do protótipo, convergir: é o **duplo diamante**.
+
+# =====================================================================
+# Prototipação
+# =====================================================================
+
+=== lab ux-fidelidade
+tipo: explorar
+tema: Prototipação
+nivel: 1
+linguagem: web
+titulo: Wireframe x mockup: a mesma tela em duas fidelidades
+
+--- enunciado
+A mesma tela de login em **baixa fidelidade** (wireframe: só estrutura) e em **alta** (visual quase final). Compare: sobre qual delas um usuário daria opinião sobre a **cor do botão**? E sobre a **ordem dos campos**?
+
+--- codigo
+<style>
+  body { font-family: sans-serif; margin: 10px; display: flex; gap: 14px; flex-wrap: wrap; }
+  .tela { width: 220px; padding: 14px; border-radius: 8px; }
+  .wire { border: 2px dashed #94a3b8; color: #64748b; }
+  .wire .caixa { border: 2px solid #94a3b8; height: 28px; margin: 8px 0; }
+  .alta { background: #0f172a; color: white; box-shadow: 0 6px 18px rgba(0,0,0,.25); }
+  .alta input { width: 100%; box-sizing: border-box; padding: 8px; margin: 6px 0; border-radius: 6px; border: 0; }
+  .alta button { width: 100%; padding: 9px; border: 0; border-radius: 6px; background: #6366f1; color: white; font-weight: bold; }
+</style>
+
+<div class="tela wire">
+  <b>[ LOGO ]</b>
+  <div class="caixa"></div>
+  <div class="caixa"></div>
+  <div class="caixa" style="width:60%"></div>
+  <small>esqueci a senha</small>
+</div>
+
+<div class="tela alta">
+  <h3 style="margin-top:0">Clube ADS</h3>
+  <input placeholder="E-mail">
+  <input placeholder="Senha" type="password">
+  <button>Entrar</button>
+  <p><small>Esqueci minha senha</small></p>
+</div>
+
+--- experimentos
+- No wireframe, troque a ordem dos campos. Deu trabalho? Faria o mesmo num protótipo de alta fidelidade já validado com o cliente?
+- Mude a cor do botão da tela de alta fidelidade para testar outra identidade.
+
+--- explicacao
+A **baixa fidelidade** é barata, rápida e, por ser tosca, convida à crítica sincera sobre **fluxo e estrutura** — ninguém discute cor num retângulo tracejado. A **alta** usa o visual final e serve para validar aparência e detalhes de interação, mas custa mais e faz as pessoas hesitarem em pedir mudanças grandes. Wireframe é o esqueleto; mockup é o visual estático; protótipo é navegável.
+
+# =====================================================================
+# Psicologia, Cognição e Percepção Visual
+# =====================================================================
+
+=== lab ux-fitts
+tipo: explorar
+tema: Psicologia, Cognição e Percepção Visual
+nivel: 2
+linguagem: js
+titulo: Lei de Fitts: alvos grandes e próximos
+
+--- enunciado
+Pela **lei de Fitts**, o tempo para acertar um alvo é `T = a + b · log₂(D / L + 1)`, com D a distância e L a largura do alvo. O código compara botões numa tela de celular. Rode e mude tamanhos e distâncias.
+
+--- codigo
+const a = 0.1, b = 0.15;   // constantes típicas, em segundos
+const fitts = (distancia, largura) => a + b * Math.log2(distancia / largura + 1);
+
+const botoes = [
+  { nome: "Comprar, grande e perto do polegar", distancia: 80, largura: 120 },
+  { nome: "Comprar, pequeno no canto de cima", distancia: 600, largura: 30 },
+  { nome: "Link de texto no meio da tela", distancia: 300, largura: 12 }
+];
+
+for (const btn of botoes) {
+  console.log(btn.nome.padEnd(36), fitts(btn.distancia, btn.largura).toFixed(2) + " s");
+}
+
+--- experimentos
+- Dobre a largura do botão pequeno. Quanto o tempo cai? E dobrando a distância?
+- Por que os cantos da tela de um computador (com mouse) são alvos "infinitamente grandes"?
+
+--- explicacao
+O tempo cresce com o **logaritmo** de distância ÷ tamanho: um alvo pequeno e distante é lento e propenso a erro. Por isso a ação principal deve ser **grande e perto** de onde o dedo/cursor já está, e ações destrutivas (excluir) ficam longe das frequentes. É o fundamento das recomendações de área de toque mínima (~44 px).
+
+=== lab ux-hick
+tipo: prever
+tema: Psicologia, Cognição e Percepção Visual
+nivel: 1
+linguagem: js
+titulo: Lei de Hick: opções demais travam
+
+--- enunciado
+Pela **lei de Hick**, o tempo de decisão é `T = b · log₂(n + 1)`, com n o número de opções igualmente prováveis. Preveja para um menu de 3 e de 15 itens (b = 0,2 s).
+
+--- codigo
+const b = 0.2;
+const hick = n => b * Math.log2(n + 1);
+console.log("3 opções:", hick(3) + "s | 15 opções:", hick(15) + "s");
+
+--- opcoes
+- 3 opções: 0.4s | 15 opções: 0.8s
+- 3 opções: 0.6s | 15 opções: 3s
+- 3 opções: 0.4s | 15 opções: 2s
+- 3 opções: 0.8s | 15 opções: 1.6s
+
+--- explicacao
+log₂(4) = 2 → **0,4 s**; log₂(16) = 4 → **0,8 s**. Cinco vezes mais opções, o dobro do tempo — o crescimento é logarítmico, mas cada decisão a mais soma. Menus enormes, formulários com tudo de uma vez e ofertas demais cansam: agrupar, destacar a opção principal e revelar o resto aos poucos reduz a **carga cognitiva**.
+
+=== lab ux-gestalt
+tipo: explorar
+tema: Psicologia, Cognição e Percepção Visual
+nivel: 1
+linguagem: web
+titulo: Gestalt: proximidade e similaridade
+
+--- enunciado
+Os mesmos 12 quadrados, arrumados de dois jeitos. Sem ler nada, quantos **grupos** você enxerga em cada painel? Depois mexa nos espaçamentos e nas cores.
+
+--- codigo
+<style>
+  body { font-family: sans-serif; margin: 10px; }
+  .grade { display: grid; grid-template-columns: repeat(6, 22px); gap: 6px; margin: 6px 0 18px; }
+  .q { width: 22px; height: 22px; background: #64748b; border-radius: 4px; }
+  /* proximidade: um espaço maior depois da 3ª coluna */
+  .prox .q:nth-child(6n+3) { margin-right: 18px; }
+  /* similaridade: mesma forma e espaço, cores alternando por coluna */
+  .simi .q:nth-child(odd) { background: #f97316; border-radius: 50%; }
+</style>
+
+<b>Proximidade</b>
+<div class="grade prox">
+  <div class="q"></div><div class="q"></div><div class="q"></div><div class="q"></div><div class="q"></div><div class="q"></div>
+  <div class="q"></div><div class="q"></div><div class="q"></div><div class="q"></div><div class="q"></div><div class="q"></div>
+</div>
+
+<b>Similaridade</b>
+<div class="grade simi">
+  <div class="q"></div><div class="q"></div><div class="q"></div><div class="q"></div><div class="q"></div><div class="q"></div>
+  <div class="q"></div><div class="q"></div><div class="q"></div><div class="q"></div><div class="q"></div><div class="q"></div>
+</div>
+
+--- experimentos
+- Aumente o espaço entre as **linhas** (`row-gap: 20px`). Os grupos passam a ser linhas ou colunas?
+- Num formulário, onde você usaria proximidade? (Dica: o rótulo e o campo dele.)
+
+--- explicacao
+Pela **proximidade**, o que está perto parece do mesmo grupo: um espaço um pouco maior basta para dividir a grade em dois blocos, sem nenhuma linha desenhada. Pela **similaridade**, o que se parece (cor, forma) parece relacionado: as colunas laranja e cinza viram listras. Em interfaces isso é o que faz um rótulo "pertencer" ao seu campo — e o que confunde quando o espaçamento está errado.

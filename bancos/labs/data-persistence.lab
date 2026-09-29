@@ -1,0 +1,948 @@
+# Laboratório — Programming and Data Persistence
+# Confira tudo com #/m/data-persistence/lab/autoteste
+
+=== banco empresa
+CREATE TABLE Departamento (
+  id INTEGER PRIMARY KEY,
+  nome TEXT NOT NULL UNIQUE,
+  cidade TEXT NOT NULL
+);
+CREATE TABLE Funcionario (
+  id INTEGER PRIMARY KEY,
+  nome TEXT NOT NULL,
+  cargo TEXT NOT NULL,
+  salario REAL NOT NULL,
+  idDepto INTEGER REFERENCES Departamento(id),
+  email TEXT UNIQUE,
+  admissao TEXT NOT NULL
+);
+INSERT INTO Departamento VALUES
+  (1, 'TI', 'Itajaí'),
+  (2, 'RH', 'Itajaí'),
+  (3, 'Vendas', 'Balneário Camboriú'),
+  (4, 'Jurídico', 'Florianópolis');
+INSERT INTO Funcionario VALUES
+  (1, 'Ana Souza', 'Desenvolvedora', 7200, 1, 'ana@empresa.com', '2021-03-15'),
+  (2, 'Bruno Lima', 'Analista', 5100, 1, 'bruno@empresa.com', '2022-07-01'),
+  (3, 'Carla Dias', 'Gerente', 9800, 3, 'carla@empresa.com', '2019-11-20'),
+  (4, 'Davi Rocha', 'Vendedor', 3900, 3, NULL, '2023-02-10'),
+  (5, 'Elisa Martins', 'Recrutadora', 4500, 2, 'elisa@empresa.com', '2020-05-05'),
+  (6, 'Fábio Nunes', 'Estagiário', 1800, NULL, 'fabio@empresa.com', '2024-01-08'),
+  (7, 'Beatriz Alves', 'Desenvolvedora', 6900, 1, 'bia@gmail.com', '2023-09-18'),
+  (8, 'Gustavo Reis', 'Vendedor', 4100, 3, 'gustavo@empresa.com', '2022-12-01');
+
+# =====================================================================
+# Banco de dados relacional e modelagem
+# =====================================================================
+
+=== lab rel-pk-fk
+tipo: explorar
+tema: Banco de dados relacional e modelagem
+nivel: 1
+linguagem: sql
+banco: empresa
+titulo: Chave primária, chave estrangeira e o JOIN
+
+--- enunciado
+`Funcionario.idDepto` é uma **chave estrangeira** que aponta para a **chave primária** `Departamento.id`. Rode e veja como o JOIN usa essa ligação para juntar as duas tabelas.
+
+--- codigo
+-- as FKs declaradas na tabela
+PRAGMA foreign_key_list(Funcionario);
+
+-- a ligação PK/FK em uso
+SELECT f.nome, f.cargo, d.nome AS departamento, d.cidade
+FROM Funcionario f
+JOIN Departamento d ON d.id = f.idDepto
+ORDER BY d.nome, f.nome;
+
+--- experimentos
+- O Fábio sumiu do resultado. Olhe o idDepto dele no painel — por quê?
+- Troque `JOIN` por `LEFT JOIN`. O que aparece nas colunas do departamento dele?
+- Tente `UPDATE Funcionario SET idDepto = 42 WHERE id = 1;`.
+
+--- explicacao
+A **PK** identifica cada linha de forma única; a **FK** guarda o valor da PK de outra tabela, criando o relacionamento (aqui, N funcionários para 1 departamento — a FK fica no lado N). O `JOIN` junta as linhas em que FK = PK. Quem tem FK nula (o estagiário sem departamento) não casa com ninguém e fica de fora do JOIN interno. E o SGBD recusa uma FK apontando para um departamento que não existe.
+
+=== lab rel-pk-duplicada
+tipo: prever
+tema: Banco de dados relacional e modelagem
+nivel: 1
+linguagem: sql
+banco: empresa
+titulo: Dois funcionários com o mesmo id?
+alvo: celula
+erro: sim
+pergunta: O que aparece no resultado?
+
+--- enunciado
+Já existe um funcionário com id 3 (a Carla). O INSERT abaixo tenta usar o mesmo id. Preveja.
+
+--- codigo
+INSERT INTO Funcionario VALUES
+  (3, 'Hugo Prado', 'Analista', 5300, 1, 'hugo@empresa.com', '2026-09-01');
+
+SELECT COUNT(*) FROM Funcionario;
+
+--- opcoes
+- 8
+- 9
+- 0
+- erro
+
+--- experimentos
+- Troque o 3 por `NULL`. Com `INTEGER PRIMARY KEY`, o SQLite gera o próximo id sozinho — qual?
+- Tente repetir um e-mail que já existe. Qual restrição reage agora?
+
+--- explicacao
+A chave primária é **única** e não pode ser repetida: o INSERT é recusado (`UNIQUE constraint failed: Funcionario.id`) e a contagem nem roda. A PK é a identidade da tupla — se dois registros tivessem o mesmo id, um UPDATE ou DELETE "pelo id" atingiria os dois. O `UNIQUE` do e-mail cria a mesma garantia numa coluna que não é a chave (**chave candidata**).
+
+# =====================================================================
+# SQL: consulta, filtros e junções
+# =====================================================================
+
+=== lab sel-between
+tipo: prever
+tema: SQL: consulta, filtros e junções
+nivel: 1
+linguagem: sql
+banco: empresa
+titulo: BETWEEN inclui as pontas?
+alvo: celula
+pergunta: Quantos funcionários a consulta conta?
+
+--- enunciado
+Olhe os salários no painel (ou rode um `SELECT nome, salario FROM Funcionario` antes). Preveja a contagem.
+
+--- codigo
+SELECT COUNT(*)
+FROM Funcionario
+WHERE salario BETWEEN 4100 AND 7200;
+
+--- opcoes
+- 3
+- 4
+- 5
+- 6
+
+--- experimentos
+- Reescreva com `salario >= 4100 AND salario <= 7200`. Dá o mesmo?
+- Liste quem entrou em 2022: `WHERE admissao BETWEEN '2022-01-01' AND '2022-12-31'`.
+- Use `IN`: `WHERE cargo IN ('Vendedor', 'Analista')`.
+
+--- explicacao
+`BETWEEN a AND b` é **inclusivo** nas duas pontas: equivale a `>= a AND <= b`. Entram Ana (7200, a ponta de cima), Bruno (5100), Elisa (4500), Beatriz (6900) e Gustavo (4100, a ponta de baixo) — **5**. Datas no formato ISO (AAAA-MM-DD) também funcionam com BETWEEN, porque a ordem alfabética coincide com a cronológica.
+
+=== lab sel-null
+tipo: prever
+tema: SQL: consulta, filtros e junções
+nivel: 2
+linguagem: sql
+banco: empresa
+titulo: A armadilha do = NULL
+alvo: celula
+pergunta: Quantos funcionários sem e-mail a consulta encontra?
+
+--- enunciado
+O Davi não tem e-mail (NULL). Preveja o que esta consulta conta.
+
+--- codigo
+SELECT COUNT(*) FROM Funcionario WHERE email = NULL;
+
+--- opcoes
+- 0
+- 1
+- 8
+- erro
+
+--- experimentos
+- Troque por `WHERE email IS NULL`.
+- Rode `SELECT NULL = NULL, NULL IS NULL, 1 + NULL;` e leia os três resultados.
+
+--- explicacao
+`NULL` significa "valor desconhecido", e comparar qualquer coisa com o desconhecido dá **desconhecido** (nem verdadeiro, nem falso) — até `NULL = NULL`. O WHERE só aceita linhas em que a condição é verdadeira, então nenhuma passa: **0**. Para testar ausência de valor use sempre `IS NULL` / `IS NOT NULL`.
+
+=== lab sel-like
+tipo: desafio
+tema: SQL: consulta, filtros e junções
+nivel: 1
+linguagem: sql
+banco: empresa
+titulo: Quem não usa o e-mail da empresa
+
+--- enunciado
+A TI quer avisar quem **não** usa e-mail `@empresa.com` — incluindo quem **não tem** e-mail cadastrado. Liste `nome` e `email`.
+
+--- codigo
+SELECT nome, email
+FROM Funcionario
+WHERE email NOT LIKE '%@empresa.com';
+
+--- solucao
+SELECT nome, email
+FROM Funcionario
+WHERE email NOT LIKE '%@empresa.com' OR email IS NULL;
+
+--- dicas
+Rode o código inicial: a Beatriz aparece, mas falta alguém. Quem?
+
+`NULL NOT LIKE '...'` é desconhecido, não verdadeiro. Acrescente uma segunda condição com `OR`.
+
+--- explicacao
+`LIKE` compara com um padrão: `%` casa qualquer sequência, `_` um caractere só. O detalhe do exercício é o `NULL` de novo: para o Davi, `email NOT LIKE ...` não é verdadeiro nem falso, então ele some. Sempre que uma coluna aceita NULL, pergunte-se: "e quem não tem valor?".
+
+=== lab join-left
+tipo: prever
+tema: SQL: consulta, filtros e junções
+nivel: 2
+linguagem: sql
+banco: empresa
+titulo: INNER JOIN x LEFT JOIN
+alvo: celula
+pergunta: Quantas linhas o LEFT JOIN produz?
+
+--- enunciado
+Todo departamento com seus funcionários. São 4 departamentos e 8 funcionários, mas um departamento não tem ninguém e um funcionário não tem departamento. Preveja quantas linhas o `LEFT JOIN` gera.
+
+--- codigo
+SELECT COUNT(*)
+FROM Departamento d
+LEFT JOIN Funcionario f ON f.idDepto = d.id;
+
+--- opcoes
+- 7
+- 8
+- 4
+- 9
+
+--- experimentos
+- Troque para `JOIN` (interno). Quantas agora?
+- Liste as linhas em vez de contar: `SELECT d.nome, f.nome FROM ...`. Onde aparece o NULL?
+- Inverta: `FROM Funcionario f LEFT JOIN Departamento d ...`. Quem aparece agora com NULL?
+
+--- explicacao
+O `LEFT JOIN` mantém **todas** as linhas da tabela da esquerda: os 7 funcionários com departamento casam com TI, RH e Vendas, e o Jurídico, que não tem ninguém, aparece **uma vez** com as colunas do funcionário em NULL — 7 + 1 = **8**. O `JOIN` interno descartaria o Jurídico (7). E o Fábio (sem departamento) não aparece em nenhum dos dois, porque aqui ele estaria do lado direito.
+
+=== lab join-sem-func
+tipo: desafio
+tema: SQL: consulta, filtros e junções
+nivel: 2
+linguagem: sql
+banco: empresa
+titulo: Departamentos vazios
+
+--- enunciado
+Liste o **nome** dos departamentos que **não têm nenhum funcionário**. Use `LEFT JOIN`.
+
+--- codigo
+SELECT d.nome
+FROM Departamento d
+JOIN Funcionario f ON f.idDepto = d.id;
+
+--- solucao
+SELECT d.nome
+FROM Departamento d
+LEFT JOIN Funcionario f ON f.idDepto = d.id
+WHERE f.id IS NULL;
+
+--- dicas
+Com `LEFT JOIN`, o departamento sem funcionário aparece com as colunas de `f` em NULL.
+
+Filtre exatamente essas linhas: `WHERE f.id IS NULL`.
+
+--- explicacao
+É o padrão **anti-join**: LEFT JOIN + `IS NULL` na chave da direita encontra quem **não tem par**. A mesma pergunta pode ser feita com subconsulta: `WHERE NOT EXISTS (SELECT 1 FROM Funcionario f WHERE f.idDepto = d.id)`.
+
+# =====================================================================
+# SQL: agregação, subconsultas e triggers
+# =====================================================================
+
+=== lab agg-count
+tipo: prever
+tema: SQL: agregação, subconsultas e triggers
+nivel: 1
+linguagem: sql
+banco: empresa
+titulo: COUNT(*) x COUNT(coluna)
+
+--- enunciado
+Três contagens na mesma tabela de 8 funcionários. Lembre: o Davi não tem e-mail e o Fábio não tem departamento. Preveja a linha de resultado (os valores separados por |).
+
+--- codigo
+SELECT COUNT(*), COUNT(email), COUNT(idDepto)
+FROM Funcionario;
+
+--- opcoes
+- 8 | 8 | 8
+- 8 | 7 | 7
+- 7 | 7 | 7
+- 8 | 6 | 7
+
+--- experimentos
+- Acrescente `COUNT(DISTINCT idDepto)` e `COUNT(DISTINCT cargo)`.
+- Compare `AVG(salario)` com `SUM(salario) / COUNT(*)`.
+
+--- explicacao
+`COUNT(*)` conta **linhas** (8). `COUNT(coluna)` conta só os valores **não nulos** daquela coluna: 7 e-mails e 7 departamentos preenchidos. Todas as funções de agregação (SUM, AVG, MIN, MAX, COUNT de coluna) ignoram NULL — por isso uma média pode surpreender se houver valores faltando.
+
+=== lab agg-having
+tipo: desafio
+tema: SQL: agregação, subconsultas e triggers
+nivel: 2
+linguagem: sql
+banco: empresa
+titulo: GROUP BY com HAVING
+ordem: sim
+
+--- enunciado
+Mostre o **nome do departamento** e a **média salarial arredondada para 2 casas** (`ROUND(AVG(...), 2)`), só dos departamentos com média **acima de 5000**, da maior média para a menor.
+
+--- codigo
+SELECT d.nome, AVG(f.salario)
+FROM Funcionario f
+JOIN Departamento d ON d.id = f.idDepto
+WHERE AVG(f.salario) > 5000;
+
+--- solucao
+SELECT d.nome, ROUND(AVG(f.salario), 2) AS media
+FROM Funcionario f
+JOIN Departamento d ON d.id = f.idDepto
+GROUP BY d.nome
+HAVING AVG(f.salario) > 5000
+ORDER BY media DESC;
+
+--- dicas
+Rode o código inicial e leia o erro: função de agregação não pode ficar no WHERE.
+
+Agrupe com `GROUP BY d.nome` e filtre os **grupos** com `HAVING`.
+
+Ordene pelo apelido: `ORDER BY media DESC`.
+
+--- explicacao
+O `WHERE` roda **antes** de agrupar, linha por linha — ainda não existe "média". O `HAVING` roda **depois** do `GROUP BY` e filtra os grupos. Toda coluna do SELECT que não é agregada precisa estar no `GROUP BY`. Resultado: TI (6400) e Vendas (5933,33); o RH fica de fora com 4500.
+
+=== lab sub-media
+tipo: desafio
+tema: SQL: agregação, subconsultas e triggers
+nivel: 2
+linguagem: sql
+banco: empresa
+titulo: Subconsulta: acima da média
+ordem: sim
+
+--- enunciado
+Liste `nome` e `salario` de quem ganha **acima da média geral** da empresa, do maior salário para o menor. Não escreva o valor da média à mão: calcule-o com uma **subconsulta**.
+
+--- codigo
+SELECT AVG(salario) FROM Funcionario;
+
+--- solucao
+SELECT nome, salario
+FROM Funcionario
+WHERE salario > (SELECT AVG(salario) FROM Funcionario)
+ORDER BY salario DESC;
+
+--- regras
+exigido: \(\s*SELECT :: Use uma subconsulta — (SELECT ...) dentro do WHERE
+
+--- dicas
+Uma subconsulta que devolve **um único valor** pode ficar à direita de `>`, como se fosse um número.
+
+`WHERE salario > (SELECT AVG(salario) FROM Funcionario)`
+
+--- explicacao
+A subconsulta escalar é calculada (média = 5412,50) e o resultado é usado na comparação. Escrever 5412.5 à mão funcionaria hoje e quebraria amanhã, quando alguém fosse contratado. Subconsultas podem aparecer no WHERE, no FROM (como tabela derivada) e até no SELECT.
+
+=== lab trg-before
+tipo: explorar
+tema: SQL: agregação, subconsultas e triggers
+nivel: 2
+linguagem: sql
+banco: empresa
+titulo: Trigger BEFORE: validar antes de gravar
+
+--- enunciado
+Um banco **ativo** reage a eventos com triggers. Este `BEFORE INSERT` recusa salários abaixo do mínimo **antes** de a linha ser gravada. Rode e depois tire o comentário do último INSERT.
+
+--- codigo
+CREATE TRIGGER trg_salario_minimo
+BEFORE INSERT ON Funcionario
+FOR EACH ROW
+WHEN NEW.salario < 1518
+BEGIN
+  SELECT RAISE(ABORT, 'salário abaixo do mínimo');
+END;
+
+INSERT INTO Funcionario (nome, cargo, salario, idDepto, email, admissao)
+VALUES ('Hugo Prado', 'Analista', 5300, 1, 'hugo@empresa.com', '2026-09-01');
+
+SELECT id, nome, salario FROM Funcionario ORDER BY id DESC LIMIT 3;
+
+-- tire o comentário e rode de novo:
+-- INSERT INTO Funcionario (nome, cargo, salario, idDepto, email, admissao)
+-- VALUES ('Ivo Teles', 'Auxiliar', 900, 2, 'ivo@empresa.com', '2026-09-02');
+
+--- experimentos
+- Tire o comentário do último INSERT.
+- Crie um trigger `AFTER UPDATE OF salario` que grave numa tabela de histórico o salário antigo e o novo.
+
+--- explicacao
+`BEFORE` roda antes da operação e pode **impedi-la** (com `RAISE(ABORT, ...)`); `AFTER` roda depois, quando a linha já foi gravada — ideal para auditoria e para atualizar outras tabelas. `NEW` é a linha que está chegando; num UPDATE também existe `OLD`. A regra fica no banco e vale para qualquer sistema que grave nele.
+
+# =====================================================================
+# Java e banco de dados: JDBC, JPA e Hibernate
+# =====================================================================
+
+=== lab jdbc-parsons
+tipo: parsons
+tema: Java e banco de dados: JDBC, JPA e Hibernate
+nivel: 1
+linguagem: java
+titulo: Monte uma consulta JDBC segura
+
+--- enunciado
+Monte o trecho JDBC que lista os nomes dos funcionários de um departamento usando **PreparedStatement**. Dois blocos são armadilhas clássicas.
+
+--- linhas
+String sql = "SELECT nome FROM Funcionario WHERE idDepto = ?";
+try (Connection con = DriverManager.getConnection(url, usuario, senha);
+     PreparedStatement ps = con.prepareStatement(sql)) {
+    ps.setInt(1, idDepto);
+    ResultSet rs = ps.executeQuery();
+    while (rs.next()) {
+        System.out.println(rs.getString("nome"));
+    }
+}
+
+--- distratores
+    ResultSet rs = ps.executeUpdate();
+String sql = "SELECT nome FROM Funcionario WHERE idDepto = " + idDepto;
+
+--- explicacao
+O fluxo JDBC é: **Connection** (pelo `DriverManager`, com o driver Tipo 4 conversando direto com o SGBD) → **PreparedStatement** com `?` → `setXxx` preenche os parâmetros (a contagem começa em **1**) → `executeQuery()` para SELECT, que devolve um `ResultSet` → `while (rs.next())` percorre as linhas. `executeUpdate()` é para INSERT/UPDATE/DELETE e devolve o número de linhas afetadas, não um ResultSet. Concatenar o valor na string abre a porta para SQL injection. O try-with-resources fecha a conexão sozinho.
+
+=== lab jdbc-python-dbapi
+tipo: explorar
+tema: Java e banco de dados: JDBC, JPA e Hibernate
+nivel: 1
+linguagem: python
+titulo: O mesmo fluxo do JDBC, em Python
+
+--- enunciado
+O JDBC não roda no navegador, mas o **DB-API** do Python segue exatamente o mesmo roteiro: conectar, preparar o comando com parâmetros, executar, percorrer o resultado, confirmar. Rode (é **SQLite de verdade**, via Python) e compare com o Java dos comentários.
+
+--- codigo
+import sqlite3
+
+con = sqlite3.connect(":memory:")              # Connection con = DriverManager.getConnection(url)
+cur = con.cursor()                             # Statement / PreparedStatement
+cur.execute("CREATE TABLE Aluno (id INTEGER PRIMARY KEY, nome TEXT, nota REAL)")
+
+alunos = [("Ana", 9.0), ("Bruno", 6.5), ("Carla", 8.0)]
+cur.executemany("INSERT INTO Aluno (nome, nota) VALUES (?, ?)", alunos)   # executeUpdate() em lote
+print("linhas inseridas:", cur.rowcount)
+con.commit()                                   # con.commit()
+
+cur.execute("SELECT nome, nota FROM Aluno WHERE nota >= ?", (7,))         # ps.setDouble(1, 7); ps.executeQuery()
+for nome, nota in cur.fetchall():              # while (rs.next()) { rs.getString("nome") ... }
+    print(nome, nota)
+
+con.close()                                    # con.close()
+
+--- experimentos
+- Mude o corte de nota para 6 e rode.
+- Faça um UPDATE com parâmetro (`UPDATE Aluno SET nota = ? WHERE nome = ?`) e imprima `cur.rowcount` — é o que o `executeUpdate()` devolveria.
+- Tire o `con.commit()` e pense: num banco em arquivo, os dados sobreviveriam?
+
+--- explicacao
+Os conceitos são os mesmos do JDBC: uma **conexão** com o banco; comandos com **parâmetros** `?` preenchidos pelo driver (nunca por concatenação); **consultas** que devolvem um cursor/ResultSet percorrido linha a linha; **atualizações** que devolvem quantas linhas afetaram; e **transações** confirmadas com commit. Aprender o fluxo numa linguagem transfere para qualquer outra.
+
+=== lab jdbc-injecao-py
+tipo: prever
+tema: Java e banco de dados: JDBC, JPA e Hibernate
+nivel: 2
+linguagem: python
+titulo: Statement x PreparedStatement
+
+--- enunciado
+O mesmo login malicioso é testado de dois jeitos: **concatenando** o texto na consulta (como um `Statement` com `+`) e com **parâmetros** (como um `PreparedStatement`). Preveja as duas contagens.
+
+--- codigo
+import sqlite3
+
+con = sqlite3.connect(":memory:")
+con.execute("CREATE TABLE Usuario (login TEXT, senha TEXT)")
+con.executemany("INSERT INTO Usuario VALUES (?, ?)", [("admin", "x9!"), ("ana", "123")])
+
+login, senha = "admin", "' OR '1'='1"
+
+sql_colado = f"SELECT COUNT(*) FROM Usuario WHERE login = '{login}' AND senha = '{senha}'"
+concatenado = con.execute(sql_colado).fetchone()[0]
+
+parametrizado = con.execute(
+    "SELECT COUNT(*) FROM Usuario WHERE login = ? AND senha = ?", (login, senha)
+).fetchone()[0]
+
+print(concatenado, parametrizado)
+
+--- opcoes
+- 2 0
+- 0 0
+- 1 0
+- 2 2
+
+--- experimentos
+- Imprima `sql_colado` e leia a consulta que realmente chegou ao banco.
+- Tente a senha certa (`"x9!"`) nos dois jeitos.
+
+--- explicacao
+Colado, o texto do atacante **vira SQL**: `... AND senha = '' OR '1'='1'` é verdadeiro para todas as linhas (2). Com parâmetro, o driver envia o valor **separado** do comando: a senha procurada é literalmente o texto `' OR '1'='1`, que não existe (0). É exatamente a diferença entre `Statement` e `PreparedStatement` — e o PreparedStatement ainda é pré-compilado, podendo ser reusado com outros valores.
+
+=== lab orm-mini
+tipo: desafio
+tema: Java e banco de dados: JDBC, JPA e Hibernate
+nivel: 2
+linguagem: js
+titulo: Um mini-ORM: de objeto para INSERT
+
+--- enunciado
+Um **ORM** (JPA/Hibernate) mapeia objetos para tabelas e gera o SQL por você. Escreva `gerarInsert(tabela, obj)`: cada propriedade vira uma coluna. Texto vai entre aspas simples (com `'` duplicado para escapar), número vai cru, booleano vira 1/0 e `null` vira `NULL`.
+
+--- codigo
+function gerarInsert(tabela, obj) {
+  return "";
+}
+
+console.log(gerarInsert("aluno", { nome: "Ana", idade: 20 }));
+
+--- solucao
+function valorSql(v) {
+  if (v === null || v === undefined) return "NULL";
+  if (typeof v === "number") return String(v);
+  if (typeof v === "boolean") return v ? "1" : "0";
+  return "'" + String(v).replace(/'/g, "''") + "'";
+}
+
+function gerarInsert(tabela, obj) {
+  const colunas = Object.keys(obj);
+  const valores = colunas.map(c => valorSql(obj[c]));
+  return "INSERT INTO " + tabela + " (" + colunas.join(", ") + ") VALUES (" + valores.join(", ") + ")";
+}
+
+console.log(gerarInsert("aluno", { nome: "Ana", idade: 20 }));
+
+--- testes
+gerarInsert("aluno", { nome: "Ana", idade: 20 }) ==> "INSERT INTO aluno (nome, idade) VALUES ('Ana', 20)"
+gerarInsert("produto", { nome: "Caneta", preco: 3.5, ativo: true }) ==> "INSERT INTO produto (nome, preco, ativo) VALUES ('Caneta', 3.5, 1)"
+gerarInsert("cliente", { nome: "D'Ávila" }) ==> "INSERT INTO cliente (nome) VALUES ('D''Ávila')"
+gerarInsert("x", { a: null }) ==> "INSERT INTO x (a) VALUES (NULL)"
+
+--- dicas
+`Object.keys(obj)` dá os nomes das colunas; `obj[coluna]` dá cada valor.
+
+Faça uma função auxiliar `valorSql(v)` que decide o formato pelo `typeof`.
+
+Para escapar a aspa: `texto.replace(/'/g, "''")`.
+
+--- explicacao
+É isso que o Hibernate faz quando você chama `persist(objeto)`: lê os campos da entidade (via `@Entity`, `@Column`...) e gera o INSERT. Um ORM de verdade usa parâmetros `?` em vez de montar valores na string — o escape de aspas é o mínimo para não quebrar a consulta (e mostra por que montar SQL à mão é arriscado).
+
+# =====================================================================
+# Web: HTTP, servlets e Tomcat
+# =====================================================================
+
+=== lab http-requisicao
+tipo: explorar
+tema: Web: HTTP, servlets e Tomcat
+nivel: 1
+linguagem: js
+titulo: Por dentro de uma requisição HTTP
+
+--- enunciado
+Uma requisição HTTP é **texto**: linha de requisição, cabeçalhos, linha em branco e corpo. Este código "desmonta" uma requisição POST de formulário, como o Tomcat faz antes de chamar o seu servlet.
+
+--- codigo
+const requisicao =
+  "POST /loja/cadastro?origem=site HTTP/1.1\r\n" +
+  "Host: www.loja.com\r\n" +
+  "Content-Type: application/x-www-form-urlencoded\r\n" +
+  "Cookie: sessao=abc123\r\n" +
+  "\r\n" +
+  "nome=Ana+Souza&email=ana%40email.com";
+
+const [cabeca, corpo] = requisicao.split("\r\n\r\n");
+const [linha1, ...cabecalhos] = cabeca.split("\r\n");
+const [metodo, url, versao] = linha1.split(" ");
+const [caminho, query] = url.split("?");
+
+console.log("método:", metodo, "| caminho:", caminho, "| versão:", versao);
+console.log("query string:", Object.fromEntries(new URLSearchParams(query)));
+cabecalhos.forEach(h => console.log("cabeçalho →", h));
+// o que request.getParameter("nome") devolveria:
+console.log("parâmetros do corpo:", Object.fromEntries(new URLSearchParams(corpo)));
+
+--- experimentos
+- Transforme em GET: mova `nome` e `email` para a query string e deixe o corpo vazio. O que muda para quem olha a barra de endereço?
+- O cookie `sessao=abc123` é o que faz o servidor "lembrar" de você. Por que ele é necessário se o HTTP é stateless?
+
+--- explicacao
+No **GET** os dados vão na URL (visíveis, com limite de tamanho, ficam no histórico); no **POST** vão no **corpo**. O `Content-Type` diz como o corpo está codificado (`urlencoded` para formulários; `multipart/form-data` para envio de arquivos). O HTTP é **stateless** — cada requisição é independente —, então o estado da sessão viaja nos **cookies**. O servlet recebe tudo isso já desmontado no `HttpServletRequest` (`getParameter`, `getHeader`, `getCookies`).
+
+=== lab http-servlet
+tipo: desafio
+tema: Web: HTTP, servlets e Tomcat
+nivel: 2
+linguagem: js
+titulo: Um servlet REST de produtos
+
+--- enunciado
+Simule um `HttpServlet`: o container chama `service(req)`, que despacha pelo método. Implemente:
+
+`GET /produtos` → 200 com a lista · `GET /produtos/2` → 200 com o produto, ou **404** se não existir · `POST /produtos` → **201** com o produto criado (id = próximo número) · qualquer outro método → **405**.
+
+--- codigo
+const produtos = [{ id: 1, nome: "Caderno" }, { id: 2, nome: "Caneta" }];
+
+function doGet(req) {
+  return { status: 200, corpo: produtos };
+}
+
+function doPost(req) {
+  return { status: 200, corpo: null };
+}
+
+function service(req) {
+  if (req.metodo === "GET") return doGet(req);
+  if (req.metodo === "POST") return doPost(req);
+}
+
+console.log(service({ metodo: "GET", caminho: "/produtos/2" }));
+
+--- solucao
+const produtos = [{ id: 1, nome: "Caderno" }, { id: 2, nome: "Caneta" }];
+
+function doGet(req) {
+  const partes = req.caminho.split("/").filter(Boolean);   // ["produtos", "2"]
+  if (partes.length === 1) return { status: 200, corpo: produtos };
+  const p = produtos.find(x => x.id === Number(partes[1]));
+  return p ? { status: 200, corpo: p } : { status: 404, corpo: "Não encontrado" };
+}
+
+function doPost(req) {
+  const novo = { id: produtos.length + 1, nome: req.corpo.nome };
+  produtos.push(novo);
+  return { status: 201, corpo: novo };
+}
+
+function service(req) {
+  if (req.metodo === "GET") return doGet(req);
+  if (req.metodo === "POST") return doPost(req);
+  return { status: 405, corpo: "Método não permitido" };
+}
+
+console.log(service({ metodo: "GET", caminho: "/produtos/2" }));
+
+--- testes
+service({ metodo: "GET", caminho: "/produtos" }).status ==> 200
+service({ metodo: "GET", caminho: "/produtos/2" }).corpo ==> { id: 2, nome: "Caneta" }
+service({ metodo: "GET", caminho: "/produtos/99" }).status ==> 404
+(r => [r.status, r.corpo.nome])(service({ metodo: "POST", caminho: "/produtos", corpo: { nome: "Lápis" } })) ==> [201, "Lápis"]
+service({ metodo: "DELETE", caminho: "/produtos/1" }).status ==> 405
+
+--- dicas
+`"/produtos/2".split("/").filter(Boolean)` dá `["produtos", "2"]`. Se só houver uma parte, é a lista inteira.
+
+`produtos.find(x => x.id === Number(id))` devolve o produto ou `undefined`.
+
+No fim do `service`, o que não for GET nem POST cai num `return { status: 405, ... }`.
+
+--- explicacao
+O CRUD se encaixa nos métodos HTTP: **POST** cria (INSERT), **GET** lê (SELECT), **PUT** atualiza (UPDATE), **DELETE** apaga. Os códigos de status comunicam o resultado por faixa: **2xx** sucesso (201 = criado), **4xx** erro do cliente (404 não encontrado, 405 método não permitido), **5xx** erro do servidor. Um `HttpServlet` real faz esse despacho no `service()` e você sobrescreve `doGet`/`doPost`.
+
+=== lab servlet-ciclo
+tipo: parsons
+tema: Web: HTTP, servlets e Tomcat
+nivel: 1
+linguagem: texto
+titulo: O ciclo de vida de um servlet
+
+--- enunciado
+Coloque as etapas do ciclo de vida de um servlet na ordem em que acontecem. Duas afirmações estão erradas.
+
+--- linhas
+O container (Tomcat) carrega a classe do servlet e cria uma única instância
+init() é chamado uma única vez, para preparar o servlet
+Chega uma requisição e o container chama service()
+service() despacha para doGet() ou doPost() conforme o método HTTP
+A resposta é escrita no HttpServletResponse e volta ao navegador
+Ao desligar a aplicação, destroy() é chamado uma única vez
+
+--- distratores
+init() é chamado de novo a cada requisição
+O navegador chama doGet() diretamente, sem passar pelo container
+
+--- explicacao
+O servlet vive **dentro do container**: é o Tomcat que cria a instância, chama `init()` **uma vez**, chama `service()` **a cada requisição** (cada uma numa thread, sobre a mesma instância) e chama `destroy()` **uma vez** no fim. O navegador só fala HTTP com o servidor; nunca chama métodos Java.
+
+# =====================================================================
+# Front-end: formulários, DOM, AJAX e APIs
+# =====================================================================
+
+=== lab form-validacao
+tipo: desafio
+tema: Front-end: formulários, DOM, AJAX e APIs
+nivel: 1
+linguagem: web
+titulo: Um formulário de cadastro correto
+
+--- enunciado
+Conserte o formulário: envio por **POST**; `nome` obrigatório; `email` do tipo e-mail e obrigatório; o **plano** é uma escolha única entre as opções (radio com o mesmo `name`); e todo campo com um `<label>` ligado a ele pelo `for`/`id`. O resultado aparece ao lado — tente enviar vazio.
+
+--- codigo
+<form action="/cadastro">
+  Nome: <input name="nome">
+  E-mail: <input name="email">
+
+  <p>Plano:</p>
+  <input type="checkbox" name="basico"> Básico
+  <input type="checkbox" name="premium"> Premium
+
+  <button>Cadastrar</button>
+</form>
+
+--- solucao
+<form action="/cadastro" method="post">
+  <label for="nome">Nome</label>
+  <input id="nome" name="nome" required>
+
+  <label for="email">E-mail</label>
+  <input id="email" name="email" type="email" required>
+
+  <p>Plano:</p>
+  <input type="radio" id="basico" name="plano" value="basico" checked>
+  <label for="basico">Básico</label>
+  <input type="radio" id="premium" name="plano" value="premium">
+  <label for="premium">Premium</label>
+
+  <button>Cadastrar</button>
+</form>
+
+--- testes
+Envia por POST :: $('form') && $('form').method === 'post'
+O nome é obrigatório :: !!$('input[name=nome]') && $('input[name=nome]').required
+O e-mail usa type=email e é obrigatório :: !!$('input[name=email]') && $('input[name=email]').type === 'email' && $('input[name=email]').required
+Os planos são radio com o mesmo name :: todos('input[type=radio]').length >= 2 && new Set(todos('input[type=radio]').map(r => r.name)).size === 1
+Todo campo tem um label ligado pelo for :: todos('input').length > 0 && todos('input').every(i => i.id && $('label[for="' + i.id + '"]'))
+
+--- dicas
+`<form method="post">` — sem isso o padrão é GET, e os dados iriam na URL.
+
+`required` e `type="email"` fazem o próprio navegador validar antes de enviar.
+
+Radio com o **mesmo** `name` = escolha única. Checkbox = pode marcar vários.
+
+--- explicacao
+O navegador valida sozinho `required` e `type="email"` antes de enviar — mas a validação **do servidor** continua obrigatória, porque qualquer um pode enviar uma requisição sem passar pelo formulário. `radio` com o mesmo `name` forma um grupo de escolha única; `checkbox` permite várias. O `<label for>` torna o texto clicável e é o que leitores de tela anunciam.
+
+=== lab dom-lista
+tipo: explorar
+tema: Front-end: formulários, DOM, AJAX e APIs
+nivel: 1
+linguagem: web
+titulo: DOM ao vivo: uma lista de tarefas
+
+--- enunciado
+O **DOM** é a árvore de objetos que o navegador monta a partir do HTML — e o JavaScript pode mudá-la. Use a lista ao lado (adicione e clique nos itens) e acompanhe o console abaixo do editor. Depois mexa no código.
+
+--- codigo
+<style>
+  body { font-family: sans-serif; padding: 12px; }
+  li { cursor: pointer; padding: 4px; }
+  li.feita { text-decoration: line-through; color: #888; }
+</style>
+
+<input id="tarefa" placeholder="Nova tarefa">
+<button id="add">Adicionar</button>
+<ul id="lista"></ul>
+<p id="contador">0 tarefas</p>
+
+<script>
+  const lista = document.getElementById("lista");
+  const campo = document.getElementById("tarefa");
+
+  function atualizar() {
+    const n = lista.children.length;
+    document.getElementById("contador").textContent = n + (n === 1 ? " tarefa" : " tarefas");
+  }
+
+  document.getElementById("add").addEventListener("click", () => {
+    if (!campo.value.trim()) return;
+    const li = document.createElement("li");   // cria um nó
+    li.textContent = campo.value;
+    li.addEventListener("click", () => li.classList.toggle("feita"));
+    lista.appendChild(li);                      // pendura na árvore
+    console.log("nó criado:", li.outerHTML);
+    campo.value = "";
+    atualizar();
+  });
+
+  console.log("hierarquia:", document.documentElement.tagName, ">", document.body.tagName);
+</script>
+
+--- experimentos
+- Faça o Enter no campo também adicionar (evento `keydown` com `e.key === "Enter"`).
+- Acrescente um botão "Limpar concluídas" que remove os `li.feita`.
+
+--- explicacao
+`createElement` cria um nó, `appendChild` o pendura na árvore e o navegador redesenha na hora — sem recarregar a página. Eventos (`click`, `keydown`) ligam a interação ao código. É a base de tudo o que o AJAX faz depois: buscar dados no servidor e **atualizar só um pedaço do DOM**.
+
+=== lab ajax-assincrono
+tipo: prever
+tema: Front-end: formulários, DOM, AJAX e APIs
+nivel: 2
+linguagem: js
+titulo: AJAX é assíncrono
+
+--- enunciado
+`buscarProdutos` simula uma chamada AJAX: a resposta da rede demora, e o resultado chega num **callback**. Preveja a ordem das mensagens.
+
+--- codigo
+function buscarProdutos(callback) {
+  console.log("2: requisição enviada");
+  setTimeout(() => callback(["Caderno", "Caneta"]), 100);   // a rede demora
+}
+
+console.log("1: antes");
+buscarProdutos(lista => console.log("4: chegou", lista.length, "produtos"));
+console.log("3: depois — a página não congelou");
+
+--- opcoes
+- 1: antes
+2: requisição enviada
+3: depois — a página não congelou
+4: chegou 2 produtos
+- 1: antes
+2: requisição enviada
+4: chegou 2 produtos
+3: depois — a página não congelou
+- 1: antes
+3: depois — a página não congelou
+2: requisição enviada
+4: chegou 2 produtos
+- 2: requisição enviada
+1: antes
+3: depois — a página não congelou
+4: chegou 2 produtos
+
+--- experimentos
+- Troque o 100 por 0. A ordem muda?
+- Reescreva com Promise: `function buscar() { return new Promise(ok => setTimeout(() => ok([...]), 100)); }` e use `.then`.
+
+--- explicacao
+O "A" de AJAX é de **assíncrono**: a requisição é enviada e o código continua; quando a resposta chega, o callback roda. Com `XMLHttpRequest` isso acontece no `onreadystatechange`, quando `readyState` chega a **4** (DONE) — `open()` só configura a requisição e `send()` a dispara. O `fetch` moderno faz o mesmo com Promises.
+
+# =====================================================================
+# Arquivos e NoSQL (MongoDB vs MySQL)
+# =====================================================================
+
+=== lab json-arquivo
+tipo: prever
+tema: Arquivos e NoSQL (MongoDB vs MySQL)
+nivel: 2
+linguagem: js
+titulo: O que sobrevive a um arquivo JSON?
+
+--- enunciado
+Para **persistir** um objeto num arquivo, ele vira texto (serialização) e depois volta (desserialização). Preveja quantas propriedades o objeto lido tem e qual é o tipo de `data`.
+
+--- codigo
+const pedido = {
+  id: 1,
+  data: new Date("2026-09-28T10:00:00Z"),
+  total: 99.9,
+  cupom: undefined,
+  calcular() { return this.total; }
+};
+
+const texto = JSON.stringify(pedido);   // o que vai para o arquivo
+const lido = JSON.parse(texto);         // o que volta do arquivo
+
+console.log(Object.keys(lido).length, typeof lido.data);
+
+--- opcoes
+- 5 object
+- 3 string
+- 4 string
+- 3 object
+
+--- experimentos
+- Imprima `texto` para ver exatamente o que foi gravado.
+- Recupere a data: `new Date(lido.data)`.
+
+--- explicacao
+JSON só conhece texto, número, booleano, null, listas e objetos. A **função** e o `undefined` somem, e a **data** vira texto (`"2026-09-28T10:00:00.000Z"`): sobram 3 propriedades e `data` é `string`. Persistir é sempre traduzir de um modelo (objetos na memória) para outro (texto no arquivo, linhas no banco, documentos BSON no MongoDB) — e o que o formato não representa se perde.
+
+=== lab nosql-find
+tipo: desafio
+tema: Arquivos e NoSQL (MongoDB vs MySQL)
+nivel: 2
+linguagem: js
+titulo: Um find() no estilo MongoDB
+
+--- enunciado
+No MongoDB, a consulta é um **documento-filtro**: `db.alunos.find({ curso: "ADS", idade: { $gt: 20 } })`. Implemente `find(colecao, filtro)` com igualdade simples e os operadores `$gt`, `$lt` e `$in`. Todos os campos do filtro precisam bater (é um AND).
+
+--- codigo
+const alunos = [
+  { nome: "Ana", idade: 19, curso: "ADS" },
+  { nome: "Bruno", idade: 23, curso: "SI" },
+  { nome: "Carla", idade: 22, curso: "ADS" },
+  { nome: "Davi", idade: 20, curso: "CC" }
+];
+
+function find(colecao, filtro) {
+  return colecao;
+}
+
+console.log(find(alunos, { curso: "ADS" }).map(a => a.nome));
+
+--- solucao
+const alunos = [
+  { nome: "Ana", idade: 19, curso: "ADS" },
+  { nome: "Bruno", idade: 23, curso: "SI" },
+  { nome: "Carla", idade: 22, curso: "ADS" },
+  { nome: "Davi", idade: 20, curso: "CC" }
+];
+
+function casa(valor, condicao) {
+  if (condicao !== null && typeof condicao === "object") {
+    if ("$gt" in condicao && !(valor > condicao.$gt)) return false;
+    if ("$lt" in condicao && !(valor < condicao.$lt)) return false;
+    if ("$in" in condicao && !condicao.$in.includes(valor)) return false;
+    return true;
+  }
+  return valor === condicao;
+}
+
+function find(colecao, filtro) {
+  return colecao.filter(doc => Object.keys(filtro).every(campo => casa(doc[campo], filtro[campo])));
+}
+
+console.log(find(alunos, { curso: "ADS" }).map(a => a.nome));
+
+--- testes
+find(alunos, { curso: "ADS" }).map(a => a.nome) ==> ["Ana", "Carla"]
+find(alunos, { idade: { $gt: 20 } }).map(a => a.nome) ==> ["Bruno", "Carla"]
+find(alunos, { curso: "ADS", idade: { $lt: 21 } }).map(a => a.nome) ==> ["Ana"]
+find(alunos, { curso: { $in: ["SI", "CC"] } }).length ==> 2
+find(alunos, {}).length ==> 4
+
+--- dicas
+Um documento entra se **todo** campo do filtro casar: `Object.keys(filtro).every(...)`.
+
+Se a condição do campo for um objeto, ela tem operadores (`$gt`...); senão, é igualdade.
+
+`lista.includes(valor)` resolve o `$in`.
+
+--- explicacao
+Equivalências MongoDB × relacional: **coleção** ≈ tabela, **documento** ≈ linha, **campo** ≈ coluna, e `find({...})` ≈ `SELECT * ... WHERE`. `{ idade: { $gt: 20 } }` é `WHERE idade > 20`; `$in` é o `IN` do SQL. A diferença de fundo: documentos da mesma coleção não precisam ter os mesmos campos, e dados relacionados costumam vir embutidos em vez de separados em tabelas com JOIN.

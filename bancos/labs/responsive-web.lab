@@ -1,0 +1,630 @@
+# Laboratório — Responsive Web Development (HTML/CSS com preview ao vivo)
+# Testes com @375 rodam numa tela de celular; sem @, numa tela de 1024 px.
+# Confira tudo com #/m/responsive-web/lab/autoteste
+
+# =====================================================================
+# HTML5 e formulários
+# =====================================================================
+
+=== lab html-semantico
+tipo: explorar
+tema: HTML5 e formulários
+nivel: 1
+linguagem: web
+titulo: HTML semântico: cada parte com seu nome
+
+--- enunciado
+O HTML5 trouxe elementos que dizem **o que** cada região é: `header`, `nav`, `main`, `article`, `aside`, `footer`. O resultado aparece ao lado e muda enquanto você digita. Experimente com as larguras de tela (Celular, Tablet, Desktop).
+
+--- codigo
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body { font-family: sans-serif; margin: 0; }
+    header, nav, main, aside, footer { padding: 12px; }
+    header { background: #1e3a8a; color: white; }
+    nav { background: #dbeafe; }
+    main { display: flex; gap: 12px; flex-wrap: wrap; }
+    article { flex: 3 1 260px; }
+    aside { flex: 1 1 160px; background: #f1f5f9; }
+    footer { background: #0f172a; color: #cbd5e1; font-size: 14px; }
+  </style>
+</head>
+<body>
+  <header><h1>Blog do ADS</h1></header>
+  <nav><a href="#">Início</a> · <a href="#">Artigos</a> · <a href="#">Contato</a></nav>
+  <main>
+    <article>
+      <h2>Por que HTML semântico?</h2>
+      <p>Leitores de tela, buscadores e outros desenvolvedores entendem a página pela estrutura.</p>
+    </article>
+    <aside>
+      <h3>Veja também</h3>
+      <p>CSS Grid em 5 minutos</p>
+    </aside>
+  </main>
+  <footer>© 2026 · UNIVALI</footer>
+</body>
+</html>
+
+--- experimentos
+- Veja em Celular (375): o `aside` desce para baixo do artigo. Qual propriedade faz isso? (Dica: `flex-wrap` com `flex-basis`.)
+- Troque todas as tags semânticas por `<div>`. O visual muda? O que se perde?
+- Apague a linha do `<meta name="viewport">` e veja em Celular.
+
+--- explicacao
+Visualmente um `<div>` com o mesmo CSS ficaria igual — a diferença é o **significado**: um leitor de tela anuncia "navegação" e "conteúdo principal", e o buscador sabe onde está o artigo. O `<meta name="viewport">` diz ao celular para usar a largura real da tela em vez de fingir que tem 980 px: sem ele, todo o design responsivo deixa de funcionar.
+
+=== lab html-estrutura
+tipo: parsons
+tema: HTML5 e formulários
+nivel: 1
+linguagem: web
+titulo: Monte o esqueleto de uma página HTML5
+
+--- enunciado
+Monte o documento HTML5 mínimo e correto, pronto para celular. Dois blocos são armadilhas.
+
+--- linhas
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Minha página</title>
+</head>
+<body>
+  <h1>Olá!</h1>
+</body>
+</html>
+
+--- distratores
+  <meta name="viewport" content="width=1024">
+<body><head>
+
+--- explicacao
+`<!DOCTYPE html>` liga o modo padrão do navegador; `lang` ajuda leitores de tela e tradutores; o `<head>` guarda metadados (charset, viewport, título) e o `<body>`, o conteúdo visível. Um viewport com largura fixa (1024) desliga o responsivo: o celular mostraria a página miniaturizada.
+
+=== lab html-form-tipos
+tipo: desafio
+tema: HTML5 e formulários
+nivel: 2
+linguagem: web
+titulo: Tipos de campo do HTML5
+
+--- enunciado
+Faça o formulário de **agendamento** usando os tipos certos do HTML5, para o navegador validar e mostrar o teclado certo no celular: `data` do tipo **date** e obrigatória; `pessoas` do tipo **number** entre **1 e 8**; `horario` como **select** com pelo menos 3 opções; `telefone` do tipo **tel**; `obs` como **textarea** de no máximo **200** caracteres.
+
+--- codigo
+<form>
+  <input name="data" placeholder="dd/mm/aaaa">
+  <input name="pessoas">
+  <input name="horario">
+  <input name="telefone">
+  <input name="obs">
+  <button>Agendar</button>
+</form>
+
+--- solucao
+<form>
+  <label>Data <input type="date" name="data" required></label>
+  <label>Pessoas <input type="number" name="pessoas" min="1" max="8" value="2"></label>
+  <label>Horário
+    <select name="horario">
+      <option>19:00</option>
+      <option>20:00</option>
+      <option>21:00</option>
+    </select>
+  </label>
+  <label>Telefone <input type="tel" name="telefone"></label>
+  <label>Observações <textarea name="obs" maxlength="200"></textarea></label>
+  <button>Agendar</button>
+</form>
+
+--- testes
+data é date e obrigatória :: $('[name=data]') && $('[name=data]').type === 'date' && $('[name=data]').required
+pessoas é number de 1 a 8 :: $('[name=pessoas]') && $('[name=pessoas]').type === 'number' && $('[name=pessoas]').min === '1' && $('[name=pessoas]').max === '8'
+horario é um select com 3+ opções :: $('select[name=horario]') && todos('select[name=horario] option').length >= 3
+telefone é tel :: $('[name=telefone]') && $('[name=telefone]').type === 'tel'
+obs é textarea com maxlength 200 :: $('textarea[name=obs]') && $('textarea[name=obs]').maxLength === 200
+
+--- dicas
+`<input type="date" name="data" required>`, `<input type="number" min="1" max="8">`.
+
+O select: `<select name="horario"><option>19:00</option>...</select>`.
+
+`<textarea name="obs" maxlength="200"></textarea>` — textarea tem tag de fechamento.
+
+--- explicacao
+Cada `type` do HTML5 traz validação e interface prontas: `date` abre um calendário, `number` recusa letras e respeita `min`/`max`, `tel` abre o teclado numérico no celular. Menos JavaScript, mais acessibilidade — e, de novo, o servidor continua validando.
+
+# =====================================================================
+# CSS3, layout e design do site
+# =====================================================================
+
+=== lab css-box-model
+tipo: explorar
+tema: CSS3, layout e design do site
+nivel: 1
+linguagem: web
+titulo: O box model e o box-sizing
+
+--- enunciado
+As duas caixas têm `width: 200px`, `padding: 20px` e `border: 5px`. Mas uma usa `content-box` (o padrão) e a outra `border-box`. Rode, compare os tamanhos e leia o console abaixo do editor.
+
+--- codigo
+<style>
+  .caixa { width: 200px; padding: 20px; border: 5px solid #2563eb; margin: 10px 0; background: #dbeafe; font-family: sans-serif; }
+  .a { box-sizing: content-box; }
+  .b { box-sizing: border-box; }
+</style>
+
+<div class="caixa a">content-box</div>
+<div class="caixa b">border-box</div>
+
+<script>
+  for (const sel of [".a", ".b"]) {
+    const el = document.querySelector(sel);
+    console.log(sel, "ocupa", el.offsetWidth + "px de largura");
+  }
+</script>
+
+--- experimentos
+- Mude o `padding` para 40px. Qual caixa muda de largura?
+- Acrescente `margin: 30px` e confira: a margem entra no offsetWidth?
+- Muitos sites começam o CSS com `*, *::before, *::after { box-sizing: border-box; }`. Por quê?
+
+--- explicacao
+No `content-box`, o `width` vale só para o **conteúdo**: a caixa ocupa 200 + 2×20 + 2×5 = **250px**. No `border-box`, o `width` já **inclui** padding e borda: ocupa exatamente 200px e o conteúdo encolhe. Em layouts responsivos com porcentagens, `border-box` evita que um padding faça a coluna estourar a linha. A margem fica sempre por fora.
+
+=== lab css-flex-nav
+tipo: desafio
+tema: CSS3, layout e design do site
+nivel: 1
+linguagem: web
+titulo: Menu horizontal com flexbox
+
+--- enunciado
+Os itens do menu estão empilhados, com bolinhas. Com **flexbox** no `ul`: deixe os itens **lado a lado**, espalhados com `justify-content: space-between`, e sem os marcadores de lista.
+
+--- codigo
+<style>
+  nav { background: #0f172a; padding: 10px 16px; font-family: sans-serif; }
+  nav a { color: white; text-decoration: none; }
+  nav ul {
+    /* seu CSS aqui */
+  }
+</style>
+
+<nav>
+  <ul>
+    <li><a href="#">Início</a></li>
+    <li><a href="#">Cursos</a></li>
+    <li><a href="#">Sobre</a></li>
+    <li><a href="#">Contato</a></li>
+  </ul>
+</nav>
+
+--- solucao
+<style>
+  nav { background: #0f172a; padding: 10px 16px; font-family: sans-serif; }
+  nav a { color: white; text-decoration: none; }
+  nav ul {
+    display: flex;
+    justify-content: space-between;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+</style>
+
+<nav>
+  <ul>
+    <li><a href="#">Início</a></li>
+    <li><a href="#">Cursos</a></li>
+    <li><a href="#">Sobre</a></li>
+    <li><a href="#">Contato</a></li>
+  </ul>
+</nav>
+
+--- testes
+O ul é um contêiner flex :: css('nav ul', 'display') === 'flex'
+Os itens ficam lado a lado :: ladoALado('nav li:first-child', 'nav li:last-child')
+Espaço distribuído entre os itens :: css('nav ul', 'justify-content') === 'space-between'
+Sem marcadores de lista :: css('nav ul', 'list-style-type') === 'none'
+
+--- dicas
+`display: flex` no **pai** (o ul) coloca os filhos (os li) em linha.
+
+`justify-content` distribui os itens no eixo principal; `list-style: none` tira as bolinhas.
+
+--- explicacao
+Flexbox trabalha num **eixo**: o contêiner (`display: flex`) organiza os filhos em linha por padrão, e `justify-content` decide como distribuir o espaço que sobra nesse eixo (`space-between` joga o primeiro para a esquerda, o último para a direita e divide o resto). É a ferramenta certa para layouts em uma dimensão, como menus e barras.
+
+=== lab css-grid-responsivo
+tipo: desafio
+tema: CSS3, layout e design do site
+nivel: 2
+linguagem: web
+titulo: Grid mobile-first: 1 coluna no celular, 3 no desktop
+
+--- enunciado
+Os cards precisam ficar em **1 coluna** no celular e em **3 colunas** a partir de **768px**. Faça **mobile-first**: o CSS base é o do celular, e a `@media (min-width: 768px)` acrescenta as colunas. Use os botões de largura do resultado para conferir.
+
+--- codigo
+<style>
+  body { font-family: sans-serif; margin: 12px; }
+  .card { background: #e0e7ff; border-radius: 8px; padding: 16px; }
+  .cards {
+    display: grid;
+    gap: 12px;
+  }
+</style>
+
+<div class="cards">
+  <div class="card">1 · HTML</div>
+  <div class="card">2 · CSS</div>
+  <div class="card">3 · JavaScript</div>
+  <div class="card">4 · PHP</div>
+  <div class="card">5 · MySQL</div>
+  <div class="card">6 · Git</div>
+</div>
+
+--- solucao
+<style>
+  body { font-family: sans-serif; margin: 12px; }
+  .card { background: #e0e7ff; border-radius: 8px; padding: 16px; }
+  .cards {
+    display: grid;
+    gap: 12px;
+    grid-template-columns: 1fr;
+  }
+  @media (min-width: 768px) {
+    .cards { grid-template-columns: repeat(3, 1fr); }
+  }
+</style>
+
+<div class="cards">
+  <div class="card">1 · HTML</div>
+  <div class="card">2 · CSS</div>
+  <div class="card">3 · JavaScript</div>
+  <div class="card">4 · PHP</div>
+  <div class="card">5 · MySQL</div>
+  <div class="card">6 · Git</div>
+</div>
+
+--- testes
+@375 No celular, um card embaixo do outro :: empilhados('.card:nth-child(1)', '.card:nth-child(2)')
+@1024 No desktop, 3 cards na mesma linha :: ladoALado('.card:nth-child(1)', '.card:nth-child(3)')
+@1024 No desktop, o 4º card começa a segunda linha :: empilhados('.card:nth-child(1)', '.card:nth-child(4)')
+Usa uma media query com min-width :: todos('style').some(s => /@media[^{]*min-width/.test(s.textContent))
+
+--- dicas
+Colunas no grid: `grid-template-columns: repeat(3, 1fr);`.
+
+Mobile-first: fora da media query fica o layout de celular; dentro de `@media (min-width: 768px) { ... }`, o de telas maiores.
+
+--- explicacao
+**Mobile-first** começa pelo caso mais simples (celular, uma coluna) e **acrescenta** complexidade conforme a tela cresce, com `min-width`. O contrário (desktop-first com `max-width`) costuma gerar CSS que o celular baixa e depois desfaz. `repeat(3, 1fr)` cria três colunas que dividem o espaço igualmente, e o grid quebra os itens em linhas sozinho.
+
+=== lab css-media-query
+tipo: explorar
+tema: CSS3, layout e design do site
+nivel: 1
+linguagem: web
+titulo: Breakpoints ao vivo
+
+--- enunciado
+Esta página muda de cor e de layout em dois **breakpoints**. Alterne entre Celular, Tablet e Desktop no resultado e veja qual regra está valendo — o texto mostra a largura atual.
+
+--- codigo
+<style>
+  body { font-family: sans-serif; margin: 0; padding: 16px; background: #fee2e2; }
+  .faixa::after { content: "celular (até 599px)"; }
+  .colunas { display: flex; flex-direction: column; gap: 8px; }
+  .colunas div { background: white; padding: 12px; border-radius: 6px; }
+
+  @media (min-width: 600px) {
+    body { background: #fef9c3; }
+    .faixa::after { content: "tablet (600px a 999px)"; }
+    .colunas { flex-direction: row; }
+  }
+  @media (min-width: 1000px) {
+    body { background: #dcfce7; }
+    .faixa::after { content: "desktop (1000px ou mais)"; }
+    .colunas div { font-size: 20px; }
+  }
+</style>
+
+<p>Largura: <b id="w"></b> — regra ativa: <b class="faixa"></b></p>
+<div class="colunas"><div>Um</div><div>Dois</div><div>Três</div></div>
+
+<script>
+  function mostra() { document.getElementById("w").textContent = innerWidth + "px"; }
+  mostra();
+  addEventListener("resize", mostra);
+</script>
+
+--- experimentos
+- Troque os breakpoints (600 e 1000) e confira com os botões de largura.
+- Mude `min-width` para `max-width` num deles. O que acontece com a ordem em que as regras se sobrepõem?
+
+--- explicacao
+Uma media query aplica um bloco de CSS **só quando a condição é verdadeira**. Com `min-width`, as regras se acumulam: no desktop valem as três camadas (base + 600 + 1000), e a última que define uma propriedade vence — a cascata. Os breakpoints devem nascer do **conteúdo** (onde o layout "quebra"), não de modelos específicos de aparelho.
+
+=== lab css-img-fluida
+tipo: desafio
+tema: CSS3, layout e design do site
+nivel: 2
+linguagem: web
+titulo: Imagem que não estoura no celular
+
+--- enunciado
+A imagem tem 600px de largura e **estoura** o cartão no celular (veja em Celular 375). Faça-a encolher até caber no contêiner, **sem** esticar em telas grandes e sem distorcer a proporção.
+
+--- codigo
+<style>
+  body { font-family: sans-serif; margin: 12px; }
+  .cartao { max-width: 700px; border: 1px solid #cbd5e1; border-radius: 8px; padding: 12px; }
+  img {
+    /* seu CSS aqui */
+  }
+</style>
+
+<div class="cartao">
+  <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='300'%3E%3Crect width='600' height='300' fill='%232563eb'/%3E%3Ctext x='300' y='165' font-size='40' text-anchor='middle' fill='white'%3E600 x 300%3C/text%3E%3C/svg%3E" width="600" height="300" alt="Retângulo azul de exemplo">
+  <p>Uma imagem responsiva nunca é maior que o espaço disponível.</p>
+</div>
+
+--- solucao
+<style>
+  body { font-family: sans-serif; margin: 12px; }
+  .cartao { max-width: 700px; border: 1px solid #cbd5e1; border-radius: 8px; padding: 12px; }
+  img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+  }
+</style>
+
+<div class="cartao">
+  <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='300'%3E%3Crect width='600' height='300' fill='%232563eb'/%3E%3Ctext x='300' y='165' font-size='40' text-anchor='middle' fill='white'%3E600 x 300%3C/text%3E%3C/svg%3E" width="600" height="300" alt="Retângulo azul de exemplo">
+  <p>Uma imagem responsiva nunca é maior que o espaço disponível.</p>
+</div>
+
+--- testes
+@375 No celular a imagem cabe no cartão :: largura('img') <= largura('.cartao')
+@375 A proporção 2:1 é mantida :: Math.abs(largura('img') / altura('img') - 2) < 0.05
+@1024 No desktop a imagem não é esticada :: Math.round(largura('img')) === 600
+
+--- dicas
+`max-width: 100%` limita a imagem à largura do pai — mas deixa ela menor se for menor.
+
+Só com max-width a altura fica presa nos 300px do atributo. `height: auto` recalcula pela proporção.
+
+--- explicacao
+`width: 100%` esticaria a imagem até 700px no desktop (e borraria); `max-width: 100%` só **limita**: a imagem usa o tamanho natural, até o máximo do contêiner. Com `height: auto` a altura acompanha e a proporção se mantém. Os atributos `width`/`height` no HTML continuam úteis: o navegador reserva o espaço antes de a imagem carregar e a página não "pula".
+
+# =====================================================================
+# JavaScript, AJAX e ambiente local
+# =====================================================================
+
+=== lab js-filtro
+tipo: desafio
+tema: JavaScript, AJAX e ambiente local
+nivel: 2
+linguagem: web
+titulo: Filtro de lista enquanto digita
+
+--- enunciado
+Faça a busca funcionar: a cada tecla no campo `#busca` (evento **input**), esconda os itens da lista que não contêm o texto digitado, sem diferenciar maiúsculas. Com o campo vazio, todos aparecem.
+
+--- codigo
+<input id="busca" placeholder="Buscar fruta...">
+<ul id="frutas">
+  <li>Banana</li>
+  <li>Caju</li>
+  <li>Cacau</li>
+  <li>Maçã</li>
+  <li>Uva</li>
+</ul>
+
+<script>
+  const busca = document.getElementById("busca");
+  // escreva aqui o addEventListener("input", ...)
+</script>
+
+--- solucao
+<input id="busca" placeholder="Buscar fruta...">
+<ul id="frutas">
+  <li>Banana</li>
+  <li>Caju</li>
+  <li>Cacau</li>
+  <li>Maçã</li>
+  <li>Uva</li>
+</ul>
+
+<script>
+  const busca = document.getElementById("busca");
+  busca.addEventListener("input", () => {
+    const termo = busca.value.trim().toLowerCase();
+    document.querySelectorAll("#frutas li").forEach(li => {
+      li.hidden = !li.textContent.toLowerCase().includes(termo);
+    });
+  });
+</script>
+
+--- testes
+Digitar "ca" deixa 2 itens :: (() => { const i = $('#busca'); i.value = 'ca'; i.dispatchEvent(new Event('input')); return visiveis('#frutas li').length === 2; })()
+Maiúsculas não importam :: (() => { const i = $('#busca'); i.value = 'UVA'; i.dispatchEvent(new Event('input')); return visiveis('#frutas li').length === 1; })()
+Campo vazio mostra todos :: (() => { const i = $('#busca'); i.value = ''; i.dispatchEvent(new Event('input')); return visiveis('#frutas li').length === 5; })()
+
+--- dicas
+`busca.addEventListener("input", () => { ... })` roda a cada tecla.
+
+Percorra os itens com `document.querySelectorAll("#frutas li").forEach(li => ...)`.
+
+Esconda com `li.hidden = true/false`. Compare `li.textContent.toLowerCase().includes(termo)`.
+
+--- explicacao
+É JavaScript no navegador reagindo a **eventos** e mudando o **DOM** sem recarregar a página. O evento `input` dispara a cada mudança no campo (inclusive colar texto), diferente do `change`, que só dispara ao sair do campo. Normalizar com `toLowerCase()` dos dois lados torna a busca indiferente a maiúsculas.
+
+=== lab js-ajax-simulado
+tipo: explorar
+tema: JavaScript, AJAX e ambiente local
+nivel: 2
+linguagem: web
+titulo: Carregar dados sem recarregar a página
+
+--- enunciado
+Clique em **Carregar cursos**: a página mostra "carregando…", espera a "resposta do servidor" e desenha os cards — sem recarregar nada. A API aqui é simulada com uma Promise, porque o laboratório não acessa a internet; no seu ambiente local (XAMPP, por exemplo) seria um `fetch("api/cursos.php")`.
+
+--- codigo
+<style>
+  body { font-family: sans-serif; margin: 12px; }
+  .card { border: 1px solid #cbd5e1; border-radius: 8px; padding: 10px; margin: 6px 0; }
+  .carregando { color: #64748b; font-style: italic; }
+</style>
+
+<button id="carregar">Carregar cursos</button>
+<div id="saida"></div>
+
+<script>
+  // no mundo real: fetch("api/cursos.php").then(r => r.json())
+  function apiFalsa() {
+    return new Promise(resolve => setTimeout(() => resolve([
+      { nome: "ADS", semestres: 5 },
+      { nome: "Ciência da Computação", semestres: 8 },
+      { nome: "Sistemas de Informação", semestres: 8 }
+    ]), 800));
+  }
+
+  document.getElementById("carregar").addEventListener("click", async () => {
+    const saida = document.getElementById("saida");
+    saida.innerHTML = '<p class="carregando">carregando…</p>';
+    console.log("requisição enviada");
+    const cursos = await apiFalsa();
+    console.log("resposta chegou:", cursos.length, "cursos");
+    saida.innerHTML = cursos
+      .map(c => `<div class="card"><b>${c.nome}</b> — ${c.semestres} semestres</div>`)
+      .join("");
+  });
+</script>
+
+--- experimentos
+- Aumente o tempo para 3000 ms e clique várias vezes seguidas. O que acontece? Como evitar (desabilitar o botão enquanto carrega)?
+- Simule uma falha: faça a Promise chamar `reject(new Error("servidor fora"))` e trate com `try/catch`, mostrando uma mensagem de erro.
+
+--- explicacao
+O fluxo AJAX é sempre o mesmo: mostrar um estado de **carregando**, disparar a requisição **assíncrona**, e quando a resposta (geralmente JSON) chega, **atualizar só o pedaço** da página que precisa. `async/await` deixa o código assíncrono com cara de sequencial. Tratar o erro é parte do trabalho: rede cai, servidor falha.
+
+# =====================================================================
+# PHP: sintaxe e formulários
+# =====================================================================
+
+=== lab php-form
+tipo: parsons
+tema: PHP: sintaxe e formulários
+nivel: 1
+linguagem: texto
+titulo: PHP recebendo um formulário
+
+--- enunciado
+Monte o script PHP que recebe o campo `nome` de um formulário enviado por **POST** e responde com uma saudação — ou pede para preencher. Dois blocos trazem erros típicos de quem vem do JavaScript.
+
+--- linhas
+<?php
+$nome = trim($_POST["nome"] ?? "");
+if ($nome === "") {
+    echo "Preencha o nome.";
+} else {
+    echo "Olá, " . htmlspecialchars($nome) . "!";
+}
+?>
+
+--- distratores
+    echo "Olá, " + $nome + "!";
+$nome = $_GET["nome"];
+
+--- explicacao
+Variáveis PHP começam com `$`; os dados do formulário chegam em `$_POST` (ou `$_GET`, se o método for GET); `??` dá um padrão quando o campo não veio. Texto se junta com **ponto** (`.`), não com `+`. E todo dado vindo do usuário que volta para a página passa por `htmlspecialchars` — senão o "nome" poderia ser um `<script>` (ataque XSS).
+
+=== lab php-foreach
+tipo: parsons
+tema: PHP: sintaxe e formulários
+nivel: 2
+linguagem: texto
+titulo: Arrays e foreach em PHP
+
+--- enunciado
+Monte o trecho que imprime uma lista numerada de frutas (1. maçã, 2. banana, 3. uva) usando um array e `foreach` com índice.
+
+--- linhas
+<?php
+$frutas = ["maçã", "banana", "uva"];
+foreach ($frutas as $i => $fruta) {
+    echo ($i + 1) . ". " . $fruta . "<br>";
+}
+?>
+
+--- distratores
+for (fruta in frutas) {
+    echo $i + 1 + ". " + $fruta;
+
+--- explicacao
+`foreach ($array as $indice => $valor)` percorre o array entregando índice e valor. Os parênteses em `($i + 1)` garantem que a soma aconteça antes da concatenação. O PHP roda **no servidor**: o navegador recebe só o HTML que o `echo` gerou.
+
+# =====================================================================
+# PHP: banco de dados, MVC e padrões
+# =====================================================================
+
+=== lab php-pdo
+tipo: parsons
+tema: PHP: banco de dados, MVC e padrões
+nivel: 2
+linguagem: texto
+titulo: Consulta segura com PDO
+
+--- enunciado
+Monte a consulta com **PDO** e *prepared statement* que lista os produtos abaixo de um preço-limite. Uma das armadilhas abre a porta para SQL injection.
+
+--- linhas
+$pdo = new PDO("mysql:host=localhost;dbname=loja;charset=utf8mb4", $usuario, $senha);
+$stmt = $pdo->prepare("SELECT nome, preco FROM produto WHERE preco < :limite");
+$stmt->execute([":limite" => $limite]);
+foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $p) {
+    echo htmlspecialchars($p["nome"]) . " - R$ " . $p["preco"] . "<br>";
+}
+
+--- distratores
+$stmt = $pdo->query("SELECT nome, preco FROM produto WHERE preco < " . $_GET["limite"]);
+$stmt->execute($limite);
+
+--- explicacao
+O fluxo PDO espelha o JDBC: **conexão** (`new PDO` com a DSN), **prepare** com marcadores (`:limite` ou `?`), **execute** passando os valores num array, e **fetch** para ler as linhas (`FETCH_ASSOC` devolve arrays com os nomes das colunas). Concatenar `$_GET` na string é SQL injection esperando para acontecer.
+
+=== lab mvc-fluxo
+tipo: parsons
+tema: PHP: banco de dados, MVC e padrões
+nivel: 1
+linguagem: texto
+titulo: O caminho de uma requisição no MVC
+
+--- enunciado
+Coloque na ordem o caminho de uma requisição numa aplicação **MVC** (por exemplo, abrir a página de um produto). Uma das etapas viola o padrão.
+
+--- linhas
+O navegador pede /produto/7 e a requisição chega ao Controller
+O Controller lê o parâmetro e pede o produto 7 ao Model
+O Model consulta o banco de dados e devolve os dados do produto
+O Controller escolhe a View e entrega os dados a ela
+A View gera o HTML e a resposta volta ao navegador
+
+--- distratores
+A View consulta o banco de dados diretamente para montar a página
+
+--- explicacao
+No MVC cada camada tem uma responsabilidade: o **Controller** recebe a requisição e coordena; o **Model** guarda as regras de negócio e fala com o banco; a **View** só apresenta. Se a View consultasse o banco, regra de negócio e apresentação se misturariam — e trocar o visual (ou o banco) exigiria mexer em tudo.

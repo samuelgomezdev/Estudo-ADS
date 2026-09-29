@@ -1,0 +1,597 @@
+# Laboratório — Gerenciamento de Projetos (as contas e as regras do PMBOK, rodando)
+# Confira tudo com #/m/gerenciamento-de-projetos/lab/autoteste
+
+# =====================================================================
+# Fundamentos e Ciclo de Vida do Projeto
+# =====================================================================
+
+=== lab gp-grupos
+tipo: parsons
+tema: Fundamentos e Ciclo de Vida do Projeto
+nivel: 1
+linguagem: texto
+titulo: Os 5 grupos de processos
+
+--- enunciado
+Ordene os grupos de processos do PMBOK na sequência em que o projeto os atravessa. Uma afirmação está errada.
+
+--- linhas
+Iniciação — o termo de abertura autoriza o projeto e nomeia o gerente
+Planejamento — escopo, cronograma, custos e o "como" de tudo
+Execução — a equipe realiza o trabalho planejado
+Monitoramento e controle — acompanha em paralelo, comparando o realizado com o planejado
+Encerramento — aceitação formal das entregas e lições aprendidas
+
+--- distratores
+Encerramento — só acontece se o projeto terminar com sucesso; projeto cancelado não se encerra
+
+--- explicacao
+O monitoramento e controle aparece em quarto na lista, mas **roda em paralelo** do começo ao fim. E todo projeto deve ser encerrado formalmente — inclusive o cancelado, porque é no encerramento que se registram as lições aprendidas e se liberam recursos e contratos.
+
+=== lab gp-tripla-restricao
+tipo: explorar
+tema: Fundamentos e Ciclo de Vida do Projeto
+nivel: 1
+linguagem: js
+titulo: A tripla restrição em números
+
+--- enunciado
+Um modelo simples: o trabalho (escopo, em horas) é feito por uma equipe; o prazo depende de quantas pessoas trabalham, e o custo de quantas horas são pagas. Rode e mexa num vértice para ver os outros se moverem.
+
+--- codigo
+const escopoHoras = 1200;       // tamanho do trabalho
+const valorHora = 80;           // R$
+const horasSemanaPorPessoa = 40;
+
+function planejar(pessoas, horasExtras = 0) {
+  const capacidadeSemana = pessoas * (horasSemanaPorPessoa + horasExtras);
+  const semanas = Math.ceil(escopoHoras / capacidadeSemana);
+  const custo = escopoHoras * valorHora + horasExtras * pessoas * semanas * valorHora * 0.5;  // adicional de hora extra
+  return { pessoas, semanas, custo };
+}
+
+console.log("equipe de 3:", planejar(3));
+console.log("equipe de 5:", planejar(5));
+console.log("3 com hora extra:", planejar(3, 10));
+
+--- experimentos
+- O cliente pediu +300 horas de escopo sem mudar o prazo. O que precisa mudar?
+- Dobre a equipe para 10. O prazo cai pela metade? (Pense também nos canais de comunicação.)
+
+--- explicacao
+Escopo, prazo e custo estão amarrados: com o escopo fixo, **encurtar o prazo** custa mais (hora extra, mais gente); **aumentar o escopo** sem mexer em nada é o *scope creep*. No mundo real a relação ainda é pior que a do modelo, porque dobrar a equipe não dobra a produtividade (integração, comunicação, curva de aprendizado). A **qualidade** fica no centro: é ela que sofre quando se força um vértice sem ajustar os outros.
+
+# =====================================================================
+# Escopo e EAP
+# =====================================================================
+
+=== lab gp-eap-100
+tipo: desafio
+tema: Escopo e EAP
+nivel: 2
+linguagem: js
+titulo: A regra dos 100% na EAP
+
+--- enunciado
+Cada nó da EAP tem `nome`, `horas` e, opcionalmente, `filhos`. Pela **regra dos 100%**, as horas de um nó com filhos têm de ser **exatamente** a soma das horas dos filhos. Implemente `violacoes(no)`: devolve a lista de nomes dos nós que quebram a regra (em qualquer nível), na ordem em que aparecem.
+
+--- codigo
+const eap = {
+  nome: "App de delivery", horas: 400, filhos: [
+    { nome: "Aplicativo", horas: 250, filhos: [
+      { nome: "Cardápio", horas: 100 },
+      { nome: "Carrinho", horas: 90 },
+      { nome: "Pagamento", horas: 80 }
+    ] },
+    { nome: "Painel do restaurante", horas: 150, filhos: [
+      { nome: "Pedidos", horas: 90 },
+      { nome: "Relatórios", horas: 60 }
+    ] }
+  ]
+};
+
+function violacoes(no) {
+  return [];
+}
+
+console.log(violacoes(eap));
+
+--- solucao
+const eap = {
+  nome: "App de delivery", horas: 400, filhos: [
+    { nome: "Aplicativo", horas: 250, filhos: [
+      { nome: "Cardápio", horas: 100 },
+      { nome: "Carrinho", horas: 90 },
+      { nome: "Pagamento", horas: 80 }
+    ] },
+    { nome: "Painel do restaurante", horas: 150, filhos: [
+      { nome: "Pedidos", horas: 90 },
+      { nome: "Relatórios", horas: 60 }
+    ] }
+  ]
+};
+
+function violacoes(no) {
+  if (!no.filhos || !no.filhos.length) return [];
+  const soma = no.filhos.reduce((s, f) => s + f.horas, 0);
+  const aqui = soma === no.horas ? [] : [no.nome];
+  return aqui.concat(...no.filhos.map(violacoes));
+}
+
+console.log(violacoes(eap));
+
+--- testes
+violacoes(eap) ==> ["Aplicativo"]
+violacoes({ nome: "X", horas: 10, filhos: [{ nome: "a", horas: 4 }, { nome: "b", horas: 6 }] }) ==> []
+violacoes({ nome: "X", horas: 10, filhos: [{ nome: "a", horas: 3, filhos: [{ nome: "a1", horas: 1 }] }, { nome: "b", horas: 7 }] }) ==> ["a"]
+violacoes({ nome: "Pacote", horas: 8 }) ==> []
+
+--- dicas
+Um nó sem filhos (pacote de trabalho) nunca viola a regra.
+
+Some as horas dos filhos com `reduce` e compare com `no.horas`. Depois chame `violacoes` em cada filho (recursão) e junte tudo.
+
+--- explicacao
+"Aplicativo" diz 250 h, mas os filhos somam 270: há 20 horas de trabalho **fora** do que foi declarado — ou um pacote superestimado. A regra dos 100% garante que a EAP contém **todo** o trabalho do projeto e **só** ele: o que não está na EAP não faz parte do projeto. Como a EAP é uma árvore, a conferência é naturalmente **recursiva**.
+
+=== lab gp-mudanca
+tipo: parsons
+tema: Escopo e EAP
+nivel: 1
+linguagem: texto
+titulo: Controle integrado de mudanças
+
+--- enunciado
+O cliente pediu uma funcionalidade nova no meio do projeto. Ordene o caminho correto da mudança. Uma das etapas é justamente o que causa o *scope creep*.
+
+--- linhas
+O cliente registra uma solicitação formal de mudança
+A equipe analisa o impacto no escopo, no prazo, no custo e nos riscos
+O comitê de controle de mudanças aprova ou rejeita
+Se aprovada, a linha de base e a documentação são atualizadas
+Todos os envolvidos são comunicados da decisão
+
+--- distratores
+O desenvolvedor implementa direto, porque "é rapidinho"
+
+--- explicacao
+Mudança não é problema — mudança **sem controle** é. A análise de impacto transforma "só mais um botão" em números (dias, reais, riscos) para quem decide. Implementar direto é o *scope creep*: o escopo cresce aos poucos sem ajuste de prazo nem de custo, uma das principais causas de fracasso.
+
+# =====================================================================
+# Gerenciamento do Tempo e Cronograma
+# =====================================================================
+
+=== lab gp-caminho-critico
+tipo: desafio
+tema: Gerenciamento do Tempo e Cronograma
+nivel: 3
+linguagem: js
+titulo: Calcule o caminho crítico (CPM)
+
+--- enunciado
+Cada atividade tem `id`, `duracao` e `depende` (predecessoras, relação término-início), já em ordem de dependência. Implemente `duracaoProjeto(atividades)` (passagem de ida: o início mais cedo de uma atividade é o maior término das predecessoras) e `caminhoCritico(atividades)`: os ids com **folga zero**, na ordem da lista.
+
+--- codigo
+const atividades = [
+  { id: "A", duracao: 3, depende: [] },
+  { id: "B", duracao: 2, depende: ["A"] },
+  { id: "C", duracao: 4, depende: ["A"] },
+  { id: "D", duracao: 2, depende: ["B", "C"] },
+  { id: "E", duracao: 3, depende: ["B"] },
+  { id: "F", duracao: 1, depende: ["D", "E"] }
+];
+
+function duracaoProjeto(atividades) {
+  return 0;
+}
+
+function caminhoCritico(atividades) {
+  return [];
+}
+
+console.log(duracaoProjeto(atividades), caminhoCritico(atividades));
+
+--- solucao
+const atividades = [
+  { id: "A", duracao: 3, depende: [] },
+  { id: "B", duracao: 2, depende: ["A"] },
+  { id: "C", duracao: 4, depende: ["A"] },
+  { id: "D", duracao: 2, depende: ["B", "C"] },
+  { id: "E", duracao: 3, depende: ["B"] },
+  { id: "F", duracao: 1, depende: ["D", "E"] }
+];
+
+function ida(atividades) {
+  const fim = {};                                   // término mais cedo (EF)
+  for (const a of atividades) {
+    const inicio = Math.max(0, ...a.depende.map(d => fim[d]));
+    fim[a.id] = inicio + a.duracao;
+  }
+  return fim;
+}
+
+function duracaoProjeto(atividades) {
+  return Math.max(...Object.values(ida(atividades)));
+}
+
+function caminhoCritico(atividades) {
+  const ef = ida(atividades);
+  const total = duracaoProjeto(atividades);
+  const ls = {};                                    // início mais tarde (LS), volta
+  for (const a of [...atividades].reverse()) {
+    const sucessoras = atividades.filter(s => s.depende.includes(a.id));
+    const lf = sucessoras.length ? Math.min(...sucessoras.map(s => ls[s.id])) : total;
+    ls[a.id] = lf - a.duracao;
+  }
+  return atividades.filter(a => ls[a.id] === ef[a.id] - a.duracao).map(a => a.id);
+}
+
+console.log(duracaoProjeto(atividades), caminhoCritico(atividades));
+
+--- testes
+duracaoProjeto(atividades) ==> 10
+caminhoCritico(atividades) ==> ["A", "C", "D", "F"]
+duracaoProjeto([{ id: "X", duracao: 5, depende: [] }, { id: "Y", duracao: 2, depende: [] }]) ==> 5
+caminhoCritico([{ id: "X", duracao: 5, depende: [] }, { id: "Y", duracao: 2, depende: [] }]) ==> ["X"]
+
+--- dicas
+Ida: percorra a lista guardando o término mais cedo de cada uma. Início = `Math.max(0, ...términos das predecessoras)`.
+
+Volta: percorra de trás para frente. O término mais tarde de uma atividade é o menor início mais tarde das sucessoras (ou a duração do projeto, se não tiver sucessora). Início mais tarde = término mais tarde − duração.
+
+Folga = início mais tarde − início mais cedo. Crítica é quem tem folga 0.
+
+--- explicacao
+Ida: A termina em 3; B em 5; C em 7; D começa no **maior** entre B e C (7) e termina em 9; E termina em 8; F começa em 9 e termina em **10** — a duração do projeto. Volta: E e B têm 1 dia de folga; A, C, D e F têm folga **zero** — atrasar qualquer uma atrasa o projeto. É onde o gerente foca atenção e onde se aplica *crashing* (pôr mais recurso) ou *fast tracking* (paralelizar).
+
+=== lab gp-pert
+tipo: prever
+tema: Gerenciamento do Tempo e Cronograma
+nivel: 1
+linguagem: js
+titulo: Estimativa de três pontos
+
+--- enunciado
+Uma atividade: otimista 4 dias, mais provável 6, pessimista 14. Preveja as duas estimativas.
+
+--- codigo
+const O = 4, M = 6, P = 14;
+const beta = (O + 4 * M + P) / 6;
+const triangular = (O + M + P) / 3;
+console.log("beta:", beta, "| triangular:", triangular);
+
+--- opcoes
+- beta: 7 | triangular: 8
+- beta: 8 | triangular: 7
+- beta: 6 | triangular: 8
+- beta: 7 | triangular: 6
+
+--- explicacao
+Beta (PERT): (4 + 24 + 14) ÷ 6 = **7** — o mais provável pesa 4 vezes. Triangular: (4 + 6 + 14) ÷ 3 = **8** — os três pesam igual, então o pessimista puxa mais a média. As duas ficam acima do "mais provável" (6): o risco de atraso (14) é bem maior que a chance de adiantar (4), e a estimativa honesta reflete isso.
+
+# =====================================================================
+# Custos, Aquisições e Contratos
+# =====================================================================
+
+=== lab gp-evm
+tipo: explorar
+tema: Custos, Aquisições e Contratos
+nivel: 2
+linguagem: js
+titulo: Valor agregado: o projeto está bem?
+
+--- enunciado
+Na semana 6 de um projeto de R$ 100 mil: estava previsto ter feito R$ 60 mil de trabalho (**VP**), foi entregue o equivalente a R$ 45 mil (**VA**) e foram gastos R$ 55 mil (**CR**). Rode e interprete; depois mude os números.
+
+--- codigo
+const VP = 60000, VA = 45000, CR = 55000, ONT = 100000;
+
+const VPr = VA - VP;   // variação de prazo (SV)
+const VC = VA - CR;    // variação de custo (CV)
+const IDP = VA / VP;   // índice de desempenho de prazo (SPI)
+const IDC = VA / CR;   // índice de desempenho de custo (CPI)
+const ENT = ONT / IDC; // estimativa no término, se o ritmo de custo continuar
+
+const leitura = (i, bom, ruim) => (i > 1 ? bom : i < 1 ? ruim : "no planejado");
+console.log("VPr:", VPr, "| VC:", VC);
+console.log("IDP:", IDP.toFixed(2), "→", leitura(IDP, "adiantado", "atrasado"));
+console.log("IDC:", IDC.toFixed(2), "→", leitura(IDC, "abaixo do orçamento", "acima do orçamento"));
+console.log("se nada mudar, o projeto vai custar ~R$", Math.round(ENT));
+
+--- experimentos
+- Faça VA = 60000 e CR = 50000. Como fica a leitura?
+- Um IDC de 0,8 significa quanto de trabalho entregue para cada real gasto?
+
+--- explicacao
+Regra de leitura: variação **positiva** ou índice **maior que 1** é bom. Aqui VA < VP (entregou menos que o previsto: IDP 0,75, **atrasado**) e VA < CR (gastou mais do que entregou: IDC 0,82, **acima do orçamento**). O IDC ainda projeta o futuro: se cada real continuar rendendo 82 centavos de trabalho, o projeto de 100 mil termina custando ~122 mil.
+
+=== lab gp-evm-diagnostico
+tipo: desafio
+tema: Custos, Aquisições e Contratos
+nivel: 2
+linguagem: js
+titulo: Diagnóstico automático de valor agregado
+
+--- enunciado
+Implemente `diagnostico({ vp, va, cr })`, que devolve `{ idp, idc, prazo, custo }`: os índices arredondados para **2 casas** e as leituras — `prazo`: `"adiantado"`, `"atrasado"` ou `"no prazo"`; `custo`: `"abaixo"`, `"acima"` ou `"no orçamento"`.
+
+--- codigo
+function diagnostico({ vp, va, cr }) {
+  return { idp: 0, idc: 0, prazo: "", custo: "" };
+}
+
+console.log(diagnostico({ vp: 60000, va: 45000, cr: 55000 }));
+
+--- solucao
+function diagnostico({ vp, va, cr }) {
+  const idp = Math.round((va / vp) * 100) / 100;
+  const idc = Math.round((va / cr) * 100) / 100;
+  const prazo = idp > 1 ? "adiantado" : idp < 1 ? "atrasado" : "no prazo";
+  const custo = idc > 1 ? "abaixo" : idc < 1 ? "acima" : "no orçamento";
+  return { idp, idc, prazo, custo };
+}
+
+console.log(diagnostico({ vp: 60000, va: 45000, cr: 55000 }));
+
+--- testes
+diagnostico({ vp: 60000, va: 45000, cr: 55000 }) ==> { idp: 0.75, idc: 0.82, prazo: "atrasado", custo: "acima" }
+diagnostico({ vp: 100, va: 120, cr: 100 }) ==> { idp: 1.2, idc: 1.2, prazo: "adiantado", custo: "abaixo" }
+diagnostico({ vp: 50, va: 50, cr: 50 }) ==> { idp: 1, idc: 1, prazo: "no prazo", custo: "no orçamento" }
+
+--- dicas
+IDP = VA / VP e IDC = VA / CR. Arredonde com `Math.round(x * 100) / 100`.
+
+Índice > 1 é bom; < 1 é ruim; = 1 está exatamente no planejado.
+
+--- explicacao
+Os dois índices sempre têm o **VA no numerador** — o valor do que foi de fato entregue é a régua. Comparado com o planejado (VP) mede o prazo; comparado com o gasto (CR) mede o custo. Um projeto pode estar adiantado e acima do orçamento ao mesmo tempo (correu gastando demais), por isso os dois são analisados juntos.
+
+# =====================================================================
+# Riscos
+# =====================================================================
+
+=== lab gp-vme
+tipo: desafio
+tema: Riscos
+nivel: 2
+linguagem: js
+titulo: Priorize riscos pelo valor monetário esperado
+
+--- enunciado
+Implemente `priorizar(riscos)`: calcule o **VME** de cada risco (probabilidade × impacto) e devolva a lista de `{ nome, vme }` do maior para o menor VME. Implemente também `reserva(riscos)`: a soma dos VMEs das **ameaças** (impacto negativo) em valor absoluto — a base da reserva de contingência.
+
+--- codigo
+const riscos = [
+  { nome: "Fornecedor atrasar a entrega", probabilidade: 0.3, impacto: -20000 },
+  { nome: "Servidor em nuvem cair", probabilidade: 0.1, impacto: -50000 },
+  { nome: "Dólar cair e a licença baratear", probabilidade: 0.4, impacto: 5000 },
+  { nome: "Desenvolvedor-chave sair", probabilidade: 0.2, impacto: -40000 }
+];
+
+function priorizar(riscos) {
+  return [];
+}
+
+function reserva(riscos) {
+  return 0;
+}
+
+console.log(priorizar(riscos), reserva(riscos));
+
+--- solucao
+const riscos = [
+  { nome: "Fornecedor atrasar a entrega", probabilidade: 0.3, impacto: -20000 },
+  { nome: "Servidor em nuvem cair", probabilidade: 0.1, impacto: -50000 },
+  { nome: "Dólar cair e a licença baratear", probabilidade: 0.4, impacto: 5000 },
+  { nome: "Desenvolvedor-chave sair", probabilidade: 0.2, impacto: -40000 }
+];
+
+const vme = r => Math.round(r.probabilidade * r.impacto);
+
+function priorizar(riscos) {
+  return riscos
+    .map(r => ({ nome: r.nome, vme: vme(r) }))
+    .sort((a, b) => Math.abs(b.vme) - Math.abs(a.vme));
+}
+
+function reserva(riscos) {
+  return riscos.filter(r => r.impacto < 0).reduce((s, r) => s + Math.abs(vme(r)), 0);
+}
+
+console.log(priorizar(riscos), reserva(riscos));
+
+--- testes
+priorizar(riscos).map(r => r.nome)[0] ==> "Desenvolvedor-chave sair"
+priorizar(riscos).map(r => r.vme) ==> [-8000, -6000, -5000, 2000]
+reserva(riscos) ==> 19000
+reserva([{ nome: "x", probabilidade: 0.5, impacto: 1000 }]) ==> 0
+
+--- dicas
+VME = probabilidade × impacto. Arredonde (`Math.round`) para evitar 0,30000000000000004.
+
+Ordene pelo **tamanho** do VME: `Math.abs(b.vme) - Math.abs(a.vme)`.
+
+Na reserva entram só as ameaças (`impacto < 0`).
+
+--- explicacao
+O VME junta os dois eixos da matriz qualitativa num número: um risco raro mas enorme (servidor, −5 mil) pode pesar tanto quanto um provável e médio (fornecedor, −6 mil). A saída do desenvolvedor-chave (−8 mil) é o primeiro a tratar — **mitigar** com documentação e pareamento, ou **transferir**, por exemplo. A oportunidade (+2 mil) também entra na análise: risco pode ser positivo.
+
+# =====================================================================
+# Equipe, Comunicação e Liderança
+# =====================================================================
+
+=== lab gp-canais
+tipo: prever
+tema: Equipe, Comunicação e Liderança
+nivel: 1
+linguagem: js
+titulo: O custo de mais uma pessoa na equipe
+
+--- enunciado
+Os canais de comunicação entre n pessoas são n(n − 1) ÷ 2. Preveja para uma equipe de 10 e de 11.
+
+--- codigo
+const canais = n => (n * (n - 1)) / 2;
+console.log(canais(10), canais(11));
+
+--- opcoes
+- 45 55
+- 90 110
+- 10 11
+- 45 50
+
+--- explicacao
+Cada par de pessoas é um canal: 10 pessoas formam **45**; com uma a mais, **55** — a pessoa nova abre 10 canais de uma vez. O número cresce com o **quadrado** do tamanho da equipe, e é por isso que adicionar gente a um projeto atrasado costuma atrasá-lo ainda mais (lei de Brooks). Equipes ágeis pequenas (5 a 9) não são acaso.
+
+=== lab gp-raci
+tipo: desafio
+tema: Equipe, Comunicação e Liderança
+nivel: 2
+linguagem: js
+titulo: Valide uma matriz RACI
+
+--- enunciado
+Na RACI, cada atividade tem **exatamente um A** (quem presta contas) e **pelo menos um R** (quem executa). Implemente `problemas(matriz)`, que devolve uma lista de textos no formato `"atividade: sem A"`, `"atividade: 2 A"` ou `"atividade: sem R"`, na ordem das atividades (primeiro o problema de A, depois o de R).
+
+--- codigo
+const matriz = {
+  "Levantar requisitos": { Ana: "A", Bruno: "R", Carla: "C" },
+  "Codificar": { Bruno: "R", Davi: "R", Carla: "I" },
+  "Testar": { Ana: "A", Carla: "A", Davi: "I" },
+  "Implantar": { Ana: "A", Davi: "R" }
+};
+
+function problemas(matriz) {
+  return [];
+}
+
+console.log(problemas(matriz));
+
+--- solucao
+const matriz = {
+  "Levantar requisitos": { Ana: "A", Bruno: "R", Carla: "C" },
+  "Codificar": { Bruno: "R", Davi: "R", Carla: "I" },
+  "Testar": { Ana: "A", Carla: "A", Davi: "I" },
+  "Implantar": { Ana: "A", Davi: "R" }
+};
+
+function problemas(matriz) {
+  const lista = [];
+  for (const [atividade, papeis] of Object.entries(matriz)) {
+    const valores = Object.values(papeis);
+    const nA = valores.filter(p => p === "A").length;
+    const nR = valores.filter(p => p === "R").length;
+    if (nA === 0) lista.push(atividade + ": sem A");
+    if (nA > 1) lista.push(atividade + ": " + nA + " A");
+    if (nR === 0) lista.push(atividade + ": sem R");
+  }
+  return lista;
+}
+
+console.log(problemas(matriz));
+
+--- testes
+problemas(matriz) ==> ["Codificar: sem A", "Testar: 2 A", "Testar: sem R"]
+problemas({ "X": { a: "A", b: "R" } }) ==> []
+problemas({ "Y": { a: "R" } }) ==> ["Y: sem A"]
+
+--- dicas
+`Object.entries(matriz)` dá pares [atividade, papéis]; `Object.values(papeis)` dá a lista de letras.
+
+Conte os "A" e os "R" com `filter(...).length`.
+
+--- explicacao
+**Zero A** é atividade órfã: se der errado, ninguém responde por ela. **Dois A** é pior ainda: cada um acha que o outro decide. **Sem R**, ninguém faz. A RACI existe para eliminar essas ambiguidades antes que virem conflito — C é consultado (mão dupla), I é só informado (mão única).
+
+=== lab gp-tuckman
+tipo: parsons
+tema: Equipe, Comunicação e Liderança
+nivel: 1
+linguagem: texto
+titulo: As fases de uma equipe (Tuckman)
+
+--- enunciado
+Ordene as fases de desenvolvimento de uma equipe no modelo de Tuckman. Uma frase descreve errado uma das fases.
+
+--- linhas
+Formação — as pessoas se conhecem, são educadas e dependem do líder
+Conflito (tormenta) — surgem divergências sobre papéis e abordagens
+Normatização — o grupo estabelece normas e passa a colaborar
+Desempenho — a equipe é interdependente e produtiva
+Encerramento — a equipe se dispersa ao fim do projeto
+
+--- distratores
+Desempenho — a fase em que o líder precisa decidir tudo sozinho
+
+--- explicacao
+O conflito é uma **fase normal**, não um sinal de que a equipe fracassou — é quando as expectativas se ajustam. Na fase de desempenho o líder pode delegar mais (liderança situacional); na formação, precisa dirigir mais. Trocar muita gente da equipe no meio do projeto costuma fazê-la voltar algumas fases.
+
+# =====================================================================
+# Métodos Ágeis e Encerramento
+# =====================================================================
+
+=== lab gp-kanban-wip
+tipo: explorar
+tema: Métodos Ágeis e Encerramento
+nivel: 2
+linguagem: js
+titulo: Kanban com limite de WIP
+
+--- enunciado
+Um quadro Kanban com **limite de WIP** (trabalho em progresso) na coluna "Fazendo". Rode e veja o quadro recusar puxar um cartão quando a coluna está cheia — é o sinal para a equipe **terminar** antes de começar coisa nova.
+
+--- codigo
+const quadro = {
+  "A fazer": ["Login", "Carrinho", "Cupom", "Relatório"],
+  "Fazendo": [],
+  "Pronto": []
+};
+const WIP = { "Fazendo": 2 };
+
+function mover(cartao, de, para) {
+  if (WIP[para] && quadro[para].length >= WIP[para]) {
+    console.log("✋ WIP cheio em", para + ": termine algo antes de puxar", cartao);
+    return false;
+  }
+  quadro[de] = quadro[de].filter(c => c !== cartao);
+  quadro[para].push(cartao);
+  console.log("movido:", cartao, "→", para);
+  return true;
+}
+
+mover("Login", "A fazer", "Fazendo");
+mover("Carrinho", "A fazer", "Fazendo");
+mover("Cupom", "A fazer", "Fazendo");       // recusado
+mover("Login", "Fazendo", "Pronto");
+mover("Cupom", "A fazer", "Fazendo");       // agora cabe
+console.log(quadro);
+
+--- experimentos
+- Tire o limite de WIP e puxe tudo para "Fazendo". O que acontece com o tempo até o primeiro cartão ficar pronto?
+- Acrescente uma coluna "Teste" com WIP 1.
+
+--- explicacao
+O Kanban é um fluxo **puxado**: só se puxa trabalho quando há capacidade. O limite de WIP impede a multitarefa que parece produtiva mas atrasa tudo — muitos cartões começados, poucos terminados — e reduz o **tempo de ciclo**. Diferente do Scrum, o Kanban não tem sprints nem papéis obrigatórios.
+
+=== lab gp-scrum
+tipo: parsons
+tema: Métodos Ágeis e Encerramento
+nivel: 1
+linguagem: texto
+titulo: Os eventos de uma Sprint
+
+--- enunciado
+Ordene os eventos do Scrum dentro de uma Sprint. Uma frase troca a responsabilidade de um papel.
+
+--- linhas
+Sprint Planning — o time escolhe do Product Backlog o que entra na Sprint
+Daily Scrum — 15 minutos por dia para o time se sincronizar
+O time desenvolve o incremento ao longo da Sprint
+Sprint Review — o incremento é mostrado aos stakeholders
+Sprint Retrospective — o time avalia e melhora o próprio processo
+
+--- distratores
+Sprint Planning — o Scrum Master define sozinho as tarefas de cada desenvolvedor
+
+--- explicacao
+A **Review** olha para o **produto** (o que foi entregue, com os stakeholders); a **Retrospective** olha para o **processo** (como o time trabalhou). O Scrum Master é facilitador e remove impedimentos — não é chefe nem distribui tarefas; quem prioriza o backlog é o **Product Owner** e o time se auto-organiza.

@@ -1,0 +1,358 @@
+# Laboratório — Fundamentos Computacionais
+# Confira tudo com #/m/fundamentos-computacionais/lab/autoteste
+
+# =====================================================================
+# Sistemas de Numeração
+# =====================================================================
+
+=== lab num-qualquer-base
+tipo: desafio
+tema: Sistemas de Numeração
+nivel: 2
+linguagem: js
+titulo: De qualquer base para decimal
+
+--- enunciado
+Implemente `paraDecimal(digitos, base)` para bases de 2 a 16: multiplique cada dígito pela base elevada à sua posição (começando em 0 à direita) e some. Os dígitos A a F valem 10 a 15.
+
+--- codigo
+function paraDecimal(digitos, base) {
+  return 0;
+}
+
+console.log(paraDecimal("1011", 2), paraDecimal("2AF", 16));
+
+--- solucao
+const VALORES = "0123456789ABCDEF";
+
+function paraDecimal(digitos, base) {
+  let total = 0;
+  const d = digitos.toUpperCase();
+  for (let i = 0; i < d.length; i++) {
+    const posicao = d.length - 1 - i;           // 0 é o dígito da direita
+    total += VALORES.indexOf(d[i]) * base ** posicao;
+  }
+  return total;
+}
+
+console.log(paraDecimal("1011", 2), paraDecimal("2AF", 16));
+
+--- testes
+paraDecimal("1011", 2) ==> 11
+paraDecimal("2AF", 16) ==> 687
+paraDecimal("332", 8) ==> 218
+paraDecimal("ff", 16) ==> 255
+paraDecimal("0", 10) ==> 0
+
+--- regras
+proibido: parseInt|Number\s*\(\s*["']0[xob] :: Faça a conta posicional, sem parseInt
+
+--- dicas
+Uma string de referência resolve o valor de cada dígito: `"0123456789ABCDEF".indexOf(digito)`.
+
+A posição do dígito i (lendo da esquerda) é `tamanho - 1 - i`. Potência em JS: `base ** posicao`.
+
+Não esqueça de aceitar letras minúsculas (`toUpperCase()`).
+
+--- explicacao
+Todo sistema posicional funciona igual, só muda a base: 2AF₁₆ = 2·16² + 10·16¹ + 15·16⁰ = 512 + 160 + 15 = **687**. O mesmo código converte binário, octal e hexa — a **base** é só um parâmetro.
+
+=== lab num-agrupar
+tipo: prever
+tema: Sistemas de Numeração
+nivel: 1
+linguagem: js
+titulo: Atalhos: agrupar bits de 4 em 4 e de 3 em 3
+
+--- enunciado
+Como 16 = 2⁴ e 8 = 2³, a conversão binário → hexa agrupa bits de 4 em 4, e binário → octal de 3 em 3. Preveja a saída.
+
+--- codigo
+const bits = "11011010";
+console.log(bits.slice(0, 4), bits.slice(4), "→ hexa", parseInt(bits, 2).toString(16).toUpperCase());
+console.log("011 011 010 → octal", parseInt("011011010", 2).toString(8));
+
+--- opcoes
+- 1101 1010 → hexa DA
+011 011 010 → octal 332
+- 1101 1010 → hexa AD
+011 011 010 → octal 233
+- 1101 1010 → hexa DA
+011 011 010 → octal 218
+- 1101 1010 → hexa 218
+011 011 010 → octal 332
+
+--- explicacao
+`1101` = 13 = **D** e `1010` = 10 = **A**: DA₁₆. De 3 em 3: `011` = 3, `011` = 3, `010` = 2: **332₈**. Nenhuma divisão foi necessária — agrupar sempre da **direita para a esquerda**, completando com zeros à esquerda.
+
+=== lab num-soma-binaria
+tipo: explorar
+tema: Sistemas de Numeração
+nivel: 1
+linguagem: js
+titulo: Soma binária coluna a coluna
+
+--- enunciado
+1 + 1 = 10 em binário: fica 0 e **vai um**. O código soma dois números em binário da direita para a esquerda e mostra cada coluna com o vai-um. Rode e troque os números.
+
+--- codigo
+const a = "1011";   // 11
+const b = "0111";   //  7
+
+let resultado = "", vaiUm = 0;
+for (let i = a.length - 1; i >= 0; i--) {
+  const soma = Number(a[i]) + Number(b[i]) + vaiUm;
+  const bit = soma % 2;
+  console.log("coluna", i, ":", a[i], "+", b[i], "+ vem", vaiUm, "=", soma, "→ fica", bit, "vai", Math.floor(soma / 2));
+  vaiUm = Math.floor(soma / 2);
+  resultado = bit + resultado;
+}
+if (vaiUm) resultado = "1" + resultado;
+
+console.log(a, "+", b, "=", resultado, "=", parseInt(resultado, 2));
+
+--- experimentos
+- Some `1111` + `0001`. O resultado cabe em 4 bits?
+- Implemente a subtração com "empresta um".
+
+--- explicacao
+As regras são as do resumo: 0+0 = 0, 0+1 = 1, 1+1 = 10 (zero e vai um), 1+1+1 = 11. Cada coluna é exatamente o que um **somador completo** faz em hardware, com XOR para o bit e AND/OR para o vai-um. 1011 + 0111 = **10010** (11 + 7 = 18).
+
+=== lab num-overflow
+tipo: prever
+tema: Sistemas de Numeração
+nivel: 2
+linguagem: js
+titulo: Quando o número não cabe no byte
+
+--- enunciado
+Um registrador de **8 bits** guarda de 0 a 255. O código soma 200 + 100 e guarda só os 8 bits de baixo. Preveja.
+
+--- codigo
+const a = 200, b = 100;
+const byte = (a + b) & 0xFF;      // só os 8 bits de baixo
+console.log(a + b, byte, (a + b).toString(2));
+
+--- opcoes
+- 300 44 100101100
+- 300 300 100101100
+- 300 255 11111111
+- 44 44 101100
+
+--- explicacao
+300 em binário tem **9 bits** (`100101100`); o byte guarda só os 8 da direita, `00101100` = **44**. O bit que "caiu" é o **overflow** (estouro) — o processador liga um bit de flag para avisar. É o mesmo motivo de contadores de jogos antigos voltarem a zero ao passar de 255.
+
+# =====================================================================
+# Portas Lógicas e Circuitos Digitais
+# =====================================================================
+
+=== lab log-tabela3
+tipo: explorar
+tema: Portas Lógicas e Circuitos Digitais
+nivel: 1
+linguagem: js
+titulo: Tabela-verdade de uma expressão com 3 entradas
+
+--- enunciado
+Com n entradas, a tabela tem **2ⁿ** linhas. O código gera todas as combinações de A, B e C contando de 0 a 7 em binário e avalia `S = A·B + C'`. Rode e troque a expressão.
+
+--- codigo
+const S = (A, B, C) => (A & B) | (1 - C);     // A·B + C'
+
+console.log("A B C | S");
+for (let i = 0; i < 2 ** 3; i++) {
+  const A = (i >> 2) & 1, B = (i >> 1) & 1, C = i & 1;
+  console.log(A, B, C, "|", S(A, B, C));
+}
+
+--- experimentos
+- Troque para uma XOR de três entradas: `A ^ B ^ C`. Quando ela dá 1? (número ímpar de 1s — é o bit de paridade!)
+- Faça com 4 entradas. Quantas linhas?
+
+--- explicacao
+Contar de 0 a 2ⁿ − 1 em binário gera **todas** as combinações sem esquecer nenhuma: cada bit do contador é uma entrada. É o jeito sistemático de montar qualquer tabela-verdade — e, lendo as linhas em que S = 1, dá para escrever a expressão de volta (soma de produtos).
+
+=== lab log-equivalencia
+tipo: desafio
+tema: Portas Lógicas e Circuitos Digitais
+nivel: 2
+linguagem: js
+titulo: Prove equivalências por exaustão
+
+--- enunciado
+Implemente `equivalentes(f, g, n)`: devolve `true` se as funções booleanas `f` e `g`, de `n` entradas, dão a mesma saída para **todas** as 2ⁿ combinações de 0 e 1. As funções recebem as entradas como argumentos separados.
+
+--- codigo
+function equivalentes(f, g, n) {
+  return true;
+}
+
+const naoE = (a, b) => 1 - (a & b);
+const deMorgan = (a, b) => (1 - a) | (1 - b);
+console.log(equivalentes(naoE, deMorgan, 2));
+
+--- solucao
+function equivalentes(f, g, n) {
+  for (let i = 0; i < 2 ** n; i++) {
+    const entradas = [];
+    for (let k = n - 1; k >= 0; k--) entradas.push((i >> k) & 1);
+    if (f(...entradas) !== g(...entradas)) return false;
+  }
+  return true;
+}
+
+const naoE = (a, b) => 1 - (a & b);
+const deMorgan = (a, b) => (1 - a) | (1 - b);
+console.log(equivalentes(naoE, deMorgan, 2));
+
+--- testes
+equivalentes((a, b) => 1 - (a & b), (a, b) => (1 - a) | (1 - b), 2) ==> true
+equivalentes((a, b) => 1 - (a | b), (a, b) => (1 - a) | (1 - b), 2) ==> false
+equivalentes((a, b, c) => a & (b | c), (a, b, c) => (a & b) | (a & c), 3) ==> true
+equivalentes((a) => a | 1, (a) => 1, 1) ==> true
+equivalentes((a, b) => a ^ b, (a, b) => a | b, 2) ==> false
+
+--- dicas
+Percorra i de 0 até 2ⁿ − 1; os bits de i são as entradas: `(i >> k) & 1`.
+
+Monte a lista de entradas e chame `f(...entradas)` e `g(...entradas)`. Achou uma diferença? Já pode devolver false.
+
+--- explicacao
+Como o domínio booleano é finito, dá para provar uma lei **testando tudo**: De Morgan, a distributiva `A·(B+C) = A·B + A·C` e o elemento nulo `A + 1 = 1` passam em todas as linhas. Basta **um** contraexemplo para derrubar uma "lei" falsa — como `A ⊕ B = A + B`, que falha quando A = B = 1.
+
+# =====================================================================
+# Memória RAM e Cache
+# =====================================================================
+
+=== lab mem-cache-lru
+tipo: prever
+tema: Memória RAM e Cache
+nivel: 2
+linguagem: js
+titulo: Hit ou miss?
+
+--- enunciado
+Uma cache minúscula com **2 posições** e substituição **LRU** (sai o menos recentemente usado). Siga os acessos na ordem e preveja quantos acertos (hits) e falhas (misses).
+
+--- codigo
+const acessos = [1, 2, 1, 3, 1, 2];
+const cache = [];
+let hits = 0, misses = 0;
+
+for (const end of acessos) {
+  const i = cache.indexOf(end);
+  if (i >= 0) { hits++; cache.splice(i, 1); }
+  else { misses++; if (cache.length === 2) cache.shift(); }
+  cache.push(end);                 // o fim é o mais recente
+}
+console.log("hits:", hits, "| misses:", misses);
+
+--- opcoes
+- hits: 2 | misses: 4
+- hits: 3 | misses: 3
+- hits: 1 | misses: 5
+- hits: 4 | misses: 2
+
+--- explicacao
+1 miss, 2 miss, 1 **hit**, 3 miss (sai o 2, menos recente), 1 **hit**, 2 miss. Os dois acertos vieram da **localidade temporal**: o endereço 1 foi reusado logo. Com cache maior (3 posições) o último acesso ao 2 também seria hit. Cache é pequena porque é **SRAM** — rápida, mas cara e grande por bit.
+
+=== lab mem-hierarquia
+tipo: explorar
+tema: Memória RAM e Cache
+nivel: 2
+linguagem: js
+titulo: Por que a cache compensa: tempo médio de acesso
+
+--- enunciado
+Tempo médio de acesso = tempo da cache + taxa de falha × tempo da RAM. O código compara taxas de acerto diferentes. Rode e veja o efeito enorme de alguns pontos percentuais.
+
+--- codigo
+const CACHE_NS = 1;     // L1: ~1 ns
+const RAM_NS = 100;     // RAM: ~100 ns
+
+for (const acerto of [0.5, 0.8, 0.9, 0.95, 0.99]) {
+  const medio = CACHE_NS + (1 - acerto) * RAM_NS;
+  console.log("acerto", (acerto * 100) + "%", "→ tempo médio", medio.toFixed(1), "ns", "| sem cache seria", RAM_NS, "ns");
+}
+
+// localidade espacial: percorrer em linha x em coluna
+const N = 4, linhas = [], colunas = [];
+for (let i = 0; i < N; i++) for (let j = 0; j < N; j++) linhas.push(i * N + j);
+for (let j = 0; j < N; j++) for (let i = 0; i < N; i++) colunas.push(i * N + j);
+console.log("endereços percorrendo por linha:", linhas.join(" "));
+console.log("endereços percorrendo por coluna:", colunas.join(" "));
+
+--- experimentos
+- Com RAM de 60 ns e 97% de acerto, quanto dá?
+- Qual dos dois percursos da matriz aproveita a localidade **espacial** (vizinhos na memória)?
+
+--- explicacao
+Com 99% de acerto, a média é ~2 ns — quase a velocidade da cache, com a capacidade da RAM. Isso só funciona porque programas têm **localidade**: temporal (reusam o mesmo dado) e espacial (usam os vizinhos). Percorrer a matriz **por linha** visita endereços seguidos (0 1 2 3...), que a cache traz em blocos; por coluna, pula de 4 em 4 e desperdiça cada bloco.
+
+# =====================================================================
+# Linguagens de Alto e Baixo Nível
+# =====================================================================
+
+=== lab ling-montador
+tipo: explorar
+tema: Linguagens de Alto e Baixo Nível
+nivel: 2
+linguagem: js
+titulo: Um montador de brinquedo
+
+--- enunciado
+O **montador (assembler)** traduz mnemônicos (MOV, ADD) em código de máquina. Aqui um programa em "Assembly" é traduzido para binário e depois executado por uma CPU de brinquedo. Rode e compare com a mesma conta em alto nível.
+
+--- codigo
+const opcodes = { MOV: "0001", ADD: "0010", SUB: "0011", PRINT: "1111" };
+const programa = ["MOV A 5", "MOV B 7", "ADD A B", "PRINT A"];
+
+// 1) montador: mnemônico → código de máquina
+const maquina = programa.map(linha => {
+  const [op, ...args] = linha.split(" ");
+  return opcodes[op] + " " + args.join(",");
+});
+console.log("código de máquina:", maquina);
+
+// 2) a CPU executa
+const reg = {};
+for (const linha of programa) {
+  const [op, x, y] = linha.split(" ");
+  if (op === "MOV") reg[x] = Number(y);
+  else if (op === "ADD") reg[x] += reg[y];
+  else if (op === "SUB") reg[x] -= reg[y];
+  else if (op === "PRINT") console.log(x, "=", reg[x]);
+}
+
+// 3) em alto nível:
+console.log("alto nível:", 5 + 7);
+
+--- experimentos
+- Escreva em "Assembly" a conta (10 − 3) + 4.
+- Crie a instrução `MUL`. O que precisa mudar no montador e na CPU?
+
+--- explicacao
+Quatro linhas de baixo nível para o que em alto nível é `5 + 7`. O Assembly dá **controle total** (registradores, instruções exatas) e é eficiente, mas é verboso e **preso à arquitetura**: esse conjunto de opcodes só vale para essa CPU. Linguagens de alto nível trocam esse controle por **produtividade e portabilidade** — e um compilador ou interpretador faz a tradução.
+
+=== lab ling-traducao
+tipo: parsons
+tema: Linguagens de Alto e Baixo Nível
+nivel: 1
+linguagem: texto
+titulo: Do Main.java até a CPU (execução híbrida)
+
+--- enunciado
+Java é **híbrido**: compila para bytecode, que uma máquina virtual executa. Ordene as etapas. Uma afirmação descreve outra linguagem.
+
+--- linhas
+O programador escreve o código-fonte Main.java
+O compilador javac traduz o fonte para bytecode (Main.class)
+A JVM carrega o bytecode na máquina onde vai rodar
+O compilador JIT traduz os trechos mais usados para código de máquina nativo
+A CPU executa as instruções de máquina
+
+--- distratores
+O navegador interpreta o Main.java linha a linha, sem compilação
+
+--- explicacao
+**Compiladas** (C, Rust) viram código de máquina antes de rodar: rápidas, mas é preciso recompilar para cada plataforma. **Interpretadas** (Python, JS, PHP) são traduzidas enquanto rodam: portáteis e flexíveis, mais lentas. Java e C# ficam no meio: o **bytecode** é o mesmo em qualquer sistema ("escreva uma vez, rode em qualquer lugar") e o **JIT** recupera a velocidade compilando o que é executado com frequência.

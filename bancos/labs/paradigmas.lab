@@ -1,0 +1,2756 @@
+# Laboratório — Paradigmas de Programação
+# Formato descrito no topo de labs.py. Confira tudo com #/m/paradigmas/lab/autoteste
+
+# =====================================================================
+# Métodos de Programação e História
+# =====================================================================
+
+=== lab historia-quatro-paradigmas
+tipo: explorar
+tema: Métodos de Programação e História
+nivel: 1
+linguagem: js
+titulo: Um problema, quatro jeitos de pensar
+
+--- enunciado
+Paradigma é um **jeito de pensar** a solução. Aqui o mesmo problema — calcular o fatorial de 5 — está resolvido em quatro paradigmas, todos em JavaScript. Rode e confira que os quatro chegam ao mesmo número. Depois leia cada bloco e perceba **onde está o foco** de cada um: nos passos, na função, na definição matemática ou no objeto.
+
+--- codigo
+// 1. IMPERATIVO: uma sequência de comandos que muda o estado
+let resultado = 1;
+for (let i = 2; i <= 5; i++) {
+  resultado = resultado * i;
+}
+console.log("imperativo:", resultado);
+
+// 2. ESTRUTURADO: o mesmo, mas organizado num módulo (função) reutilizável
+function fatorialEstruturado(n) {
+  let r = 1;
+  for (let i = 2; i <= n; i++) r *= i;
+  return r;
+}
+console.log("estruturado:", fatorialEstruturado(5));
+
+// 3. FUNCIONAL: nada muda de valor; a resposta é uma definição
+const fatorial = n => (n <= 1 ? 1 : n * fatorial(n - 1));
+console.log("funcional:", fatorial(5));
+
+// 4. ORIENTADO A OBJETOS: dados + comportamento juntos num objeto
+class Numero {
+  constructor(valor) { this.valor = valor; }
+  fatorial() { return fatorial(this.valor); }
+}
+console.log("objetos:", new Numero(5).fatorial());
+
+--- experimentos
+- Troque o 5 por 10 nos quatro lugares. Em qual versão foi mais fácil mudar? (Dica: repetição é sinal de falta de modularização.)
+- Na versão imperativa, apague `let resultado = 1;` e rode. O erro mostra que o imperativo depende de estado inicializado.
+- Na versão funcional, troque `n <= 1` por `n === 1` e rode `fatorial(0)`. O que acontece? Por quê?
+
+--- explicacao
+Os quatro programas calculam a mesma coisa — a diferença é **como você pensa**. O imperativo descreve passos que alteram uma variável. O estruturado organiza esses passos em módulos com entrada e saída claras. O funcional descreve **o que** o fatorial é (uma definição recursiva), sem nenhuma variável mudando de valor. O orientado a objetos junta o dado (`valor`) com o comportamento (`fatorial()`) num objeto. Linguagens multiparadigma como JavaScript deixam você escolher — e saber os paradigmas é o que te permite escolher bem.
+
+=== lab historia-linha-do-tempo
+tipo: parsons
+tema: Métodos de Programação e História
+nivel: 1
+linguagem: texto
+titulo: Monte a linha do tempo dos paradigmas
+
+--- enunciado
+Coloque os marcos na **ordem cronológica**, do mais antigo para o mais recente. Dois blocos têm informação **errada** — deixe-os de fora.
+
+--- linhas
+1954 — Fortran, a primeira linguagem de alto nível
+1959 — LISP, a primeira linguagem funcional (John McCarthy)
+1967 — Simula 67, a primeira linguagem orientada a objetos
+1968 — Dijkstra: “A Case against the GO TO Statement”
+1972 — Prolog, a linguagem de referência do paradigma lógico
+Anos 1980-90 — a orientação a objetos se populariza (Smalltalk, C++, Java)
+Hoje — linguagens multiparadigma (Python, JavaScript, Scala)
+
+--- distratores
+1995 — Java, a primeira linguagem orientada a objetos
+1960 — SQL e Prolog inauguram o paradigma imperativo
+
+--- explicacao
+A sequência mostra o motor de cada paradigma: o **imperativo** nasce colado ao hardware (Fortran); a IA dos anos 50-60 puxa o **funcional** (LISP); a crise do software gera o **estruturado** (Dijkstra, 1968) e empurra o **declarativo/lógico** (Prolog, SQL nos anos 1970); a **orientação a objetos** começa com Simula 67 e explode nos anos 80-90. Java (1995) popularizou a POO, mas não foi a primeira. Prolog e SQL são **declarativos**, não imperativos.
+
+# =====================================================================
+# Paradigma Imperativo
+# =====================================================================
+
+=== lab imp-soma
+tipo: prever
+tema: Paradigma Imperativo
+nivel: 1
+linguagem: js
+titulo: Soma com estado mutável
+alvo: ultima
+
+--- enunciado
+No imperativo você descreve **como** chegar ao resultado: cada comando muda o estado do programa. Leia o código com calma e **preveja** a última linha que ele imprime.
+
+--- codigo
+let numeros = [4, 8, 15, 16, 23, 42];
+let soma = 0;
+
+for (let i = 0; i < numeros.length; i++) {
+  soma = soma + numeros[i];
+}
+
+console.log("Números:", numeros);
+console.log("Soma:", soma);
+
+--- opcoes
+- Soma: 108
+- Soma: 42
+- Soma: 0
+- Soma: NaN
+
+--- experimentos
+- Troque `let soma = 0;` por `let soma;` e rode. De onde vem o `NaN`?
+- Mude a lista de números e confira se o resultado muda como você espera.
+- Troque `i < numeros.length` por `i <= numeros.length`. O que muda e por quê?
+
+--- explicacao
+`soma` é **estado mutável**: a cada volta do `for`, a atribuição `soma = soma + numeros[i]` destrói o valor anterior e grava um novo — exatamente como uma posição de memória na arquitetura de von Neumann. 4 + 8 + 15 + 16 + 23 + 42 = **108**. Sem a inicialização, `soma` nasce `undefined`, e `undefined + 4` vira `NaN` — que contamina todo o resto da conta. O resultado do imperativo depende da **ordem** e da **inicialização** do estado.
+
+=== lab imp-atribuicao
+tipo: prever
+tema: Paradigma Imperativo
+nivel: 1
+linguagem: js
+titulo: A atribuição destrói o valor anterior
+
+--- enunciado
+A **atribuição** é o coração do imperativo. Preveja o que o programa imprime.
+
+--- codigo
+let a = 5;
+let b = a;
+a = 10;
+console.log("a =", a, "| b =", b);
+
+--- opcoes
+- a = 10 | b = 10
+- a = 10 | b = 5
+- a = 5 | b = 5
+- a = 5 | b = 10
+
+--- experimentos
+- Acrescente `b = a;` depois de `a = 10;` e rode. Agora b muda?
+- Troque a ordem: coloque `a = 10;` antes de `let b = a;`.
+
+--- explicacao
+`let b = a` **copia o valor** 5 para b naquele instante. Depois, `a = 10` sobrescreve só a posição de memória de a — o 5 que estava em a é destruído, mas b continua com sua própria cópia. No imperativo o valor de uma variável depende de **quando** você olha para ela: é por isso que a ordem das linhas importa tanto.
+
+=== lab imp-referencia
+tipo: prever
+tema: Paradigma Imperativo
+nivel: 2
+linguagem: js
+titulo: Duas variáveis, o mesmo estado
+
+--- enunciado
+Com números a atribuição copia o valor. E com uma **lista**? Preveja a saída.
+
+--- codigo
+let a = [1, 2];
+let b = a;
+a.push(3);
+console.log(b);
+
+--- opcoes
+- [1, 2]
+- [1, 2, 3]
+- [3]
+- undefined
+
+--- experimentos
+- Troque `let b = a;` por `let b = [...a];` (uma cópia) e rode de novo.
+- Troque `a.push(3)` por `a = [9]`. Agora b muda? Qual a diferença entre **alterar** o objeto e **reatribuir** a variável?
+
+--- explicacao
+Para objetos e arrays, a variável guarda uma **referência** (o endereço), não o conteúdo. `let b = a` copia o endereço: a e b apontam para a **mesma** lista na memória. Então `a.push(3)` altera o estado que b também enxerga. Esse é o famoso **efeito colateral por estado compartilhado** — uma das desvantagens do imperativo e uma das razões para o paradigma funcional preferir dados imutáveis.
+
+=== lab imp-von-neumann
+tipo: explorar
+tema: Paradigma Imperativo
+nivel: 2
+linguagem: js
+titulo: Uma máquina de von Neumann de brinquedo
+
+--- enunciado
+O imperativo espelha a arquitetura de **von Neumann**: programa e dados moram na **mesma memória**, e a CPU repete o ciclo **buscar → decodificar → executar**. Este código simula uma CPU minúscula com um acumulador. Rode e depois faça os experimentos — o último mostra que o programa é só mais um dado na memória.
+
+--- codigo
+// A MESMA memória guarda instruções (posições 0-4) e dados (8-10).
+const memoria = [
+  ["CARREGA", 8],   // 0: acumulador = memoria[8]
+  ["SOMA", 9],      // 1: acumulador = acumulador + memoria[9]
+  ["GUARDA", 10],   // 2: memoria[10] = acumulador
+  ["MOSTRA", 10],   // 3: imprime memoria[10]
+  ["PARA"],         // 4: fim
+  null, null, null,
+  20,               // 8: dado
+  22,               // 9: dado
+  0                 // 10: resultado
+];
+
+let pc = 0;           // contador de programa: onde está a próxima instrução
+let acumulador = 0;   // registrador da CPU
+let ciclos = 0;
+
+while (true) {
+  const [op, end] = memoria[pc];   // BUSCA a instrução na memória
+  pc = pc + 1;
+  ciclos++;
+  if (op === "CARREGA") acumulador = memoria[end];          // EXECUTA
+  else if (op === "SOMA") acumulador = acumulador + memoria[end];
+  else if (op === "GUARDA") memoria[end] = acumulador;
+  else if (op === "MOSTRA") console.log("memória[" + end + "] =", memoria[end]);
+  else if (op === "PARA") break;
+}
+console.log("ciclos executados:", ciclos);
+
+--- experimentos
+- Mude os dados das posições 8 e 9 e rode.
+- Crie a instrução `SUBTRAI`: acrescente um `else if` e use `["SUBTRAI", 9]` no lugar da SOMA.
+- Programa é dado: troque a instrução 2 por `["GUARDA", 3]`. O programa sobrescreve a própria instrução MOSTRA com um número — o que acontece quando o pc chega na posição 3?
+
+--- explicacao
+Cada volta do `while` é um **ciclo de instrução**: buscar em `memoria[pc]`, avançar o `pc`, executar alterando o estado (`acumulador` ou a própria memória). É exatamente isso que C, Pascal e todas as linguagens imperativas abstraem com variáveis e atribuições. O último experimento mostra a ideia de von Neumann e Eckert: como instruções e dados dividem a mesma memória, um programa pode até se modificar — por isso o imperativo é tão eficiente e tão perigoso.
+
+=== lab imp-passo-media
+tipo: passo
+tema: Paradigma Imperativo
+nivel: 1
+linguagem: js
+titulo: Veja o estado mudando no laço
+pergunta: Quantas vezes a condição `i < notas.length` foi testada?
+resposta: 4
+
+--- enunciado
+Avance **passo a passo** e observe a variável `soma` mudando a cada volta. Repare também quantas vezes a linha do `for` é visitada — é ali que a condição é testada.
+
+--- codigo
+const notas = [7, 5, 9];
+let soma = 0;
+for (let i = 0; i < notas.length; i++) {
+  soma = soma + notas[i];
+}
+const media = soma / notas.length;
+console.log("média:", media);
+
+--- opcoes
+- 2
+- 3
+- 4
+- 5
+
+--- explicacao
+A condição é testada **4 vezes**: três vezes dá `true` (i = 0, 1, 2) e a quarta dá `false` (i = 3), o que encerra o laço. É o clássico "n + 1 testes para n voltas". Repare que `soma` passou por 0 → 7 → 12 → 21: cada atribuição apagou o valor anterior — a essência do estado mutável.
+
+=== lab imp-bug-media
+tipo: desafio
+tema: Paradigma Imperativo
+nivel: 2
+linguagem: js
+titulo: Caça ao bug: a média que dá NaN
+
+--- enunciado
+A função `media` deveria calcular a média das notas, mas devolve `NaN`. Rode, descubra o bug e conserte. Clique em **Testar** para conferir.
+
+--- codigo
+function media(notas) {
+  let soma = 0;
+  for (let i = 0; i <= notas.length; i++) {
+    soma = soma + notas[i];
+  }
+  return soma / notas.length;
+}
+
+console.log(media([8, 6, 10]));
+
+--- solucao
+function media(notas) {
+  let soma = 0;
+  for (let i = 0; i < notas.length; i++) {
+    soma = soma + notas[i];
+  }
+  return soma / notas.length;
+}
+
+console.log(media([8, 6, 10]));
+
+--- testes
+media([8, 6, 10]) ==> 8
+media([5]) ==> 5
+media([1, 2, 3, 4]) ==> 2.5
+
+--- dicas
+NaN aparece quando alguma conta envolve `undefined`. De onde viria um `undefined` aqui?
+
+Um vetor de 3 elementos tem os índices 0, 1 e 2. Quais índices o seu for visita?
+
+O problema está na condição do `for`: `<=` visita uma posição a mais.
+
+--- explicacao
+É o erro **off-by-one** (um a mais): com `i <= notas.length` o laço visita `notas[3]`, que não existe e vale `undefined`; `18 + undefined` é `NaN`. Como o estado é acumulado, um único passo errado contamina o resultado final. Laços com índice explícito são o ponto fraco do imperativo — por isso outros paradigmas preferem `for...of`, `reduce` ou recursão, que não expõem o índice.
+
+# =====================================================================
+# Paradigma Estruturado
+# =====================================================================
+
+=== lab est-guard
+tipo: explorar
+tema: Paradigma Estruturado
+nivel: 1
+linguagem: js
+titulo: Refinamento: de aninhado a guard clauses
+
+--- enunciado
+As duas funções classificam uma nota usando só **sequência, seleção e repetição** (sem GOTO). Rode, depois faça os experimentos e sinta qual das duas é mais fácil de manter.
+
+--- codigo
+function classificarAninhado(nota) {
+  let resultado;
+  if (nota >= 70) {
+    resultado = "Aprovado";
+  } else {
+    if (nota >= 50) {
+      resultado = "Recuperação";
+    } else {
+      resultado = "Reprovado";
+    }
+  }
+  return resultado;
+}
+
+function classificarComGuarda(nota) {
+  if (nota >= 70) return "Aprovado";
+  if (nota >= 50) return "Recuperação";
+  return "Reprovado";
+}
+
+const nota = 62;
+console.log("Aninhado:", classificarAninhado(nota));
+console.log("Guard clauses:", classificarComGuarda(nota));
+
+--- experimentos
+- Troque a nota para 45 e depois para 95.
+- Acrescente uma faixa "Excelente" (nota >= 95) nas DUAS funções. Em qual foi mais fácil sem arriscar quebrar as outras faixas?
+- Chame as duas com a nota 70 (o limite). As duas concordam?
+
+--- explicacao
+Ambas respeitam o **teorema de Böhm-Jacopini** — só sequência, seleção e iteração. Mas as *guard clauses* (retornos antecipados) deixam cada regra isolada numa linha: uma faixa nova é mais um `if` antes dos outros. Na versão aninhada, cada faixa nova aumenta a profundidade. Estruturar bem não é só "não usar GOTO": é **refinar** até cada módulo ficar simples de ler e mudar.
+
+=== lab est-parsons-pares
+tipo: parsons
+tema: Paradigma Estruturado
+nivel: 1
+linguagem: js
+titulo: Monte com sequência, seleção e repetição
+
+--- enunciado
+Monte a função `somaPares(lista)`, que soma só os números pares. Ela usa as **três estruturas** do estruturado: sequência, seleção (`if`) e repetição (`for`). Há um bloco armadilha.
+
+--- linhas
+function somaPares(lista) {
+  let soma = 0;
+  for (const n of lista) {
+    if (n % 2 === 0) {
+      soma += n;
+    }
+  }
+  return soma;
+}
+
+--- distratores
+    if (n % 2 === 1) {
+
+--- testes
+somaPares([1, 2, 3, 4]) ==> 6
+somaPares([]) ==> 0
+somaPares([5, 7]) ==> 0
+
+--- explicacao
+A **sequência** está nas linhas que rodam uma depois da outra (inicializar, repetir, retornar); a **seleção** é o `if`; a **repetição**, o `for`. Böhm e Jacopini provaram que essas três bastam para qualquer algoritmo. Repare que a ordem importa: `let soma = 0` precisa vir antes do laço, e o `return` depois dele.
+
+=== lab est-escopo
+tipo: prever
+tema: Paradigma Estruturado
+nivel: 2
+linguagem: js
+titulo: Escopo local x global
+
+--- enunciado
+Modularizar exige **escopo**: variáveis de dentro de uma função não vazam para fora. Duas variáveis têm o mesmo nome `x`. Preveja a saída completa.
+
+--- codigo
+let x = "global";
+
+function mostra() {
+  let x = "local";
+  console.log("dentro:", x);
+}
+
+mostra();
+console.log("fora:", x);
+
+--- opcoes
+- dentro: local
+fora: global
+- dentro: local
+fora: local
+- dentro: global
+fora: global
+- dentro: global
+fora: local
+
+--- experimentos
+- Apague o `let` de dentro da função (deixe só `x = "local";`) e rode. Agora a função mexe na global!
+- Declare `let y = 1;` dentro da função e tente imprimir `y` fora dela.
+
+--- explicacao
+O `let x` de dentro da função cria uma variável **local** que *sombreia* a global só ali dentro. Quando a função termina, a local some e o `console.log` de fora enxerga a global intacta. Sem o `let`, a função **altera a global** — um efeito colateral que o paradigma estruturado combate com escopo local e parâmetros explícitos.
+
+=== lab est-fizzbuzz
+tipo: desafio
+tema: Paradigma Estruturado
+nivel: 2
+linguagem: js
+titulo: FizzBuzz só com as três estruturas
+
+--- enunciado
+Complete `fizzbuzz(n)`: devolve uma lista com os números de 1 a n como texto, trocando os múltiplos de 3 por `"Fizz"`, os de 5 por `"Buzz"` e os de 3 **e** 5 por `"FizzBuzz"`. Use só sequência, seleção e repetição.
+
+--- codigo
+function fizzbuzz(n) {
+  const saida = [];
+  // seu código aqui
+  return saida;
+}
+
+console.log(fizzbuzz(15));
+
+--- solucao
+function fizzbuzz(n) {
+  const saida = [];
+  for (let i = 1; i <= n; i++) {
+    if (i % 15 === 0) saida.push("FizzBuzz");
+    else if (i % 3 === 0) saida.push("Fizz");
+    else if (i % 5 === 0) saida.push("Buzz");
+    else saida.push(String(i));
+  }
+  return saida;
+}
+
+console.log(fizzbuzz(15));
+
+--- testes
+fizzbuzz(5) ==> ["1", "2", "Fizz", "4", "Buzz"]
+fizzbuzz(15)[14] ==> "FizzBuzz"
+fizzbuzz(15).length ==> 15
+fizzbuzz(0) ==> []
+
+--- dicas
+Você precisa de um `for` de 1 até n (inclusive) e de um `if`/`else if` dentro dele.
+
+A ordem dos testes importa: se você testar "múltiplo de 3" antes de "múltiplo de 15", o 15 vira só "Fizz".
+
+Os números entram como texto: `String(i)`.
+
+--- explicacao
+A solução é uma **repetição** com uma **seleção** em cascata dentro, e a ordem da seleção é a parte sutil: o caso mais específico (múltiplo de 15) precisa vir primeiro. Isso é refinamento sucessivo: primeiro "para cada número, decida o texto", depois "como decidir o texto".
+
+# =====================================================================
+# Paradigma Declarativo
+# =====================================================================
+
+=== lab dec-filter-map
+tipo: explorar
+tema: Paradigma Declarativo
+nivel: 1
+linguagem: js
+titulo: O mesmo problema: imperativo x declarativo
+
+--- enunciado
+Duas soluções para "pegar os números pares e dobrar cada um". A primeira diz **como** (laço + push). A segunda diz **o que** (filtrar, depois transformar). Rode e compare.
+
+--- codigo
+const numeros = [1, 2, 3, 4, 5, 6, 7, 8];
+
+// imperativo: o passo a passo
+const resultadoImperativo = [];
+for (let i = 0; i < numeros.length; i++) {
+  if (numeros[i] % 2 === 0) {
+    resultadoImperativo.push(numeros[i] * 2);
+  }
+}
+
+// declarativo: o objetivo; quem decide o "como" é a biblioteca
+const resultadoDeclarativo = numeros
+  .filter(n => n % 2 === 0)
+  .map(n => n * 2);
+
+console.log("Imperativo:", resultadoImperativo);
+console.log("Declarativo:", resultadoDeclarativo);
+
+--- experimentos
+- Troque a condição para ímpares (`n % 2 !== 0`) nas duas versões. Em qual foi mais rápido?
+- Na declarativa, acrescente `.reduce((a, b) => a + b, 0)` no fim para somar tudo.
+
+--- explicacao
+A versão declarativa não expõe **nenhuma variável de controle** (nem `i`, nem o array acumulador): ela só encadeia "o que eu quero" — filtrar por uma regra, transformar por outra. É o mesmo espírito do SQL (`SELECT ... WHERE ...`): você declara o objetivo e o motor decide como percorrer os dados.
+
+=== lab dec-sql-o-que
+tipo: prever
+tema: Paradigma Declarativo
+nivel: 1
+linguagem: sql
+banco: loja
+titulo: SQL: você diz o QUÊ, o banco decide o COMO
+alvo: contagem
+
+--- enunciado
+O SQL é o expoente do declarativo em banco de dados: não existe laço nem índice — só a descrição do que você quer. Olhe as tabelas no painel e **preveja quantas linhas** a consulta devolve.
+
+--- codigo
+SELECT nome, preco
+FROM produtos
+WHERE preco < 50
+ORDER BY preco;
+
+--- opcoes
+- 3
+- 4
+- 5
+- 6
+
+--- experimentos
+- Troque `< 50` por `<= 49.9`. Muda a contagem?
+- Acrescente `AND categoria = 'papelaria'`.
+- Rode `EXPLAIN QUERY PLAN SELECT nome FROM produtos WHERE preco < 50;` — é o SGBD contando **como** ele decidiu executar.
+
+--- explicacao
+Quatro produtos custam menos de 50: Caneta, Garrafa, Mouse e Caderno. Repare que você não escreveu **como** percorrer a tabela, em que ordem comparar nem onde guardar o resultado — só declarou a condição. O otimizador do SGBD escolhe o plano (varrer a tabela, usar um índice...). É exatamente a definição de declarativo de Sebesta: o programador informa **o que** quer, não **como** obter.
+
+=== lab dec-sem-lacos
+tipo: desafio
+tema: Paradigma Declarativo
+nivel: 2
+linguagem: js
+titulo: Total do carrinho sem nenhum laço
+
+--- enunciado
+Escreva `total(itens)` no estilo **declarativo**: sem `for` e sem `while`. Some `preco × qtd` só dos itens com quantidade maior que zero, usando `filter`, `map` e `reduce`.
+
+--- codigo
+const carrinho = [
+  { item: "Livro", preco: 50, qtd: 2 },
+  { item: "Caneta", preco: 3, qtd: 10 },
+  { item: "Mochila", preco: 120, qtd: 0 }
+];
+
+// Versão imperativa, só para comparar (está comentada):
+// function totalImperativo(itens) {
+//   let total = 0;
+//   for (let i = 0; i < itens.length; i++) {
+//     if (itens[i].qtd > 0) total += itens[i].preco * itens[i].qtd;
+//   }
+//   return total;
+// }
+
+function total(itens) {
+  return 0;
+}
+
+console.log(total(carrinho));
+
+--- solucao
+const carrinho = [
+  { item: "Livro", preco: 50, qtd: 2 },
+  { item: "Caneta", preco: 3, qtd: 10 },
+  { item: "Mochila", preco: 120, qtd: 0 }
+];
+
+function total(itens) {
+  return itens
+    .filter(p => p.qtd > 0)
+    .map(p => p.preco * p.qtd)
+    .reduce((soma, v) => soma + v, 0);
+}
+
+console.log(total(carrinho));
+
+--- testes
+total(carrinho) ==> 130
+total([]) ==> 0
+total([{ item: "X", preco: 2.5, qtd: 4 }]) ==> 10
+
+--- regras
+proibido: \bfor\b|\bwhile\b :: Sem for nem while — declare o que você quer com filter, map e reduce
+exigido: \.reduce\( :: Use reduce para juntar os valores numa soma
+
+--- dicas
+Pense em três etapas encadeadas: quais itens entram? quanto vale cada um? como juntar tudo num número?
+
+`reduce((acumulado, atual) => acumulado + atual, 0)` soma uma lista. O `0` é o valor inicial — sem ele, a lista vazia dá erro.
+
+`itens.filter(p => p.qtd > 0).map(p => p.preco * p.qtd)` já dá a lista de subtotais.
+
+--- explicacao
+`filter` declara **quem entra**, `map` declara **quanto vale cada um** e `reduce` declara **como juntar**. Não há índice, contador nem variável mudando de valor — o que torna o código mais curto e muito mais difícil de errar (lembra do off-by-one?). O valor inicial `0` do reduce é o que faz a lista vazia funcionar.
+
+=== lab dec-prolog-fatos
+tipo: explorar
+tema: Paradigma Declarativo
+nivel: 1
+linguagem: prolog
+titulo: Declarar fatos e perguntar (Prolog de verdade)
+
+--- enunciado
+Este é **Prolog de verdade**, rodando no navegador. Um programa declarativo é um conjunto de **declarações** — não há passo a passo. Rode as consultas e depois crie as suas.
+
+--- codigo
+% Fatos: o que é verdade.
+linguagem(prolog, logico).
+linguagem(haskell, funcional).
+linguagem(lisp, funcional).
+linguagem(sql, declarativo).
+linguagem(c, imperativo).
+linguagem(java, orientado_a_objetos).
+
+% Regras: o que se conclui dos fatos.
+declarativa(L) :- linguagem(L, logico).
+declarativa(L) :- linguagem(L, funcional).
+declarativa(L) :- linguagem(L, declarativo).
+
+--- consultas
+- declarativa(X).
+- linguagem(c, Paradigma).
+- declarativa(java).
+
+--- experimentos
+- Acrescente o fato `linguagem(css, declarativo).` e rode `declarativa(X).` de novo. Você não mexeu em nenhuma regra!
+- Crie a consulta `linguagem(L, funcional).`
+- Pergunte `linguagem(python, P).` — por que dá `false`?
+
+--- explicacao
+Você **declarou** fatos e regras; quem descobre as respostas é o motor de inferência. `declarativa(X)` lista toda linguagem que satisfaz alguma das três regras. `declarativa(java)` dá `false` porque nada no programa permite concluir isso — é a **hipótese do mundo fechado**: o que não pode ser provado é considerado falso. Acrescentar conhecimento é só acrescentar fatos, sem reescrever o algoritmo.
+
+# =====================================================================
+# Paradigma Lógico
+# =====================================================================
+
+=== lab log-familia
+tipo: explorar
+tema: Paradigma Lógico
+nivel: 1
+linguagem: prolog
+titulo: Árvore genealógica: fatos, regra e consulta
+
+--- enunciado
+O programa lógico tem **fatos** (quem é progenitor de quem) e uma **regra** (avô). Rode as consultas. Repare que a mesma regra responde perguntas nas **duas direções**: "quem são os netos de João?" e "quem é avô de Caio?".
+
+--- codigo
+progenitor(joao, maria).
+progenitor(joao, pedro).
+progenitor(maria, ana).
+progenitor(maria, bia).
+progenitor(pedro, caio).
+
+avo(X, Z) :- progenitor(X, Y), progenitor(Y, Z).
+
+--- consultas
+- avo(joao, Neto).
+- avo(Quem, caio).
+- progenitor(maria, Filho).
+
+--- experimentos
+- Acrescente `progenitor(ana, davi).` e pergunte `avo(maria, X).`
+- Pergunte `avo(caio, X).` Por que dá false?
+- Crie a regra `pai_ou_mae_de_dois(P) :- progenitor(P, A), progenitor(P, B), A \= B.` e consulte.
+
+--- explicacao
+Para responder `avo(joao, Neto)`, o Prolog **unifica** X com joao e procura um Y tal que `progenitor(joao, Y)` e `progenitor(Y, Neto)`. Ele tenta Y = maria (acha ana e bia), depois faz **backtracking** e tenta Y = pedro (acha caio). Em Java você escreveria dois métodos e laços; aqui uma regra só responde qualquer combinação de perguntas.
+
+=== lab log-irmaos
+tipo: prever
+tema: Paradigma Lógico
+nivel: 2
+linguagem: prolog
+titulo: Irmãos: uma regra com uma pegadinha
+alvo: respostas
+
+--- enunciado
+A regra diz: X e Y são irmãos se têm o mesmo progenitor. Preveja **todas** as respostas do Prolog para a consulta abaixo.
+
+--- codigo
+progenitor(maria, ana).
+progenitor(maria, bia).
+
+irmao(X, Y) :- progenitor(P, X), progenitor(P, Y).
+
+--- consultas
+- irmao(ana, Quem).
+
+--- opcoes
+- Quem = bia
+- Quem = ana ; Quem = bia
+- false
+- Quem = maria
+
+--- experimentos
+- Conserte a regra acrescentando `X \= Y` no fim do corpo e rode de novo.
+- Com a regra consertada, consulte `irmao(A, B).` Quantas respostas aparecem? Por que bia/ana aparece de novo invertido?
+
+--- explicacao
+Pela regra, ana é irmã **dela mesma**: P = maria satisfaz `progenitor(maria, ana)` duas vezes. A lógica faz exatamente o que você declarou — nem mais, nem menos. Para excluir esse caso é preciso declarar a condição que faltou: `X \= Y` ("X não unifica com Y"). Em programação lógica, a precisão da **especificação** é tudo.
+
+=== lab log-ancestral
+tipo: desafio
+tema: Paradigma Lógico
+nivel: 2
+linguagem: prolog
+titulo: Regra recursiva: ancestral
+
+--- enunciado
+Escreva o predicado `ancestral(A, D)`: A é ancestral de D se A é **progenitor** de D, **ou** se A é progenitor de alguém que é ancestral de D. São duas cláusulas (a segunda chama a própria regra).
+
+--- codigo
+progenitor(ana, bruno).
+progenitor(bruno, carla).
+progenitor(carla, davi).
+
+% Escreva aqui as duas cláusulas de ancestral/2:
+
+--- consultas
+- ancestral(ana, davi).
+
+--- solucao
+progenitor(ana, bruno).
+progenitor(bruno, carla).
+progenitor(carla, davi).
+
+ancestral(A, D) :- progenitor(A, D).
+ancestral(A, D) :- progenitor(A, X), ancestral(X, D).
+
+--- testes
+ancestral(ana, davi). ==> true
+ancestral(bruno, X). ==> X = carla | X = davi
+ancestral(davi, ana). ==> false
+ancestral(X, carla). ==> X = bruno | X = ana
+
+--- dicas
+A primeira cláusula é o **caso base**: `ancestral(A, D) :- progenitor(A, D).`
+
+A segunda é o **caso recursivo**: existe um X que é filho de A e ancestral de D.
+
+Cuidado com a ordem dentro do corpo: chame `progenitor(A, X)` antes de `ancestral(X, D)`, senão a recursão pode não terminar.
+
+--- explicacao
+É a recursão do paradigma lógico: o **caso base** (progenitor direto) e o **caso recursivo** (progenitor de um ancestral). Quando você pergunta `ancestral(ana, davi)`, o Prolog tenta a primeira cláusula, falha, e parte para a segunda — descendo bruno → carla → davi por backtracking. Nenhum laço foi escrito: a busca é do motor.
+
+=== lab log-parsons-avo
+tipo: parsons
+tema: Paradigma Lógico
+nivel: 1
+linguagem: prolog
+titulo: Monte a regra avô
+
+--- enunciado
+Os fatos já estão prontos. Monte a **regra** `avo(X, Z)`: X é avô de Z se X é progenitor de algum Y e Y é progenitor de Z. Atenção à pontuação — em Prolog, vírgula é **E** e o ponto final encerra a cláusula.
+
+--- codigo
+progenitor(joao, maria).
+progenitor(maria, ana).
+
+--- linhas
+avo(X, Z) :-
+    progenitor(X, Y),
+    progenitor(Y, Z).
+
+--- distratores
+    progenitor(Z, Y).
+    progenitor(X, Z),
+avo(X, Z).
+
+--- consultas
+- avo(joao, Z).
+
+--- explicacao
+`:-` lê-se "se". O corpo `progenitor(X, Y), progenitor(Y, Z)` é uma conjunção: as duas metas precisam ser verdadeiras com o **mesmo Y** — é essa variável compartilhada que liga pai e neto. O ponto final fecha a cláusula; sem ele o Prolog acha que a regra continua.
+
+=== lab log-backtracking
+tipo: explorar
+tema: Paradigma Lógico
+nivel: 3
+linguagem: prolog
+titulo: Enxergando o backtracking
+
+--- enunciado
+Backtracking é o Prolog **voltando atrás** para tentar outra alternativa quando uma meta falha. A primeira consulta escreve cada tentativa — rode e leia a ordem das tentativas.
+
+--- codigo
+cor(vermelho).
+cor(verde).
+cor(azul).
+
+combina(X, Y) :- cor(X), cor(Y), X \= Y.
+
+--- consultas
+- cor(C), write(tentando(C)), nl, C == azul.
+- combina(vermelho, Y).
+- findall(X-Y, combina(X, Y), Pares), length(Pares, Total).
+
+--- experimentos
+- Troque `C == azul` por `C == roxo` na primeira consulta. Quantas tentativas ele faz antes de desistir?
+- Acrescente `cor(amarelo).` e rode a terceira consulta. Quantos pares agora?
+
+--- explicacao
+Na primeira consulta, `cor(C)` dá C = vermelho; `C == azul` falha; o Prolog **volta** até o último ponto de escolha (`cor(C)`) e tenta verde; falha de novo; tenta azul — sucesso. O `write` mostra o caminho. `findall` coleta todas as soluções de uma vez: 3 cores × 2 parceiras diferentes = 6 pares. É essa busca automática que torna o lógico adequado para problemas **heurísticos**, em que você descreve as regras e deixa o motor procurar.
+
+=== lab log-recursao-esquerda
+tipo: prever
+tema: Paradigma Lógico
+nivel: 3
+linguagem: prolog
+titulo: A ordem das cláusulas importa
+alvo: respostas
+erro: sim
+pergunta: O que acontece com a consulta `ancestral(ana, D).`?
+
+--- enunciado
+Declarativamente as duas cláusulas dizem a mesma coisa que no exercício do ancestral. Mas repare na **ordem**: a primeira cláusula chama `ancestral` antes de qualquer outra coisa. Preveja.
+
+--- codigo
+progenitor(ana, bruno).
+progenitor(bruno, carla).
+
+ancestral(A, D) :- ancestral(A, X), progenitor(X, D).
+ancestral(A, D) :- progenitor(A, D).
+
+--- consultas
+- ancestral(ana, D).
+
+--- opcoes
+- D = bruno ; D = carla
+- D = carla ; D = bruno
+- false
+- recursão infinita
+
+--- experimentos
+- Inverta a ordem das duas cláusulas e rode. Agora aparece alguma resposta antes do problema?
+- Troque o corpo da primeira para `progenitor(A, X), ancestral(X, D)` e rode.
+
+--- explicacao
+O Prolog resolve as metas **da esquerda para a direita** e tenta as cláusulas **de cima para baixo**. A primeira cláusula chama `ancestral(ana, X)` de novo, que chama `ancestral(ana, X2)`, que chama... sem nunca chegar em `progenitor` — é **recursão à esquerda**, um laço infinito. Logicamente o programa está certo; operacionalmente não termina. Por isso, em Prolog real, o caso base vem primeiro e a recursão vem depois de uma meta que "consome" dados.
+
+# =====================================================================
+# POO — Modelagem de Problemas
+# =====================================================================
+
+=== lab poo-conta
+tipo: explorar
+tema: POO — Modelagem de Problemas
+nivel: 1
+linguagem: js
+titulo: Objeto = atributos + métodos
+
+--- enunciado
+Uma `ContaBancaria` junta **estado** (saldo) e **comportamento** (depositar, sacar) no mesmo lugar — a ideia central da POO. Rode e faça os experimentos.
+
+--- codigo
+class ContaBancaria {
+  constructor(titular, saldoInicial) {
+    this.titular = titular;
+    this.saldo = saldoInicial;
+  }
+  depositar(valor) {
+    this.saldo += valor;
+  }
+  sacar(valor) {
+    if (valor > this.saldo) {
+      console.log("Saque negado: saldo insuficiente.");
+      return;
+    }
+    this.saldo -= valor;
+  }
+}
+
+const conta1 = new ContaBancaria("Ana", 100);
+conta1.depositar(50);
+conta1.sacar(30);
+console.log(conta1.titular, "tem saldo:", conta1.saldo);
+
+--- experimentos
+- Tente sacar mais do que o saldo.
+- Crie uma `conta2` com outro saldo e mostre que mexer numa não afeta a outra.
+- Imprima o objeto inteiro: `console.log(conta1)`.
+
+--- explicacao
+`saldo` (o dado) e `depositar`/`sacar` (o comportamento) estão na **mesma classe**. No estruturado, o saldo ficaria solto e funções quaisquer o alterariam de fora. A **classe** é o molde; cada `new` cria uma **instância** com seu próprio `this.saldo`.
+
+=== lab poo-instancias
+tipo: prever
+tema: POO — Modelagem de Problemas
+nivel: 1
+linguagem: js
+titulo: Cada instância tem seu próprio estado
+
+--- enunciado
+Duas instâncias da mesma classe. O método `incrementar` devolve `this`, o que permite encadear chamadas. Preveja a saída.
+
+--- codigo
+class Contador {
+  constructor() {
+    this.valor = 0;
+  }
+  incrementar() {
+    this.valor++;
+    return this;
+  }
+}
+
+const a = new Contador();
+const b = new Contador();
+a.incrementar().incrementar();
+b.incrementar();
+console.log(a.valor, b.valor);
+
+--- opcoes
+- 2 1
+- 3 3
+- 2 2
+- 1 1
+
+--- experimentos
+- Tire o `return this;` e rode. Por que o encadeamento quebra?
+- Faça `const c = a;` e chame `c.incrementar()`. Quanto vale `a.valor` agora?
+
+--- explicacao
+Cada `new Contador()` cria um objeto separado, com seu próprio `valor`. `a` foi incrementado duas vezes (o encadeamento funciona porque cada chamada devolve o próprio objeto), `b` uma vez. Mas cuidado: `const c = a` **não** cria outra instância — c e a são o mesmo objeto (referência).
+
+=== lab poo-retangulo
+tipo: desafio
+tema: POO — Modelagem de Problemas
+nivel: 1
+linguagem: js
+titulo: Modele um retângulo
+
+--- enunciado
+Crie a classe `Retangulo` com construtor `(largura, altura)` e os métodos `area()`, `perimetro()` e `ehQuadrado()`.
+
+--- codigo
+class Retangulo {
+  // constructor(largura, altura), area(), perimetro() e ehQuadrado()
+}
+
+const r = new Retangulo(3, 4);
+console.log(r);
+
+--- solucao
+class Retangulo {
+  constructor(largura, altura) {
+    this.largura = largura;
+    this.altura = altura;
+  }
+  area() {
+    return this.largura * this.altura;
+  }
+  perimetro() {
+    return 2 * (this.largura + this.altura);
+  }
+  ehQuadrado() {
+    return this.largura === this.altura;
+  }
+}
+
+const r = new Retangulo(3, 4);
+console.log(r);
+
+--- testes
+new Retangulo(3, 4).area() ==> 12
+new Retangulo(3, 4).perimetro() ==> 14
+new Retangulo(5, 5).ehQuadrado() ==> true
+new Retangulo(2, 7).ehQuadrado() ==> false
+
+--- dicas
+No constructor, guarde os valores em `this.largura` e `this.altura`.
+
+Os métodos leem os atributos pelo `this`: `return this.largura * this.altura;`
+
+--- explicacao
+Modelar é decidir **o que o objeto sabe** (atributos: largura e altura) e **o que ele sabe fazer** (métodos). Repare que `area()` não recebe parâmetros: o objeto usa o próprio estado. Esse é o encapsulamento começando a aparecer — quem usa o retângulo não precisa saber a fórmula.
+
+=== lab poo-parsons-carro
+tipo: parsons
+tema: POO — Modelagem de Problemas
+nivel: 1
+linguagem: js
+titulo: Monte a classe Carro
+
+--- enunciado
+Monte a classe `Carro`: guarda o modelo, começa parado e tem o método `acelerar(valor)`, que aumenta a velocidade e devolve a velocidade atual. Há dois blocos armadilha.
+
+--- linhas
+class Carro {
+  constructor(modelo) {
+    this.modelo = modelo;
+    this.velocidade = 0;
+  }
+  acelerar(valor) {
+    this.velocidade += valor;
+    return this.velocidade;
+  }
+}
+
+--- distratores
+    velocidade += valor;
+  function acelerar(valor) {
+
+--- testes
+new Carro("Fusca").velocidade ==> 0
+new Carro("Fusca").acelerar(30) ==> 30
+(() => { const c = new Carro("Gol"); c.acelerar(10); return c.acelerar(5); })() ==> 15
+
+--- explicacao
+Dentro de uma classe, métodos não levam a palavra `function`, e todo acesso ao estado do objeto passa pelo `this`. `velocidade += valor` sem `this` tentaria mexer numa variável solta, que não existe — erro.
+
+# =====================================================================
+# POO — Classes, Relacionamentos e Encapsulamento
+# =====================================================================
+
+=== lab enc-privado
+tipo: explorar
+tema: POO — Classes, Relacionamentos e Encapsulamento
+nivel: 1
+linguagem: js
+titulo: Encapsulamento de verdade com campo privado
+
+--- enunciado
+Em JavaScript moderno, um campo com `#` na frente é **privado**: só o código da própria classe o enxerga. Rode, depois tire o `//` da última linha e rode de novo.
+
+--- codigo
+class ContaSegura {
+  #saldo;
+  constructor(saldoInicial) {
+    this.#saldo = saldoInicial;
+  }
+  depositar(valor) {
+    if (valor > 0) this.#saldo += valor;
+  }
+  get saldoAtual() {
+    return this.#saldo;
+  }
+}
+
+const conta = new ContaSegura(200);
+conta.depositar(80);
+conta.depositar(-1000);   // recusado pela regra da classe
+console.log("Saldo via método público:", conta.saldoAtual);
+
+// tire o // da linha abaixo e rode de novo:
+// conta.#saldo = 999999;
+
+--- experimentos
+- Tire o comentário da última linha. Repare: **nada** roda, nem o primeiro console.log. Por quê?
+- Tente `console.log(conta.saldo)` (sem #). O que aparece?
+- Tente `conta.saldoAtual = 5;` e depois imprima `conta.saldoAtual`.
+
+--- explicacao
+Acessar `#saldo` de fora é um **erro de sintaxe**: a linguagem recusa o programa inteiro antes de executar qualquer linha — por isso nem o primeiro `console.log` aparece. É encapsulamento imposto pela linguagem, não só convenção. A única porta de entrada é a que a classe expõe (`depositar` com sua regra, e o getter `saldoAtual`, que é só leitura). Em Java seria um campo `private` com getter público.
+
+=== lab enc-setter
+tipo: desafio
+tema: POO — Classes, Relacionamentos e Encapsulamento
+nivel: 2
+linguagem: js
+titulo: Proteja o estado com getter e setter
+
+--- enunciado
+Hoje qualquer um pode fazer `p.idade = -5`. Reescreva `Pessoa` guardando a idade num campo privado `#idade`, com **getter** e **setter**: o setter ignora valores que não sejam inteiros ≥ 0, e o construtor recusa (lança erro) uma idade inválida.
+
+--- codigo
+class Pessoa {
+  constructor(nome, idade) {
+    this.nome = nome;
+    this.idade = idade;   // público: qualquer um pode estragar
+  }
+}
+
+const p = new Pessoa("Ana", 20);
+p.idade = -5;            // deveria ser recusado!
+console.log(p.idade);
+
+--- solucao
+class Pessoa {
+  #idade;
+  constructor(nome, idade) {
+    if (!Pessoa.valida(idade)) throw new Error("idade inválida");
+    this.nome = nome;
+    this.#idade = idade;
+  }
+  static valida(v) {
+    return Number.isInteger(v) && v >= 0;
+  }
+  get idade() {
+    return this.#idade;
+  }
+  set idade(v) {
+    if (Pessoa.valida(v)) this.#idade = v;
+    else console.log("Recusado:", v);
+  }
+}
+
+const p = new Pessoa("Ana", 20);
+p.idade = -5;
+console.log(p.idade);
+
+--- testes
+(() => { const p = new Pessoa("Ana", 20); p.idade = 21; return p.idade; })() ==> 21
+(() => { const p = new Pessoa("Ana", 20); p.idade = -5; return p.idade; })() ==> 20
+(() => { const p = new Pessoa("Ana", 20); p.idade = "trinta"; return p.idade; })() ==> 20
+(() => { try { new Pessoa("Bia", -1); return "aceitou"; } catch (e) { return "recusou"; } })() ==> "recusou"
+
+--- regras
+exigido: #idade :: Guarde a idade num campo privado #idade
+
+--- dicas
+Declare o campo no topo da classe: `#idade;`
+
+A sintaxe é `get idade() { ... }` e `set idade(v) { ... }`. Por fora continua parecendo um atributo: `p.idade = 21`.
+
+`Number.isInteger(v) && v >= 0` resolve a validação. No construtor, `throw new Error("...")` recusa o objeto.
+
+--- explicacao
+O setter é a **porta controlada** do encapsulamento: por fora, `p.idade = -5` parece uma atribuição comum, mas por dentro a classe decide se aceita. Como `#idade` é privado, não existe outro caminho para estragar o estado. É o motivo de Java e C# recomendarem atributos `private` com getters/setters: a classe garante as próprias regras (**invariantes**).
+
+=== lab rel-agregacao-composicao
+tipo: prever
+tema: POO — Classes, Relacionamentos e Encapsulamento
+nivel: 2
+linguagem: js
+titulo: Agregação x composição na memória
+
+--- enunciado
+**Agregação**: a parte existe por conta própria (o funcionário continua existindo sem o departamento). **Composição**: a parte só existe dentro do todo (o item só existe no pedido). Os dois "todos" são esvaziados. Preveja a saída.
+
+--- codigo
+// Agregação: Ana é criada FORA do departamento
+const ana = { nome: "Ana" };
+const departamento = { nome: "TI", equipe: [ana] };
+
+// Composição: o item é criado DENTRO do pedido
+const pedido = { numero: 1, itens: [{ produto: "Livro", qtd: 2 }] };
+
+// os dois "todos" são desfeitos
+departamento.equipe = [];
+pedido.itens = [];
+
+console.log(ana.nome, pedido.itens.length);
+
+--- opcoes
+- Ana 0
+- undefined 0
+- Ana 1
+- undefined 1
+
+--- experimentos
+- Depois de esvaziar, tente recuperar o item do pedido. Existe alguma variável que ainda aponte para ele?
+- Coloque a mesma `ana` em dois departamentos. É possível? E o mesmo item em dois pedidos faria sentido?
+
+--- explicacao
+Ana continua existindo porque alguém de fora (a constante `ana`) aponta para ela — é **agregação** (losango vazio ◇ na UML): o todo só *referencia* a parte. O item do pedido foi criado dentro dele e nada mais aponta para ele: quando o pedido o solta, ele deixa de ser alcançável e o coletor de lixo o apaga — é **composição** (losango cheio ◆): o ciclo de vida da parte depende do todo.
+
+# =====================================================================
+# POO — Herança e Polimorfismo
+# =====================================================================
+
+=== lab her-salario
+tipo: explorar
+tema: POO — Herança e Polimorfismo
+nivel: 1
+linguagem: js
+titulo: Mesmo método, comportamento diferente
+
+--- enunciado
+Duas subclasses de `Funcionario` **sobrescrevem** (override) o método `salario`. Rode e veja a mesma chamada `f.salario()` dar resultados diferentes.
+
+--- codigo
+class Funcionario {
+  constructor(nome, base) {
+    this.nome = nome;
+    this.base = base;
+  }
+  salario() {
+    return this.base;
+  }
+}
+
+class Vendedor extends Funcionario {
+  constructor(nome, base, comissao) {
+    super(nome, base);
+    this.comissao = comissao;
+  }
+  salario() {
+    return this.base + this.comissao;
+  }
+}
+
+class Estagiario extends Funcionario {
+  salario() {
+    return this.base * 0.7;
+  }
+}
+
+const equipe = [
+  new Vendedor("Ana", 2000, 800),
+  new Estagiario("Bruno", 2000),
+  new Funcionario("Caio", 2500)
+];
+
+equipe.forEach(f => console.log(f.nome, "->", f.salario()));
+
+--- experimentos
+- Crie `class Diretor extends Funcionario` com salário `base + 3000` e coloque um Diretor na equipe — sem mexer no `forEach`.
+- Apague o método `salario` de `Estagiario`. O que o Bruno passa a ganhar? (herança do método da superclasse)
+
+--- explicacao
+`f.salario()` é a mesma chamada para todos, mas quem decide qual versão roda é o **tipo real do objeto em tempo de execução** — polimorfismo dinâmico. O Diretor funciona sem alterar o `forEach` porque o laço só depende do contrato "tem um método salario()". Esse é o princípio aberto/fechado: aberto para extensão, fechado para modificação.
+
+=== lab her-super
+tipo: prever
+tema: POO — Herança e Polimorfismo
+nivel: 2
+linguagem: js
+titulo: Quem responde o this.falar()?
+
+--- enunciado
+`apresentar()` foi escrito lá na classe `Animal`, mas chama `this.falar()`. O objeto é um `Filhote`. Preveja o que aparece.
+
+--- codigo
+class Animal {
+  falar() { return "..."; }
+  apresentar() { return "Eu digo: " + this.falar(); }
+}
+class Cachorro extends Animal {
+  falar() { return "Au!"; }
+}
+class Filhote extends Cachorro {
+  falar() { return super.falar() + " (fininho)"; }
+}
+
+console.log(new Filhote().apresentar());
+
+--- opcoes
+- Eu digo: ...
+- Eu digo: Au!
+- Eu digo: Au! (fininho)
+- Eu digo: ... (fininho)
+
+--- experimentos
+- Troque para `new Cachorro().apresentar()`.
+- No Filhote, troque `super.falar()` por `this.falar()`. Rode e leia o erro. O que aconteceu?
+
+--- explicacao
+Mesmo escrito em `Animal`, `this.falar()` procura o método a partir do **objeto real** (Filhote) — é a *ligação dinâmica*. O `falar` do Filhote usa `super.falar()`, que sobe **um nível** (Cachorro → "Au!"). Com `this.falar()` no lugar de `super`, o método chamaria a si mesmo para sempre: estouro de pilha.
+
+=== lab her-passo-dispatch
+tipo: passo
+tema: POO — Herança e Polimorfismo
+nivel: 2
+linguagem: js
+titulo: Polimorfismo em câmera lenta
+pergunta: Quando f era o Circulo, qual método area() executou?
+resposta: Circulo.area
+
+--- enunciado
+Avance passo a passo e observe o **nome do método** em cada quadro da pilha. `descrever()` existe só em `Forma`, mas cada objeto chega num `area()` diferente.
+
+--- codigo
+class Forma {
+  descrever() {
+    return "Área: " + this.area();
+  }
+}
+class Quadrado extends Forma {
+  constructor(lado) { super(); this.lado = lado; }
+  area() { return this.lado * this.lado; }
+}
+class Circulo extends Forma {
+  constructor(raio) { super(); this.raio = raio; }
+  area() { return Math.round(3.14 * this.raio * this.raio); }
+}
+
+const formas = [new Quadrado(2), new Circulo(1)];
+for (const f of formas) {
+  console.log(f.descrever());
+}
+
+--- opcoes
+- Forma.area
+- Quadrado.area
+- Circulo.area
+- nenhum, deu erro
+
+--- explicacao
+A pilha mostrou `Forma.descrever` chamando `Quadrado.area` na primeira volta e `Circulo.area` na segunda: o método herdado (`descrever`) é o mesmo, mas o `this.area()` dentro dele é resolvido pelo objeto real. Repare também no quadro `this` mudando de `Quadrado { lado: 2 }` para `Circulo { raio: 1 }`.
+
+=== lab her-sem-sobrecarga
+tipo: prever
+tema: POO — Herança e Polimorfismo
+nivel: 2
+linguagem: js
+titulo: Sobrecarga: Java tem, JavaScript não
+
+--- enunciado
+Em Java, dois métodos com o mesmo nome e **assinaturas diferentes** convivem (sobrecarga, resolvida na compilação). Veja o que acontece em JavaScript e preveja a saída.
+
+--- codigo
+class Calculadora {
+  somar(a, b) {
+    return a + b;
+  }
+  somar(a, b, c) {   // em Java isto seria uma sobrecarga
+    return a + b + c;
+  }
+}
+
+console.log(new Calculadora().somar(1, 2));
+
+--- opcoes
+- 3
+- NaN
+- Erro: método duplicado
+- undefined
+
+--- experimentos
+- Chame `somar(1, 2, 3)`.
+- Simule a sobrecarga com um só método: `somar(...nums) { return nums.reduce((a, b) => a + b, 0); }`
+
+--- explicacao
+Em JavaScript a segunda definição **substitui** a primeira: só existe `somar(a, b, c)`. Chamando com 2 argumentos, `c` vale `undefined` e `1 + 2 + undefined` é `NaN`. Em Java, o compilador escolheria o método pela assinatura (**polimorfismo estático / sobrecarga**). Já a **sobreposição** (override), que depende de herança, existe nas duas linguagens.
+
+=== lab her-hierarquia
+tipo: desafio
+tema: POO — Herança e Polimorfismo
+nivel: 3
+linguagem: js
+titulo: Folha de pagamento polimórfica
+
+--- enunciado
+Crie `Gerente` (ganha 1,5 × a base) e `Estagiario` (ganha metade da base) como **subclasses** de `Funcionario`, sobrescrevendo `salario()`. Depois escreva `folha(lista)`, que soma os salários **sem perguntar o tipo** de ninguém.
+
+--- codigo
+class Funcionario {
+  constructor(nome, base) {
+    this.nome = nome;
+    this.base = base;
+  }
+  salario() {
+    return this.base;
+  }
+}
+
+// crie aqui Gerente e Estagiario
+
+function folha(lista) {
+  // some os salários sem perguntar o tipo de cada um
+  return 0;
+}
+
+--- solucao
+class Funcionario {
+  constructor(nome, base) {
+    this.nome = nome;
+    this.base = base;
+  }
+  salario() {
+    return this.base;
+  }
+}
+
+class Gerente extends Funcionario {
+  salario() {
+    return this.base * 1.5;
+  }
+}
+
+class Estagiario extends Funcionario {
+  salario() {
+    return this.base / 2;
+  }
+}
+
+function folha(lista) {
+  return lista.reduce((total, f) => total + f.salario(), 0);
+}
+
+--- testes
+new Gerente("Ana", 4000).salario() ==> 6000
+new Estagiario("Bia", 4000).salario() ==> 2000
+new Funcionario("Caio", 3000).salario() ==> 3000
+new Gerente("Ana", 4000) instanceof Funcionario ==> true
+folha([new Gerente("A", 1000), new Estagiario("B", 1000), new Funcionario("C", 1000)]) ==> 3000
+
+--- regras
+proibido: instanceof|\.constructor|typeof :: Não pergunte o tipo do objeto — deixe o polimorfismo escolher o método
+exigido: extends Funcionario :: Gerente e Estagiario precisam herdar de Funcionario
+
+--- dicas
+`class Gerente extends Funcionario { salario() { ... } }` — não precisa de constructor: ele é herdado.
+
+Dentro do método, a base está em `this.base`.
+
+Na folha, chame `f.salario()` de cada um e some. Quem decide o cálculo é o próprio objeto.
+
+--- explicacao
+Se `folha` tivesse um `if (f instanceof Gerente) ... else if ...`, cada tipo novo exigiria mexer nela. Com polimorfismo, `folha` fica **fechada para modificação**: qualquer subclasse nova de `Funcionario` já funciona. O `instanceof` do teste confirma a relação **é-um** que a herança cria.
+
+# =====================================================================
+# POO — Interfaces e Classes Abstratas
+# =====================================================================
+
+=== lab abs-forma
+tipo: explorar
+tema: POO — Interfaces e Classes Abstratas
+nivel: 1
+linguagem: js
+titulo: Simulando uma classe abstrata
+
+--- enunciado
+JavaScript não tem `abstract`, mas dá para simular: a classe base recusa ser instanciada e o método `area` lança erro se a subclasse esquecer de implementá-lo. Rode e faça os experimentos.
+
+--- codigo
+class FormaGeometrica {
+  constructor() {
+    if (new.target === FormaGeometrica) {
+      throw new Error("FormaGeometrica é abstrata — crie uma subclasse.");
+    }
+  }
+  area() {
+    throw new Error("Subclasse precisa implementar area().");
+  }
+}
+
+class Circulo extends FormaGeometrica {
+  constructor(raio) {
+    super();
+    this.raio = raio;
+  }
+  area() {
+    return Math.PI * this.raio * this.raio;
+  }
+}
+
+const c = new Circulo(3);
+console.log("Área do círculo:", c.area().toFixed(2));
+
+--- experimentos
+- Troque `new Circulo(3)` por `new FormaGeometrica()`.
+- Crie `class Quadrado extends FormaGeometrica` **sem** o método area e chame `new Quadrado().area()`.
+
+--- explicacao
+`new.target` diz qual classe foi usada no `new`: se for a própria base, recusamos — é o "não pode instanciar classe abstrata". E o `area()` da base funciona como **método abstrato**: existe só para obrigar as subclasses a fornecer a sua versão. Em Java isso seria `abstract class` e `abstract double area();` — e o erro apareceria já na compilação, não na execução.
+
+=== lab abs-python-abc
+tipo: prever
+tema: POO — Interfaces e Classes Abstratas
+nivel: 2
+linguagem: python
+titulo: Classe abstrata de verdade em Python
+
+--- enunciado
+Python tem classes abstratas de verdade no módulo `abc`. `Quadrado` herda de `Forma` mas **não implementou** `area`. Preveja a saída.
+
+--- codigo
+from abc import ABC, abstractmethod
+
+class Forma(ABC):
+    @abstractmethod
+    def area(self):
+        pass
+
+class Quadrado(Forma):
+    def __init__(self, lado):
+        self.lado = lado
+
+try:
+    q = Quadrado(3)
+    print("criou, área =", q.area())
+except TypeError:
+    print("TypeError")
+
+--- opcoes
+- criou, área = 9
+- criou, área = None
+- TypeError
+- nada é impresso
+
+--- experimentos
+- Implemente `def area(self): return self.lado ** 2` em Quadrado e rode.
+- Tente `Forma()` diretamente. Leia a mensagem de erro completa (tire o try/except).
+
+--- explicacao
+Com `@abstractmethod`, Python recusa **criar o objeto** de qualquer classe que ainda tenha métodos abstratos sem implementação — o erro acontece no `Quadrado(3)`, antes mesmo de chamar `area`. É o mesmo contrato de uma classe abstrata em Java/C#: a superclasse define **o que** as subclasses têm de fazer, e a linguagem garante que elas façam.
+
+=== lab abs-duck-typing
+tipo: desafio
+tema: POO — Interfaces e Classes Abstratas
+nivel: 2
+linguagem: js
+titulo: Interface como contrato: implementa()
+
+--- enunciado
+Uma **interface** é um contrato: "quem implementa, tem estes métodos". Escreva `implementa(obj, metodos)`, que diz se o objeto tem **todos** os métodos da lista (e se são mesmo funções).
+
+--- codigo
+class Pato {
+  voar() { return "voando"; }
+  nadar() { return "nadando"; }
+}
+class Pinguim {
+  nadar() { return "nadando"; }
+}
+
+function implementa(obj, metodos) {
+  return true;
+}
+
+console.log(implementa(new Pato(), ["voar", "nadar"]), implementa(new Pinguim(), ["voar", "nadar"]));
+
+--- solucao
+class Pato {
+  voar() { return "voando"; }
+  nadar() { return "nadando"; }
+}
+class Pinguim {
+  nadar() { return "nadando"; }
+}
+
+function implementa(obj, metodos) {
+  return metodos.every(m => typeof obj[m] === "function");
+}
+
+console.log(implementa(new Pato(), ["voar", "nadar"]), implementa(new Pinguim(), ["voar", "nadar"]));
+
+--- testes
+implementa({ voar() {}, pousar() {} }, ["voar", "pousar"]) ==> true
+implementa({ voar() {} }, ["voar", "pousar"]) ==> false
+implementa({ voar: 42, pousar() {} }, ["voar", "pousar"]) ==> false
+implementa(new Pato(), ["voar", "nadar"]) ==> true
+implementa(new Pinguim(), ["voar", "nadar"]) ==> false
+
+--- dicas
+`typeof obj[nome] === "function"` confere um método.
+
+`lista.every(x => condição)` é true só se todos cumprirem a condição.
+
+--- explicacao
+"Se anda como pato e grasna como pato, é um pato": linguagens dinâmicas usam *duck typing* — o que importa é ter os métodos, não a classe declarada. Java faz o contrato explícito com `interface Voador { void voar(); }` e o compilador confere o `implements`. Repare que `obj[m]` acha métodos da classe porque eles ficam no protótipo — é a herança do JavaScript trabalhando.
+
+=== lab abs-parsons-java
+tipo: parsons
+tema: POO — Interfaces e Classes Abstratas
+nivel: 2
+linguagem: java
+titulo: Monte uma interface em Java
+
+--- enunciado
+Monte, em Java, a interface `Autenticavel` e a classe `Gerente`, que **herda** de `Funcionario` e **implementa** a interface. Cuidado com as armadilhas: uma delas é algo que Java não permite.
+
+--- linhas
+interface Autenticavel {
+    boolean autenticar(String senha);
+}
+class Gerente extends Funcionario implements Autenticavel {
+    private String senha;
+    @Override
+    public boolean autenticar(String senha) {
+        return this.senha.equals(senha);
+    }
+}
+
+--- distratores
+class Gerente extends Funcionario, Autenticavel {
+interface Autenticavel extends Funcionario {
+
+--- explicacao
+Em Java uma classe herda de **uma** classe só (`extends`) mas pode implementar **várias** interfaces (`implements A, B`) — é assim que Java resolve a falta de herança múltipla. Na interface o método não tem corpo, só a assinatura terminada em `;`. A classe é obrigada a implementá-lo; o `@Override` pede ao compilador que confira a assinatura. Uma interface também não pode estender uma classe.
+
+# =====================================================================
+# POO — Java, C++ e C#
+# =====================================================================
+
+=== lab java-tipagem
+tipo: explorar
+tema: POO — Java, C++ e C#
+nivel: 1
+linguagem: js
+titulo: Tipagem estática x dinâmica
+
+--- enunciado
+Em Java, C# e C++ a **variável** tem tipo, conferido na compilação: `int idade = 20; idade = "vinte";` nem compila. Em JavaScript o tipo é do **valor**. Rode e compare.
+
+--- codigo
+let idade = 20;
+console.log(typeof idade, idade);
+
+idade = "vinte";          // em Java: erro de compilação
+console.log(typeof idade, idade);
+
+// coerção implícita: o JS converte tipos sozinho
+console.log("20" + 1, "20" - 1, "5" * "2");
+console.log(0.1 + 0.2 === 0.3, [] + [], typeof null);
+
+--- experimentos
+- Tente `idade.toUpperCase()` depois que ela virou texto, e antes (quando era número).
+- Em Java, `"20" + 1` também dá `"201"`. E `"20" - 1`? (Não compila!)
+
+--- explicacao
+Com **tipagem estática** (Java, C#, C++) o compilador pega erros de tipo antes do programa rodar e o código fica mais "autodocumentado". Com **tipagem dinâmica** (JavaScript, Python) você escreve menos, mas os erros de tipo aparecem só na execução — e a coerção implícita cria surpresas como `"20" - 1 === 19`. TypeScript existe justamente para trazer tipagem estática ao JavaScript.
+
+=== lab java-heranca-multipla
+tipo: prever
+tema: POO — Java, C++ e C#
+nivel: 2
+linguagem: python
+titulo: Herança múltipla e o problema do diamante
+
+--- enunciado
+C++ e Python permitem **herança múltipla**; Java não (usa interfaces). Aqui `D` herda de `B` e de `C`, que sobrescrevem o mesmo método — o famoso **diamante**. Preveja a saída.
+
+--- codigo
+class A:
+    def quem(self):
+        return "A"
+
+class B(A):
+    def quem(self):
+        return "B"
+
+class C(A):
+    def quem(self):
+        return "C"
+
+class D(B, C):
+    pass
+
+print(D().quem(), [k.__name__ for k in D.__mro__])
+
+--- opcoes
+- B ['D', 'B', 'C', 'A', 'object']
+- C ['D', 'C', 'B', 'A', 'object']
+- A ['D', 'A', 'object']
+- erro: herança múltipla não é permitida
+
+--- experimentos
+- Troque `class D(B, C)` por `class D(C, B)`.
+- Apague o método `quem` de B. Quem responde agora?
+
+--- explicacao
+Python resolve o diamante com a **MRO** (Method Resolution Order): procura em D, depois nas mães **na ordem em que foram listadas** (B antes de C), e só então na avó A. C++ exige que o programador resolva a ambiguidade (e usa herança *virtual* para não duplicar A). Java evita o problema de vez: herda de **uma** classe e implementa quantas **interfaces** quiser.
+
+=== lab java-parsons-main
+tipo: parsons
+tema: POO — Java, C++ e C#
+nivel: 1
+linguagem: java
+titulo: Monte o main de um programa Java
+
+--- enunciado
+Monte o método de entrada de um programa Java que cria uma `Conta`, deposita 100 e imprime o saldo. Três blocos são armadilhas de quem vem do JavaScript.
+
+--- linhas
+public class Main {
+    public static void main(String[] args) {
+        Conta c = new Conta("Ana");
+        c.depositar(100.0);
+        System.out.println(c.getSaldo());
+    }
+}
+
+--- distratores
+    public void main(String args) {
+        Conta c = Conta("Ana");
+        console.log(c.getSaldo());
+
+--- explicacao
+Todo código Java vive dentro de uma **classe**; a execução começa em `public static void main(String[] args)` — `static` porque roda sem precisar de um objeto `Main`. A variável é declarada com o **tipo** (`Conta c`), o objeto é criado com `new`, e a saída padrão é `System.out.println`. Em C# seria `static void Main(string[] args)` e `Console.WriteLine`.
+
+# =====================================================================
+# Funcional — Conceitos e Funções Puras
+# =====================================================================
+
+=== lab fun-pura
+tipo: prever
+tema: Funcional — Conceitos e Funções Puras
+nivel: 1
+linguagem: js
+titulo: Função pura x efeito colateral
+
+--- enunciado
+`dobrar` é **pura**: depende só do parâmetro e não mexe em nada fora dela. `dobrarEContar` faz a mesma conta mas tem **efeito colateral**. Preveja a saída.
+
+--- codigo
+let contador = 0;
+
+function dobrar(x) {
+  return x * 2;
+}
+
+function dobrarEContar(x) {
+  contador = contador + 1;
+  return x * 2;
+}
+
+dobrar(5);
+dobrar(5);
+dobrarEContar(5);
+dobrarEContar(5);
+dobrarEContar(5);
+console.log(dobrar(5), contador);
+
+--- opcoes
+- 10 3
+- 10 0
+- 10 5
+- 30 3
+
+--- experimentos
+- Rode duas vezes seguidas. O resultado muda? Por quê (o contador recomeça a cada execução)?
+- Escreva uma versão pura que **devolva** o novo contador em vez de alterar a variável: `function dobrarEContarPura(x, cont) { return [x * 2, cont + 1]; }`
+
+--- explicacao
+`dobrar(5)` sempre vale 10, não importa quantas vezes nem quando você chama — é **referencialmente transparente**: dá para trocar a chamada pelo valor. `dobrarEContar` devolve o mesmo 10, mas cada chamada muda o mundo (o contador foi a 3). Funções puras são mais fáceis de testar, de entender isoladamente e de paralelizar, porque não carregam histórico escondido.
+
+=== lab fun-sem-mutacao
+tipo: desafio
+tema: Funcional — Conceitos e Funções Puras
+nivel: 2
+linguagem: js
+titulo: Ordenar sem estragar a lista de ninguém
+
+--- enunciado
+`ordenar` funciona, mas **bagunça a lista original** de quem chamou (efeito colateral). Reescreva para ser **pura**: devolver uma lista nova ordenada e deixar a original intacta.
+
+--- codigo
+function ordenar(lista) {
+  lista.sort((a, b) => a - b);
+  return lista;
+}
+
+const notas = [7, 3, 9];
+const ordenadas = ordenar(notas);
+console.log("ordenadas:", ordenadas);
+console.log("original:", notas);   // mudou também!
+
+--- solucao
+function ordenar(lista) {
+  return [...lista].sort((a, b) => a - b);
+}
+
+const notas = [7, 3, 9];
+const ordenadas = ordenar(notas);
+console.log("ordenadas:", ordenadas);
+console.log("original:", notas);
+
+--- testes
+ordenar([3, 1, 2]) ==> [1, 2, 3]
+(() => { const a = [3, 1, 2]; ordenar(a); return a; })() ==> [3, 1, 2]
+(() => { const a = [2, 1]; return ordenar(a) !== a; })() ==> true
+
+--- dicas
+O `sort` altera a lista em que é chamado. Então chame-o numa **cópia**.
+
+`[...lista]` ou `lista.slice()` criam uma cópia rasa.
+
+--- explicacao
+No funcional os dados são tratados como **imutáveis**: em vez de alterar, você cria um valor novo. `[...lista]` copia, e o `sort` bagunça só a cópia. JavaScript moderno tem até `lista.toSorted()`, que já faz isso. O terceiro teste confere que a função devolve um objeto **novo**, não o mesmo.
+
+=== lab fun-passo-recursao
+tipo: passo
+tema: Funcional — Conceitos e Funções Puras
+nivel: 2
+linguagem: js
+titulo: Recursão no lugar do laço
+pergunta: No ponto mais fundo, quantos quadros de somar estavam empilhados ao mesmo tempo?
+resposta: 4
+
+--- enunciado
+Linguagens funcionais puras não têm laço com variável mutável: repetição é **recursão**. Avance e observe a pilha crescer a cada chamada e depois ir desmontando, somando na volta.
+
+--- codigo
+function somar(lista) {
+  if (lista.length === 0) return 0;
+  const [primeiro, ...resto] = lista;
+  return primeiro + somar(resto);
+}
+
+console.log(somar([4, 2, 3]));
+
+--- opcoes
+- 1
+- 3
+- 4
+- 5
+
+--- explicacao
+São 4 quadros: `somar([4, 2, 3])`, `somar([2, 3])`, `somar([3])` e `somar([])` — o **caso base**, que devolve 0 e faz a pilha começar a desmontar: 3 + 0, 2 + 3, 4 + 5 = 9. Nenhuma variável mudou de valor: cada quadro tem seus próprios `primeiro` e `resto`. O custo é memória de pilha — por isso linguagens funcionais otimizam a *recursão de cauda*.
+
+=== lab fun-imutavel
+tipo: prever
+tema: Funcional — Conceitos e Funções Puras
+nivel: 2
+linguagem: js
+titulo: Congelar em vez de alterar
+
+--- enunciado
+`Object.freeze` torna um objeto imutável; o *spread* `{ ...obj }` cria um novo objeto a partir dele. Preveja a saída.
+
+--- codigo
+const config = Object.freeze({ tema: "escuro", fonte: 14 });
+
+config.fonte = 20;                       // tentativa de alterar
+const nova = { ...config, fonte: 20 };   // cria outro objeto
+
+console.log(config.fonte, nova.fonte);
+
+--- opcoes
+- 14 20
+- 20 20
+- 14 14
+- TypeError
+
+--- experimentos
+- Coloque `"use strict";` como primeira linha do código e rode. Agora a tentativa de alterar vira erro!
+- Imprima `config === nova`.
+
+--- explicacao
+O objeto congelado **ignora** a atribuição (em modo não estrito, silenciosamente; com `"use strict"`, lança `TypeError`). O jeito funcional de "mudar" é criar um valor novo: `{ ...config, fonte: 20 }` copia tudo e troca só a fonte. Os dois objetos convivem, e quem ainda usa `config` não é surpreendido.
+
+# =====================================================================
+# Funcional — Primeira Classe e Ordem Superior
+# =====================================================================
+
+=== lab ord-valores
+tipo: explorar
+tema: Funcional — Primeira Classe e Ordem Superior
+nivel: 1
+linguagem: js
+titulo: Funções são valores
+
+--- enunciado
+**Primeira classe**: a função pode ser guardada em variável, passada como argumento e devolvida por outra função. **Ordem superior**: função que recebe ou devolve função. Rode e faça os experimentos.
+
+--- codigo
+function aplicarATodos(lista, operacao) {
+  return lista.map(operacao);
+}
+
+function quadrado(x) { return x * x; }
+const metade = x => x / 2;
+const operacoes = { quadrado, metade };   // funções guardadas num objeto
+
+const numeros = [2, 4, 6, 8];
+console.log("quadrados:", aplicarATodos(numeros, quadrado));
+console.log("metades:", aplicarATodos(numeros, metade));
+console.log("pelo nome:", aplicarATodos(numeros, operacoes["quadrado"]));
+
+--- experimentos
+- Passe uma função nova, anônima, direto na chamada: `aplicarATodos(numeros, x => x + 100)`.
+- Imprima `quadrado` sem os parênteses. O que é "a função" sem ser chamada?
+
+--- explicacao
+`aplicarATodos` não sabe qual conta será feita: ela recebe a **operação** como parâmetro — é de **ordem superior**. `quadrado` e `metade` são valores como números e strings (dá até para guardá-las num objeto). É o mesmo princípio de `.map()`, `.filter()`, `.sort(comparador)` e dos *callbacks* de eventos.
+
+=== lab ord-retorna-funcao
+tipo: prever
+tema: Funcional — Primeira Classe e Ordem Superior
+nivel: 1
+linguagem: js
+titulo: Uma fábrica de funções
+
+--- enunciado
+`multiplicador` **devolve uma função**. Preveja a saída.
+
+--- codigo
+function multiplicador(fator) {
+  return function (x) {
+    return x * fator;
+  };
+}
+
+const dobro = multiplicador(2);
+const triplo = multiplicador(3);
+console.log(dobro(5), triplo(dobro(5)));
+
+--- opcoes
+- 10 15
+- 10 30
+- 7 15
+- [Function: anônima] 30
+
+--- experimentos
+- Imprima `dobro` sozinho.
+- Crie `const porcentagem = multiplicador(0.01)` e calcule 15% de 200.
+
+--- explicacao
+`multiplicador(2)` não calcula nada: ela **fabrica** uma função que lembra do fator 2. `dobro(5)` = 10 e `triplo(10)` = 30. Guardar o fator dentro da função devolvida é uma **closure** — e é o que torna possível o currying.
+
+=== lab ord-passo-reduce
+tipo: passo
+tema: Funcional — Primeira Classe e Ordem Superior
+nivel: 2
+linguagem: js
+titulo: Por dentro do reduce
+pergunta: Quanto valia acc na última chamada de somar?
+resposta: 15
+
+--- enunciado
+`reduce` recebe uma função e a chama uma vez para cada item, passando o acumulado. Avance e observe os parâmetros `acc` e `x` a cada chamada de `somar`.
+
+--- codigo
+const itens = [5, 10, 20];
+
+const total = itens.reduce(function somar(acc, x) {
+  return acc + x;
+}, 0);
+
+console.log("total:", total);
+
+--- opcoes
+- 0
+- 5
+- 15
+- 35
+
+--- explicacao
+O `reduce` chamou `somar(0, 5)`, `somar(5, 10)` e `somar(15, 20)`: o retorno de uma chamada vira o `acc` da próxima. Você não escreveu o laço — passou a **função** que diz como combinar dois valores, e o `reduce` (de ordem superior) fez o resto.
+
+=== lab ord-meu-map
+tipo: desafio
+tema: Funcional — Primeira Classe e Ordem Superior
+nivel: 2
+linguagem: js
+titulo: Construa seu próprio map e filter
+
+--- enunciado
+Implemente `meuMap(lista, f)` e `meuFilter(lista, teste)` **sem usar** `.map` e `.filter` prontos. Como no original, `f` recebe o item **e o índice**.
+
+--- codigo
+function meuMap(lista, f) {
+  const saida = [];
+  return saida;
+}
+
+function meuFilter(lista, teste) {
+  const saida = [];
+  return saida;
+}
+
+console.log(meuMap([1, 2, 3], x => x * 10), meuFilter([1, 2, 3, 4], x => x % 2 === 0));
+
+--- solucao
+function meuMap(lista, f) {
+  const saida = [];
+  for (let i = 0; i < lista.length; i++) saida.push(f(lista[i], i));
+  return saida;
+}
+
+function meuFilter(lista, teste) {
+  const saida = [];
+  for (const item of lista) if (teste(item)) saida.push(item);
+  return saida;
+}
+
+console.log(meuMap([1, 2, 3], x => x * 10), meuFilter([1, 2, 3, 4], x => x % 2 === 0));
+
+--- testes
+meuMap([1, 2, 3], x => x * 10) ==> [10, 20, 30]
+meuMap([], x => x) ==> []
+meuMap(["a", "b"], (x, i) => x + i) ==> ["a0", "b1"]
+meuFilter([1, 2, 3, 4], x => x % 2 === 0) ==> [2, 4]
+meuFilter(["a", "bb", "ccc"], s => s.length > 1) ==> ["bb", "ccc"]
+
+--- regras
+proibido: \.map\(|\.filter\( :: Implemente sem usar .map e .filter prontos
+
+--- dicas
+Percorra a lista com um `for` e vá empurrando (`push`) resultados na saída.
+
+No map, empurre `f(item, indice)`. No filter, empurre o próprio item quando `teste(item)` for verdadeiro.
+
+--- explicacao
+Por dentro, `map` e `filter` são só laços — a mágica é receberem o **comportamento** como parâmetro. Quem usa escreve só "o que fazer com cada item" (declarativo), e o laço fica escondido num lugar só, testado uma vez. Isso é abstração por **funções de ordem superior**.
+
+=== lab ord-compor
+tipo: prever
+tema: Funcional — Primeira Classe e Ordem Superior
+nivel: 3
+linguagem: js
+titulo: Composição de funções
+
+--- enunciado
+Na matemática, (f ∘ g)(x) = f(g(x)): aplica-se **primeiro** a da direita. `compor` implementa isso para qualquer número de funções. Preveja a saída.
+
+--- codigo
+const compor = (...fs) => x => fs.reduceRight((acc, f) => f(acc), x);
+
+const inc = x => x + 1;
+const dobra = x => x * 2;
+
+console.log(compor(inc, dobra)(5), compor(dobra, inc)(5));
+
+--- opcoes
+- 12 11
+- 11 12
+- 11 11
+- 12 12
+
+--- experimentos
+- Crie `const pipe = (...fs) => x => fs.reduce((acc, f) => f(acc), x);` e compare `pipe(inc, dobra)(5)`.
+- Componha três funções: `compor(inc, inc, dobra)(5)`.
+
+--- explicacao
+`compor(inc, dobra)(5)` = inc(dobra(5)) = inc(10) = **11**; `compor(dobra, inc)(5)` = dobra(inc(5)) = dobra(6) = **12**. A ordem importa: composição não é comutativa. Programar compondo funções pequenas e puras é o estilo *point-free* das linguagens funcionais — e o `pipe` é a mesma ideia lida da esquerda para a direita.
+
+# =====================================================================
+# Funcional — Cálculo Lambda
+# =====================================================================
+
+=== lab lam-iife
+tipo: explorar
+tema: Funcional — Cálculo Lambda
+nivel: 1
+linguagem: js
+titulo: Abstração e aplicação
+
+--- enunciado
+No cálculo lambda só existem duas operações: **abstração** (definir uma função anônima, λx.corpo) e **aplicação** (chamá-la com um argumento). Rode e faça os experimentos.
+
+--- codigo
+// abstração λx.x*x aplicada direto ao valor 7 (sem nome!)
+const resultado = (x => x * x)(7);
+console.log("aplicação imediata:", resultado);
+
+// duas aplicações encadeadas: (λx.x+1) ((λx.x*3) 4)
+const encadeado = (x => x + 1)((x => x * 3)(4));
+console.log("encadeado:", encadeado);
+
+// uma função de duas "entradas" é uma função que devolve função
+const soma = x => y => x + y;       // λx.λy.x+y
+console.log("soma:", soma(2)(3));
+
+--- experimentos
+- Troque o 7 por outro número.
+- Reescreva o encadeado substituindo à mão: `(x => x + 1)(12)`. Dá o mesmo?
+
+--- explicacao
+Aplicar uma função é **substituir** o parâmetro pelo argumento no corpo (redução β): `(λx.x*x) 7` → `7*7` → 49. Não há variável que mude de valor, nem laço, nem nome obrigatório. O cálculo lambda, de Alonzo Church (anos 1930), é a base teórica de LISP, Haskell e das *arrow functions*.
+
+=== lab lam-beta
+tipo: prever
+tema: Funcional — Cálculo Lambda
+nivel: 2
+linguagem: js
+titulo: Reduza à mão: K e I
+
+--- enunciado
+Dois combinadores clássicos: **I** (identidade, λx.x) e **K** (constante, λx.λy.x — devolve sempre o primeiro). Faça a redução de cada expressão no papel e preveja a saída.
+
+--- codigo
+const I = x => x;          // λx.x
+const K = x => y => x;     // λx.λy.x
+
+console.log(K(1)(2), I(K)(3)(4), K(I)(5)(6));
+
+--- opcoes
+- 1 3 6
+- 2 4 6
+- 1 3 5
+- 2 3 6
+
+--- experimentos
+- Crie o combinador de troca `const C = f => x => y => f(y)(x);` e teste `C(K)(1)(2)`.
+
+--- explicacao
+`K(1)(2)` → 1 (K ignora o segundo). `I(K)` → K, então `K(3)(4)` → 3. `K(I)(5)` → I (ignora o 5), e `I(6)` → 6. Funções podem receber e devolver funções, e **tudo** se resolve por substituição — é assim que o cálculo lambda expressa qualquer computação só com funções.
+
+=== lab lam-church
+tipo: explorar
+tema: Funcional — Cálculo Lambda
+nivel: 3
+linguagem: js
+titulo: Números feitos só de funções
+
+--- enunciado
+No cálculo lambda puro **não existem números**. Church os construiu com funções: o número *n* é "aplicar f, n vezes". Rode — e se espante: a soma abaixo não usa o `+` do JavaScript para somar os numerais.
+
+--- codigo
+const zero = f => x => x;                      // aplica f 0 vezes
+const um   = f => x => f(x);                   // aplica f 1 vez
+const succ = n => f => x => f(n(f)(x));        // sucessor: mais uma aplicação
+const soma = m => n => f => x => m(f)(n(f)(x));
+
+const paraInt = n => n(k => k + 1)(0);         // traduz de volta para JS
+
+const dois = succ(um);
+const tres = succ(dois);
+
+console.log(paraInt(zero), paraInt(dois), paraInt(soma(dois)(tres)));
+console.log(tres(s => s + "*")(""));            // "aplicar 'adicione *' 3 vezes"
+
+--- experimentos
+- Crie `const quatro = succ(tres)` e imprima `paraInt(quatro)`.
+- Use um numeral para repetir texto: `soma(dois)(tres)(s => s + "ha")("")`.
+
+--- explicacao
+Um numeral de Church **é** a própria repetição: `tres(f)(x)` = f(f(f(x))). O sucessor aplica f mais uma vez; a soma aplica f n vezes e depois m vezes. `paraInt` só "observa" o numeral usando f = +1 a partir de 0. Isso prova um ponto profundo: funções bastam para representar dados — a base teórica de que o paradigma funcional é Turing-completo.
+
+=== lab lam-church-mult
+tipo: desafio
+tema: Funcional — Cálculo Lambda
+nivel: 3
+linguagem: js
+titulo: Multiplicação de Church
+
+--- enunciado
+Defina `mult` para numerais de Church **só com funções** (nada de `*`). Pense: multiplicar m por n é aplicar "(aplicar f n vezes)" m vezes.
+
+--- codigo
+const zero = f => x => x;
+const um   = f => x => f(x);
+const succ = n => f => x => f(n(f)(x));
+const paraInt = n => n(k => k + 1)(0);
+const dois = succ(um);
+const tres = succ(dois);
+
+const mult = m => n => zero;   // conserte
+
+console.log(paraInt(mult(dois)(tres)));
+
+--- solucao
+const zero = f => x => x;
+const um   = f => x => f(x);
+const succ = n => f => x => f(n(f)(x));
+const paraInt = n => n(k => k + 1)(0);
+const dois = succ(um);
+const tres = succ(dois);
+
+const mult = m => n => f => m(n(f));
+
+console.log(paraInt(mult(dois)(tres)));
+
+--- testes
+paraInt(mult(dois)(tres)) ==> 6
+paraInt(mult(tres)(tres)) ==> 9
+paraInt(mult(zero)(tres)) ==> 0
+paraInt(mult(um)(dois)) ==> 2
+
+--- regras
+proibido: \* :: Nada de * — a multiplicação tem que sair só de aplicação de funções
+
+--- dicas
+`n(f)` é uma função: "aplique f, n vezes".
+
+Se você aplicar essa função m vezes, aplicou f m × n vezes. Quem sabe "aplicar algo m vezes"? O próprio m!
+
+A forma é `mult = m => n => f => m( ... )`.
+
+--- explicacao
+`n(f)` é "f repetida n vezes"; `m(n(f))` repete isso m vezes — f é aplicada m×n vezes. Multiplicar, no cálculo lambda, é **compor repetições**. Nenhum operador aritmético foi usado.
+
+# =====================================================================
+# Funcional — Currying e Closures
+# =====================================================================
+
+=== lab cur-curry-contador
+tipo: explorar
+tema: Funcional — Currying e Closures
+nivel: 1
+linguagem: js
+titulo: Curry e uma closure contadora
+
+--- enunciado
+**Currying** transforma uma função de vários argumentos numa cadeia de funções de um argumento. **Closure** é a função que lembra das variáveis de onde nasceu. Rode e experimente.
+
+--- codigo
+function somar(a) {
+  return function (b) {
+    return a + b;
+  };
+}
+console.log("somar(2)(3):", somar(2)(3));
+
+function criarContador() {
+  let total = 0;
+  return function () {
+    total = total + 1;
+    return total;
+  };
+}
+
+const contar = criarContador();
+console.log(contar(), contar(), contar());
+
+--- experimentos
+- Crie `const somarCom10 = somar(10)` e use com vários números.
+- Crie um segundo contador. Ele começa do zero ou continua do primeiro?
+- Tente imprimir `total` fora da função. Existe?
+
+--- explicacao
+`somar(10)` devolve uma função que **lembra** do 10 — isso é uma closure. `criarContador` usa o mesmo mecanismo para guardar estado **privado**: `total` não existe fora, mas a função devolvida o enxerga e o altera. Cada chamada de `criarContador()` cria um `total` novo, independente.
+
+=== lab clo-var-let
+tipo: prever
+tema: Funcional — Currying e Closures
+nivel: 2
+linguagem: js
+titulo: A pegadinha clássica do var no laço
+
+--- enunciado
+Dois laços guardam closures numa lista. Um usa `var`, o outro `let`. Depois todas as funções são chamadas. Preveja.
+
+--- codigo
+const comVar = [];
+const comLet = [];
+
+for (var i = 0; i < 3; i++) comVar.push(() => i);
+for (let j = 0; j < 3; j++) comLet.push(() => j);
+
+console.log(comVar.map(f => f()), comLet.map(f => f()));
+
+--- opcoes
+- [0, 1, 2] [0, 1, 2]
+- [3, 3, 3] [0, 1, 2]
+- [2, 2, 2] [0, 1, 2]
+- [0, 1, 2] [3, 3, 3]
+
+--- experimentos
+- Imprima `i` depois do laço. E `j`?
+- Conserte a versão com var sem trocar para let: `comVar.push((k => () => k)(i))`.
+
+--- explicacao
+A closure captura a **variável**, não o valor do momento. Com `var` só existe **um** `i` para o laço inteiro, e quando as funções rodam ele já vale 3. Com `let`, cada volta do laço cria um `j` **novo**, e cada closure guarda o seu. É por isso que `let` substituiu `var` no JavaScript moderno.
+
+=== lab clo-passo-contador
+tipo: passo
+tema: Funcional — Currying e Closures
+nivel: 2
+linguagem: js
+titulo: Veja a closure guardando estado
+pergunta: Na primeira vez que b() rodou, quanto valia o total que ela enxerga, antes de somar?
+resposta: 0
+
+--- enunciado
+Dois contadores são criados. Avance e observe a variável `total` marcada como **closure** dentro de `incrementar`: cada contador tem o seu.
+
+--- codigo
+function criarContador() {
+  let total = 0;
+  return function incrementar() {
+    total = total + 1;
+    return total;
+  };
+}
+
+const a = criarContador();
+const b = criarContador();
+a();
+a();
+b();
+console.log(a(), b());
+
+--- opcoes
+- 0
+- 1
+- 2
+- 3
+
+--- explicacao
+Quando `b()` rodou pela primeira vez, o seu `total` valia **0** — ele é independente do `total` de `a`, que já estava em 2. Cada chamada de `criarContador` criou um escopo novo, e cada `incrementar` ficou presa (fechada) ao seu. A saída final é `3 2`.
+
+=== lab cur-curry-generico
+tipo: desafio
+tema: Funcional — Currying e Closures
+nivel: 3
+linguagem: js
+titulo: Escreva um curry genérico
+
+--- enunciado
+Implemente `curry(f)`: transforma uma função de N parâmetros numa cadeia de funções de um parâmetro, para qualquer N. `f.length` diz quantos parâmetros `f` declara.
+
+--- codigo
+function curry(f) {
+  return f;
+}
+
+const somar3 = curry((a, b, c) => a + b + c);
+console.log(somar3(1)(2)(3));
+
+--- solucao
+function curry(f) {
+  return function acumular(...args) {
+    if (args.length >= f.length) return f(...args);
+    return proximo => acumular(...args, proximo);
+  };
+}
+
+const somar3 = curry((a, b, c) => a + b + c);
+console.log(somar3(1)(2)(3));
+
+--- testes
+curry((a, b, c) => a + b + c)(1)(2)(3) ==> 6
+curry((a, b) => a * b)(4)(5) ==> 20
+curry((a, b, c) => [a, b, c])("x")("y")("z") ==> ["x", "y", "z"]
+(() => { const mais10 = curry((a, b, c) => a + b + c)(4)(6); return [mais10(1), mais10(2)]; })() ==> [11, 12]
+
+--- dicas
+Guarde os argumentos recebidos até agora numa lista. Quando ela tiver `f.length` itens, chame `f(...args)`.
+
+Enquanto faltar argumento, devolva uma **nova função** que recebe o próximo e continua acumulando — uma closure.
+
+--- explicacao
+Cada chamada parcial devolve uma closure que lembra dos argumentos já recebidos (`args`). Quando chegam todos, a função original é chamada. Isso permite **aplicação parcial**: `curry(soma3)(4)(6)` é uma função nova, reutilizável, "soma 10 ao que vier". Em Haskell, todas as funções já são curried por padrão.
+
+# =====================================================================
+# Funcional — Functors, Applicatives e Monads
+# =====================================================================
+
+=== lab mon-box
+tipo: explorar
+tema: Funcional — Functors, Applicatives e Monads
+nivel: 2
+linguagem: js
+titulo: Array como functor, e uma caixa que evita null
+
+--- enunciado
+Um **functor** é uma "caixa" que sabe aplicar uma função ao que tem dentro, sem você abrir a caixa — `.map()` do array já é isso. O `Box` faz o mesmo para um valor só, e ainda sabe lidar com o vazio.
+
+--- codigo
+console.log("Array functor:", [1, 2, 3].map(x => x * 10));
+
+function Box(valor) {
+  return {
+    map: fn => (valor == null ? Box(null) : Box(fn(valor))),
+    get: () => valor
+  };
+}
+
+const r = Box(5).map(x => x * 2).map(x => x + 1);
+console.log("Box(5):", r.get());
+
+const vazio = Box(null).map(x => x * 2).map(x => x + 1);
+console.log("Box(null):", vazio.get());
+
+--- experimentos
+- Faça sem o Box: `null * 2`. E `null.toFixed(2)`?
+- Leia uma propriedade que pode não existir: `Box({ a: { b: 7 } }).map(o => o.a).map(a => a.b).get()`. Troque por um objeto sem `a`.
+
+--- explicacao
+O `map` do functor aplica a função **dentro** da caixa e devolve outra caixa — por isso dá para encadear. O Box ainda propaga o vazio: se não há valor, as funções simplesmente não rodam, em vez de quebrar em `null`. É a ideia do `Maybe` do Haskell, do `Optional` do Java e do operador `?.` do JavaScript.
+
+=== lab mon-flatmap
+tipo: prever
+tema: Funcional — Functors, Applicatives e Monads
+nivel: 2
+linguagem: js
+titulo: map x flatMap
+
+--- enunciado
+`map` aplica a função e mantém a estrutura; `flatMap` aplica e **achata** um nível. Preveja os dois tamanhos.
+
+--- codigo
+const frases = ["olá mundo", "bom dia"];
+
+const comMap = frases.map(f => f.split(" "));
+const comFlatMap = frases.flatMap(f => f.split(" "));
+
+console.log(comMap.length, comFlatMap.length);
+
+--- opcoes
+- 2 2
+- 2 4
+- 4 4
+- 4 2
+
+--- experimentos
+- Imprima `comMap` e `comFlatMap` inteiros.
+- `flatMap` também filtra: `[1, 2, 3].flatMap(x => x % 2 ? [x] : [])`.
+
+--- explicacao
+Com `map`, cada frase vira **uma lista** de palavras, e o resultado é uma lista de listas (tamanho 2). `flatMap` = map + achatar: as palavras saem numa lista só (tamanho 4). Esse "aplicar uma função que já devolve a caixa, sem embrulhar de novo" é a operação **bind** (`>>=`) que define uma **monad**.
+
+=== lab mon-maybe
+tipo: desafio
+tema: Funcional — Functors, Applicatives e Monads
+nivel: 3
+linguagem: js
+titulo: Implemente a monad Maybe
+
+--- enunciado
+Complete `Maybe(valor)`: `map(f)` aplica f se houver valor (e embrulha o resultado); `chain(f)` é como map, mas f **já devolve** um Maybe, então não embrulhe de novo; `ou(padrao)` tira o valor da caixa ou dá o padrão.
+
+--- codigo
+function Maybe(valor) {
+  return {
+    map: function (f) {
+      // se vazio, continua vazio; senão, aplica f e embrulha
+    },
+    chain: function (f) {
+      // como map, mas f já devolve um Maybe
+    },
+    ou: function (padrao) {
+      return valor == null ? padrao : valor;
+    }
+  };
+}
+
+function cidadeDe(u) {
+  return Maybe(u).map(x => x.endereco).map(e => e.cidade).ou("desconhecida");
+}
+
+console.log(cidadeDe({ nome: "Ana", endereco: { cidade: "Itajaí" } }), cidadeDe({ nome: "Bia" }));
+
+--- solucao
+function Maybe(valor) {
+  const vazio = valor == null;
+  return {
+    map: f => (vazio ? Maybe(null) : Maybe(f(valor))),
+    chain: f => (vazio ? Maybe(null) : f(valor)),
+    ou: padrao => (vazio ? padrao : valor)
+  };
+}
+
+function cidadeDe(u) {
+  return Maybe(u).map(x => x.endereco).map(e => e.cidade).ou("desconhecida");
+}
+
+console.log(cidadeDe({ nome: "Ana", endereco: { cidade: "Itajaí" } }), cidadeDe({ nome: "Bia" }));
+
+--- testes
+Maybe(2).map(x => x + 1).ou(0) ==> 3
+Maybe(null).map(x => x + 1).ou(0) ==> 0
+cidadeDe({ nome: "Ana", endereco: { cidade: "Itajaí" } }) ==> "Itajaí"
+cidadeDe({ nome: "Bia" }) ==> "desconhecida"
+Maybe(5).chain(x => Maybe(x * 2)).ou(0) ==> 10
+Maybe(5).chain(x => Maybe(null)).ou("nada") ==> "nada"
+
+--- dicas
+Crie `const vazio = valor == null;` (o `==` pega null e undefined).
+
+`map`: se vazio, `return Maybe(null)`; senão `return Maybe(f(valor))`.
+
+`chain`: igual, mas devolva `f(valor)` direto — ele já é um Maybe.
+
+--- explicacao
+`map` faz do Maybe um **functor**; `chain` (bind, flatMap) faz dele uma **monad**: permite encadear operações que podem falhar sem aninhar `Maybe(Maybe(...))`. O resultado é tratamento de ausência sem nenhum `if (x != null)` espalhado — o "se houver valor" fica escrito **uma vez**, dentro da caixa.
+
+=== lab mon-promise
+tipo: prever
+tema: Funcional — Functors, Applicatives e Monads
+nivel: 3
+linguagem: js
+titulo: Promise: a monad do "valor que ainda vai chegar"
+
+--- enunciado
+`then` funciona como map **e** como flatMap: se a função devolve uma Promise, ela é achatada. E o que está em Promise só roda **depois** do código síncrono. Preveja a saída inteira.
+
+--- codigo
+console.log("1: início");
+
+Promise.resolve(2)
+  .then(x => x * 10)
+  .then(x => {
+    console.log("3: valor", x);
+    return Promise.resolve(x + 1);
+  })
+  .then(x => console.log("4: achatou", x));
+
+console.log("2: fim do código síncrono");
+
+--- opcoes
+- 1: início
+2: fim do código síncrono
+3: valor 20
+4: achatou 21
+- 1: início
+3: valor 20
+4: achatou 21
+2: fim do código síncrono
+- 1: início
+2: fim do código síncrono
+3: valor 20
+4: achatou [object Promise]
+- 1: início
+3: valor 2
+4: achatou 3
+2: fim do código síncrono
+
+--- experimentos
+- Acrescente `setTimeout(() => console.log("5: timeout"), 0);` logo depois do primeiro log. Onde ele aparece?
+- Troque `Promise.resolve(x + 1)` por só `x + 1`. Muda algo?
+
+--- explicacao
+As funções do `then` vão para a fila de **microtarefas** e só rodam quando a pilha síncrona esvazia — por isso o "2" vem antes do "3". E o `then` que devolve `Promise.resolve(21)` não produz uma Promise dentro de Promise: ela é **achatada** (é o bind da monad), e o próximo `then` recebe 21 direto. `async/await` é só uma sintaxe mais doce para esse encadeamento.
+
+# =====================================================================
+# Linguagens Multiparadigma
+# =====================================================================
+
+=== lab multi-tres-estilos
+tipo: explorar
+tema: Linguagens Multiparadigma
+nivel: 1
+linguagem: js
+titulo: Três paradigmas no mesmo arquivo
+
+--- enunciado
+JavaScript é **multiparadigma**: o mesmo problema — somar os pares — em estilo imperativo, funcional e orientado a objetos. Rode e confira que os três concordam.
+
+--- codigo
+const numeros = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+
+function somaParesImperativo(lista) {
+  let soma = 0;
+  for (let i = 0; i < lista.length; i++) {
+    if (lista[i] % 2 === 0) soma += lista[i];
+  }
+  return soma;
+}
+
+const somaParesFuncional = lista =>
+  lista.filter(n => n % 2 === 0).reduce((acc, n) => acc + n, 0);
+
+class SomadorDePares {
+  constructor(lista) { this.lista = lista; }
+  calcular() { return somaParesFuncional(this.lista); }
+}
+
+console.log("Imperativo:", somaParesImperativo(numeros));
+console.log("Funcional:", somaParesFuncional(numeros));
+console.log("OO:", new SomadorDePares(numeros).calcular());
+
+--- experimentos
+- Troque a lista e confira que os três continuam iguais.
+- A classe usa a função funcional por dentro. Isso é misturar paradigmas — em que situações isso ajuda?
+
+--- explicacao
+A imperativa expõe cada passo; a funcional encadeia transformações sem estado visível; a OO empacota dado e comportamento numa instância (e, por dentro, reusa a funcional). Linguagens multiparadigma deixam escolher o estilo mais claro **para cada parte** do problema.
+
+=== lab multi-python-estilos
+tipo: explorar
+tema: Linguagens Multiparadigma
+nivel: 1
+linguagem: python
+titulo: Python multiparadigma
+
+--- enunciado
+**Python de verdade**, rodando no navegador. O mesmo cálculo — soma dos quadrados dos pares — em quatro estilos. Rode (a primeira vez demora uns segundos para carregar o Python).
+
+--- codigo
+numeros = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+
+# imperativo
+soma = 0
+for n in numeros:
+    if n % 2 == 0:
+        soma += n * n
+print("imperativo:", soma)
+
+# funcional
+print("funcional:", sum(map(lambda n: n * n, filter(lambda n: n % 2 == 0, numeros))))
+
+# declarativo: compreensão, parente da notação de conjuntos
+print("compreensão:", sum(n * n for n in numeros if n % 2 == 0))
+
+# orientado a objetos
+class Somador:
+    def __init__(self, dados):
+        self.dados = dados
+
+    def soma_quadrados_pares(self):
+        return sum(n * n for n in self.dados if n % 2 == 0)
+
+print("OO:", Somador(numeros).soma_quadrados_pares())
+
+--- experimentos
+- Troque para a soma dos cubos dos ímpares nos quatro estilos.
+- Qual versão você acha mais legível? A compreensão lê quase como matemática: {n² | n ∈ números, n par}.
+
+--- explicacao
+Python mistura paradigmas o tempo todo: `for` e variáveis mutáveis (imperativo), `map`/`filter`/`lambda` (funcional), compreensões (declarativo) e classes (OO). O resultado é 4 + 16 + 36 + 64 + 100 = 220 nos quatro. A comunidade Python costuma preferir a compreensão: é declarativa e legível.
+
+=== lab multi-decorator
+tipo: prever
+tema: Linguagens Multiparadigma
+nivel: 2
+linguagem: python
+titulo: Decorador: função de ordem superior em Python
+
+--- enunciado
+Um **decorador** é uma função de ordem superior que recebe uma função e devolve outra "embrulhada". O `@registrar` em cima de `somar` equivale a `somar = registrar(somar)`. Preveja a saída.
+
+--- codigo
+def registrar(f):
+    def envolvida(*args):
+        print("chamando", f.__name__, args)
+        return f(*args)
+    return envolvida
+
+@registrar
+def somar(a, b):
+    return a + b
+
+print(somar(2, 3))
+
+--- opcoes
+- 5
+- chamando somar (2, 3)
+5
+- chamando envolvida (2, 3)
+5
+- 5
+chamando somar (2, 3)
+
+--- experimentos
+- Imprima `somar.__name__`. Por que aparece "envolvida"?
+- Crie um decorador `dobrar_resultado` e aplique dois decoradores empilhados.
+
+--- explicacao
+`@registrar` substitui `somar` pela função `envolvida`, que é uma **closure**: lembra do `f` original. Ao chamar `somar(2, 3)`, roda primeiro o print do decorador (com o nome da função **original**, guardado na closure) e depois a soma. Decoradores são OO + funcional juntos: é assim que frameworks Python adicionam log, cache e autenticação sem mexer nas funções.
+
+=== lab multi-carrinho-py
+tipo: desafio
+tema: Linguagens Multiparadigma
+nivel: 2
+linguagem: python
+titulo: Carrinho em Python: classe + compreensão
+
+--- enunciado
+Complete a classe `Carrinho`: `adicionar` guarda o item como tupla `(nome, preco, qtd)`; `total()` soma preço × quantidade **sem laço for explícito** (use `sum` com compreensão); `nomes()` devolve os nomes em ordem alfabética.
+
+--- codigo
+class Carrinho:
+    def __init__(self):
+        self.itens = []  # lista de (nome, preco, qtd)
+
+    def adicionar(self, nome, preco, qtd=1):
+        pass  # guarde o item
+
+    def total(self):
+        return 0
+
+    def nomes(self):
+        return []
+
+
+def exemplo():
+    c = Carrinho()
+    c.adicionar("caneta", 2.5, 4)
+    c.adicionar("caderno", 20)
+    return c
+
+print(exemplo().total(), exemplo().nomes())
+
+--- solucao
+class Carrinho:
+    def __init__(self):
+        self.itens = []
+
+    def adicionar(self, nome, preco, qtd=1):
+        self.itens.append((nome, preco, qtd))
+
+    def total(self):
+        return sum(preco * qtd for _, preco, qtd in self.itens)
+
+    def nomes(self):
+        return sorted(nome for nome, _, _ in self.itens)
+
+
+def exemplo():
+    c = Carrinho()
+    c.adicionar("caneta", 2.5, 4)
+    c.adicionar("caderno", 20)
+    return c
+
+print(exemplo().total(), exemplo().nomes())
+
+--- testes
+exemplo().total() ==> 30.0
+exemplo().nomes() ==> ["caderno", "caneta"]
+len(exemplo().itens) ==> 2
+Carrinho().total() ==> 0
+
+--- regras
+proibido: ^\s*for\b[^\n]*:\s*$ :: Sem laço for explícito — use sum() com uma compreensão (o for dentro da compreensão pode)
+
+--- dicas
+Em `adicionar`: `self.itens.append((nome, preco, qtd))`.
+
+A compreensão desempacota a tupla: `sum(preco * qtd for nome, preco, qtd in self.itens)`.
+
+`sorted(...)` recebe qualquer iterável e devolve uma lista ordenada.
+
+--- explicacao
+O **objeto** guarda o estado (a lista de itens) e os **métodos** respondem perguntas sobre ele de forma declarativa: `sum(... for ...)` diz o que somar, sem acumulador manual. Misturar OO para organizar e funcional/declarativo para calcular é o estilo idiomático do Python moderno.
+
+=== lab multi-gerador
+tipo: prever
+tema: Linguagens Multiparadigma
+nivel: 3
+linguagem: python
+titulo: Avaliação preguiçosa com geradores
+
+--- enunciado
+`naturais()` é um **gerador infinito** — mas o programa não trava. Preveja a saída inteira (quantas vezes "gerando" aparece?).
+
+--- codigo
+def naturais():
+    n = 1
+    while True:
+        print("gerando", n)
+        yield n
+        n += 1
+
+pares = (x for x in naturais() if x % 2 == 0)
+print(next(pares))
+
+--- opcoes
+- gerando 1
+gerando 2
+2
+- 2
+- gerando 1
+2
+- gerando 1
+gerando 2
+gerando 3
+2
+
+--- experimentos
+- Chame `next(pares)` mais uma vez. Quantos "gerando" novos aparecem?
+- Troque os parênteses da compreensão por colchetes `[...]`. **Cuidado**: o que vai acontecer com uma lista de um gerador infinito? (O laboratório corta depois de 10s.)
+
+--- explicacao
+O gerador é **preguiçoso** (*lazy*): só produz o próximo valor quando alguém pede. `next(pares)` pede um par; a compreensão pede ao gerador o 1 (ímpar, descarta) e o 2 (par, devolve) — e para. Avaliação preguiçosa é marca do funcional (Haskell é todo preguiçoso) e permite trabalhar com sequências infinitas.
+
+=== banco loja
+CREATE TABLE produtos (
+  id INTEGER PRIMARY KEY,
+  nome TEXT NOT NULL,
+  categoria TEXT,
+  preco REAL
+);
+INSERT INTO produtos VALUES
+  (1, 'Caderno', 'papelaria', 25.9),
+  (2, 'Mochila', 'acessorios', 129.9),
+  (3, 'Caneta', 'papelaria', 3.5),
+  (4, 'Fone', 'eletronicos', 89.0),
+  (5, 'Mouse', 'eletronicos', 49.9),
+  (6, 'Garrafa', 'acessorios', 39.0);

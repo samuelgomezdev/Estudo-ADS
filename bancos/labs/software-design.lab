@@ -1,0 +1,399 @@
+# Laboratório — Software Design
+# Confira tudo com #/m/software-design/lab/autoteste
+
+# =====================================================================
+# Arquitetura, SOA e serviços web
+# =====================================================================
+
+=== lab sd-camadas
+tipo: explorar
+tema: Arquitetura, SOA e serviços web
+nivel: 1
+linguagem: js
+titulo: Arquitetura em camadas
+
+--- enunciado
+Três camadas — **apresentação → negócio → dados** —, cada uma falando só com a vizinha de baixo. Rode e depois faça o experimento de trocar a camada de dados: a apresentação nem percebe.
+
+--- codigo
+// camada de DADOS: só sabe guardar e buscar
+const dadosEmMemoria = {
+  produtos: [{ id: 1, nome: "Caderno", preco: 25.9, estoque: 3 }],
+  buscar(id) { return this.produtos.find(p => p.id === id); },
+  salvar(p) { /* já está na lista */ }
+};
+
+// camada de NEGÓCIO: as regras, sem saber de tela nem de banco
+function criarNegocio(dados) {
+  return {
+    vender(id, qtd) {
+      const p = dados.buscar(id);
+      if (!p) return { ok: false, msg: "produto inexistente" };
+      if (qtd > p.estoque) return { ok: false, msg: "estoque insuficiente" };
+      p.estoque -= qtd;
+      dados.salvar(p);
+      return { ok: true, total: +(p.preco * qtd).toFixed(2) };
+    }
+  };
+}
+
+// camada de APRESENTAÇÃO: só formata para o usuário
+function tela(negocio, id, qtd) {
+  const r = negocio.vender(id, qtd);
+  console.log(r.ok ? "Venda feita! Total: R$ " + r.total : "Não deu: " + r.msg);
+}
+
+const negocio = criarNegocio(dadosEmMemoria);
+tela(negocio, 1, 2);
+tela(negocio, 1, 2);
+tela(negocio, 9, 1);
+
+--- experimentos
+- Crie `dadosComLog` com os mesmos métodos `buscar` e `salvar`, que também faz `console.log` a cada acesso, e passe para `criarNegocio`. Precisou mexer na tela?
+- "Pule" uma camada: faça a tela ler `dadosEmMemoria.produtos` direto. Que regra deixa de ser garantida?
+
+--- explicacao
+Cada camada tem **uma responsabilidade** e depende só da de baixo, por uma interface (`buscar`/`salvar`, `vender`). Trocar o banco é trocar a camada de dados sem tocar na apresentação — e a regra do estoque vive num lugar só. O preço, lembra a Primeira Lei da Arquitetura: tudo é trade-off — camadas demais deixam o sistema mais lento e burocrático para mudanças simples.
+
+=== lab sd-esb
+tipo: prever
+tema: Arquitetura, SOA e serviços web
+nivel: 1
+linguagem: js
+titulo: Ponto a ponto x barramento (ESB)
+
+--- enunciado
+Seis sistemas precisam conversar entre si. Ligando cada um diretamente a cada outro (em cada sentido), quantas integrações são necessárias? E com todos ligados a um **ESB**? Preveja.
+
+--- codigo
+const n = 6;
+const pontoAPonto = n * (n - 1);   // cada sistema com cada outro, nos dois sentidos
+const comEsb = n;                  // cada sistema só com o barramento
+console.log("ponto a ponto:", pontoAPonto, "| com ESB:", comEsb);
+
+--- opcoes
+- ponto a ponto: 30 | com ESB: 6
+- ponto a ponto: 15 | com ESB: 6
+- ponto a ponto: 36 | com ESB: 1
+- ponto a ponto: 30 | com ESB: 12
+
+--- explicacao
+Ponto a ponto, cada novo sistema multiplica as conexões: N × (N − 1) = **30** para 6 sistemas (e 90 para 10). Com o **ESB**, cada sistema fala só com o barramento — **6** conexões —, e é o ESB que roteia, transforma formatos, aplica segurança e monitora. É o coração da **SOA**. O custo: o barramento vira peça central (e ponto único de falha), e redesenhar legados para expor serviços é caro.
+
+=== lab sd-eventos
+tipo: desafio
+tema: Arquitetura, SOA e serviços web
+nivel: 2
+linguagem: js
+titulo: Um broker de eventos (publicar e assinar)
+
+--- enunciado
+Na arquitetura **orientada a eventos**, quem publica não conhece quem consome. Implemente `criarBroker()`, que devolve um objeto com `assinar(topico, funcao)` e `publicar(topico, dados)`: publicar chama **todas** as funções assinadas naquele tópico, na ordem em que assinaram, e devolve quantas foram chamadas.
+
+--- codigo
+function criarBroker() {
+  return {
+    assinar(topico, funcao) {},
+    publicar(topico, dados) { return 0; }
+  };
+}
+
+const broker = criarBroker();
+broker.assinar("pedido.criado", p => console.log("estoque: reservar", p.item));
+broker.assinar("pedido.criado", p => console.log("e-mail: confirmar pedido", p.id));
+broker.assinar("pedido.pago", p => console.log("nota fiscal do pedido", p.id));
+console.log("avisados:", broker.publicar("pedido.criado", { id: 7, item: "Caderno" }));
+
+--- solucao
+function criarBroker() {
+  const assinantes = {};
+  return {
+    assinar(topico, funcao) {
+      (assinantes[topico] = assinantes[topico] || []).push(funcao);
+    },
+    publicar(topico, dados) {
+      const lista = assinantes[topico] || [];
+      lista.forEach(f => f(dados));
+      return lista.length;
+    }
+  };
+}
+
+const broker = criarBroker();
+broker.assinar("pedido.criado", p => console.log("estoque: reservar", p.item));
+broker.assinar("pedido.criado", p => console.log("e-mail: confirmar pedido", p.id));
+broker.assinar("pedido.pago", p => console.log("nota fiscal do pedido", p.id));
+console.log("avisados:", broker.publicar("pedido.criado", { id: 7, item: "Caderno" }));
+
+--- testes
+(() => { const b = criarBroker(); const vistos = []; b.assinar("x", d => vistos.push("A" + d)); b.assinar("x", d => vistos.push("B" + d)); b.publicar("x", 1); return vistos; })() ==> ["A1", "B1"]
+(() => { const b = criarBroker(); b.assinar("x", () => {}); return b.publicar("x", 0); })() ==> 1
+criarBroker().publicar("ninguem-assinou", {}) ==> 0
+(() => { const b = criarBroker(); let n = 0; b.assinar("a", () => n++); b.publicar("b", 0); return n; })() ==> 0
+
+--- dicas
+Guarde um objeto `{ topico: [funções] }` dentro do `criarBroker` (uma closure).
+
+`publicar` pega a lista do tópico (ou `[]`) e chama cada função com os dados.
+
+--- explicacao
+O serviço de pedidos só publica "pedido.criado"; estoque e e-mail assinam por conta própria. Dá para acrescentar um terceiro consumidor (analytics, antifraude) **sem mexer** em quem publica — é o **desacoplamento extremo** da arquitetura orientada a eventos (Kafka, RabbitMQ). O preço: fica mais difícil rastrear "quem reagiu a quê", e com brokers assíncronos a consistência passa a ser **eventual**. É também o padrão de projeto **Observer**.
+
+=== lab sd-verbos-http
+tipo: parsons
+tema: Arquitetura, SOA e serviços web
+nivel: 2
+linguagem: java
+titulo: Monte um servlet REST
+
+--- enunciado
+Monte um `HttpServlet` de produtos que trata **leitura** e **criação**, respondendo com os códigos HTTP certos. Uma armadilha usa o método errado para criar.
+
+--- linhas
+@WebServlet("/produtos")
+public class ProdutoServlet extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        resp.setContentType("application/json");
+        resp.getWriter().write(repositorio.listarEmJson());
+    }
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        repositorio.salvar(req.getParameter("nome"));
+        resp.setStatus(HttpServletResponse.SC_CREATED);
+    }
+}
+
+--- distratores
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) { repositorio.salvar(req.getParameter("nome")); }
+
+--- explicacao
+Cada verbo HTTP cai num método do servlet: **GET → doGet()** (leitura), **POST → doPost()** (criação), PUT → doPut() (atualização), DELETE → doDelete() (remoção). Criar algo num GET quebra a semântica do HTTP: GET deve ser **seguro** (sem efeito colateral) — navegadores e buscadores o repetem à vontade. O `201 Created` (SC_CREATED) diz ao cliente que o recurso foi criado.
+
+# =====================================================================
+# Processo de projeto, requisitos e protótipos
+# =====================================================================
+
+=== lab sd-plano-projeto
+tipo: parsons
+tema: Processo de projeto, requisitos e protótipos
+nivel: 1
+linguagem: texto
+titulo: As 7 seções do Plano de Projeto
+
+--- enunciado
+Ordene as seções do Plano de Projeto de software. Um bloco não pertence a ele.
+
+--- linhas
+1) Introdução
+2) Organização do projeto
+3) Análise de riscos
+4) Requisitos de hardware e software
+5) WBS — divisão do trabalho
+6) Cronograma
+7) Monitoração e relatórios
+
+--- distratores
+Código-fonte do sistema
+
+--- explicacao
+O plano de projeto organiza o **trabalho** de construir o software — quem, quando, com o quê e com quais riscos —, não o software em si. A WBS (EAP) vem antes do cronograma porque é dela que saem as atividades a sequenciar e estimar. A saída da fase de projeto/modelagem, por sua vez, são os diagramas UML, a arquitetura e o DER — não código.
+
+=== lab sd-prototipo
+tipo: explorar
+tema: Processo de projeto, requisitos e protótipos
+nivel: 1
+linguagem: web
+titulo: Protótipo horizontal x vertical
+
+--- enunciado
+Dois protótipos do mesmo app de biblioteca. O **horizontal** mostra todas as telas, rasas; o **vertical** aprofunda uma só (o empréstimo), funcionando de verdade. Clique nos dois e compare o que cada um permite validar.
+
+--- codigo
+<style>
+  body { font-family: sans-serif; margin: 10px; display: grid; gap: 12px; }
+  section { border: 1px solid #cbd5e1; border-radius: 8px; padding: 10px; }
+  h3 { margin: 0 0 6px; font-size: 15px; }
+  button { margin: 2px; }
+  .aviso { color: #64748b; font-style: italic; }
+</style>
+
+<section>
+  <h3>Horizontal — muitas funções, pouca profundidade</h3>
+  <button onclick="h('Busca de livros')">Buscar</button>
+  <button onclick="h('Empréstimo')">Emprestar</button>
+  <button onclick="h('Devolução')">Devolver</button>
+  <button onclick="h('Multas')">Multas</button>
+  <p id="hsaida" class="aviso">clique numa função</p>
+</section>
+
+<section>
+  <h3>Vertical — uma função, até o fim</h3>
+  <input id="livro" placeholder="Código do livro (ex.: 42)">
+  <button onclick="emprestar()">Emprestar</button>
+  <p id="vsaida"></p>
+</section>
+
+<script>
+  function h(tela) {
+    document.getElementById("hsaida").textContent = "Tela \"" + tela + "\" (ainda não implementada)";
+  }
+  const disponiveis = { 42: "Dom Casmurro", 7: "Clean Code" };
+  function emprestar() {
+    const cod = document.getElementById("livro").value.trim();
+    const saida = document.getElementById("vsaida");
+    if (!disponiveis[cod]) { saida.textContent = "Livro indisponível ou inexistente."; return; }
+    const devolucao = new Date(Date.now() + 14 * 864e5).toLocaleDateString("pt-BR");
+    saida.textContent = "Emprestado: " + disponiveis[cod] + " — devolver até " + devolucao;
+    delete disponiveis[cod];
+  }
+</script>
+
+--- experimentos
+- Tente emprestar o livro 42 duas vezes. Que regra de negócio o protótipo vertical já valida?
+- Qual dos dois você mostraria ao cliente para discutir a **navegação** do app? E para testar se o **empréstimo** está certo?
+
+--- explicacao
+O **horizontal** cobre a amplitude: ótimo para validar o mapa de funções e a navegação logo cedo. O **vertical** aprofunda um módulo crítico até funcionar de verdade: valida regra de negócio, desempenho e a viabilidade técnica daquele pedaço. Os dois podem ser **descartáveis** (jogados fora depois do aprendizado) ou **evolutivos** (refinados até virar o produto).
+
+# =====================================================================
+# Modelagem: análise estruturada e UML
+# =====================================================================
+
+=== lab sd-sequencia
+tipo: prever
+tema: Modelagem: análise estruturada e UML
+nivel: 2
+linguagem: js
+titulo: Mensagem síncrona x assíncrona
+
+--- enunciado
+No diagrama de sequência, a mensagem **síncrona** (seta cheia) espera a resposta; a **assíncrona** (seta aberta) segue sem esperar. O código imita as duas. Preveja a ordem do log.
+
+--- codigo
+function calcularFrete() {                  // síncrona: quem chama espera
+  console.log("2. frete calculado");
+  return 15;
+}
+function enviarEmail() {                    // assíncrona: dispara e segue
+  setTimeout(() => console.log("5. e-mail enviado"), 0);
+}
+
+console.log("1. pedido recebido");
+const frete = calcularFrete();
+console.log("3. total com frete", 100 + frete);
+enviarEmail();
+console.log("4. resposta ao cliente");
+
+--- opcoes
+- 1. pedido recebido
+2. frete calculado
+3. total com frete 115
+4. resposta ao cliente
+5. e-mail enviado
+- 1. pedido recebido
+2. frete calculado
+3. total com frete 115
+5. e-mail enviado
+4. resposta ao cliente
+- 1. pedido recebido
+3. total com frete 115
+2. frete calculado
+4. resposta ao cliente
+5. e-mail enviado
+- 1. pedido recebido
+4. resposta ao cliente
+2. frete calculado
+3. total com frete 115
+5. e-mail enviado
+
+--- explicacao
+O pedido **precisa** do frete para continuar, então a chamada é síncrona: o "3" só acontece depois do retorno (seta tracejada de retorno no diagrama). O e-mail não precisa ser esperado: a mensagem assíncrona é disparada e o fluxo segue — a resposta ao cliente (4) sai antes do e-mail (5). Escolher entre as duas é decisão de projeto: assíncrono deixa o sistema mais responsivo, mas o chamador não sabe na hora se deu certo.
+
+=== lab sd-dicionario
+tipo: desafio
+tema: Modelagem: análise estruturada e UML
+nivel: 2
+linguagem: js
+titulo: Do dicionário de dados para a validação
+
+--- enunciado
+No dicionário de dados: `cliente = @id + nome + (email) + tipo` e `tipo = [ fisico | juridico ]`. Ou seja: `id` é chave, `nome` obrigatório, `email` opcional e `tipo` deve ser uma das alternativas. Implemente `erros(cliente)`, que devolve a lista de campos com problema, nesta ordem de verificação: `"id"`, `"nome"`, `"tipo"`, e também qualquer campo que **não esteja** no dicionário (na ordem em que aparece no objeto).
+
+--- codigo
+function erros(cliente) {
+  return [];
+}
+
+console.log(erros({ id: 1, nome: "Ana", tipo: "fisico" }));
+console.log(erros({ nome: "", tipo: "ong", telefone: "999" }));
+
+--- solucao
+const CAMPOS = ["id", "nome", "email", "tipo"];
+
+function erros(cliente) {
+  const lista = [];
+  if (cliente.id == null) lista.push("id");
+  if (!cliente.nome) lista.push("nome");
+  if (!["fisico", "juridico"].includes(cliente.tipo)) lista.push("tipo");
+  for (const campo of Object.keys(cliente)) if (!CAMPOS.includes(campo)) lista.push(campo);
+  return lista;
+}
+
+console.log(erros({ id: 1, nome: "Ana", tipo: "fisico" }));
+console.log(erros({ nome: "", tipo: "ong", telefone: "999" }));
+
+--- testes
+erros({ id: 1, nome: "Ana", tipo: "fisico" }) ==> []
+erros({ id: 2, nome: "Loja X", email: "x@x.com", tipo: "juridico" }) ==> []
+erros({ nome: "", tipo: "ong", telefone: "999" }) ==> ["id", "nome", "tipo", "telefone"]
+erros({ id: 3, nome: "Bia" }) ==> ["tipo"]
+
+--- dicas
+`@` = chave: obrigatória. `+` = composto por: obrigatório. `( )` = opcional. `[ a | b ]` = uma das alternativas.
+
+Para achar campos a mais: `Object.keys(cliente)` e confira cada um contra a lista de campos conhecidos.
+
+--- explicacao
+O dicionário de dados é uma **especificação precisa**: cada símbolo vira uma regra verificável — `@` é chave e obrigatório, `+` concatena campos obrigatórios, `( )` marca o opcional, `[ | ]` lista alternativas, `{ }` indicaria repetição. Na análise estruturada ele documenta os dados que fluem pelo DFD; no código vira validação — e campo fora do dicionário é sinal de que o modelo e a implementação divergiram.
+
+# =====================================================================
+# Banco de dados relacional
+# =====================================================================
+
+=== lab sd-ddl-produto
+tipo: desafio
+tema: Banco de dados relacional
+nivel: 2
+linguagem: sql
+titulo: Constraints que protegem os dados
+verificar: INSERT OR IGNORE INTO produto (id, nome, sku, preco) VALUES (100, 'Teste', 'X-1', 10); INSERT OR IGNORE INTO produto (id, nome, sku, preco) VALUES (101, 'Duplicado', 'X-1', 5); INSERT OR IGNORE INTO produto (id, nome, sku, preco) VALUES (102, 'Grátis', 'X-2', 0); INSERT OR IGNORE INTO produto (id, nome, sku, preco) VALUES (103, NULL, 'X-3', 5); SELECT id, ativo FROM produto WHERE id >= 100 ORDER BY id;
+
+--- enunciado
+Crie a tabela `produto` com: `id` inteiro **chave primária**; `nome` texto **obrigatório**; `sku` texto **único**; `preco` decimal **obrigatório e maior que zero** (CHECK); `ativo` booleano com **padrão verdadeiro**. A conferência tenta inserir um produto válido, um SKU repetido, um preço zero e um sem nome — só o primeiro pode entrar, com `ativo` preenchido sozinho.
+
+--- codigo
+CREATE TABLE produto (
+  id INTEGER,
+  nome TEXT,
+  sku TEXT,
+  preco DECIMAL(10, 2),
+  ativo BOOLEAN
+);
+
+--- solucao
+CREATE TABLE produto (
+  id INTEGER PRIMARY KEY,
+  nome TEXT NOT NULL,
+  sku TEXT UNIQUE,
+  preco DECIMAL(10, 2) NOT NULL CHECK (preco > 0),
+  ativo BOOLEAN DEFAULT TRUE
+);
+
+--- dicas
+As constraints vão na frente de cada coluna: `PRIMARY KEY`, `NOT NULL`, `UNIQUE`, `CHECK (preco > 0)`, `DEFAULT TRUE`.
+
+Uma coluna pode ter várias: `preco DECIMAL(10, 2) NOT NULL CHECK (preco > 0)`.
+
+--- explicacao
+Cada constraint é uma regra de negócio que o banco passa a garantir **para qualquer sistema** que grave nele: `UNIQUE` impede dois produtos com o mesmo SKU, `CHECK` impede preço zero, `NOT NULL` impede produto sem nome, `DEFAULT` preenche o que ninguém informou. E para dinheiro use `DECIMAL(p, s)`: `FLOAT` usa ponto flutuante binário e produz erros de arredondamento (0,1 + 0,2 ≠ 0,3).

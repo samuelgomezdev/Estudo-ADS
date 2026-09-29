@@ -1,0 +1,342 @@
+# Laboratório — Inovação Disruptiva
+# Confira tudo com #/m/inovacao-disruptiva/lab/autoteste
+
+# =====================================================================
+# Invenção, Inovação e Tipos
+# =====================================================================
+
+=== lab ino-classificar
+tipo: desafio
+tema: Invenção, Inovação e Tipos
+nivel: 1
+linguagem: js
+titulo: Invenção ou inovação? Incremental, radical ou disruptiva?
+
+--- enunciado
+Implemente `ehInovacao(caso)` pela fórmula de Barbieri: só é inovação se tiver **invenção + implementação + valor** (os três campos verdadeiros). E `grau(caso)`: `"disruptiva"` se `mudaMercado` (derruba os incumbentes); senão `"radical"` se `rupturaTecnologica`; senão `"incremental"`.
+
+--- codigo
+function ehInovacao(caso) {
+  return caso.invencao;
+}
+
+function grau(caso) {
+  return "incremental";
+}
+
+const casos = [
+  { nome: "Google Glass", invencao: true, implementacao: true, valor: false },
+  { nome: "Netflix", invencao: true, implementacao: true, valor: true, rupturaTecnologica: false, mudaMercado: true },
+  { nome: "CD no lugar do vinil", invencao: true, implementacao: true, valor: true, rupturaTecnologica: true, mudaMercado: false },
+  { nome: "Celular com câmera melhor", invencao: true, implementacao: true, valor: true, rupturaTecnologica: false, mudaMercado: false }
+];
+for (const c of casos) console.log(c.nome, "→", ehInovacao(c) ? grau(c) : "não é inovação");
+
+--- solucao
+function ehInovacao(caso) {
+  return !!(caso.invencao && caso.implementacao && caso.valor);
+}
+
+function grau(caso) {
+  if (caso.mudaMercado) return "disruptiva";
+  if (caso.rupturaTecnologica) return "radical";
+  return "incremental";
+}
+
+const casos = [
+  { nome: "Google Glass", invencao: true, implementacao: true, valor: false },
+  { nome: "Netflix", invencao: true, implementacao: true, valor: true, rupturaTecnologica: false, mudaMercado: true },
+  { nome: "CD no lugar do vinil", invencao: true, implementacao: true, valor: true, rupturaTecnologica: true, mudaMercado: false },
+  { nome: "Celular com câmera melhor", invencao: true, implementacao: true, valor: true, rupturaTecnologica: false, mudaMercado: false }
+];
+for (const c of casos) console.log(c.nome, "→", ehInovacao(c) ? grau(c) : "não é inovação");
+
+--- testes
+ehInovacao({ invencao: true, implementacao: true, valor: false }) ==> false
+ehInovacao({ invencao: true, implementacao: true, valor: true }) ==> true
+grau({ rupturaTecnologica: false, mudaMercado: true }) ==> "disruptiva"
+grau({ rupturaTecnologica: true, mudaMercado: false }) ==> "radical"
+grau({ rupturaTecnologica: false, mudaMercado: false }) ==> "incremental"
+
+--- dicas
+Os três precisam ser verdadeiros: `&&`. O `!!` garante que o resultado é true/false.
+
+Teste o caso mais forte primeiro: mudou o mercado → disruptiva.
+
+--- explicacao
+O Google Glass foi inventado e lançado, mas sem valor percebido pelo mercado: **invenção não é inovação**. O CD foi uma ruptura **tecnológica** dentro do mesmo mercado de música (radical); a Netflix mudou o **mercado**, derrubando as locadoras (disruptiva) — e começou tecnologicamente "pior" (DVD pelo correio). A pegadinha de prova: nem toda radical é disruptiva, e nem toda disruptiva é tecnologicamente radical.
+
+=== lab ino-christensen
+tipo: explorar
+tema: Invenção, Inovação e Tipos
+nivel: 2
+linguagem: js
+titulo: O modelo de Christensen, em números
+
+--- enunciado
+A empresa líder melhora seu produto 15% ao ano — mais rápido do que a **necessidade do cliente comum** cresce (5% ao ano). A entrante começa **pior**, num nicho barato, mas melhora 40% ao ano. O código mostra ano a ano quando a entrante passa a atender o cliente comum. Rode e mexa nas taxas.
+
+--- codigo
+let lider = 100, entrante = 30, necessidade = 70;
+const TAXA_LIDER = 0.15, TAXA_ENTRANTE = 0.40, TAXA_NECESSIDADE = 0.05;
+
+console.log("ano | líder | necessidade do cliente | entrante");
+for (let ano = 0; ano <= 8; ano++) {
+  const nota = entrante >= necessidade ? "  ← a entrante já basta para o cliente comum" : "";
+  console.log(String(ano).padStart(3), "|", String(Math.round(lider)).padStart(5), "|",
+              String(Math.round(necessidade)).padStart(22), "|", String(Math.round(entrante)).padStart(8), nota);
+  lider *= 1 + TAXA_LIDER;
+  entrante *= 1 + TAXA_ENTRANTE;
+  necessidade *= 1 + TAXA_NECESSIDADE;
+}
+
+--- experimentos
+- Deixe a entrante melhorar só 10% ao ano. A disrupção acontece?
+- A líder poderia reagir? Por que ela costuma **ignorar** o nicho barato no começo (pense em margem de lucro)?
+
+--- explicacao
+A líder faz tudo "certo" — melhora para os clientes mais exigentes — e acaba entregando **mais do que o cliente comum precisa** (e cobra por isso). A entrante começa num nicho desatendido ou de baixa margem, que a líder ignora racionalmente, e melhora até ficar **boa o bastante** para o mercado principal: é aí que a disrupção acontece. É a "destruição criativa" de Schumpeter vista em câmera lenta.
+
+=== lab ino-difusao
+tipo: prever
+tema: Invenção, Inovação e Tipos
+nivel: 2
+linguagem: js
+titulo: A curva de adoção (Rogers)
+
+--- enunciado
+Na difusão de inovações de Rogers, a população se divide em inovadores (2,5%), primeiros adotantes (13,5%), maioria inicial (34%), maioria tardia (34%) e retardatários (16%). O código acumula os percentuais. Preveja.
+
+--- codigo
+const grupos = [2.5, 13.5, 34, 34, 16];
+const acumulado = [];
+grupos.reduce((soma, g) => { acumulado.push(soma + g); return soma + g; }, 0);
+console.log(acumulado);
+
+--- opcoes
+- [2.5, 16, 50, 84, 100]
+- [2.5, 13.5, 34, 34, 16]
+- [2.5, 16, 34, 68, 100]
+- [16, 50, 84, 100, 116]
+
+--- explicacao
+Inovadores e primeiros adotantes somam só **16%** — o "abismo" (*chasm*, de Moore) fica justamente aí: o produto que encanta os entusiastas precisa convencer a **maioria inicial**, que é pragmática, para chegar a 50%. A curva acumulada tem forma de **S**: começa lenta, acelera no meio e satura no fim.
+
+# =====================================================================
+# Ecossistemas de Inovação
+# =====================================================================
+
+=== lab ino-ecossistema
+tipo: explorar
+tema: Ecossistemas de Inovação
+nivel: 1
+linguagem: js
+titulo: Tríplice hélice: nenhum ator inova sozinho
+
+--- enunciado
+Cada ator do ecossistema tem recursos que os outros não têm. O código testa quais projetos de inovação se tornam viáveis conforme os atores se **conectam**. Rode e depois tire um ator.
+
+--- codigo
+const atores = {
+  universidade: ["pesquisa", "talento"],
+  empresa: ["mercado", "escala"],
+  governo: ["financiamento", "marco legal"],
+  investidor: ["capital de risco"]
+};
+
+const projetos = [
+  { nome: "startup de biotecnologia", precisa: ["pesquisa", "capital de risco", "marco legal"] },
+  { nome: "nova linha de produto", precisa: ["mercado", "escala", "talento"] },
+  { nome: "parque tecnológico", precisa: ["financiamento", "pesquisa", "mercado"] }
+];
+
+function viaveis(conectados) {
+  const recursos = conectados.flatMap(a => atores[a]);
+  return projetos.filter(p => p.precisa.every(r => recursos.includes(r))).map(p => p.nome);
+}
+
+console.log("só a empresa:", viaveis(["empresa"]));
+console.log("tríplice hélice:", viaveis(["universidade", "empresa", "governo"]));
+console.log("ecossistema completo:", viaveis(["universidade", "empresa", "governo", "investidor"]));
+
+--- experimentos
+- Tire a universidade do ecossistema completo. O que deixa de ser possível?
+- Acrescente a **quarta hélice**, a sociedade, com o recurso "demanda real", e um projeto que precise dele.
+
+--- explicacao
+Sozinha, a empresa não viabiliza nenhum dos projetos. A **tríplice hélice** (universidade + empresa + governo) viabiliza dois; com o capital de risco, os três. A característica essencial de um ecossistema de inovação é a **conexão** entre os atores — é o que o Vale do Silício tem de mais difícil de copiar, junto com a cultura que tolera o fracasso. **Inovação aberta** (Chesbrough) é a empresa buscar fora o que não tem dentro.
+
+# =====================================================================
+# Design Thinking
+# =====================================================================
+
+=== lab ino-duplo-diamante
+tipo: parsons
+tema: Design Thinking
+nivel: 1
+linguagem: texto
+titulo: O duplo diamante
+
+--- enunciado
+Ordene os movimentos do **duplo diamante**. Uma afirmação é uma das pegadinhas mais comuns sobre Design Thinking.
+
+--- linhas
+Divergir no problema — pesquisar, observar, questionar até o próprio enunciado
+Convergir no problema — sintetizar num desafio claro e bem definido
+Divergir na solução — gerar muitas ideias, sem julgar
+Convergir na solução — prototipar, testar com usuários e escolher
+
+--- distratores
+Convergir direto na solução — Design Thinking é um processo linear que dispensa testes
+
+--- explicacao
+São dois diamantes: um sobre **o problema** e outro sobre **a solução**, cada um abrindo (divergir) e depois afunilando (convergir). O Design Thinking é **iterativo** (dá para voltar), centrado no ser humano, usa pesquisa qualitativa e **não dispensa testes** — é por isso que a última convergência passa pelo protótipo.
+
+=== lab ino-brainwriting
+tipo: explorar
+tema: Design Thinking
+nivel: 2
+linguagem: js
+titulo: Brainstorming x brainwriting
+
+--- enunciado
+Uma simulação simples: cada pessoa tem ideias próprias, mas no **brainstorming** falado as mais tímidas se calam depois que alguém influente fala, e parte do grupo "ancora" na primeira ideia. No **brainwriting**, todos escrevem antes de compartilhar. Rode e compare as ideias **distintas** geradas.
+
+--- codigo
+const grupo = [
+  { nome: "Ana", timida: false, ideias: ["app", "cupom", "parceria"] },
+  { nome: "Bruno", timida: true, ideias: ["totem", "assinatura"] },
+  { nome: "Carla", timida: true, ideias: ["fidelidade", "app", "evento"] },
+  { nome: "Davi", timida: false, ideias: ["cupom", "influenciador"] },
+  { nome: "Elisa", timida: true, ideias: ["delivery noturno", "kit"] }
+];
+
+// brainstorming: quem é tímido só repete o que já foi dito
+const falado = new Set();
+for (const p of grupo) {
+  if (p.timida) { if (falado.size) falado.add([...falado][0]); }
+  else p.ideias.forEach(i => falado.add(i));
+}
+
+// brainwriting: cada um escreve as suas antes
+const escrito = new Set(grupo.flatMap(p => p.ideias));
+
+console.log("brainstorming:", falado.size, "ideias →", [...falado].join(", "));
+console.log("brainwriting:", escrito.size, "ideias →", [...escrito].join(", "));
+
+--- experimentos
+- Deixe todo mundo não tímido. A diferença some?
+- O que se perde no brainwriting em relação ao brainstorming? (Pense em uma ideia que puxa a outra.)
+
+--- explicacao
+No brainstorming falado, a influência dos mais falantes e a inibição dos mais tímidos reduzem as ideias **independentes**. O brainwriting, escrevendo antes de compartilhar, protege a divergência. Os dois compartilham a regra de ouro da ideação: **quantidade sem julgamento** — a avaliação vem na fase de convergir.
+
+# =====================================================================
+# Tecnologias Emergentes
+# =====================================================================
+
+=== lab ino-iot
+tipo: explorar
+tema: Tecnologias Emergentes
+nivel: 2
+linguagem: web
+titulo: As camadas de um sistema de IoT
+
+--- enunciado
+Um sensor de temperatura de uma estufa, atravessando as camadas da **IoT**: **percepção** (sensor) → **rede** → **processamento** (regra) → **aplicação** (painel e atuador). Mexa no controle deslizante — ele é o "sensor" — e veja cada camada reagir.
+
+--- codigo
+<style>
+  body { font-family: sans-serif; margin: 10px; }
+  .camada { border-left: 4px solid #6366f1; padding: 6px 10px; margin: 8px 0; background: #f1f5f9; border-radius: 4px; }
+  .alerta { border-left-color: #ef4444; background: #fee2e2; }
+</style>
+
+<div class="camada"><b>1. Percepção</b> — temperatura: <input id="sensor" type="range" min="10" max="45" value="24"> <span id="t">24</span> °C</div>
+<div class="camada" id="rede"><b>2. Rede</b> — </div>
+<div class="camada" id="proc"><b>3. Processamento</b> — </div>
+<div class="camada" id="app"><b>4. Aplicação</b> — </div>
+
+<script>
+  const LIMITE = 35;
+  let pacotes = 0;
+  function ciclo() {
+    const temp = Number(document.getElementById("sensor").value);
+    document.getElementById("t").textContent = temp;
+    pacotes++;
+    const mensagem = JSON.stringify({ sensor: "estufa-01", temp });
+    document.getElementById("rede").innerHTML = "<b>2. Rede</b> — pacote #" + pacotes + ": <code>" + mensagem + "</code>";
+    const quente = temp > LIMITE;
+    document.getElementById("proc").innerHTML = "<b>3. Processamento</b> — regra: temp > " + LIMITE + "? <b>" + (quente ? "SIM" : "não") + "</b>";
+    const app = document.getElementById("app");
+    app.className = "camada" + (quente ? " alerta" : "");
+    app.innerHTML = "<b>4. Aplicação</b> — " + (quente ? "🔥 ALERTA: ventilação LIGADA e aviso enviado ao celular" : "tudo normal, ventilação desligada");
+    if (quente && pacotes % 5 === 0) console.log("alerta enviado — temp", temp);
+  }
+  document.getElementById("sensor").addEventListener("input", ciclo);
+  ciclo();
+</script>
+
+--- experimentos
+- Mude o limite para 30. Em que camada fica essa decisão?
+- **Segurança**: a mensagem vai em texto puro pela rede. O que um invasor poderia fazer ao interceptá-la (ou forjá-la)?
+- Um microcontrolador (Arduino) faria qual dessas camadas?
+
+--- explicacao
+O sensor só mede (**percepção**); a **rede** leva os dados; o **processamento** (na nuvem ou na borda) aplica regras; a **aplicação** mostra ao usuário e aciona atuadores — a ventilação é o sistema agindo no mundo físico. Os desafios da IoT aparecem em cada camada: segurança e privacidade dos dados em trânsito, padronização entre fabricantes e consumo de energia do dispositivo.
+
+=== lab ino-gamificacao
+tipo: explorar
+tema: Tecnologias Emergentes
+nivel: 1
+linguagem: web
+titulo: Gamificação: pontos, medalhas e ranking
+
+--- enunciado
+Uma lista de hábitos de estudo **gamificada** com a tríade **PBL** — pontos, medalhas (*badges*) e ranking (*leaderboard*) — e feedback imediato. Marque as tarefas e veja os elementos de jogo reagindo.
+
+--- codigo
+<style>
+  body { font-family: sans-serif; margin: 10px; }
+  label { display: block; margin: 4px 0; }
+  .badge { display: inline-block; background: #fde68a; border-radius: 12px; padding: 2px 10px; margin: 2px; }
+  #feedback { color: #15803d; min-height: 1.2em; }
+</style>
+
+<h3 style="margin:0">Hábitos da semana</h3>
+<label><input type="checkbox" data-pts="10"> Revisar flashcards</label>
+<label><input type="checkbox" data-pts="20"> Fazer um simulado</label>
+<label><input type="checkbox" data-pts="15"> Um exercício do laboratório</label>
+<label><input type="checkbox" data-pts="5"> Organizar o material</label>
+<p><b>Pontos:</b> <span id="pts">0</span></p>
+<p id="feedback"></p>
+<div id="badges"></div>
+<ol id="ranking"></ol>
+
+<script>
+  const colegas = [["Ana", 35], ["Bruno", 20], ["Carla", 45]];
+  function atualizar() {
+    const marcados = [...document.querySelectorAll("input:checked")];
+    const pts = marcados.reduce((s, c) => s + Number(c.dataset.pts), 0);
+    document.getElementById("pts").textContent = pts;
+    const b = [];
+    if (marcados.length >= 1) b.push("🌱 Primeiro passo");
+    if (pts >= 30) b.push("⭐ Dedicado");
+    if (marcados.length === 4) b.push("🏆 Semana completa");
+    document.getElementById("badges").innerHTML = b.map(x => '<span class="badge">' + x + "</span>").join("");
+    const lista = colegas.concat([["Você", pts]]).sort((x, y) => y[1] - x[1]);
+    document.getElementById("ranking").innerHTML = lista.map(([n, p]) => "<li>" + (n === "Você" ? "<b>Você</b>" : n) + " — " + p + " pts</li>").join("");
+  }
+  document.querySelectorAll("input").forEach(c => c.addEventListener("change", e => {
+    document.getElementById("feedback").textContent = e.target.checked ? "+" + e.target.dataset.pts + " pontos!" : "";
+    atualizar();
+  }));
+  atualizar();
+</script>
+
+--- experimentos
+- Tire o ranking. A motivação muda? Para quem (quem está no topo ou quem está no fim)?
+- Crie uma medalha por **sequência de dias**. Por que isso mexe mais com o hábito do que pontos soltos?
+
+--- explicacao
+Gamificação é usar **elementos de jogo fora de jogos** para engajar: pontos (progresso), medalhas (conquistas), ranking (comparação social) e feedback imediato. O risco é a gamificação **superficial** — pontos que não tocam a motivação intrínseca — e o ranking que desmotiva quem está no fim. (Este próprio site usa XP, níveis e sequência de dias no Laboratório pelo mesmo motivo.)

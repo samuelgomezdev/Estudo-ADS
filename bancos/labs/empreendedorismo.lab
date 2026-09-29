@@ -1,0 +1,451 @@
+# Laboratório — Empreendedorismo (as contas do negócio, rodando)
+# Confira tudo com #/m/empreendedorismo/lab/autoteste
+
+# =====================================================================
+# Perfil, Comportamento e Mindset Empreendedor
+# =====================================================================
+
+=== lab emp-criativo
+tipo: parsons
+tema: Perfil, Comportamento e Mindset Empreendedor
+nivel: 1
+linguagem: texto
+titulo: As etapas do processo criativo
+
+--- enunciado
+Ordene as etapas do processo criativo. Uma afirmação é um mito sobre criatividade.
+
+--- linhas
+Preparação — imersão no problema: pesquisar, observar, reunir informação
+Incubação — o problema "descansa" enquanto a mente trabalha em segundo plano
+Iluminação — o insight, a ideia que parece surgir de repente
+Verificação — testar, refinar e ver se a ideia se sustenta
+
+--- distratores
+Iluminação — só acontece com quem nasceu com o dom da criatividade
+
+--- explicacao
+O insight "de repente" só vem depois da **preparação** e da **incubação** — e ainda precisa passar pela **verificação**. Criatividade não é dom de poucos: pode ser estimulada (e, em parte, medida por fluência, flexibilidade, originalidade e elaboração). É o mesmo recado do **mindset de crescimento**: habilidades se desenvolvem com esforço e prática.
+
+=== lab emp-risco-calculado
+tipo: explorar
+tema: Perfil, Comportamento e Mindset Empreendedor
+nivel: 2
+linguagem: js
+titulo: Risco calculado: testar pequeno antes de apostar alto
+
+--- enunciado
+Duas estratégias para lançar um produto que tem 30% de chance de dar certo. O **aventureiro** aposta tudo de uma vez; o **empreendedor** faz testes baratos (MVP) e só investe pesado se o teste der bom sinal. O código simula 10 mil empreendedores de cada tipo. Rode e compare.
+
+--- codigo
+let semente = 42;
+const aleatorio = () => (semente = (semente * 16807) % 2147483647) / 2147483647;   // reprodutível
+
+const CHANCE = 0.3, RETORNO = 300000, INVESTIMENTO = 100000, CUSTO_TESTE = 5000, ACERTO_DO_TESTE = 0.85;
+
+function aventureiro() {
+  return aleatorio() < CHANCE ? RETORNO - INVESTIMENTO : -INVESTIMENTO;
+}
+
+function empreendedor() {
+  const daCerto = aleatorio() < CHANCE;
+  const testeAcerta = aleatorio() < ACERTO_DO_TESTE;
+  const sinalBom = testeAcerta ? daCerto : !daCerto;
+  if (!sinalBom) return -CUSTO_TESTE;                       // desiste barato (ou pivota)
+  return (daCerto ? RETORNO - INVESTIMENTO : -INVESTIMENTO) - CUSTO_TESTE;
+}
+
+const N = 10000;
+let a = 0, e = 0, quebrouA = 0, quebrouE = 0;
+for (let i = 0; i < N; i++) {
+  const ra = aventureiro(), re = empreendedor();
+  a += ra; e += re;
+  if (ra <= -INVESTIMENTO) quebrouA++;
+  if (re <= -INVESTIMENTO) quebrouE++;
+}
+console.log("aventureiro: resultado médio R$", Math.round(a / N), "| perdeu o investimento todo:", Math.round(quebrouA / N * 100) + "%");
+console.log("empreendedor: resultado médio R$", Math.round(e / N), "| perdeu o investimento todo:", Math.round(quebrouE / N * 100) + "%");
+
+--- experimentos
+- Mude a CHANCE de sucesso para 0.2. Quem aguenta melhor?
+- Piore o teste (`ACERTO_DO_TESTE = 0.6`). O MVP ainda vale a pena?
+
+--- explicacao
+O empreendedor não é o aventureiro que aposta tudo: ele assume riscos **calculados** — mede, testa e reduz a incerteza antes de avançar. Um teste barato que acerta na maioria das vezes corta drasticamente a chance de perder tudo, a um custo pequeno. É a lógica do **Lean Startup**: aprender com o menor investimento possível antes de escalar.
+
+# =====================================================================
+# Modelo de Negócio e Business Model Canvas
+# =====================================================================
+
+=== lab emp-canvas
+tipo: desafio
+tema: Modelo de Negócio e Business Model Canvas
+nivel: 1
+linguagem: js
+titulo: Confira um Business Model Canvas
+
+--- enunciado
+Implemente `revisar(canvas)`: devolve a lista dos **blocos vazios** (sem nenhum item), na ordem da constante `BLOCOS`. Implemente também `lado(bloco)`: `"valor"` para os blocos do lado direito (clientes, proposta, canais, relacionamento, receitas) e `"eficiência"` para os do esquerdo (recursos, atividades, parcerias, custos).
+
+--- codigo
+const BLOCOS = ["segmentos", "proposta", "canais", "relacionamento", "receitas", "recursos", "atividades", "parcerias", "custos"];
+
+const canvas = {
+  segmentos: ["universitários que dividem apartamento"],
+  proposta: ["dividir contas da casa sem briga"],
+  canais: ["app", "indicação"],
+  relacionamento: [],
+  receitas: ["assinatura premium"],
+  recursos: ["time de desenvolvimento"],
+  atividades: ["desenvolver o app"],
+  parcerias: [],
+  custos: ["servidores", "marketing"]
+};
+
+function revisar(canvas) {
+  return [];
+}
+
+function lado(bloco) {
+  return "";
+}
+
+console.log(revisar(canvas), lado("proposta"), lado("custos"));
+
+--- solucao
+const BLOCOS = ["segmentos", "proposta", "canais", "relacionamento", "receitas", "recursos", "atividades", "parcerias", "custos"];
+const DIREITA = ["segmentos", "proposta", "canais", "relacionamento", "receitas"];
+
+const canvas = {
+  segmentos: ["universitários que dividem apartamento"],
+  proposta: ["dividir contas da casa sem briga"],
+  canais: ["app", "indicação"],
+  relacionamento: [],
+  receitas: ["assinatura premium"],
+  recursos: ["time de desenvolvimento"],
+  atividades: ["desenvolver o app"],
+  parcerias: [],
+  custos: ["servidores", "marketing"]
+};
+
+function revisar(canvas) {
+  return BLOCOS.filter(b => !canvas[b] || canvas[b].length === 0);
+}
+
+function lado(bloco) {
+  return DIREITA.includes(bloco) ? "valor" : "eficiência";
+}
+
+console.log(revisar(canvas), lado("proposta"), lado("custos"));
+
+--- testes
+revisar(canvas) ==> ["relacionamento", "parcerias"]
+revisar({}) ==> ["segmentos", "proposta", "canais", "relacionamento", "receitas", "recursos", "atividades", "parcerias", "custos"]
+lado("proposta") ==> "valor"
+lado("receitas") ==> "valor"
+lado("parcerias") ==> "eficiência"
+
+--- dicas
+`BLOCOS.filter(...)` já mantém a ordem certa. Um bloco está vazio se não existe ou tem tamanho 0.
+
+Guarde os cinco blocos do lado direito numa lista e use `includes`.
+
+--- explicacao
+O Canvas descreve em uma página como o negócio **cria, entrega e captura valor**. O lado direito (clientes, proposta, canais, relacionamento, receitas) é o do **mercado**; o esquerdo (recursos, atividades, parcerias, custos) é o da **eficiência** interna. A **proposta de valor** é o coração: um bloco vazio ali invalida todo o resto. Revisar os vazios é o primeiro passo de qualquer canvas.
+
+=== lab emp-errc
+tipo: explorar
+tema: Modelo de Negócio e Business Model Canvas
+nivel: 2
+linguagem: js
+titulo: Oceano azul: a matriz ERRC
+
+--- enunciado
+A matriz **ERRC** (Eliminar, Reduzir, Elevar, Criar) redesenha a curva de valor de um setor. O código compara uma academia tradicional com uma proposta "oceano azul" e desenha as duas curvas em texto. Rode e crie a sua.
+
+--- codigo
+const fatores = ["preço", "aparelhos", "aulas coletivas", "horário 24h", "personal", "app com treino"];
+const setor = { "preço": 3, "aparelhos": 5, "aulas coletivas": 4, "horário 24h": 1, "personal": 4, "app com treino": 0 };
+
+const errc = {
+  eliminar: ["personal"],
+  reduzir: { "preço": 1, "aulas coletivas": 1 },
+  elevar: { "horário 24h": 5 },
+  criar: { "app com treino": 5 }
+};
+
+const nova = { ...setor };
+for (const f of errc.eliminar) nova[f] = 0;
+Object.assign(nova, errc.reduzir, errc.elevar, errc.criar);
+
+const barra = n => "█".repeat(n).padEnd(5, "·");
+console.log("fator".padEnd(16), "setor ", "nova");
+for (const f of fatores) console.log(f.padEnd(16), barra(setor[f]), barra(nova[f]));
+
+--- experimentos
+- Faça a sua ERRC para outro setor (restaurante, curso de inglês, delivery).
+- Uma estratégia que só **reduz preço** está no oceano azul ou no vermelho?
+
+--- explicacao
+A academia tradicional compete em tudo (oceano **vermelho**: mesmos fatores, disputa por preço). A nova **elimina** o personal, **reduz** preço e aulas, **eleva** o horário e **cria** algo que o setor não oferece (o app) — a curva ganha outro formato e a comparação direta deixa de fazer sentido. Oceano azul não é só ser mais barato: é redesenhar o que se oferece, idealmente a partir de uma compreensão profunda do cliente (Design Thinking).
+
+# =====================================================================
+# Plano de Negócio e Startups
+# =====================================================================
+
+=== lab emp-swot
+tipo: desafio
+tema: Plano de Negócio e Startups
+nivel: 1
+linguagem: js
+titulo: Classifique na SWOT (FOFA)
+
+--- enunciado
+Implemente `classificar(fator)`, onde `fator` tem `interno` (true/false) e `positivo` (true/false). Devolva `"Força"`, `"Fraqueza"`, `"Oportunidade"` ou `"Ameaça"`. E `matriz(fatores)`: um objeto com as quatro chaves e, em cada uma, a lista de `descricao`s daquele quadrante, na ordem de entrada.
+
+--- codigo
+const fatores = [
+  { descricao: "time com experiência em logística", interno: true, positivo: true },
+  { descricao: "pouco capital de giro", interno: true, positivo: false },
+  { descricao: "crescimento do e-commerce na região", interno: false, positivo: true },
+  { descricao: "concorrente grande entrando na cidade", interno: false, positivo: false },
+  { descricao: "marca ainda desconhecida", interno: true, positivo: false }
+];
+
+function classificar(fator) {
+  return "Força";
+}
+
+function matriz(fatores) {
+  return { Força: [], Fraqueza: [], Oportunidade: [], Ameaça: [] };
+}
+
+console.log(matriz(fatores));
+
+--- solucao
+const fatores = [
+  { descricao: "time com experiência em logística", interno: true, positivo: true },
+  { descricao: "pouco capital de giro", interno: true, positivo: false },
+  { descricao: "crescimento do e-commerce na região", interno: false, positivo: true },
+  { descricao: "concorrente grande entrando na cidade", interno: false, positivo: false },
+  { descricao: "marca ainda desconhecida", interno: true, positivo: false }
+];
+
+function classificar(fator) {
+  if (fator.interno) return fator.positivo ? "Força" : "Fraqueza";
+  return fator.positivo ? "Oportunidade" : "Ameaça";
+}
+
+function matriz(fatores) {
+  const m = { Força: [], Fraqueza: [], Oportunidade: [], Ameaça: [] };
+  for (const f of fatores) m[classificar(f)].push(f.descricao);
+  return m;
+}
+
+console.log(matriz(fatores));
+
+--- testes
+classificar({ interno: true, positivo: false }) ==> "Fraqueza"
+classificar({ interno: false, positivo: true }) ==> "Oportunidade"
+classificar({ interno: false, positivo: false }) ==> "Ameaça"
+matriz(fatores).Fraqueza ==> ["pouco capital de giro", "marca ainda desconhecida"]
+matriz(fatores).Ameaça ==> ["concorrente grande entrando na cidade"]
+
+--- dicas
+Dois eixos, quatro quadrantes: interno/externo × positivo/negativo.
+
+Na matriz, use `classificar(f)` como a chave onde empurrar a descrição.
+
+--- explicacao
+**Forças e fraquezas** são **internas** e controláveis (dá para contratar, treinar, captar capital); **oportunidades e ameaças** são **externas** e não controláveis (o mercado, a concorrência, a lei). O erro clássico é listar "concorrência forte" como fraqueza: ela é uma ameaça — a fraqueza seria o que torna a empresa vulnerável a ela.
+
+=== lab emp-lean
+tipo: explorar
+tema: Plano de Negócio e Startups
+nivel: 2
+linguagem: js
+titulo: Construir, medir, aprender: pivotar ou perseverar?
+
+--- enunciado
+Três experimentos de um app. Cada um tem uma **métrica de vaidade** (downloads) e uma **acionável** (quantos usuários ativos pagaram). O código decide por cada experimento usando **só** a acionável. Rode e veja como a vaidade engana.
+
+--- codigo
+const META_CONVERSAO = 0.04;   // hipótese: 4% dos ativos assinam
+
+const experimentos = [
+  { versao: "MVP 1: anúncio no Instagram", downloads: 12000, ativos: 900, pagantes: 9 },
+  { versao: "MVP 2: indicação por amigos", downloads: 1500, ativos: 700, pagantes: 42 },
+  { versao: "MVP 3: parceria com repúblicas", downloads: 800, ativos: 600, pagantes: 18 }
+];
+
+for (const x of experimentos) {
+  const conversao = x.pagantes / x.ativos;
+  const decisao = conversao >= META_CONVERSAO ? "perseverar" : "pivotar";
+  console.log(x.versao.padEnd(32), "downloads:", String(x.downloads).padStart(5),
+              "| conversão:", (conversao * 100).toFixed(1) + "%", "→", decisao);
+}
+
+--- experimentos
+- Qual MVP pareceria o melhor olhando só para downloads? Qual é de fato?
+- Crie uma métrica de retenção (`ativos / downloads`). Ela muda a decisão?
+
+--- explicacao
+O MVP 1 tem 12 mil downloads — ótimo para um slide, inútil para decidir: só 1% dos ativos pagou. Downloads, curtidas e visitas são **métricas de vaidade**: sobem sem dizer se o modelo funciona. **Métricas acionáveis** (conversão, retenção, receita por cliente) ligam uma ação a um resultado. O ciclo **construir → medir → aprender** usa a acionável para decidir entre **perseverar** e **pivotar** (mudar de direção mantendo o que se aprendeu).
+
+=== lab emp-estagios
+tipo: parsons
+tema: Plano de Negócio e Startups
+nivel: 1
+linguagem: texto
+titulo: Os estágios de uma startup
+
+--- enunciado
+Ordene os estágios de uma startup. Uma afirmação confunde startup com empresa nova qualquer.
+
+--- linhas
+Ideação — um problema e uma hipótese de solução
+Validação — MVP e experimentos com clientes reais
+Tração — os clientes crescem de forma consistente (product-market fit)
+Escala — crescer de forma repetível sem os custos crescerem na mesma proporção
+
+--- distratores
+Escala — toda empresa nova é uma startup, basta ser de tecnologia
+
+--- explicacao
+Startup é uma organização temporária **em busca** de um modelo de negócio **repetível e escalável**, em condições de **extrema incerteza** (Blank, Ries). Uma padaria nova é um negócio novo, não uma startup: o modelo já é conhecido. Escalar antes do product-market fit é a causa clássica de morte — gasta-se para crescer algo que ainda não funciona.
+
+# =====================================================================
+# Finanças, Investimento e Formalização
+# =====================================================================
+
+=== lab emp-equilibrio
+tipo: desafio
+tema: Finanças, Investimento e Formalização
+nivel: 1
+linguagem: js
+titulo: Ponto de equilíbrio e margem de contribuição
+
+--- enunciado
+Implemente `margem(preco, custoVariavel)` (quanto sobra de cada venda para pagar os custos fixos) e `pontoEquilibrio(custoFixo, preco, custoVariavel)`: quantas unidades precisam ser vendidas no mês para o lucro ser zero, **arredondando para cima** (não existe meia marmita).
+
+--- codigo
+function margem(preco, custoVariavel) {
+  return 0;
+}
+
+function pontoEquilibrio(custoFixo, preco, custoVariavel) {
+  return 0;
+}
+
+// marmitaria: aluguel + salários = R$ 9.000/mês; marmita a R$ 25 com R$ 13 de ingredientes e embalagem
+console.log(margem(25, 13), pontoEquilibrio(9000, 25, 13));
+
+--- solucao
+function margem(preco, custoVariavel) {
+  return preco - custoVariavel;
+}
+
+function pontoEquilibrio(custoFixo, preco, custoVariavel) {
+  return Math.ceil(custoFixo / margem(preco, custoVariavel));
+}
+
+console.log(margem(25, 13), pontoEquilibrio(9000, 25, 13));
+
+--- testes
+margem(25, 13) ==> 12
+pontoEquilibrio(9000, 25, 13) ==> 750
+pontoEquilibrio(1000, 10, 7) ==> 334
+pontoEquilibrio(500, 50, 0) ==> 10
+
+--- dicas
+Margem de contribuição = preço − custo variável.
+
+Ponto de equilíbrio (em unidades) = custo fixo ÷ margem. `Math.ceil` arredonda para cima.
+
+--- explicacao
+Cada marmita deixa **R$ 12** de margem de contribuição; para cobrir R$ 9.000 de custos fixos são **750** marmitas por mês (~30 por dia útil). Abaixo disso, prejuízo; acima, cada marmita a mais vira lucro. É o número que diz se o negócio é viável antes de abrir as portas — e que mostra por que baixar preço sem baixar custo variável é perigoso: a margem encolhe e o ponto de equilíbrio dispara.
+
+=== lab emp-vpl
+tipo: desafio
+tema: Finanças, Investimento e Formalização
+nivel: 3
+linguagem: js
+titulo: VPL e payback de um investimento
+
+--- enunciado
+`fluxos` é a lista de entradas e saídas de caixa por período, começando pelo investimento (negativo) no período 0. Implemente `vpl(taxa, fluxos)`: a soma de cada fluxo trazido a valor presente, `fluxo / (1 + taxa)^t`, arredondada para **2 casas**. E `payback(fluxos)`: o primeiro período em que o saldo **acumulado** fica ≥ 0 (ou `null` se nunca ficar).
+
+--- codigo
+const projeto = [-50000, 15000, 20000, 20000, 25000];   // investimento e 4 anos de retorno
+
+function vpl(taxa, fluxos) {
+  return 0;
+}
+
+function payback(fluxos) {
+  return null;
+}
+
+console.log("VPL a 10%:", vpl(0.1, projeto), "| payback no ano:", payback(projeto));
+
+--- solucao
+const projeto = [-50000, 15000, 20000, 20000, 25000];
+
+function vpl(taxa, fluxos) {
+  const total = fluxos.reduce((s, f, t) => s + f / (1 + taxa) ** t, 0);
+  return Math.round(total * 100) / 100;
+}
+
+function payback(fluxos) {
+  let acumulado = 0;
+  for (let t = 0; t < fluxos.length; t++) {
+    acumulado += fluxos[t];
+    if (acumulado >= 0) return t;
+  }
+  return null;
+}
+
+console.log("VPL a 10%:", vpl(0.1, projeto), "| payback no ano:", payback(projeto));
+
+--- testes
+vpl(0, [-100, 60, 60]) ==> 20
+vpl(0.1, [-100, 110]) ==> 0
+vpl(0.1, projeto) ==> 12266.92
+payback(projeto) ==> 3
+payback([-100, 10, 10]) ==> null
+
+--- dicas
+O fluxo do período t vale hoje `fluxo / (1 + taxa) ** t`. O período 0 não é descontado.
+
+Arredonde no fim: `Math.round(total * 100) / 100`.
+
+No payback, vá somando e devolva o primeiro t em que a soma não é mais negativa.
+
+--- explicacao
+Dinheiro no futuro vale menos que hoje: descontando a 10% ao ano, os R$ 80 mil de retorno valem R$ 62,3 mil hoje, e o **VPL positivo** (R$ 12,3 mil) diz que o projeto rende mais que a taxa exigida — viável. O **payback** simples (ano 3) diz em quanto tempo o dinheiro volta, mas ignora o valor do dinheiro no tempo e tudo o que vem depois. Por isso os dois são usados juntos no plano financeiro, com a TIR.
+
+=== lab emp-divida
+tipo: prever
+tema: Finanças, Investimento e Formalização
+nivel: 2
+linguagem: js
+titulo: Capital de terceiros: o custo dos juros
+
+--- enunciado
+Um empréstimo de R$ 100 mil a **2% ao mês**, com juros compostos, pago de uma vez após **12 meses**. Preveja o valor a pagar (arredondado para reais).
+
+--- codigo
+const principal = 100000, juros = 0.02, meses = 12;
+console.log(Math.round(principal * (1 + juros) ** meses));
+
+--- opcoes
+- 126824
+- 124000
+- 102000
+- 112000
+
+--- experimentos
+- Compare com um investidor-anjo que coloca os mesmos R$ 100 mil por 20% da empresa. Se em 12 meses a empresa valer R$ 1 milhão, quanto vale a parte dele?
+
+--- explicacao
+Juros compostos: 100.000 × 1,02¹² ≈ **R$ 126.824** — os juros de 12 × 2% = 24% simples ficam em 26,8% porque incidem sobre juros. O **capital de terceiros** (dívida) preserva o controle da empresa, mas precisa ser pago **independentemente do desempenho**. O **capital próprio** (investidor) não precisa ser devolvido, mas **dilui** a participação — e, se a empresa der certo, pode sair muito mais caro que os juros.

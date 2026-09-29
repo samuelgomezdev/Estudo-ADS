@@ -1,0 +1,520 @@
+# Laboratório — Produção de Jogos
+# Confira tudo com #/m/producao-de-jogos/lab/autoteste
+
+# =====================================================================
+# Fundamentos de Game Design
+# =====================================================================
+
+=== lab jogo-canvas
+tipo: explorar
+tema: Fundamentos de Game Design
+nivel: 1
+linguagem: web
+titulo: Um jogo de verdade em 60 linhas
+
+--- enunciado
+Um jogo completo no resultado ao lado: clique nele e use as **setas** para pegar as moedas antes do tempo acabar. Repare no **loop de jogo** (entrada → atualizar → desenhar) e depois mexa nos números para sentir o **balanceamento**.
+
+--- codigo
+<canvas id="tela" width="320" height="220" style="background:#0f172a;display:block;margin:auto;border-radius:8px" tabindex="0"></canvas>
+<p id="info" style="font-family:sans-serif;text-align:center">Clique no jogo e use as setas</p>
+<script>
+  const tela = document.getElementById("tela");
+  const ctx = tela.getContext("2d");
+  const VELOCIDADE = 160;     // pixels por segundo — tente mudar!
+  const TEMPO = 20;           // segundos de partida
+  const jogador = { x: 150, y: 100, t: 18 };
+  let moeda = novaMoeda(), pontos = 0, restante = TEMPO, fim = false;
+  const teclas = {};
+
+  function novaMoeda() { return { x: 10 + Math.random() * 290, y: 10 + Math.random() * 190, t: 10 }; }
+  const colide = (a, b) => a.x < b.x + b.t && a.x + a.t > b.x && a.y < b.y + b.t && a.y + a.t > b.y;
+
+  tela.addEventListener("keydown", e => { teclas[e.key] = true; e.preventDefault(); });
+  tela.addEventListener("keyup", e => { teclas[e.key] = false; });
+  tela.addEventListener("click", () => tela.focus());
+
+  function atualizar(dt) {                           // UPDATE: regras, física, colisão
+    if (fim) return;
+    if (teclas.ArrowLeft) jogador.x -= VELOCIDADE * dt;
+    if (teclas.ArrowRight) jogador.x += VELOCIDADE * dt;
+    if (teclas.ArrowUp) jogador.y -= VELOCIDADE * dt;
+    if (teclas.ArrowDown) jogador.y += VELOCIDADE * dt;
+    jogador.x = Math.max(0, Math.min(320 - jogador.t, jogador.x));
+    jogador.y = Math.max(0, Math.min(220 - jogador.t, jogador.y));
+    if (colide(jogador, moeda)) { pontos++; moeda = novaMoeda(); }
+    restante -= dt;
+    if (restante <= 0) { fim = true; console.log("fim de jogo:", pontos, "moedas"); }
+  }
+
+  function desenhar() {                              // DRAW
+    ctx.clearRect(0, 0, 320, 220);
+    ctx.fillStyle = "#facc15"; ctx.fillRect(moeda.x, moeda.y, moeda.t, moeda.t);
+    ctx.fillStyle = "#38bdf8"; ctx.fillRect(jogador.x, jogador.y, jogador.t, jogador.t);
+    document.getElementById("info").textContent = fim
+      ? "Fim! " + pontos + " moedas — recarregue para jogar de novo"
+      : "Moedas: " + pontos + " · Tempo: " + Math.ceil(restante) + "s";
+  }
+
+  let antes = performance.now();
+  function loop(agora) {                             // GAME LOOP
+    const dt = Math.min((agora - antes) / 1000, 0.05);   // delta time em segundos
+    antes = agora;
+    atualizar(dt);
+    desenhar();
+    requestAnimationFrame(loop);
+  }
+  requestAnimationFrame(loop);
+</script>
+
+--- experimentos
+- Dobre a `VELOCIDADE`. O jogo ficou mais divertido ou fácil demais (tédio)?
+- Faça a moeda **fugir** devagar do jogador. Isso é uma mudança de **mecânica** — que **dinâmica** nova aparece?
+- Mostre um recorde que só aumenta. Isso mexe com qual **estética** (a resposta emocional)?
+
+--- explicacao
+Todo jogo roda um **game loop**: ler a entrada, **atualizar** o mundo (movimento, colisão, regras) e **desenhar** — dezenas de vezes por segundo. O movimento usa **delta time** (`VELOCIDADE * dt`), então o jogador anda na mesma velocidade em qualquer monitor. Mexer em VELOCIDADE e TEMPO é **balanceamento**: o objetivo é manter o desafio perto da habilidade — o estado de **flow**.
+
+=== lab jogo-flow
+tipo: prever
+tema: Fundamentos de Game Design
+nivel: 2
+linguagem: js
+titulo: Ansiedade, tédio ou flow?
+
+--- enunciado
+A função classifica o estado do jogador comparando **desafio** e **habilidade** (de 0 a 10), como no canal de flow de Csikszentmihalyi. Preveja a saída.
+
+--- codigo
+function estado(desafio, habilidade) {
+  const d = desafio - habilidade;
+  if (d > 2) return "ansiedade";
+  if (d < -2) return "tédio";
+  return "flow";
+}
+
+console.log(estado(8, 3), estado(2, 7), estado(6, 5), estado(9, 9));
+
+--- opcoes
+- ansiedade tédio flow flow
+- tédio ansiedade flow flow
+- ansiedade tédio flow ansiedade
+- flow tédio flow flow
+
+--- experimentos
+- Simule uma partida: a habilidade sobe 1 por fase e o desafio fica fixo em 5. Em que fase o jogador entra em tédio? Como a curva de dificuldade deveria ser?
+
+--- explicacao
+Desafio muito acima da habilidade gera **ansiedade** (8 contra 3); muito abaixo, **tédio** (2 contra 7); equilibrados — em qualquer nível — geram **flow** (9 contra 9 é um jogo difícil, mas para um jogador experiente). Como a habilidade cresce jogando, a dificuldade precisa **crescer junto**: é a curva de dificuldade.
+
+=== lab jogo-loot
+tipo: desafio
+tema: Fundamentos de Game Design
+nivel: 2
+linguagem: js
+titulo: Tabela de loot com pesos
+
+--- enunciado
+Balanceamento também é probabilidade. Implemente `sortear(tabela, r)`: `tabela` é uma lista de `{ item, peso }` e `r` é um número de 0 (inclusive) a 1 (exclusive), como o de `Math.random()`. Cada item ocupa uma fatia proporcional ao seu peso, na ordem da lista. E `chance(tabela, item)` devolve a probabilidade do item em porcentagem.
+
+--- codigo
+const bau = [
+  { item: "moeda", peso: 70 },
+  { item: "poção", peso: 25 },
+  { item: "espada lendária", peso: 5 }
+];
+
+function sortear(tabela, r) {
+  return tabela[0].item;
+}
+
+function chance(tabela, item) {
+  return 0;
+}
+
+console.log(sortear(bau, Math.random()), chance(bau, "espada lendária") + "%");
+
+--- solucao
+const bau = [
+  { item: "moeda", peso: 70 },
+  { item: "poção", peso: 25 },
+  { item: "espada lendária", peso: 5 }
+];
+
+function sortear(tabela, r) {
+  const total = tabela.reduce((s, x) => s + x.peso, 0);
+  let alvo = r * total;
+  for (const x of tabela) {
+    if (alvo < x.peso) return x.item;
+    alvo -= x.peso;
+  }
+  return tabela[tabela.length - 1].item;
+}
+
+function chance(tabela, item) {
+  const total = tabela.reduce((s, x) => s + x.peso, 0);
+  const achado = tabela.find(x => x.item === item);
+  return achado ? (achado.peso / total) * 100 : 0;
+}
+
+console.log(sortear(bau, Math.random()), chance(bau, "espada lendária") + "%");
+
+--- testes
+sortear(bau, 0) ==> "moeda"
+sortear(bau, 0.69) ==> "moeda"
+sortear(bau, 0.70) ==> "poção"
+sortear(bau, 0.96) ==> "espada lendária"
+chance(bau, "poção") ==> 25
+chance([{ item: "a", peso: 1 }, { item: "b", peso: 3 }], "a") ==> 25
+
+--- dicas
+Multiplique r pelo peso total: você cai num ponto entre 0 e 100.
+
+Percorra os itens tirando o peso de cada um até o ponto cair dentro da fatia de alguém.
+
+--- explicacao
+Com pesos 70/25/5, r de 0 a 0,70 dá moeda, de 0,70 a 0,95 poção e o resto espada. Receber o `r` de fora deixa a função **determinística** e testável — no jogo você passa `Math.random()`. Tabelas de loot são mecânica pura: mudar um peso muda a dinâmica (farmar, trocar itens) e a estética (a emoção do item raro). Vender chance de item raro por dinheiro real é a crítica ao pay-to-win e às loot boxes.
+
+# =====================================================================
+# Programação Orientada a Objetos em Jogos
+# =====================================================================
+
+=== lab jogo-colisao
+tipo: desafio
+tema: Programação Orientada a Objetos em Jogos
+nivel: 1
+linguagem: js
+titulo: Colisão AABB
+
+--- enunciado
+A colisão mais usada em jogos 2D compara **retângulos alinhados aos eixos** (AABB). Cada objeto tem `x`, `y` (canto superior esquerdo), `larg` e `alt`. Implemente `colide(a, b)`: há colisão quando os retângulos se **sobrepõem** nos dois eixos (encostar só na borda não conta).
+
+--- codigo
+function colide(a, b) {
+  return false;
+}
+
+const jogador = { x: 10, y: 10, larg: 20, alt: 20 };
+const moeda = { x: 25, y: 25, larg: 10, alt: 10 };
+console.log(colide(jogador, moeda));
+
+--- solucao
+function colide(a, b) {
+  return a.x < b.x + b.larg && a.x + a.larg > b.x &&
+         a.y < b.y + b.alt && a.y + a.alt > b.y;
+}
+
+const jogador = { x: 10, y: 10, larg: 20, alt: 20 };
+const moeda = { x: 25, y: 25, larg: 10, alt: 10 };
+console.log(colide(jogador, moeda));
+
+--- testes
+colide({ x: 10, y: 10, larg: 20, alt: 20 }, { x: 25, y: 25, larg: 10, alt: 10 }) ==> true
+colide({ x: 0, y: 0, larg: 10, alt: 10 }, { x: 50, y: 0, larg: 10, alt: 10 }) ==> false
+colide({ x: 0, y: 0, larg: 10, alt: 10 }, { x: 10, y: 0, larg: 10, alt: 10 }) ==> false
+colide({ x: 0, y: 0, larg: 10, alt: 10 }, { x: 5, y: 40, larg: 10, alt: 10 }) ==> false
+colide({ x: 0, y: 0, larg: 100, alt: 100 }, { x: 40, y: 40, larg: 5, alt: 5 }) ==> true
+
+--- dicas
+Pense no eixo x sozinho: os intervalos [a.x, a.x + a.larg] e [b.x, b.x + b.larg] se sobrepõem se cada um começa antes de o outro terminar.
+
+Faça o mesmo para y e junte com `&&`. Use `<` e `>` (não `<=`) para que encostar não conte.
+
+--- explicacao
+Dois retângulos colidem se, **em cada eixo**, um começa antes do outro terminar. São 4 comparações — barato o bastante para rodar para centenas de objetos a cada quadro, no **update** do game loop. O quarto teste mostra por que os dois eixos importam: alinhados no x, mas longe no y, não colidem. O caso do objeto inteiro dentro do outro também é pego.
+
+=== lab jogo-polimorfismo
+tipo: explorar
+tema: Programação Orientada a Objetos em Jogos
+nivel: 1
+linguagem: js
+titulo: Inimigos com herança, encapsulamento e polimorfismo
+
+--- enunciado
+O motor do jogo chama `atacar()` em cada inimigo **sem saber o tipo** dele. E a vida do herói só muda por `receberDano()`, que aplica a armadura. Rode e crie um inimigo novo.
+
+--- codigo
+class Personagem {
+  #vida;
+  constructor(nome, vida, armadura = 0) {
+    this.nome = nome;
+    this.#vida = vida;
+    this.armadura = armadura;
+  }
+  receberDano(dano) {                         // encapsulamento: a única porta para mexer na vida
+    const real = Math.max(0, dano - this.armadura);
+    this.#vida = Math.max(0, this.#vida - real);
+    return real;
+  }
+  get vida() { return this.#vida; }
+}
+
+class Inimigo extends Personagem {
+  atacar(alvo) { return alvo.receberDano(5); }
+}
+class Goblin extends Inimigo {
+  atacar(alvo) { return alvo.receberDano(3) + alvo.receberDano(3); }   // dois golpes fracos
+}
+class Dragao extends Inimigo {
+  atacar(alvo) { return alvo.receberDano(20); }                        // um golpe forte
+}
+
+const heroi = new Personagem("Herói", 60, 2);
+const inimigos = [new Inimigo("Esqueleto", 10), new Goblin("Goblin", 8), new Dragao("Dragão", 200)];
+
+for (const inimigo of inimigos) {                 // polimorfismo
+  const dano = inimigo.atacar(heroi);
+  console.log(inimigo.nome.padEnd(9), "causou", dano, "→ vida do herói:", heroi.vida);
+}
+
+--- experimentos
+- Crie `class Arqueiro extends Inimigo` que ataca 3 vezes com dano 4. Precisou mexer no laço?
+- Aumente a armadura do herói para 4. Quem fica inofensivo? Por quê?
+- Tente `heroi.#vida = 999` fora da classe.
+
+--- explicacao
+O laço é o mesmo para todos: cada tipo responde ao `atacar()` do seu jeito (**polimorfismo**), e tipos novos entram sem tocar no motor. A armadura funciona porque a vida é **privada** e só muda por `receberDano()` — ninguém consegue "esquecer" de aplicá-la. Em jogos grandes, hierarquias profundas ficam rígidas (e o inimigo que voa **e** nada?), e é aí que entra a composição (ECS).
+
+=== lab jogo-ecs
+tipo: desafio
+tema: Programação Orientada a Objetos em Jogos
+nivel: 3
+linguagem: js
+titulo: Entidade-Componente-Sistema
+
+--- enunciado
+No **ECS**, entidades são só um id com **componentes** (dados), e **sistemas** são funções que agem sobre quem tem certos componentes. Implemente `sistemaMovimento(entidades, dt)`: para toda entidade que tem **`posicao` e `velocidade`**, some `velocidade × dt` à posição (x e y). Quem não tem os dois não é tocado. Devolva quantas entidades foram movidas.
+
+--- codigo
+const mundo = [
+  { id: 1, posicao: { x: 0, y: 0 }, velocidade: { x: 10, y: 5 }, sprite: "heroi.png" },
+  { id: 2, posicao: { x: 50, y: 50 }, sprite: "arvore.png" },                  // cenário: não se move
+  { id: 3, posicao: { x: 5, y: 5 }, velocidade: { x: -2, y: 0 } },             // invisível, mas se move
+  { id: 4, sprite: "hud.png" }
+];
+
+function sistemaMovimento(entidades, dt) {
+  return 0;
+}
+
+console.log(sistemaMovimento(mundo, 2), mundo.map(e => e.posicao));
+
+--- solucao
+const mundo = [
+  { id: 1, posicao: { x: 0, y: 0 }, velocidade: { x: 10, y: 5 }, sprite: "heroi.png" },
+  { id: 2, posicao: { x: 50, y: 50 }, sprite: "arvore.png" },
+  { id: 3, posicao: { x: 5, y: 5 }, velocidade: { x: -2, y: 0 } },
+  { id: 4, sprite: "hud.png" }
+];
+
+function sistemaMovimento(entidades, dt) {
+  const moveis = entidades.filter(e => e.posicao && e.velocidade);
+  for (const e of moveis) {
+    e.posicao.x += e.velocidade.x * dt;
+    e.posicao.y += e.velocidade.y * dt;
+  }
+  return moveis.length;
+}
+
+console.log(sistemaMovimento(mundo, 2), mundo.map(e => e.posicao));
+
+--- testes
+(() => { const m = [{ posicao: { x: 0, y: 0 }, velocidade: { x: 10, y: 5 } }]; sistemaMovimento(m, 2); return m[0].posicao; })() ==> { x: 20, y: 10 }
+(() => { const m = [{ posicao: { x: 50, y: 50 } }]; sistemaMovimento(m, 2); return m[0].posicao; })() ==> { x: 50, y: 50 }
+sistemaMovimento([{ posicao: { x: 0, y: 0 }, velocidade: { x: 1, y: 1 } }, { sprite: "a" }, { velocidade: { x: 1, y: 1 } }], 1) ==> 1
+sistemaMovimento([], 1) ==> 0
+
+--- dicas
+Filtre quem tem os dois componentes: `e.posicao && e.velocidade`.
+
+Some `velocidade.x * dt` em `posicao.x` e o mesmo para y. Devolva o tamanho da lista filtrada.
+
+--- explicacao
+A árvore não tem velocidade, então o sistema de movimento a ignora; a entidade invisível tem velocidade mas não tem sprite, então se move mas o sistema de desenho a ignoraria. **Comportamento vem da combinação de componentes**, não de uma hierarquia de classes: dar asas a um inimigo é acrescentar um componente, não reescrever a herança. É o modelo de Unity (DOTS), Bevy e boa parte dos motores modernos.
+
+=== lab jogo-estados
+tipo: desafio
+tema: Programação Orientada a Objetos em Jogos
+nivel: 2
+linguagem: js
+titulo: Máquina de estados do personagem
+
+--- enunciado
+O padrão **State** organiza o personagem em estados. Implemente `proximo(estado, evento)` pela tabela: de **parado**, `"andar"` → andando e `"pular"` → pulando; de **andando**, `"parar"` → parado e `"pular"` → pulando; de **pulando**, `"aterrissar"` → parado. De qualquer estado, `"dano"` → atordoado; de **atordoado**, `"recuperar"` → parado. Evento que não se aplica mantém o estado.
+
+--- codigo
+function proximo(estado, evento) {
+  if (evento === "pular") return "pulando";
+  return estado;
+}
+
+let e = "parado";
+for (const ev of ["andar", "pular", "andar", "aterrissar", "dano", "pular", "recuperar"]) {
+  e = proximo(e, ev);
+  console.log(ev.padEnd(10), "→", e);
+}
+
+--- solucao
+const TRANSICOES = {
+  parado: { andar: "andando", pular: "pulando" },
+  andando: { parar: "parado", pular: "pulando" },
+  pulando: { aterrissar: "parado" },
+  atordoado: { recuperar: "parado" }
+};
+
+function proximo(estado, evento) {
+  if (evento === "dano") return "atordoado";
+  return (TRANSICOES[estado] && TRANSICOES[estado][evento]) || estado;
+}
+
+let e = "parado";
+for (const ev of ["andar", "pular", "andar", "aterrissar", "dano", "pular", "recuperar"]) {
+  e = proximo(e, ev);
+  console.log(ev.padEnd(10), "→", e);
+}
+
+--- testes
+proximo("parado", "andar") ==> "andando"
+proximo("pulando", "andar") ==> "pulando"
+proximo("pulando", "pular") ==> "pulando"
+proximo("andando", "dano") ==> "atordoado"
+proximo("atordoado", "pular") ==> "atordoado"
+proximo("atordoado", "recuperar") ==> "parado"
+
+--- dicas
+Uma tabela `{ estado: { evento: novoEstado } }` evita uma pilha de ifs.
+
+Trate o "dano" antes, porque vale para qualquer estado. Se não houver transição na tabela, devolva o estado atual.
+
+--- explicacao
+A máquina de estados impede combinações absurdas: não se "anda" no ar nem se pula atordoado — o bug clássico do pulo duplo infinito vem de não ter essa regra. Com a tabela, cada estado declara o que aceita, e acrescentar "agachado" é acrescentar uma linha. Os circuitos sequenciais da Arquitetura de Computadores são exatamente isto em hardware.
+
+=== lab jogo-delta
+tipo: prever
+tema: Programação Orientada a Objetos em Jogos
+nivel: 2
+linguagem: js
+titulo: Por que o delta time existe
+
+--- enunciado
+Um personagem anda durante **1 segundo** em duas máquinas: uma a 30 FPS e outra a 60 FPS. Sem delta time, ele anda 5 px por **quadro**; com delta time, 300 px por **segundo**. Preveja.
+
+--- codigo
+function simular(fps, comDelta) {
+  let x = 0;
+  const dt = 1 / fps;
+  for (let quadro = 0; quadro < fps; quadro++) {   // 1 segundo de jogo
+    x += comDelta ? 300 * dt : 5;
+  }
+  return Math.round(x);
+}
+
+console.log("sem delta:", simular(30, false), "vs", simular(60, false), "| com delta:", simular(30, true), "vs", simular(60, true));
+
+--- opcoes
+- sem delta: 150 vs 300 | com delta: 300 vs 300
+- sem delta: 300 vs 300 | com delta: 150 vs 300
+- sem delta: 150 vs 300 | com delta: 150 vs 300
+- sem delta: 300 vs 150 | com delta: 300 vs 300
+
+--- explicacao
+Sem delta time, o computador mais rápido roda mais quadros e o personagem anda **o dobro** (150 contra 300) — jogos antigos ficavam impossíveis em PCs novos por isso. Multiplicando a velocidade pelo **tempo decorrido desde o último quadro**, o deslocamento por segundo é o mesmo (300) em qualquer máquina.
+
+# =====================================================================
+# GameMaker e Ferramentas
+# =====================================================================
+
+=== lab jogo-gamemaker
+tipo: parsons
+tema: GameMaker e Ferramentas
+nivel: 1
+linguagem: texto
+titulo: Os eventos de uma instância no GameMaker
+
+--- enunciado
+Ordene os eventos na vida de uma instância de um *object* no GameMaker, do momento em que ela é colocada na *room* até ser removida. Uma afirmação troca a ordem de dois eventos.
+
+--- linhas
+Create — roda uma vez, quando a instância nasce na room (valores iniciais: vida, velocidade)
+Step — roda a cada quadro: a lógica (movimento, entrada, regras)
+Collision — dispara quando a instância encosta em outra (dentro do processamento do quadro)
+Draw — roda a cada quadro, depois da lógica: desenha o sprite na tela
+Destroy — roda uma vez, quando a instância é removida (explosão, pontos)
+
+--- distratores
+Draw — roda antes do Create, para a instância aparecer mais cedo
+
+--- explicacao
+É o **game loop** visto pela instância: Create inicializa; a cada quadro vêm a lógica (Step, colisões) e depois o desenho (Draw); Destroy encerra. O *object* equivale à classe, a *instance* ao objeto, o *sprite* é só a imagem e a *room* é a cena. Separar lógica de desenho é o mesmo update/draw de qualquer motor.
+
+=== lab jogo-object-pool
+tipo: explorar
+tema: GameMaker e Ferramentas
+nivel: 2
+linguagem: js
+titulo: Object Pool: reusar em vez de criar
+
+--- enunciado
+Um jogo de nave dispara 1000 tiros. Sem pool, cada tiro é um objeto **novo** (e depois lixo para o coletor). Com pool, os tiros que saíram da tela voltam para uma reserva e são **reusados**. Rode e compare quantos objetos foram criados.
+
+--- codigo
+class Tiro { constructor() { this.ativo = false; this.y = 0; } }
+
+// sem pool
+let criadosSemPool = 0;
+let naTelaSemPool = [];
+for (let i = 0; i < 1000; i++) {
+  naTelaSemPool.push(new Tiro()); criadosSemPool++;
+  if (naTelaSemPool.length > 20) naTelaSemPool.shift();     // saiu da tela: vira lixo
+}
+
+// com pool
+const pool = [];
+let criadosComPool = 0;
+function pegarTiro() {
+  const livre = pool.find(t => !t.ativo);
+  if (livre) { livre.ativo = true; return livre; }
+  const novo = new Tiro(); criadosComPool++; novo.ativo = true; pool.push(novo); return novo;
+}
+const naTela = [];
+for (let i = 0; i < 1000; i++) {
+  naTela.push(pegarTiro());
+  if (naTela.length > 20) naTela.shift().ativo = false;     // saiu da tela: volta à reserva
+}
+
+console.log("objetos criados sem pool:", criadosSemPool, "| com pool:", criadosComPool);
+
+--- experimentos
+- Mude o máximo na tela para 50. Quantos objetos o pool cria?
+- Que outros elementos de jogo se beneficiariam de pool? (Partículas, inimigos de onda...)
+
+--- explicacao
+Sem pool: **1000** objetos criados e descartados — trabalho para o coletor de lixo, que pode travar o jogo por alguns milissegundos (o famoso *stutter*). Com pool: **21** objetos, reusados o tempo todo. É um padrão de projeto típico de jogos, junto com State, Observer, Singleton e Factory.
+
+# =====================================================================
+# Processo de Produção de Jogos
+# =====================================================================
+
+=== lab jogo-fases
+tipo: parsons
+tema: Processo de Produção de Jogos
+nivel: 1
+linguagem: texto
+titulo: As fases da produção de um jogo
+
+--- enunciado
+Ordene as fases de produção. Uma afirmação descreve errado o playtesting.
+
+--- linhas
+Conceito — a ideia central, o gênero, o público e o pitch em uma frase
+Pré-produção — GDD, protótipo jogável, escopo e tecnologia
+Produção — código, arte, som e níveis, com iterações constantes
+Testes — QA procura defeitos; playtesting observa jogadores reais
+Lançamento — publicação, marketing e distribuição
+Pós-lançamento — correções, atualizações, conteúdo novo e comunidade
+
+--- distratores
+Testes — no playtesting, o designer explica o jogo ao testador para ele jogar do jeito certo
+
+--- explicacao
+No playtesting o designer **observa em silêncio**: no lançamento não haverá ninguém para explicar, e cada momento de confusão do testador é um defeito de design. QA procura **bugs**; playtesting avalia **diversão, clareza e dificuldade**. O maior inimigo do jogo independente é o **escopo** — por isso o protótipo e o vertical slice vêm cedo.

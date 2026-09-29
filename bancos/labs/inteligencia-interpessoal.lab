@@ -1,0 +1,437 @@
+# Laboratório — Inteligência Interpessoal
+# Confira tudo com #/m/inteligencia-interpessoal/lab/autoteste
+
+# =====================================================================
+# Semiótica: Linguagem Verbal e Não Verbal
+# =====================================================================
+
+=== lab ii-signos
+tipo: desafio
+tema: Semiótica: Linguagem Verbal e Não Verbal
+nivel: 1
+linguagem: js
+titulo: Ícone, índice ou símbolo (Peirce)?
+
+--- enunciado
+Na tricotomia de Peirce, o signo se classifica pela relação com o objeto: **semelhança** → ícone; **causa/contiguidade** (um vestígio físico) → índice; **convenção** arbitrária → símbolo. Implemente `classificar(signo)` a partir do campo `relacao` e depois `contar(signos)`, que devolve `{ ícone, índice, símbolo }` com as quantidades.
+
+--- codigo
+const signos = [
+  { exemplo: "foto de um rosto", relacao: "semelhanca" },
+  { exemplo: "fumaça saindo da mata", relacao: "causa" },
+  { exemplo: "a palavra 'casa'", relacao: "convencao" },
+  { exemplo: "pegada na areia", relacao: "causa" },
+  { exemplo: "placa de 'pare'", relacao: "convencao" },
+  { exemplo: "desenho de um avião no aeroporto", relacao: "semelhanca" },
+  { exemplo: "bandeira do Brasil", relacao: "convencao" }
+];
+
+function classificar(signo) {
+  return "símbolo";
+}
+
+function contar(signos) {
+  return { ícone: 0, índice: 0, símbolo: 0 };
+}
+
+for (const s of signos) console.log(s.exemplo.padEnd(34), "→", classificar(s));
+console.log(contar(signos));
+
+--- solucao
+const signos = [
+  { exemplo: "foto de um rosto", relacao: "semelhanca" },
+  { exemplo: "fumaça saindo da mata", relacao: "causa" },
+  { exemplo: "a palavra 'casa'", relacao: "convencao" },
+  { exemplo: "pegada na areia", relacao: "causa" },
+  { exemplo: "placa de 'pare'", relacao: "convencao" },
+  { exemplo: "desenho de um avião no aeroporto", relacao: "semelhanca" },
+  { exemplo: "bandeira do Brasil", relacao: "convencao" }
+];
+
+const TIPO = { semelhanca: "ícone", causa: "índice", convencao: "símbolo" };
+
+function classificar(signo) {
+  return TIPO[signo.relacao];
+}
+
+function contar(signos) {
+  const c = { ícone: 0, índice: 0, símbolo: 0 };
+  for (const s of signos) c[classificar(s)]++;
+  return c;
+}
+
+for (const s of signos) console.log(s.exemplo.padEnd(34), "→", classificar(s));
+console.log(contar(signos));
+
+--- testes
+classificar({ relacao: "causa" }) ==> "índice"
+classificar({ relacao: "semelhanca" }) ==> "ícone"
+contar(signos) ==> { ícone: 2, índice: 2, símbolo: 3 }
+
+--- dicas
+Um objeto de tradução resolve: `{ semelhanca: "ícone", causa: "índice", convencao: "símbolo" }`.
+
+Em `contar`, some 1 na chave devolvida por `classificar`.
+
+--- explicacao
+A **foto** se parece com o rosto (ícone); a **fumaça** é efeito físico do fogo e a **pegada** é vestígio de quem passou (índices); a **palavra**, a **placa** e a **bandeira** só significam algo porque combinamos que significam (símbolos) — a relação é **arbitrária**, como Saussure dizia do signo linguístico. O pictograma do avião no aeroporto é ícone porque se parece com um avião, mesmo sendo uma placa.
+
+# =====================================================================
+# Comunicação Interpessoal
+# =====================================================================
+
+=== lab ii-cnv
+tipo: parsons
+tema: Comunicação Interpessoal
+nivel: 1
+linguagem: texto
+titulo: Monte uma mensagem em Comunicação Não Violenta
+
+--- enunciado
+Um colega entregou o relatório atrasado duas sextas seguidas. Monte uma mensagem com os **quatro componentes da CNV** (Rosenberg), na ordem. Dois blocos são armadilhas — eles transformam a conversa em ataque.
+
+--- linhas
+Quando vejo que o relatório chegou depois do prazo nas duas últimas sextas,
+fico preocupado,
+porque preciso de previsibilidade para fechar a semana com o cliente.
+Você toparia me avisar até quinta se houver risco de atraso?
+
+--- distratores
+Você é sempre irresponsável com prazos,
+Exijo que isso nunca mais aconteça.
+
+--- explicacao
+**Observação** sem julgamento ("chegou depois do prazo nas duas últimas sextas" — um fato; "você é sempre irresponsável" é um rótulo). **Sentimento** ("fico preocupado"). **Necessidade** por trás do sentimento ("previsibilidade"). **Pedido** claro, realizável e que admite resposta ("você toparia...?"), não uma **exigência**. É comunicação **assertiva**: nem passiva (engolir o atraso) nem agressiva (atacar a pessoa).
+
+=== lab ii-ruido
+tipo: explorar
+tema: Comunicação Interpessoal
+nivel: 2
+linguagem: js
+titulo: Por que o feedback fecha a comunicação
+
+--- enunciado
+Uma mensagem passa por um **canal com ruído**: cada palavra tem uma chance de chegar trocada. Sem **feedback**, o emissor nunca sabe o que chegou. Com feedback (o receptor repete com as próprias palavras), o emissor corrige. Rode e compare.
+
+--- codigo
+let semente = 7;
+const aleatorio = () => (semente = (semente * 16807) % 2147483647) / 2147483647;
+
+const RUIDO = 0.25;   // chance de cada palavra ser mal entendida
+const trocas = { sexta: "sexta?", "10h": "10h ou 11h", sala: "sala 3?", relatório: "rascunho" };
+
+function transmitir(mensagem) {
+  return mensagem.split(" ").map(p => (aleatorio() < RUIDO && trocas[p] ? trocas[p] : p)).join(" ");
+}
+
+const mensagem = "entregar o relatório na sexta às 10h na sala 2";
+
+// sem feedback
+const recebida = transmitir(mensagem);
+console.log("SEM feedback, chegou:", recebida, recebida === mensagem ? "✓" : "✗ (e ninguém percebeu)");
+
+// com feedback: o receptor repete e o emissor reenvia até bater
+let tentativas = 1, eco = transmitir(mensagem);
+while (eco !== mensagem && tentativas < 10) {
+  console.log("  receptor repetiu:", eco, "→ emissor esclarece");
+  eco = transmitir(mensagem);
+  tentativas++;
+}
+console.log("COM feedback: entendido em", tentativas, "tentativa(s)");
+
+--- experimentos
+- Aumente o RUIDO para 0.6. Quantas voltas o feedback precisa?
+- Na vida real, o que é "ruído"? (Jargão, pressa, ambiente barulhento, diferença cultural, tom de voz...)
+
+--- explicacao
+Os elementos da comunicação — emissor, receptor, mensagem, **canal**, código, contexto e **feedback** — existem porque o canal nunca é perfeito. Sem feedback, o mal-entendido fica invisível até virar problema. **Escuta ativa** é exatamente isso: atenção plena e devolver o que entendeu ("então, sexta às 10h na sala 2?"), confirmando o entendimento nos dois sentidos.
+
+# =====================================================================
+# Habilidades Interpessoais no PMBOK
+# =====================================================================
+
+=== lab ii-decisao
+tipo: parsons
+tema: Habilidades Interpessoais no PMBOK
+nivel: 1
+linguagem: texto
+titulo: As cinco etapas do processo decisório
+
+--- enunciado
+Ordene as etapas do processo decisório do PMBOK. Uma afirmação descreve um erro de processo.
+
+--- linhas
+Definição do problema — explorar, esclarecer e definir com precisão
+Criação da solução — prolongar a geração de ideias, evitando decisões prematuras
+Ideias para ação — definir critérios, pesar prós e contras e escolher a melhor solução
+Planejamento da ação — envolver os participantes para ganhar aceitação e compromisso
+Avaliação do resultado — analisar o que aconteceu e registrar lições aprendidas
+
+--- distratores
+Criação da solução — adotar a primeira ideia viável para não perder tempo
+
+--- explicacao
+Adotar a primeira ideia é a **decisão prematura** que a etapa de criação quer evitar. Repare que só na terceira etapa se escolhe — e que envolver as pessoas no planejamento (quarta) é o que transforma uma decisão boa numa decisão **executada**. O estilo de decisão ainda depende do tempo disponível, da qualidade exigida e da aceitação necessária.
+
+=== lab ii-soft-hard
+tipo: prever
+tema: Habilidades Interpessoais no PMBOK
+nivel: 1
+linguagem: js
+titulo: Soft skills x hard skills
+
+--- enunciado
+O código conta quantas **habilidades interpessoais** (soft skills) há na lista de um perfil de vaga. Classifique cada item mentalmente e preveja o número.
+
+--- codigo
+const INTERPESSOAIS = ["liderança", "negociação", "comunicação", "influência", "motivação", "gestão de conflitos", "construção de confiança"];
+
+const perfil = ["programação em Java", "negociação", "domínio do MS Project", "comunicação", "modelagem de dados", "gestão de conflitos", "SQL avançado"];
+
+const soft = perfil.filter(h => INTERPESSOAIS.includes(h));
+console.log(soft.length, "interpessoais de", perfil.length);
+
+--- opcoes
+- 3 interpessoais de 7
+- 4 interpessoais de 7
+- 2 interpessoais de 7
+- 7 interpessoais de 7
+
+--- explicacao
+Negociação, comunicação e gestão de conflitos são **soft skills** — comportamentais, subjetivas, sobre relações. Programação, ferramentas de gestão (MS Project), modelagem e SQL são **hard skills** — técnicas e mensuráveis. Pegadinha de prova: dominar uma **ferramenta de gerenciamento** não é habilidade interpessoal, mesmo sendo "de gestão".
+
+# =====================================================================
+# Liderança em Contextos Organizacionais
+# =====================================================================
+
+=== lab ii-situacional
+tipo: desafio
+tema: Liderança em Contextos Organizacionais
+nivel: 2
+linguagem: js
+titulo: Liderança situacional
+
+--- enunciado
+Na liderança **situacional**, o estilo muda conforme a maturidade do liderado **para aquela tarefa**. Implemente `estilo(competencia, motivacao)` (cada uma `"baixa"` ou `"alta"`): competência baixa e motivação alta → `"dirigir"`; competência baixa e motivação baixa → `"orientar"`; competência alta e motivação baixa → `"apoiar"`; competência alta e motivação alta → `"delegar"`.
+
+--- codigo
+function estilo(competencia, motivacao) {
+  return "dirigir";
+}
+
+const equipe = [
+  { nome: "estagiária animada no primeiro sprint", competencia: "baixa", motivacao: "alta" },
+  { nome: "dev sênior desmotivado", competencia: "alta", motivacao: "baixa" },
+  { nome: "analista experiente e engajada", competencia: "alta", motivacao: "alta" },
+  { nome: "júnior travado e inseguro", competencia: "baixa", motivacao: "baixa" }
+];
+for (const p of equipe) console.log(p.nome.padEnd(38), "→", estilo(p.competencia, p.motivacao));
+
+--- solucao
+const MATRIZ = {
+  baixa: { alta: "dirigir", baixa: "orientar" },
+  alta: { baixa: "apoiar", alta: "delegar" }
+};
+
+function estilo(competencia, motivacao) {
+  return MATRIZ[competencia][motivacao];
+}
+
+const equipe = [
+  { nome: "estagiária animada no primeiro sprint", competencia: "baixa", motivacao: "alta" },
+  { nome: "dev sênior desmotivado", competencia: "alta", motivacao: "baixa" },
+  { nome: "analista experiente e engajada", competencia: "alta", motivacao: "alta" },
+  { nome: "júnior travado e inseguro", competencia: "baixa", motivacao: "baixa" }
+];
+for (const p of equipe) console.log(p.nome.padEnd(38), "→", estilo(p.competencia, p.motivacao));
+
+--- testes
+estilo("baixa", "alta") ==> "dirigir"
+estilo("baixa", "baixa") ==> "orientar"
+estilo("alta", "baixa") ==> "apoiar"
+estilo("alta", "alta") ==> "delegar"
+
+--- dicas
+Uma tabela de duas entradas `{ competencia: { motivacao: estilo } }` fica mais clara que quatro ifs.
+
+--- explicacao
+Não existe estilo certo universal: a estagiária animada precisa de **direção** (instruções claras), o sênior desmotivado não precisa que expliquem a tarefa — precisa de **apoio** (ouvir, envolver, reconhecer) —, e a analista madura rende mais com **delegação**. Aplicar o mesmo estilo a todos é o erro: autocrático com a analista a desmotiva; liberal com o júnior inseguro vira omissão.
+
+=== lab ii-maslow-herzberg
+tipo: explorar
+tema: Liderança em Contextos Organizacionais
+nivel: 2
+linguagem: js
+titulo: Fatores higiênicos x motivacionais (Herzberg)
+
+--- enunciado
+Pela teoria dos dois fatores de Herzberg, **higiênicos** (salário, condições, políticas) só evitam a insatisfação; **motivacionais** (reconhecimento, crescimento, responsabilidade) é que motivam. O código calcula um índice simples para três ofertas de trabalho. Rode e mexa nos números.
+
+--- codigo
+const ofertas = {
+  "Empresa A: salário alto, trabalho repetitivo": { salario: 9, condicoes: 8, reconhecimento: 2, crescimento: 1, responsabilidade: 2 },
+  "Empresa B: salário médio, desafios e mentoria": { salario: 6, condicoes: 7, reconhecimento: 8, crescimento: 9, responsabilidade: 7 },
+  "Empresa C: salário baixo, muito propósito": { salario: 2, condicoes: 3, reconhecimento: 8, crescimento: 7, responsabilidade: 9 }
+};
+const HIGIENICOS = ["salario", "condicoes"];
+const MOTIVACIONAIS = ["reconhecimento", "crescimento", "responsabilidade"];
+const media = (o, lista) => lista.reduce((s, k) => s + o[k], 0) / lista.length;
+
+for (const [nome, o] of Object.entries(ofertas)) {
+  const h = media(o, HIGIENICOS), m = media(o, MOTIVACIONAIS);
+  const insatisfeito = h < 5;                 // higiênico baixo: insatisfação
+  const motivado = !insatisfeito && m >= 6;   // só motiva se o básico estiver atendido
+  console.log(nome);
+  console.log("   higiênicos", h.toFixed(1), "| motivacionais", m.toFixed(1), "→",
+              insatisfeito ? "INSATISFEITO" : motivado ? "MOTIVADO" : "não insatisfeito, mas desmotivado");
+}
+
+--- experimentos
+- Dê um aumento enorme na Empresa A (salário 10). Ela passa a motivar?
+- Na Empresa C, o que acontece se o salário subir para 6?
+
+--- explicacao
+A Empresa A resolve o higiênico, mas isso só leva ao "não insatisfeito": sem reconhecimento nem crescimento, ninguém fica **motivado** — aumento de salário não conserta trabalho sem sentido. A C tem propósito, mas o higiênico baixo gera insatisfação que o propósito não compensa. Por isso Maslow pede atender as necessidades de baixo antes das de cima, e o líder precisa cuidar dos dois lados.
+
+# =====================================================================
+# Ética Profissional e Data Storytelling
+# =====================================================================
+
+=== lab ii-escala
+tipo: prever
+tema: Ética Profissional e Data Storytelling
+nivel: 2
+linguagem: js
+titulo: A escala que mente
+
+--- enunciado
+Dois produtos com satisfação de **95** e **100** pontos. O código calcula a **altura visual** da barra menor em relação à maior quando o eixo começa em 0 e quando começa em 90. Preveja.
+
+--- codigo
+const a = 95, b = 100;
+const alturaRelativa = inicioDoEixo => Math.round(((a - inicioDoEixo) / (b - inicioDoEixo)) * 100);
+console.log("eixo em 0:", alturaRelativa(0) + "% | eixo em 90:", alturaRelativa(90) + "%");
+
+--- opcoes
+- eixo em 0: 95% | eixo em 90: 50%
+- eixo em 0: 95% | eixo em 90: 95%
+- eixo em 0: 50% | eixo em 90: 95%
+- eixo em 0: 95% | eixo em 90: 90%
+
+--- explicacao
+Com o eixo começando em 90, uma diferença real de 5% parece a barra **pela metade** — quem olha o gráfico conclui que um produto é "o dobro" do outro. Escalas distorcidas estão entre os erros (ou truques) mais comuns de visualização. Em data storytelling a narrativa tem de ser sustentada pelos dados: exagerar a diferença é um problema **ético**, não só estético.
+
+=== lab ii-storytelling
+tipo: explorar
+tema: Ética Profissional e Data Storytelling
+nivel: 2
+linguagem: web
+titulo: O mesmo dado, duas histórias
+
+--- enunciado
+Os mesmos números de chamados de suporte, em duas apresentações. Arraste o **início do eixo** e veja o gráfico "mentir"; depois compare com o painel que conta a história com contexto, destaque e uma conclusão.
+
+--- codigo
+<style>
+  body { font-family: sans-serif; margin: 10px; }
+  .painel { border: 1px solid #cbd5e1; border-radius: 8px; padding: 10px; margin-bottom: 12px; }
+  .barras { display: flex; align-items: flex-end; gap: 8px; height: 120px; border-bottom: 1px solid #94a3b8; }
+  .barra { width: 34px; background: #94a3b8; position: relative; }
+  .barra span { position: absolute; top: -18px; font-size: 11px; width: 100%; text-align: center; }
+  .destaque { background: #ef4444; }
+  .meses { display: flex; gap: 8px; font-size: 11px; }
+  .meses div { width: 34px; text-align: center; }
+</style>
+
+<div class="painel">
+  <b>Só dados</b> — início do eixo: <input id="eixo" type="range" min="0" max="110" value="0"> <span id="ev">0</span>
+  <div class="barras" id="b1"></div>
+  <div class="meses" id="m1"></div>
+</div>
+
+<div class="painel">
+  <b>Chamados dobraram depois da mudança de sistema em abril</b>
+  <p style="margin:4px 0;font-size:13px;color:#475569">Meta: até 130 por mês. Recomendação: treinar o time de vendas no novo sistema.</p>
+  <div class="barras" id="b2"></div>
+  <div class="meses" id="m2"></div>
+</div>
+
+<script>
+  const meses = ["jan", "fev", "mar", "abr", "mai", "jun"];
+  const chamados = [118, 122, 120, 190, 235, 248];
+  function desenhar(id, inicio, destacar) {
+    const max = Math.max(...chamados);
+    document.getElementById(id).innerHTML = chamados.map((v, i) => {
+      const h = Math.max(2, ((v - inicio) / (max - inicio)) * 110);
+      const cls = "barra" + (destacar && i >= 3 ? " destaque" : "");
+      return '<div class="' + cls + '" style="height:' + h + 'px"><span>' + v + "</span></div>";
+    }).join("");
+  }
+  for (const m of ["m1", "m2"]) document.getElementById(m).innerHTML = meses.map(x => "<div>" + x + "</div>").join("");
+  const eixo = document.getElementById("eixo");
+  eixo.addEventListener("input", () => { document.getElementById("ev").textContent = eixo.value; desenhar("b1", Number(eixo.value), false); });
+  desenhar("b1", 0, false);
+  desenhar("b2", 0, true);
+</script>
+
+--- experimentos
+- Leve o eixo do primeiro painel para 110. Os meses de jan a mar parecem quase zero — o que alguém concluiria?
+- No segundo painel, o que faz a diferença: o título, a cor, a meta ou a recomendação?
+
+--- explicacao
+Data storytelling combina **dados** confiáveis, **visualização** adequada e **narrativa**. O primeiro painel só mostra números (e, com o eixo manipulado, distorce); o segundo tem **mensagem central** no título, **contexto** (a meta, a mudança de sistema), **destaque** onde importa e uma **chamada à ação**. Sem narrativa, dados não convencem nem são lembrados; com uma narrativa que os dados não sustentam, você engana.
+
+=== lab ii-lgpd
+tipo: desafio
+tema: Ética Profissional e Data Storytelling
+nivel: 2
+linguagem: js
+titulo: Minimização e anonimização de dados (LGPD)
+
+--- enunciado
+Um analista quer os dados de clientes só para estudar **idade e cidade** das compras. Implemente `preparar(clientes)`: devolva, para cada cliente, **somente** `{ faixa, cidade, total }`, em que `faixa` é a faixa etária por década (`"20-29"`, `"30-39"`...). Nome, CPF e e-mail não podem sair — é a **minimização** da LGPD: usar só o necessário para a finalidade.
+
+--- codigo
+const clientes = [
+  { nome: "Ana Souza", cpf: "123.456.789-00", email: "ana@email.com", idade: 27, cidade: "Itajaí", total: 350 },
+  { nome: "Bruno Lima", cpf: "987.654.321-00", email: "bruno@email.com", idade: 34, cidade: "Navegantes", total: 120 },
+  { nome: "Carla Dias", cpf: "111.222.333-44", email: "carla@email.com", idade: 30, cidade: "Itajaí", total: 90 }
+];
+
+function preparar(clientes) {
+  return clientes;   // manda tudo para o analista
+}
+
+console.log(preparar(clientes));
+
+--- solucao
+const clientes = [
+  { nome: "Ana Souza", cpf: "123.456.789-00", email: "ana@email.com", idade: 27, cidade: "Itajaí", total: 350 },
+  { nome: "Bruno Lima", cpf: "987.654.321-00", email: "bruno@email.com", idade: 34, cidade: "Navegantes", total: 120 },
+  { nome: "Carla Dias", cpf: "111.222.333-44", email: "carla@email.com", idade: 30, cidade: "Itajaí", total: 90 }
+];
+
+function faixa(idade) {
+  const inicio = Math.floor(idade / 10) * 10;
+  return inicio + "-" + (inicio + 9);
+}
+
+function preparar(clientes) {
+  return clientes.map(c => ({ faixa: faixa(c.idade), cidade: c.cidade, total: c.total }));
+}
+
+console.log(preparar(clientes));
+
+--- testes
+preparar(clientes)[0] ==> { faixa: "20-29", cidade: "Itajaí", total: 350 }
+preparar(clientes).map(c => c.faixa) ==> ["20-29", "30-39", "30-39"]
+preparar(clientes).some(c => "cpf" in c || "nome" in c || "email" in c || "idade" in c) ==> false
+preparar([]) ==> []
+
+--- dicas
+`map` criando um objeto **novo** só com os três campos garante que nada mais escape.
+
+Faixa por década: `Math.floor(idade / 10) * 10` dá o início (27 → 20).
+
+--- explicacao
+Mandar a base inteira "porque é mais fácil" viola a **finalidade** e a **necessidade** da LGPD: o estudo não precisa saber quem é quem. Trocar a idade exata pela **faixa** reduz o risco de reidentificação (idade exata + cidade + valor pode apontar uma pessoa numa cidade pequena). É o tipo de dilema ético do dia a dia do profissional de TI: a escolha técnica mais cômoda nem sempre é a correta.

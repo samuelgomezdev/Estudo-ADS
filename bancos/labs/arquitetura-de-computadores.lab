@@ -1,0 +1,497 @@
+# Laboratório — Arquitetura de Computadores (simulações em JavaScript)
+# Confira tudo com #/m/arquitetura-de-computadores/lab/autoteste
+
+# =====================================================================
+# Sistemas de Numeração e Linguagem Binária
+# =====================================================================
+
+=== lab bin-pesos
+tipo: explorar
+tema: Sistemas de Numeração e Linguagem Binária
+nivel: 1
+linguagem: js
+titulo: Os pesos de um byte
+
+--- enunciado
+Cada posição de um byte vale uma potência de 2: 128, 64, 32, 16, 8, 4, 2, 1. O código soma os pesos dos bits ligados e mostra o mesmo número em binário, hexadecimal e o código ASCII de alguns caracteres. Rode e troque os bits.
+
+--- codigo
+const pesos = [128, 64, 32, 16, 8, 4, 2, 1];
+const bits = "01010101";
+
+let valor = 0;
+for (let i = 0; i < 8; i++) {
+  if (bits[i] === "1") {
+    valor += pesos[i];
+    console.log("bit na posição do", pesos[i], "ligado → soma", pesos[i]);
+  }
+}
+console.log(bits, "=", valor);
+console.log("conferindo:", parseInt(bits, 2), "| hexa:", valor.toString(16).toUpperCase());
+console.log("ASCII: 'A' =", "A".charCodeAt(0), "| 'a' =", "a".charCodeAt(0), "| '0' =", "0".charCodeAt(0));
+
+--- experimentos
+- Troque para `"11111111"`. Qual é o maior valor de um byte? Quantos valores diferentes cabem nele?
+- Descubra o bit que separa maiúsculas de minúsculas: `("a".charCodeAt(0) - "A".charCodeAt(0)).toString(2)`.
+- Converta o seu ano de nascimento: `(2004).toString(2)`.
+
+--- explicacao
+O binário é **posicional**, como o decimal, só que com base 2: `01010101` = 64 + 16 + 4 + 1 = **85**. Com 8 bits cabem 2⁸ = **256** valores (0 a 255). A diferença entre 'A' (65) e 'a' (97) é 32 = um único bit (o de peso 32): trocar a caixa de uma letra ASCII é ligar ou desligar esse bit.
+
+=== lab bin-conversor
+tipo: desafio
+tema: Sistemas de Numeração e Linguagem Binária
+nivel: 2
+linguagem: js
+titulo: Divisões sucessivas por 2
+
+--- enunciado
+Implemente sem as conversões prontas do JavaScript: `paraBinario(n)` pelas **divisões sucessivas por 2** (os restos lidos de baixo para cima) e `paraDecimal(bits)` pela **soma dos pesos**.
+
+--- codigo
+function paraBinario(n) {
+  return "";
+}
+
+function paraDecimal(bits) {
+  return 0;
+}
+
+console.log(paraBinario(23), paraDecimal("10111"));
+
+--- solucao
+function paraBinario(n) {
+  if (n === 0) return "0";
+  let restos = "";
+  while (n > 0) {
+    restos = (n % 2) + restos;   // o resto entra à esquerda
+    n = Math.floor(n / 2);
+  }
+  return restos;
+}
+
+function paraDecimal(bits) {
+  let valor = 0;
+  for (const b of bits) valor = valor * 2 + Number(b);
+  return valor;
+}
+
+console.log(paraBinario(23), paraDecimal("10111"));
+
+--- testes
+paraBinario(23) ==> "10111"
+paraBinario(0) ==> "0"
+paraBinario(255) ==> "11111111"
+paraBinario(30) ==> "11110"
+paraDecimal("1011") ==> 11
+paraDecimal("11111111") ==> 255
+
+--- regras
+proibido: toString\s*\(\s*2|parseInt|Number\s*\(\s*["']0b :: Faça a conversão na mão, sem toString(2) nem parseInt
+
+--- dicas
+Enquanto n > 0: o resto `n % 2` é o próximo bit (da direita para a esquerda) e `n = Math.floor(n / 2)`.
+
+Para ler da direita para a esquerda sem inverter no fim, vá colocando cada resto **à esquerda**: `restos = (n % 2) + restos`.
+
+Para o decimal, o método de Horner: a cada bit, `valor = valor * 2 + bit`.
+
+--- explicacao
+Dividir por 2 e guardar o resto é descobrir, de trás para frente, quais potências de 2 compõem o número: 23 → restos 1, 1, 1, 0, 1 → lidos de baixo para cima, **10111**. Na volta, `valor * 2 + bit` é o mesmo que somar os pesos, sem calcular potência nenhuma — é assim que o hardware faz.
+
+=== lab bin-hex
+tipo: prever
+tema: Sistemas de Numeração e Linguagem Binária
+nivel: 1
+linguagem: js
+titulo: Binário, hexa e octal
+
+--- enunciado
+O JavaScript aceita literais em binário (`0b`), octal (`0o`) e hexadecimal (`0x`). Preveja a saída.
+
+--- codigo
+const byte = 0b11111010;
+console.log(byte.toString(16).toUpperCase(), 0xFF, 0o17);
+
+--- opcoes
+- FA 255 15
+- AF 255 15
+- FA 256 17
+- 250 FF 15
+
+--- explicacao
+Cada dígito hexa vale exatamente **4 bits**: `1111 1010` → `F` `A` = **FA**. `0xFF` é 15·16 + 15 = **255**, e `0o17` é 1·8 + 7 = **15** (cada dígito octal vale 3 bits). É por isso que a computação usa hexa: é um jeito curto e sem conta de escrever binário.
+
+# =====================================================================
+# Álgebra Booleana e Portas Lógicas
+# =====================================================================
+
+=== lab bool-tabela
+tipo: explorar
+tema: Álgebra Booleana e Portas Lógicas
+nivel: 1
+linguagem: js
+titulo: Gerador de tabelas-verdade
+
+--- enunciado
+As portas lógicas viram funções de 0 e 1. O código gera a tabela-verdade de todas elas para 2 entradas e confere a **lei de De Morgan**. Rode e depois crie as suas portas.
+
+--- codigo
+const portas = {
+  AND:  (a, b) => a & b,
+  OR:   (a, b) => a | b,
+  NAND: (a, b) => 1 - (a & b),
+  NOR:  (a, b) => 1 - (a | b),
+  XOR:  (a, b) => a ^ b,
+  XNOR: (a, b) => 1 - (a ^ b)
+};
+
+console.log("A B | " + Object.keys(portas).join(" "));
+for (const a of [0, 1]) {
+  for (const b of [0, 1]) {
+    const saidas = Object.values(portas).map(p => String(p(a, b)).padStart(3));
+    console.log(a + " " + b + " | " + saidas.join(" "));
+  }
+}
+
+// De Morgan: (A·B)' = A' + B'
+const nao = x => 1 - x;
+const vale = [0, 1].every(a => [0, 1].every(b => nao(a & b) === (nao(a) | nao(b))));
+console.log("De Morgan vale para todas as entradas?", vale);
+
+--- experimentos
+- Confira a outra lei de De Morgan: `(A + B)' = A' · B'`.
+- Faça a tabela para 3 entradas. Quantas linhas aparecem? (2ⁿ)
+- Que porta é `(a, b) => (a | b) & (1 - (a & b))`?
+
+--- explicacao
+Cada linha da tabela-verdade é uma combinação das entradas: com n entradas, **2ⁿ** linhas. AND só dá 1 com tudo 1; OR dá 1 com qualquer 1; XOR dá 1 quando as entradas são **diferentes** (por isso é a base do somador); NAND e NOR são as negações. Conferir De Morgan em todas as combinações é uma **prova por exaustão** — possível porque o domínio é finito.
+
+=== lab bool-nand
+tipo: desafio
+tema: Álgebra Booleana e Portas Lógicas
+nivel: 2
+linguagem: js
+titulo: Tudo a partir da NAND
+
+--- enunciado
+A NAND é uma **porta universal**: dá para construir qualquer circuito só com ela. Construa `nao`, `e`, `ou` e `xor` usando **apenas chamadas a `nand`** (sem `&`, `|`, `^`, `!` nem operadores lógicos).
+
+--- codigo
+const nand = (a, b) => [1, 1, 1, 0][2 * a + b];   // tabela-verdade da NAND
+
+const nao = a => 0;
+const e = (a, b) => 0;
+const ou = (a, b) => 0;
+const xor = (a, b) => 0;
+
+console.log(nao(0), e(1, 1), ou(0, 1), xor(1, 0));
+
+--- solucao
+const nand = (a, b) => [1, 1, 1, 0][2 * a + b];   // tabela-verdade da NAND
+
+const nao = a => nand(a, a);
+const e = (a, b) => nao(nand(a, b));
+const ou = (a, b) => nand(nao(a), nao(b));
+const xor = (a, b) => {
+  const n = nand(a, b);
+  return nand(nand(a, n), nand(b, n));
+};
+
+console.log(nao(0), e(1, 1), ou(0, 1), xor(1, 0));
+
+--- testes
+[nao(0), nao(1)] ==> [1, 0]
+[e(0, 0), e(0, 1), e(1, 0), e(1, 1)] ==> [0, 0, 0, 1]
+[ou(0, 0), ou(0, 1), ou(1, 0), ou(1, 1)] ==> [0, 1, 1, 1]
+[xor(0, 0), xor(0, 1), xor(1, 0), xor(1, 1)] ==> [0, 1, 1, 0]
+
+--- regras
+proibido: [&|^!]|\?|\b1\s*- :: Só vale chamar nand — nada de operadores lógicos, ternário ou "1 - x"
+
+--- dicas
+NOT: ligue a mesma entrada nos dois pinos da NAND: `nand(a, a)`.
+
+AND é uma NAND negada. OR sai de De Morgan: `a + b = (a' · b')'`.
+
+O XOR clássico com 4 NANDs: `n = nand(a, b)`; `nand(nand(a, n), nand(b, n))`.
+
+--- explicacao
+`nand(a, a)` = NOT; negar a NAND dá AND; e pela lei de De Morgan, a NAND das entradas negadas é OR. O XOR sai com **4 NANDs**. É por isso que fabricantes produzem chips inteiros só com NAND (a memória flash tipo NAND leva esse nome): um único tipo de porta, replicado bilhões de vezes, faz qualquer lógica.
+
+# =====================================================================
+# Circuitos Combinacionais e Sequenciais
+# =====================================================================
+
+=== lab comb-somador
+tipo: passo
+tema: Circuitos Combinacionais e Sequenciais
+nivel: 2
+linguagem: js
+titulo: Somador completo em cascata, passo a passo
+pergunta: Na primeira chamada de somadorCompleto (bit 0), quanto valeu o vaiUm?
+resposta: 1
+
+--- enunciado
+Um **somador completo** soma dois bits e o vem-um da posição anterior. Encadeando três deles, soma-se 3 + 1 em binário. Os bits estão do **menos** para o **mais** significativo. Avance e acompanhe o `vaiUm` passando de uma posição para a próxima.
+
+--- codigo
+function somadorCompleto(a, b, vemUm) {
+  const s1 = a ^ b;
+  const soma = s1 ^ vemUm;
+  const vaiUm = (a & b) | (s1 & vemUm);
+  return [soma, vaiUm];
+}
+
+const A = [1, 1, 0];   // 3 = 011
+const B = [1, 0, 0];   // 1 = 001
+const resultado = [];
+let carry = 0;
+for (let i = 0; i < 3; i++) {
+  const [s, c] = somadorCompleto(A[i], B[i], carry);
+  resultado.push(s);
+  carry = c;
+}
+console.log("resultado (do bit 0 ao 2):", resultado, "| vai-um final:", carry);
+
+--- opcoes
+- 0
+- 1
+
+--- explicacao
+No bit 0, 1 + 1 = 10: soma 0 e **vai-um 1**. No bit 1, 1 + 0 + 1 = 10 de novo: soma 0, vai-um 1. No bit 2, 0 + 0 + 1 = 1. Resultado `[0, 0, 1]` = 100 = **4**. É um circuito **combinacional**: a saída depende só das entradas do momento. Encadear somadores assim (ripple carry) é simples, mas o vai-um precisa atravessar todas as posições — cada uma espera a anterior.
+
+=== lab seq-estado
+tipo: prever
+tema: Circuitos Combinacionais e Sequenciais
+nivel: 2
+linguagem: js
+titulo: Combinacional x sequencial
+
+--- enunciado
+`par` é **combinacional**: a saída depende só da entrada. `clock` imita um **flip-flop T**: guarda um estado e o inverte quando a entrada é 1. Preveja a saída.
+
+--- codigo
+const par = x => x % 2 === 0;
+
+let estado = 0;                  // o bit guardado no flip-flop
+function clock(t) {
+  estado = estado ^ t;           // T = 1 inverte; T = 0 mantém
+  return estado;
+}
+
+console.log(par(4), par(4), clock(1), clock(1), clock(0), clock(1));
+
+--- opcoes
+- true true 1 0 0 1
+- true true 1 1 0 1
+- true true 1 0 1 0
+- true false 1 0 0 1
+
+--- experimentos
+- Faça um contador de 2 bits com dois flip-flops T: o segundo só inverte quando o primeiro passa de 1 para 0.
+- Clock de 200 MHz: calcule o período `1 / 200e6` em nanossegundos.
+
+--- explicacao
+`par(4)` é sempre `true`, não importa quantas vezes você pergunte. Já `clock(1)` deu 1 na primeira vez e 0 na segunda — **a mesma entrada, saídas diferentes**, porque a saída depende também do **estado guardado**. Circuito sequencial = combinacional + memória, com realimentação. Nos síncronos, as trocas de estado acontecem na borda do clock.
+
+# =====================================================================
+# Arquitetura Básica e Modelo de Von Neumann
+# =====================================================================
+
+=== lab vn-ciclo
+tipo: explorar
+tema: Arquitetura Básica e Modelo de Von Neumann
+nivel: 2
+linguagem: js
+titulo: Ciclo de instrução e o gargalo de Von Neumann
+
+--- enunciado
+Uma CPU de brinquedo com **ULA**, **UC** e registradores, e uma memória única para programa e dados ligada por **um barramento**. O código conta quantas vezes o barramento foi usado. Rode e repare: a maior parte do tráfego é só para buscar instruções.
+
+--- codigo
+const memoria = [
+  ["LOAD", 10],    // ACC = mem[10]
+  ["ADD", 11],     // ACC = ACC + mem[11]
+  ["ADD", 12],
+  ["STORE", 13],   // mem[13] = ACC
+  ["HALT"],
+  0, 0, 0, 0, 0,
+  7, 8, 27, 0      // dados nas posições 10 a 13
+];
+
+const cpu = { PC: 0, ACC: 0, IR: null };
+let usosDoBarramento = 0;
+const barramento = end => { usosDoBarramento++; return memoria[end]; };
+
+while (true) {
+  cpu.IR = barramento(cpu.PC);          // BUSCA (fetch)
+  cpu.PC++;
+  const [op, end] = cpu.IR;             // DECODIFICA (UC)
+  if (op === "HALT") break;
+  if (op === "LOAD") cpu.ACC = barramento(end);                 // EXECUTA
+  if (op === "ADD") cpu.ACC = cpu.ACC + barramento(end);        // (ULA)
+  if (op === "STORE") { memoria[end] = cpu.ACC; usosDoBarramento++; }
+}
+
+console.log("resultado em mem[13]:", memoria[13]);
+console.log("usos do barramento:", usosDoBarramento, "(5 só para buscar instruções)");
+
+--- experimentos
+- Some mais números: acrescente dados e instruções ADD. Como cresce o tráfego?
+- Arquitetura **Harvard** separa memória de instruções e de dados, com barramentos independentes. Na simulação, quantos acessos conflitariam a menos?
+
+--- explicacao
+Cada ciclo **busca** a instrução na memória (PC aponta onde), a **UC decodifica** e a **ULA executa**. Como instrução e dado passam pelo mesmo barramento, a CPU vive esperando a memória — o **gargalo de Von Neumann**. As respostas da indústria são cache (memória rápida perto da CPU), pipeline e caches separadas para instruções e dados (um "Harvard" por dentro).
+
+# =====================================================================
+# Processadores: RISC, CISC e Desempenho
+# =====================================================================
+
+=== lab cpu-desempenho
+tipo: desafio
+tema: Processadores: RISC, CISC e Desempenho
+nivel: 2
+linguagem: js
+titulo: Clock não é tudo: a equação do desempenho
+
+--- enunciado
+Tempo de execução = **instruções × CPI ÷ frequência**. Implemente `tempo(cpu)` (em segundos; `ghz` em bilhões de ciclos por segundo) e `maisRapida(a, b)`, que devolve o `nome` da mais rápida.
+
+--- codigo
+const cisc = { nome: "CISC", instrucoes: 1e9, cpi: 4, ghz: 4 };
+const risc = { nome: "RISC", instrucoes: 1.5e9, cpi: 1, ghz: 3 };
+
+function tempo(cpu) {
+  return 0;
+}
+
+function maisRapida(a, b) {
+  return a.ghz > b.ghz ? a.nome : b.nome;   // "a de maior clock é a mais rápida"?
+}
+
+console.log(tempo(cisc), tempo(risc), maisRapida(cisc, risc));
+
+--- solucao
+const cisc = { nome: "CISC", instrucoes: 1e9, cpi: 4, ghz: 4 };
+const risc = { nome: "RISC", instrucoes: 1.5e9, cpi: 1, ghz: 3 };
+
+function tempo(cpu) {
+  return (cpu.instrucoes * cpu.cpi) / (cpu.ghz * 1e9);
+}
+
+function maisRapida(a, b) {
+  return tempo(a) <= tempo(b) ? a.nome : b.nome;
+}
+
+console.log(tempo(cisc), tempo(risc), maisRapida(cisc, risc));
+
+--- testes
+tempo({ instrucoes: 1e9, cpi: 2, ghz: 2 }) ==> 1
+tempo(cisc) ==> 1
+tempo(risc) ==> 0.5
+maisRapida(cisc, risc) ==> "RISC"
+maisRapida({ nome: "X", instrucoes: 1e9, cpi: 1, ghz: 2 }, { nome: "Y", instrucoes: 1e9, cpi: 3, ghz: 3 }) ==> "X"
+
+--- dicas
+Ciclos totais = instruções × CPI. Ciclos por segundo = ghz × 1e9.
+
+A mais rápida é a de **menor tempo**, não a de maior clock.
+
+--- explicacao
+O CISC executa menos instruções (1 bilhão), mas cada uma leva 4 ciclos: 4 bilhões de ciclos a 4 GHz = **1 s**. O RISC precisa de mais instruções (1,5 bilhão), só que com 1 ciclo cada: 1,5 bilhão a 3 GHz = **0,5 s** — o dobro de rápido com clock menor. É o que o resumo diz: frequência sozinha não mede desempenho, porque o **IPC/CPI** importa tanto quanto.
+
+=== lab cpu-pipeline
+tipo: prever
+tema: Processadores: RISC, CISC e Desempenho
+nivel: 2
+linguagem: js
+titulo: Quanto o pipeline ganha?
+
+--- enunciado
+Um pipeline de 5 estágios, cada estágio levando 1 ciclo. Sem pipeline, uma instrução ocupa os 5 ciclos antes da próxima começar; com pipeline, uma nova instrução entra a cada ciclo. Preveja os ciclos para 100 instruções.
+
+--- codigo
+const estagios = 5, instrucoes = 100;
+
+const semPipeline = estagios * instrucoes;
+const comPipeline = estagios + (instrucoes - 1);   // enche o pipe, depois 1 por ciclo
+
+console.log("sem:", semPipeline, "| com:", comPipeline, "| ganho:", (semPipeline / comPipeline).toFixed(2) + "x");
+
+--- opcoes
+- sem: 500 | com: 104 | ganho: 4.81x
+- sem: 500 | com: 100 | ganho: 5.00x
+- sem: 100 | com: 20 | ganho: 5.00x
+- sem: 500 | com: 105 | ganho: 4.76x
+
+--- experimentos
+- Com 1 milhão de instruções, o ganho se aproxima de quanto?
+- Uma instrução individual fica mais rápida com pipeline?
+
+--- explicacao
+O pipeline leva 5 ciclos para "encher" e depois termina **uma instrução por ciclo**: 5 + 99 = 104. O ganho tende ao número de estágios (5×) para muitas instruções. Repare: cada instrução continua levando 5 ciclos — o pipeline aumenta a **vazão**, não diminui a **latência**. Instruções de tamanho fixo e simples (RISC) facilitam muito o pipeline.
+
+# =====================================================================
+# Entrada, Saída e Drivers
+# =====================================================================
+
+=== lab es-polling
+tipo: explorar
+tema: Entrada, Saída e Drivers
+nivel: 2
+linguagem: js
+titulo: Polling x interrupção x DMA
+
+--- enunciado
+Um disco fica pronto no ciclo 60 e precisa transferir 20 palavras. Compare quantos ciclos de CPU cada técnica **desperdiça** e quantos sobram para trabalho útil num intervalo de 100 ciclos.
+
+--- codigo
+const PRONTO = 60, PALAVRAS = 20, JANELA = 100;
+
+// 1) E/S programada (polling): a CPU fica perguntando "já?" e depois copia palavra a palavra
+const polling = { esperando: PRONTO, copiando: PALAVRAS };
+// 2) Interrupção: a CPU trabalha até o aviso; depois copia cada palavra (1 interrupção por palavra)
+const interrupcao = { esperando: 0, copiando: PALAVRAS * 2 };   // copiar + tratar a interrupção
+// 3) DMA: a controladora copia sozinha; a CPU só trata 1 interrupção no fim
+const dma = { esperando: 0, copiando: 1 };
+
+for (const [nome, t] of Object.entries({ polling, interrupcao, dma })) {
+  const ocupada = t.esperando + t.copiando;
+  console.log(nome.padEnd(12), "CPU ocupada com E/S:", String(ocupada).padStart(3), "| livre p/ trabalho útil:", JANELA - ocupada);
+}
+
+--- experimentos
+- Transfira 2000 palavras (um arquivo grande). Qual técnica ainda é viável?
+- Para um teclado (1 tecla de vez em quando), qual faz mais sentido?
+
+--- explicacao
+No **polling** a CPU gasta os 60 ciclos só perguntando. Com **interrupção** ela trabalha enquanto espera e é avisada — mas, sem DMA, ainda copia cada palavra. Com **DMA** uma controladora transfere direto entre dispositivo e memória, e a CPU só é avisada no fim: essencial para disco, rede e vídeo. Em todos os casos, quem sabe falar com aquela controladora específica é o **driver**.
+
+# =====================================================================
+# História e Evolução dos Computadores
+# =====================================================================
+
+=== lab hist-geracoes
+tipo: parsons
+tema: História e Evolução dos Computadores
+nivel: 1
+linguagem: texto
+titulo: As gerações dos computadores
+
+--- enunciado
+Ordene da mais antiga para a mais recente. Uma afirmação troca a tecnologia de geração.
+
+--- linhas
+1837 — Máquina Analítica de Babbage; Ada Lovelace escreve o primeiro algoritmo
+1ª geração (1940–1955) — válvulas; ENIAC (1946)
+2ª geração (1955–1965) — transistores; surgem Fortran e Cobol
+3ª geração (1965–1980) — circuitos integrados; IBM System/360 e a multiprogramação
+4ª geração (1980–hoje) — microprocessador (VLSI); Apple II, IBM PC, Macintosh
+5ª geração — paralelismo, multicore, GPUs, IA e computação quântica
+
+--- distratores
+1ª geração — circuitos integrados; o ENIAC já cabia numa mesa
+
+--- explicacao
+O fio condutor é a **chave eletrônica**: válvula → transistor → muitos transistores numa pastilha (CI) → a CPU inteira num chip (microprocessador). Cada salto deixou o computador menor, mais barato, mais rápido e mais confiável — e a Lei de Moore descreve o ritmo da 4ª geração. Quando a miniaturização encostou no limite físico, o ganho passou a vir do **paralelismo**.

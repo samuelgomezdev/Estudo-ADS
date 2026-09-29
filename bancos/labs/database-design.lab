@@ -1,0 +1,830 @@
+# Laboratório — Database Design for Apps (SQLite rodando no navegador)
+# Confira tudo com #/m/database-design/lab/autoteste
+
+=== banco vendas
+CREATE TABLE TipoDeProduto (
+  idTipo INTEGER PRIMARY KEY,
+  descTipo TEXT NOT NULL UNIQUE
+);
+CREATE TABLE Produto (
+  idProd INTEGER PRIMARY KEY,
+  nomeProd TEXT NOT NULL,
+  precoProd REAL NOT NULL CHECK (precoProd >= 0),
+  estoque INTEGER NOT NULL DEFAULT 0,
+  idTipo INTEGER NOT NULL REFERENCES TipoDeProduto(idTipo)
+);
+CREATE TABLE Cliente (
+  idCliente INTEGER PRIMARY KEY,
+  nome TEXT NOT NULL,
+  cidade TEXT,
+  email TEXT UNIQUE
+);
+CREATE TABLE Pedido (
+  idPedido INTEGER PRIMARY KEY,
+  idCliente INTEGER NOT NULL REFERENCES Cliente(idCliente),
+  data TEXT NOT NULL
+);
+CREATE TABLE ItemPedido (
+  idPedido INTEGER NOT NULL REFERENCES Pedido(idPedido) ON DELETE CASCADE,
+  idProd INTEGER NOT NULL REFERENCES Produto(idProd),
+  qtd INTEGER NOT NULL CHECK (qtd > 0),
+  PRIMARY KEY (idPedido, idProd)
+);
+INSERT INTO TipoDeProduto VALUES (1, 'Papelaria'), (2, 'Eletrônicos'), (3, 'Acessórios'), (4, 'Livros');
+INSERT INTO Produto VALUES
+  (1, 'Caderno', 25.90, 40, 1),
+  (2, 'Caneta', 3.50, 200, 1),
+  (3, 'Mouse', 49.90, 15, 2),
+  (4, 'Fone', 89.00, 8, 2),
+  (5, 'Mochila', 129.90, 5, 3),
+  (6, 'Garrafa', 39.00, 22, 3),
+  (7, 'Teclado', 149.90, 0, 2);
+INSERT INTO Cliente VALUES
+  (1, 'Ana', 'Itajaí', 'ana@email.com'),
+  (2, 'Bruno', 'Balneário Camboriú', 'bruno@email.com'),
+  (3, 'Carla', 'Itajaí', NULL),
+  (4, 'Davi', 'Navegantes', 'davi@email.com');
+INSERT INTO Pedido VALUES (1, 1, '2026-09-01'), (2, 1, '2026-09-10'), (3, 2, '2026-09-12'), (4, 3, '2026-09-20');
+INSERT INTO ItemPedido VALUES (1, 1, 2), (1, 2, 10), (2, 3, 1), (3, 5, 1), (3, 6, 2), (4, 4, 1), (4, 2, 3);
+
+=== banco rh
+CREATE TABLE FuncionarioPlano (
+  id INTEGER PRIMARY KEY,
+  nome TEXT NOT NULL,
+  salario REAL NOT NULL,
+  idDepto INTEGER NOT NULL,
+  nomeDepto TEXT NOT NULL,
+  ramalDepto TEXT NOT NULL
+);
+INSERT INTO FuncionarioPlano VALUES
+  (1, 'Ana', 7200, 10, 'TI', '2001'),
+  (2, 'Bruno', 5100, 10, 'TI', '2001'),
+  (3, 'Carla', 6400, 20, 'Financeiro', '3005'),
+  (4, 'Davi', 3900, 30, 'Comercial', '4010'),
+  (5, 'Elisa', 4500, 30, 'Comercial', '4010');
+
+=== banco contas
+CREATE TABLE Conta (
+  id INTEGER PRIMARY KEY,
+  titular TEXT NOT NULL,
+  saldo REAL NOT NULL CHECK (saldo >= 0)
+);
+INSERT INTO Conta VALUES (1, 'Ana', 1000), (2, 'Bruno', 250), (3, 'Carla', 80);
+
+# =====================================================================
+# Arquitetura de SGBD e modelos de dados
+# =====================================================================
+
+=== lab arq-catalogo
+tipo: explorar
+tema: Arquitetura de SGBD e modelos de dados
+nivel: 1
+linguagem: sql
+banco: vendas
+titulo: Esquema x dados: o catálogo do SGBD
+
+--- enunciado
+Todo SGBD guarda a **descrição** das tabelas (o **esquema**) separada dos **dados**. No SQLite essa descrição fica numa tabela especial, `sqlite_master` — o catálogo. Rode e compare: primeiro você vê a estrutura, depois as tuplas.
+
+--- codigo
+-- 1) o ESQUEMA: a definição das relações (metadados)
+SELECT type, name FROM sqlite_master WHERE type = 'table';
+
+-- 2) os atributos (colunas) de uma relação e seus domínios (tipos)
+PRAGMA table_info(Produto);
+
+-- 3) os DADOS: as tuplas da relação
+SELECT * FROM Produto;
+
+--- experimentos
+- Conte as tuplas: `SELECT COUNT(*) FROM Produto;` — é o grau ou a cardinalidade da relação?
+- Rode `SELECT sql FROM sqlite_master WHERE name = 'ItemPedido';` e veja o CREATE TABLE original, com as chaves.
+- Tente inserir um preço negativo em Produto. Quem recusa: a aplicação ou o SGBD?
+
+--- explicacao
+Vocabulário de Codd: a **relação** é a tabela, cada **tupla** é uma linha, cada **atributo** é uma coluna e o **domínio** é o conjunto de valores permitidos (o tipo, mais restrições como o `CHECK`). O **esquema** é a estrutura — e ele mesmo fica guardado em tabelas do catálogo, consultáveis com SQL. É o SGBD, não a aplicação, quem garante integridade: o `CHECK (precoProd >= 0)` vale para qualquer programa que acesse o banco.
+
+=== lab arq-view-externo
+tipo: explorar
+tema: Arquitetura de SGBD e modelos de dados
+nivel: 2
+linguagem: sql
+banco: vendas
+titulo: O nível externo: uma view por público
+
+--- enunciado
+Na arquitetura **ANSI/SPARC**, o nível **externo** é formado pelas **views**: cada grupo de usuários enxerga só a sua porção do banco. Crie a vitrine da loja — clientes veem nome, preço e tipo, só dos produtos em estoque.
+
+--- codigo
+CREATE VIEW vw_vitrine AS
+SELECT p.nomeProd AS produto, p.precoProd AS preco, t.descTipo AS tipo
+FROM Produto p
+JOIN TipoDeProduto t ON t.idTipo = p.idTipo
+WHERE p.estoque > 0;
+
+SELECT * FROM vw_vitrine ORDER BY preco;
+
+--- experimentos
+- Zere o estoque do Mouse (`UPDATE Produto SET estoque = 0 WHERE nomeProd = 'Mouse';`) antes do SELECT. A view já reflete a mudança?
+- A view não guarda dados: `SELECT type, name FROM sqlite_master;` mostra o que ela é.
+- Tente `SELECT estoque FROM vw_vitrine;`. Por que dá erro?
+
+--- explicacao
+A view é uma **consulta guardada**, não uma cópia: cada vez que é lida, roda sobre as tabelas reais. Quem usa `vw_vitrine` não sabe (nem precisa saber) que existem duas tabelas e uma junção por trás — é a **independência lógica de dados**: o esquema conceitual pode mudar sem quebrar os usuários, desde que a view continue entregando as mesmas colunas. De quebra, a view esconde o que o público não deve ver (o estoque).
+
+# =====================================================================
+# Modelagem ER e normalização
+# =====================================================================
+
+=== lab norm-anomalias
+tipo: explorar
+tema: Modelagem ER e normalização
+nivel: 1
+linguagem: sql
+titulo: As três anomalias de uma tabela não normalizada
+
+--- enunciado
+Esta tabela junta pedido e cliente numa só — a cidade do cliente se repete em cada pedido. Rode e veja uma **anomalia de atualização** acontecer: a Ana muda de cidade, mas só uma linha é atualizada.
+
+--- codigo
+CREATE TABLE PedidoPlano (
+  idPedido INTEGER PRIMARY KEY,
+  cliente TEXT,
+  cidadeCliente TEXT,
+  produto TEXT
+);
+INSERT INTO PedidoPlano VALUES
+  (1, 'Ana', 'Itajaí', 'Caderno'),
+  (2, 'Ana', 'Itajaí', 'Mouse'),
+  (3, 'Bruno', 'Navegantes', 'Mochila');
+
+-- Ana se mudou... mas o UPDATE pegou só o pedido 1
+UPDATE PedidoPlano SET cidadeCliente = 'Florianópolis' WHERE idPedido = 1;
+
+-- afinal, onde a Ana mora?
+SELECT DISTINCT cliente, cidadeCliente FROM PedidoPlano ORDER BY cliente;
+
+--- experimentos
+- **Anomalia de inserção:** cadastre um cliente novo que ainda não fez pedido. Dá, sem inventar um pedido?
+- **Anomalia de exclusão:** apague o pedido 3 e depois procure a cidade do Bruno.
+- Proponha o modelo normalizado: quais tabelas? Onde fica a FK?
+
+--- explicacao
+Quando um fato (a cidade da Ana) é guardado em **várias linhas**, atualizar só algumas deixa o banco contraditório — **anomalia de atualização**. Sem pedido não há onde guardar um cliente (**inserção**), e apagar o único pedido do Bruno apaga junto a cidade dele (**exclusão**). A normalização separa Cliente(idCliente, nome, cidade) de Pedido(idPedido, idCliente, produto): cada fato fica num lugar só, e o pedido referencia o cliente por **FK** — no lado N do relacionamento N:1.
+
+=== lab norm-1fn
+tipo: prever
+tema: Modelagem ER e normalização
+nivel: 1
+linguagem: sql
+titulo: 1FN: por que valores têm de ser atômicos
+alvo: contagem
+
+--- enunciado
+A coluna `telefones` guarda **vários** números numa célula só. A consulta procura quem tem o telefone 9999-2222 — que existe na tabela. Preveja quantas linhas voltam.
+
+--- codigo
+CREATE TABLE Contato (
+  id INTEGER PRIMARY KEY,
+  nome TEXT,
+  telefones TEXT
+);
+INSERT INTO Contato VALUES
+  (1, 'Ana', '9999-1111, 9999-2222'),
+  (2, 'Bruno', '9999-2222'),
+  (3, 'Carla', '9888-0000, 9777-1234, 9999-2222');
+
+SELECT nome FROM Contato WHERE telefones = '9999-2222';
+
+--- opcoes
+- 0
+- 1
+- 2
+- 3
+
+--- experimentos
+- "Conserte" com `WHERE telefones LIKE '%9999-2222%'`. Que problema novo aparece se existir o número 19999-2222?
+- Normalize: crie `Telefone(idContato, numero)` com uma linha por número e refaça a busca com JOIN.
+
+--- explicacao
+Só o Bruno aparece: para o SGBD, `'9999-1111, 9999-2222'` é **um valor só**, um texto que não é igual a `'9999-2222'`. A **1FN** exige atributos **atômicos** — nada de listas dentro de uma célula. Com valores multivalorados, buscar, contar, indexar e garantir unicidade vira gambiarra com `LIKE`. A solução é uma tabela nova com uma linha por telefone.
+
+=== lab norm-3fn
+tipo: desafio
+tema: Modelagem ER e normalização
+nivel: 2
+linguagem: sql
+banco: rh
+titulo: Normalize até a 3FN
+verificar: SELECT f.nome, d.nomeDepto, d.ramalDepto, (SELECT COUNT(*) FROM Departamento) AS deptos FROM Funcionario2 f JOIN Departamento d ON d.idDepto = f.idDepto ORDER BY f.nome;
+
+--- enunciado
+Em `FuncionarioPlano`, `nomeDepto` e `ramalDepto` dependem de `idDepto`, que não é chave — **dependência transitiva** (viola a 3FN). Crie:
+
+`Departamento(idDepto, nomeDepto, ramalDepto)` com uma linha por departamento, e `Funcionario2(id, nome, salario, idDepto)` com FK para Departamento.
+
+Preencha as duas a partir de `FuncionarioPlano` com `INSERT ... SELECT`. A conferência faz o JOIN das suas tabelas.
+
+--- codigo
+-- veja a redundância: TI e Comercial se repetem
+SELECT * FROM FuncionarioPlano;
+
+-- 1) CREATE TABLE Departamento (...);
+-- 2) INSERT INTO Departamento SELECT DISTINCT ... FROM FuncionarioPlano;
+-- 3) CREATE TABLE Funcionario2 (...);
+-- 4) INSERT INTO Funcionario2 SELECT ... FROM FuncionarioPlano;
+
+--- solucao
+CREATE TABLE Departamento (
+  idDepto INTEGER PRIMARY KEY,
+  nomeDepto TEXT NOT NULL,
+  ramalDepto TEXT NOT NULL
+);
+INSERT INTO Departamento
+SELECT DISTINCT idDepto, nomeDepto, ramalDepto FROM FuncionarioPlano;
+
+CREATE TABLE Funcionario2 (
+  id INTEGER PRIMARY KEY,
+  nome TEXT NOT NULL,
+  salario REAL NOT NULL,
+  idDepto INTEGER NOT NULL REFERENCES Departamento(idDepto)
+);
+INSERT INTO Funcionario2
+SELECT id, nome, salario, idDepto FROM FuncionarioPlano;
+
+SELECT f.nome, d.nomeDepto FROM Funcionario2 f JOIN Departamento d ON d.idDepto = f.idDepto;
+
+--- dicas
+`SELECT DISTINCT idDepto, nomeDepto, ramalDepto FROM FuncionarioPlano` já devolve um departamento por linha.
+
+`INSERT INTO tabela SELECT ...` copia o resultado de uma consulta para dentro da tabela, desde que a ordem e o número de colunas batam.
+
+Em Funcionario2, o idDepto é a FK: `idDepto INTEGER REFERENCES Departamento(idDepto)`.
+
+--- explicacao
+A 3FN tira a dependência **transitiva**: `id → idDepto → nomeDepto`. Agora "TI tem ramal 2001" está escrito **uma vez** em Departamento; mudar o ramal é um UPDATE numa linha só, e não existe mais o risco de dois funcionários de TI com ramais diferentes. O JOIN reconstrói a informação original quando você precisa dela — é a troca clássica: menos redundância, mais junções.
+
+=== lab norm-nn
+tipo: explorar
+tema: Modelagem ER e normalização
+nivel: 2
+linguagem: sql
+titulo: Relacionamento N:N e a tabela associativa
+
+--- enunciado
+Um aluno cursa várias disciplinas e uma disciplina tem vários alunos: **N:N**. No modelo relacional isso vira uma **tabela associativa**, com a chave primária composta pelas duas FKs. Rode e explore.
+
+--- codigo
+CREATE TABLE Aluno (idAluno INTEGER PRIMARY KEY, nome TEXT NOT NULL);
+CREATE TABLE Disciplina (idDisciplina INTEGER PRIMARY KEY, titulo TEXT NOT NULL);
+CREATE TABLE Matricula (
+  idAluno INTEGER NOT NULL REFERENCES Aluno(idAluno),
+  idDisciplina INTEGER NOT NULL REFERENCES Disciplina(idDisciplina),
+  nota REAL CHECK (nota BETWEEN 0 AND 10),
+  PRIMARY KEY (idAluno, idDisciplina)
+);
+INSERT INTO Aluno VALUES (1, 'Ana'), (2, 'Bruno'), (3, 'Carla');
+INSERT INTO Disciplina VALUES (1, 'Banco de Dados'), (2, 'Paradigmas');
+INSERT INTO Matricula VALUES (1, 1, 9.0), (1, 2, 8.5), (2, 1, 6.0), (3, 2, 7.5);
+
+SELECT a.nome, d.titulo, m.nota
+FROM Matricula m
+JOIN Aluno a ON a.idAluno = m.idAluno
+JOIN Disciplina d ON d.idDisciplina = m.idDisciplina
+ORDER BY a.nome, d.titulo;
+
+--- experimentos
+- Matricule a Ana de novo em Banco de Dados: `INSERT INTO Matricula VALUES (1, 1, 10);`. Quem impede?
+- Matricule um aluno que não existe (idAluno 99).
+- Quantas disciplinas cada aluno cursa? Use `GROUP BY a.nome`.
+
+--- explicacao
+A associativa `Matricula` transforma um N:N em **dois 1:N**. A PK composta `(idAluno, idDisciplina)` impede matricular a mesma pessoa duas vezes na mesma disciplina, e as FKs impedem matricular quem não existe. O atributo `nota` pertence ao **relacionamento** (não ao aluno nem à disciplina), por isso mora na associativa.
+
+# =====================================================================
+# SQL: DDL, DML e DQL
+# =====================================================================
+
+=== lab ddl-create
+tipo: desafio
+tema: SQL: DDL, DML e DQL
+nivel: 1
+linguagem: sql
+titulo: DDL: crie a tabela Fornecedor
+verificar: SELECT (SELECT group_concat(name, ',') FROM (SELECT name FROM pragma_table_info('Fornecedor') ORDER BY cid)) AS colunas, (SELECT name FROM pragma_table_info('Fornecedor') WHERE pk = 1) AS chave, (SELECT "notnull" FROM pragma_table_info('Fornecedor') WHERE name = 'nome') AS nome_obrigatorio, (SELECT COUNT(*) FROM pragma_index_list('Fornecedor') WHERE "unique" = 1 AND origin = 'u') AS campos_unicos, (SELECT COUNT(*) FROM Fornecedor) AS linhas;
+
+--- enunciado
+Crie a tabela `Fornecedor` com as colunas, nesta ordem: `idFornecedor` (inteiro, **chave primária**), `nome` (texto, **obrigatório**) e `cnpj` (texto, **único**). Depois insira dois fornecedores quaisquer.
+
+--- codigo
+-- escreva o CREATE TABLE e os dois INSERT
+
+--- solucao
+CREATE TABLE Fornecedor (
+  idFornecedor INTEGER PRIMARY KEY,
+  nome TEXT NOT NULL,
+  cnpj TEXT UNIQUE
+);
+INSERT INTO Fornecedor (nome, cnpj) VALUES ('Papelaria Sul', '11.111.111/0001-11');
+INSERT INTO Fornecedor (nome, cnpj) VALUES ('Tech Norte', '22.222.222/0001-22');
+
+--- dicas
+Estrutura: `CREATE TABLE Fornecedor ( coluna TIPO restrição, ... );`
+
+As restrições são `PRIMARY KEY`, `NOT NULL` e `UNIQUE`.
+
+Com `INTEGER PRIMARY KEY` o SQLite gera o id sozinho: `INSERT INTO Fornecedor (nome, cnpj) VALUES (...)`.
+
+--- explicacao
+`CREATE TABLE` é **DDL**: define a estrutura (e grava no catálogo). As restrições são regras que o SGBD passa a garantir sozinho: `PRIMARY KEY` identifica cada linha, `NOT NULL` impede nome vazio e `UNIQUE` impede dois fornecedores com o mesmo CNPJ. Já o `INSERT` é **DML**: mexe nos dados, não na estrutura.
+
+=== lab dml-fk-erro
+tipo: prever
+tema: SQL: DDL, DML e DQL
+nivel: 1
+linguagem: sql
+banco: vendas
+titulo: Integridade referencial em ação
+alvo: celula
+erro: sim
+pergunta: O que aparece no resultado?
+
+--- enunciado
+O produto novo aponta para o tipo **99**. Olhe a tabela TipoDeProduto no painel e preveja: o INSERT passa? Se passar, a contagem mostra quantos produtos existem.
+
+--- codigo
+INSERT INTO Produto (nomeProd, precoProd, estoque, idTipo)
+VALUES ('Livro de SQL', 79.90, 3, 99);
+
+SELECT COUNT(*) FROM Produto;
+
+--- opcoes
+- 7
+- 8
+- 0
+- erro
+
+--- experimentos
+- Troque o 99 pelo tipo 4 (Livros) e rode.
+- Tente apagar um tipo que tem produtos: `DELETE FROM TipoDeProduto WHERE idTipo = 1;`
+
+--- explicacao
+Não existe tipo 99, então a **chave estrangeira** recusa o INSERT (`FOREIGN KEY constraint failed`) e o comando seguinte nem chega a rodar. A integridade referencial garante que toda FK aponte para uma PK que existe — sem "produtos órfãos". O mesmo mecanismo bloqueia apagar um tipo que ainda tem produtos (o comportamento padrão **RESTRICT/NO ACTION**).
+
+=== lab dml-cascade
+tipo: prever
+tema: SQL: DDL, DML e DQL
+nivel: 2
+linguagem: sql
+banco: vendas
+titulo: DELETE com ON DELETE CASCADE
+alvo: celula
+pergunta: Quantos itens de pedido sobram?
+
+--- enunciado
+Na tabela ItemPedido, a FK para Pedido foi criada com `ON DELETE CASCADE` (veja no painel: ItemPedido tem 7 linhas). O pedido 3 é apagado. Preveja.
+
+--- codigo
+DELETE FROM Pedido WHERE idPedido = 3;
+
+SELECT COUNT(*) FROM ItemPedido;
+
+--- opcoes
+- 7
+- 5
+- 6
+- erro
+
+--- experimentos
+- Apague agora o cliente 1: `DELETE FROM Cliente WHERE idCliente = 1;`. Por que esse dá erro?
+- Compare `DELETE FROM ItemPedido;` (sem WHERE!) com um `DROP TABLE ItemPedido;`. O que sobra em cada caso?
+
+--- explicacao
+O pedido 3 tinha 2 itens; com **CASCADE**, apagar o pai propaga a exclusão para os filhos: 7 − 2 = **5**. A FK de Pedido para Cliente não tem cascade, então apagar a Ana (que tem pedidos) é **bloqueado**. `DELETE` sem WHERE apaga todas as linhas mas mantém a tabela; `DROP` elimina a tabela e sua definição do catálogo. (O `TRUNCATE` de outros SGBDs apaga tudo mais rápido, como DDL — o SQLite não tem esse comando.)
+
+=== lab dql-join
+tipo: desafio
+tema: SQL: DDL, DML e DQL
+nivel: 1
+linguagem: sql
+banco: vendas
+titulo: JOIN: produto e seu tipo
+ordem: sim
+
+--- enunciado
+Liste o **nome de cada produto** e a **descrição do seu tipo**, em ordem alfabética do produto. As duas colunas, nessa ordem.
+
+--- codigo
+SELECT nomeProd
+FROM Produto;
+
+--- solucao
+SELECT p.nomeProd, t.descTipo
+FROM Produto p
+JOIN TipoDeProduto t ON t.idTipo = p.idTipo
+ORDER BY p.nomeProd;
+
+--- dicas
+A descrição está em outra tabela: `JOIN TipoDeProduto t ON ...`.
+
+O predicado de junção iguala a FK à PK: `t.idTipo = p.idTipo`.
+
+Não esqueça do `ORDER BY p.nomeProd`.
+
+--- explicacao
+O JOIN recompõe a informação que a normalização separou: para cada produto, busca a linha de TipoDeProduto cuja PK é igual à FK do produto. Os apelidos `p` e `t` evitam ambiguidade e deixam a consulta legível.
+
+=== lab dql-gasto
+tipo: desafio
+tema: SQL: DDL, DML e DQL
+nivel: 2
+linguagem: sql
+banco: vendas
+titulo: Quanto cada cliente gastou
+ordem: sim
+
+--- enunciado
+Para cada cliente **que comprou**, mostre o nome e o total gasto (soma de `qtd × precoProd` de todos os itens de todos os pedidos dele), do maior para o menor total.
+
+--- codigo
+SELECT c.nome
+FROM Cliente c;
+
+--- solucao
+SELECT c.nome, SUM(i.qtd * p.precoProd) AS total
+FROM Cliente c
+JOIN Pedido pe ON pe.idCliente = c.idCliente
+JOIN ItemPedido i ON i.idPedido = pe.idPedido
+JOIN Produto p ON p.idProd = i.idProd
+GROUP BY c.idCliente, c.nome
+ORDER BY total DESC;
+
+--- dicas
+O caminho é Cliente → Pedido → ItemPedido → Produto: três JOINs.
+
+`SUM(i.qtd * p.precoProd)` soma por grupo; o grupo é o cliente (`GROUP BY c.idCliente, c.nome`).
+
+Ordene pelo apelido do total: `ORDER BY total DESC`.
+
+--- explicacao
+A consulta atravessa quatro tabelas seguindo as FKs e então **agrupa** por cliente: cada grupo vira uma linha, e `SUM` calcula sobre as linhas do grupo. O Davi não aparece porque o `JOIN` (interno) descarta quem não tem pedido — para incluí-lo com total zero seria preciso `LEFT JOIN` e `COALESCE`.
+
+=== lab dql-parsons-clausulas
+tipo: parsons
+tema: SQL: DDL, DML e DQL
+nivel: 2
+linguagem: sql
+banco: vendas
+titulo: A ordem das cláusulas do SELECT
+
+--- enunciado
+Monte a consulta que conta, por tipo, os produtos **em estoque**, mostrando só os tipos com pelo menos 2 produtos, do maior para o menor. A ordem das cláusulas do SQL é fixa. Dois blocos são armadilhas.
+
+--- linhas
+SELECT t.descTipo, COUNT(*) AS qtd
+FROM Produto p
+JOIN TipoDeProduto t ON t.idTipo = p.idTipo
+WHERE p.estoque > 0
+GROUP BY t.descTipo
+HAVING COUNT(*) >= 2
+ORDER BY qtd DESC;
+
+--- distratores
+WHERE COUNT(*) >= 2
+GROUP BY p.nomeProd
+
+--- explicacao
+A ordem de escrita é **SELECT → FROM → JOIN → WHERE → GROUP BY → HAVING → ORDER BY**. `WHERE` filtra **linhas** antes de agrupar (por isso não pode usar `COUNT`); `HAVING` filtra **grupos** depois. Agrupar por nome de produto daria um grupo por produto, e a contagem seria sempre 1.
+
+# =====================================================================
+# DCL, segurança e controle de acesso
+# =====================================================================
+
+=== lab dcl-view-seguranca
+tipo: explorar
+tema: DCL, segurança e controle de acesso
+nivel: 1
+linguagem: sql
+banco: rh
+titulo: Views para esconder dados sensíveis
+
+--- enunciado
+O salário é sensível. No controle **discricionário (DAC)**, o dono cria uma **view** sem essa coluna e dá acesso só a ela. (O SQLite não tem usuários nem `GRANT`; o comando equivalente de um SGBD servidor está nos comentários.)
+
+--- codigo
+CREATE VIEW vw_diretorio AS
+SELECT nome, nomeDepto AS departamento, ramalDepto AS ramal
+FROM FuncionarioPlano;
+
+-- num PostgreSQL/MySQL seria:
+--   REVOKE ALL ON FuncionarioPlano FROM PUBLIC;
+--   GRANT SELECT ON vw_diretorio TO papel_colaborador;
+
+SELECT * FROM vw_diretorio ORDER BY departamento, nome;
+
+--- experimentos
+- Crie `vw_folha_ti` com nome e salário só do departamento TI (para o gerente de TI).
+- Tente `SELECT salario FROM vw_diretorio;`.
+
+--- explicacao
+A view define **o que** cada público pode ver (colunas e linhas); o `GRANT` define **quem** pode usá-la. Juntos formam o modelo **discricionário**: quem é dono do objeto decide os acessos. No modelo **mandatório (MAC)**, ao contrário, cada dado tem um nível de classificação e o acesso segue regras fixas da organização, sem depender do dono.
+
+=== lab dcl-injecao
+tipo: prever
+tema: DCL, segurança e controle de acesso
+nivel: 2
+linguagem: sql
+titulo: SQL injection: quando o dado vira código
+alvo: celula
+pergunta: Quantos usuários o "login" encontrou?
+
+--- enunciado
+Um sistema monta a consulta de login **colando texto**: `"... WHERE login = '" + login + "' AND senha = '" + senha + "'"`. O atacante digitou `admin` no login e `' OR '1'='1` na senha. Esta é a consulta que chega ao banco. Preveja o resultado.
+
+--- codigo
+CREATE TABLE Usuario (login TEXT PRIMARY KEY, senha TEXT NOT NULL);
+INSERT INTO Usuario VALUES ('admin', 's3nh@F0rte'), ('ana', 'gatinho123'), ('bruno', 'qwerty');
+
+SELECT COUNT(*) FROM Usuario
+WHERE login = 'admin' AND senha = '' OR '1'='1';
+
+--- opcoes
+- 0
+- 1
+- 3
+- erro
+
+--- experimentos
+- Coloque parênteses: `WHERE login = 'admin' AND (senha = '' OR '1'='1')`. E agora?
+- Troque `COUNT(*)` por `*`: o atacante vê até as senhas.
+
+--- explicacao
+O `AND` tem precedência sobre o `OR`: a condição vira `(login = 'admin' AND senha = '') OR '1'='1'`, e `'1'='1'` é verdade para **todas** as linhas — o "login" encontra os 3 usuários e o sistema deixa entrar. A defesa não é filtrar aspas à mão: é usar **consultas parametrizadas** (`PreparedStatement` no JDBC, `?` no SQLite), em que o valor nunca é interpretado como SQL. E princípio do menor privilégio: o usuário da aplicação no banco só deve ter os `GRANT`s de que precisa.
+
+# =====================================================================
+# Transações, ACID e concorrência
+# =====================================================================
+
+=== lab acid-rollback
+tipo: explorar
+tema: Transações, ACID e concorrência
+nivel: 1
+linguagem: sql
+banco: contas
+titulo: BEGIN, ROLLBACK e COMMIT
+
+--- enunciado
+Dentro de uma transação, as mudanças são **provisórias** até o `COMMIT`. Rode e compare os três resultados: antes, durante e depois do `ROLLBACK`.
+
+--- codigo
+SELECT titular, saldo FROM Conta;
+
+BEGIN TRANSACTION;
+UPDATE Conta SET saldo = saldo - 300 WHERE titular = 'Ana';
+UPDATE Conta SET saldo = saldo + 300 WHERE titular = 'Bruno';
+SELECT titular, saldo FROM Conta;      -- dentro da transação
+
+ROLLBACK;                              -- desfaz tudo
+SELECT titular, saldo FROM Conta;
+
+--- experimentos
+- Troque `ROLLBACK` por `COMMIT` e rode. O que muda no terceiro resultado?
+- Tente transferir 2000 da Ana. Qual restrição da tabela reage?
+
+--- explicacao
+Entre o `BEGIN` e o fim da transação, o banco trata as duas atualizações como uma **unidade**: o `ROLLBACK` desfaz as duas, o `COMMIT` confirma as duas (**atomicidade**). E o `CHECK (saldo >= 0)` garante a **consistência**: nenhuma transação consegue deixar uma conta negativa. A **durabilidade** (o que foi confirmado sobrevive a uma queda) vem do log de transações do SGBD.
+
+=== lab acid-prever
+tipo: prever
+tema: Transações, ACID e concorrência
+nivel: 1
+linguagem: sql
+banco: contas
+titulo: O que sobra depois do ROLLBACK?
+alvo: celula
+pergunta: Qual é o saldo final da Ana?
+
+--- enunciado
+A Ana tem 1000. A transação debita 500 dela e credita no Bruno, mas termina em `ROLLBACK`. Preveja.
+
+--- codigo
+BEGIN;
+UPDATE Conta SET saldo = saldo - 500 WHERE titular = 'Ana';
+UPDATE Conta SET saldo = saldo + 500 WHERE titular = 'Bruno';
+ROLLBACK;
+
+SELECT saldo FROM Conta WHERE titular = 'Ana';
+
+--- opcoes
+- 1000
+- 500
+- 1500
+- erro
+
+--- explicacao
+`ROLLBACK` devolve o banco ao estado de antes do `BEGIN`: é o "nada" do **tudo ou nada**. O saldo volta a 1000 — e o do Bruno também não mudou. Sem transação, se o sistema caísse entre os dois UPDATEs, o dinheiro sumiria da Ana sem chegar ao Bruno.
+
+=== lab acid-transferencia
+tipo: desafio
+tema: Transações, ACID e concorrência
+nivel: 2
+linguagem: sql
+banco: contas
+titulo: Transferência atômica
+verificar: SELECT titular, saldo FROM Conta ORDER BY id;
+
+--- enunciado
+Transfira **200** da Ana para a **Carla** dentro de uma transação e confirme. O código atual só faz metade do trabalho.
+
+--- codigo
+UPDATE Conta SET saldo = saldo - 200 WHERE titular = 'Ana';
+
+--- solucao
+BEGIN TRANSACTION;
+UPDATE Conta SET saldo = saldo - 200 WHERE titular = 'Ana';
+UPDATE Conta SET saldo = saldo + 200 WHERE titular = 'Carla';
+COMMIT;
+
+--- regras
+exigido: \bBEGIN\b :: Abra a transação com BEGIN
+exigido: \bCOMMIT\b :: Confirme com COMMIT
+
+--- dicas
+Uma transferência são dois UPDATEs: débito e crédito.
+
+Envolva os dois entre `BEGIN TRANSACTION;` e `COMMIT;`.
+
+--- explicacao
+Débito e crédito formam **uma** operação de negócio, então precisam ser **uma** transação: ou as duas acontecem, ou nenhuma. Num sistema real, se o crédito falhasse (conta inexistente, restrição violada), a aplicação faria `ROLLBACK` e o débito seria desfeito.
+
+# =====================================================================
+# Otimização, NoSQL, rotinas e administração de dados
+# =====================================================================
+
+=== lab ot-indice
+tipo: explorar
+tema: Otimização, NoSQL, rotinas e administração de dados
+nivel: 2
+linguagem: sql
+banco: vendas
+titulo: O plano de execução antes e depois do índice
+
+--- enunciado
+`EXPLAIN QUERY PLAN` mostra **como** o SGBD vai executar a consulta. Rode e compare a coluna `detail` antes e depois de criar o índice.
+
+--- codigo
+EXPLAIN QUERY PLAN
+SELECT * FROM Cliente WHERE cidade = 'Itajaí';
+
+CREATE INDEX idx_cliente_cidade ON Cliente(cidade);
+
+EXPLAIN QUERY PLAN
+SELECT * FROM Cliente WHERE cidade = 'Itajaí';
+
+--- experimentos
+- Veja o plano de `SELECT * FROM Cliente WHERE nome = 'Ana';` — o índice ajuda?
+- E `WHERE cidade LIKE '%jaí'`? Um índice em árvore B serve para procurar pelo fim do texto?
+
+--- explicacao
+Sem índice, o plano é `SCAN Cliente`: **varredura completa**, linha por linha. Com o índice, vira `SEARCH ... USING INDEX`: o SGBD desce pela **árvore B** direto até as linhas de Itajaí. O preço: o índice ocupa espaço e precisa ser atualizado em todo INSERT/UPDATE/DELETE — por isso só se indexa o que é muito consultado (tuning).
+
+=== lab ot-indice-desafio
+tipo: desafio
+tema: Otimização, NoSQL, rotinas e administração de dados
+nivel: 2
+linguagem: sql
+banco: vendas
+titulo: Faça a busca por nome usar um índice
+verificar: SELECT COUNT(*) AS indices_em_nomeProd FROM pragma_index_list('Produto') il JOIN pragma_index_info(il.name) ii WHERE ii.name = 'nomeProd';
+
+--- enunciado
+A tela de busca da loja roda sempre `SELECT * FROM Produto WHERE nomeProd = ?`. Crie o índice que faz essa consulta deixar de varrer a tabela. Use o `EXPLAIN QUERY PLAN` para conferir antes de testar.
+
+--- codigo
+EXPLAIN QUERY PLAN
+SELECT * FROM Produto WHERE nomeProd = 'Mouse';
+
+--- solucao
+CREATE INDEX idx_produto_nome ON Produto(nomeProd);
+
+EXPLAIN QUERY PLAN
+SELECT * FROM Produto WHERE nomeProd = 'Mouse';
+
+--- dicas
+`CREATE INDEX nome_do_indice ON Tabela(coluna);`
+
+Rode o EXPLAIN depois do CREATE INDEX: o detalhe deve mudar de SCAN para SEARCH.
+
+--- explicacao
+O índice na coluna do `WHERE` troca a varredura por uma busca na árvore B. Em 7 produtos a diferença é invisível; em 7 milhões, é a diferença entre milissegundos e segundos.
+
+=== lab ot-trigger
+tipo: explorar
+tema: Otimização, NoSQL, rotinas e administração de dados
+nivel: 2
+linguagem: sql
+banco: vendas
+titulo: Trigger de auditoria FOR EACH ROW
+
+--- enunciado
+Um **trigger** dispara sozinho quando o evento acontece — ninguém o chama. Este registra toda mudança de preço. Rode: um único UPDATE altera 3 produtos. Quantas linhas de log aparecem?
+
+--- codigo
+CREATE TABLE LogPreco (
+  idProd INTEGER,
+  precoAntigo REAL,
+  precoNovo REAL,
+  quando TEXT DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TRIGGER trg_log_preco
+AFTER UPDATE OF precoProd ON Produto
+FOR EACH ROW
+BEGIN
+  INSERT INTO LogPreco (idProd, precoAntigo, precoNovo)
+  VALUES (OLD.idProd, OLD.precoProd, NEW.precoProd);
+END;
+
+-- reajuste de 10% nos eletrônicos
+UPDATE Produto SET precoProd = ROUND(precoProd * 1.10, 2) WHERE idTipo = 2;
+
+SELECT idProd, precoAntigo, precoNovo FROM LogPreco;
+
+--- experimentos
+- Faça um UPDATE só no estoque. O trigger dispara? (Repare no `OF precoProd`.)
+- Crie um trigger `BEFORE UPDATE` que impeça baixar o preço: `SELECT RAISE(ABORT, 'preço não pode baixar') WHERE NEW.precoProd < OLD.precoProd;`
+
+--- explicacao
+`FOR EACH ROW` executa o corpo **uma vez por linha afetada**: 3 produtos eletrônicos, 3 linhas de log. `OLD` e `NEW` são a linha antes e depois da mudança. Como o trigger vive no banco, a auditoria acontece não importa qual aplicação fez o UPDATE — é uma **rotina** do SGBD, assim como procedures e functions.
+
+=== lab ot-trigger-estoque
+tipo: prever
+tema: Otimização, NoSQL, rotinas e administração de dados
+nivel: 2
+linguagem: sql
+banco: vendas
+titulo: Trigger que baixa o estoque
+alvo: celula
+pergunta: Qual é o estoque do Mouse depois do INSERT?
+
+--- enunciado
+O Mouse tem 15 unidades em estoque. O trigger abaixo reage a cada item vendido. Preveja o estoque após a venda de 2 mouses.
+
+--- codigo
+CREATE TRIGGER trg_baixa_estoque
+AFTER INSERT ON ItemPedido
+FOR EACH ROW
+BEGIN
+  UPDATE Produto SET estoque = estoque - NEW.qtd WHERE idProd = NEW.idProd;
+END;
+
+INSERT INTO ItemPedido (idPedido, idProd, qtd) VALUES (4, 3, 2);
+
+SELECT estoque FROM Produto WHERE idProd = 3;
+
+--- opcoes
+- 15
+- 13
+- 17
+- erro
+
+--- experimentos
+- Venda 100 mouses. O que deveria acontecer? Acrescente um `CHECK (estoque >= 0)`... ou um trigger `BEFORE INSERT` com `RAISE(ABORT, ...)`.
+
+--- explicacao
+O `INSERT` em ItemPedido disparou o trigger, que subtraiu `NEW.qtd` (2) do estoque: **13**. A regra de negócio "vendeu, baixa o estoque" fica garantida no banco, sem depender de a aplicação lembrar de fazer o segundo UPDATE.
+
+=== lab nosql-documento
+tipo: explorar
+tema: Otimização, NoSQL, rotinas e administração de dados
+nivel: 3
+linguagem: sql
+titulo: Relacional x documento (JSON)
+
+--- enunciado
+Num banco de **documentos** (como o MongoDB) o pedido é guardado **inteiro**, com os itens embutidos — sem JOIN. O SQLite consegue guardar e consultar JSON; use isso para sentir o modelo de documentos.
+
+--- codigo
+CREATE TABLE PedidoDoc (id INTEGER PRIMARY KEY, doc TEXT);
+INSERT INTO PedidoDoc VALUES
+  (1, '{"cliente": "Ana", "cidade": "Itajaí", "itens": [{"produto": "Caderno", "qtd": 2}, {"produto": "Caneta", "qtd": 10}]}'),
+  (2, '{"cliente": "Bruno", "itens": [{"produto": "Mochila", "qtd": 1}], "cupom": "PRIMEIRA"}');
+
+-- ler campos do documento
+SELECT id, json_extract(doc, '$.cliente') AS cliente,
+       json_array_length(doc, '$.itens') AS n_itens,
+       json_extract(doc, '$.cupom') AS cupom
+FROM PedidoDoc;
+
+-- "desembrulhar" o array embutido em linhas
+SELECT json_extract(doc, '$.cliente') AS cliente,
+       json_extract(item.value, '$.produto') AS produto,
+       json_extract(item.value, '$.qtd') AS qtd
+FROM PedidoDoc, json_each(doc, '$.itens') AS item;
+
+--- experimentos
+- Repare: o documento 2 tem `cupom` e não tem `cidade`. Tente isso numa tabela relacional.
+- Se a Ana mudar de nome, quantos documentos você precisa atualizar? (Pense em milhares de pedidos.)
+
+--- explicacao
+No documento, os dados relacionados vêm **embutidos** (desnormalizados): ler um pedido inteiro é uma única busca, e cada documento pode ter campos diferentes (**sem esquema rígido**). O preço aparece na manutenção: o nome da Ana repetido em cada pedido volta a sofrer as anomalias que a normalização resolvia, e não há FK garantindo integridade. Por isso NoSQL é **Not Only SQL**: complementa o relacional, não o substitui.

@@ -1,0 +1,475 @@
+# Laboratório — Engenharia de Requisitos
+# Confira tudo com #/m/engenharia-de-requisitos/lab/autoteste
+
+# =====================================================================
+# Fundamentos da Engenharia de Requisitos
+# =====================================================================
+
+=== lab er-atividades
+tipo: parsons
+tema: Fundamentos da Engenharia de Requisitos
+nivel: 1
+linguagem: texto
+titulo: As 5 atividades da engenharia de requisitos
+
+--- enunciado
+Ordene as atividades da engenharia de requisitos. Uma afirmação descreve errado uma delas.
+
+--- linhas
+Elicitação — descobrir as necessidades junto às partes interessadas
+Análise e negociação — entender, classificar, resolver conflitos e priorizar
+Especificação — registrar de forma clara e verificável
+Validação — confirmar com o cliente que o que foi escrito é o que ele precisa
+Gerenciamento — controlar as mudanças e a rastreabilidade ao longo do projeto
+
+--- distratores
+Validação — conferir se o código compila sem erros
+
+--- explicacao
+Validar é conferir o **documento** contra a **necessidade real** do cliente — nada a ver com compilar código. E o gerenciamento não é uma etapa final: acompanha o projeto inteiro, porque requisitos mudam. Erros cometidos logo na elicitação custam de 50 a 100 vezes mais se só forem descobertos em produção.
+
+=== lab er-custo-erro
+tipo: explorar
+tema: Fundamentos da Engenharia de Requisitos
+nivel: 1
+linguagem: js
+titulo: Quanto custa descobrir o erro tarde
+
+--- enunciado
+Um erro de requisito custa 1 unidade se for corrigido na própria fase de requisitos e cresce a cada fase em que passa despercebido. Rode e compare o custo de 20 defeitos encontrados em momentos diferentes.
+
+--- codigo
+const multiplicador = { requisitos: 1, projeto: 5, codigo: 10, testes: 20, producao: 100 };
+const CUSTO_BASE = 500;   // R$ para corrigir um erro ainda no papel
+const defeitos = 20;
+
+for (const [fase, x] of Object.entries(multiplicador)) {
+  console.log(("encontrado em " + fase).padEnd(24), "R$", (defeitos * CUSTO_BASE * x).toLocaleString("pt-BR"));
+}
+
+// um cenário realista: parte achada cedo, parte tarde
+const achados = { requisitos: 8, testes: 7, producao: 5 };
+let total = 0;
+for (const [fase, n] of Object.entries(achados)) total += n * CUSTO_BASE * multiplicador[fase];
+console.log("cenário misto: R$", total.toLocaleString("pt-BR"));
+
+--- experimentos
+- Uma revisão de requisitos de 2 dias acharia 5 dos 7 defeitos que só apareceriam nos testes. Recalcule o cenário misto. A revisão se paga?
+- Mude o multiplicador de produção para 50.
+
+--- explicacao
+O erro de requisito é o mais caro do ciclo de vida porque tudo que foi construído em cima dele (projeto, código, testes, dados, treinamento) precisa ser refeito. Por isso técnicas "baratas" — entrevista bem feita, observação, protótipo, revisão por pares — têm retorno enorme: elas antecipam a descoberta do erro para a fase em que ele custa 1.
+
+# =====================================================================
+# Requisitos Funcionais e Não Funcionais
+# =====================================================================
+
+=== lab er-ambiguidade
+tipo: desafio
+tema: Requisitos Funcionais e Não Funcionais
+nivel: 2
+linguagem: js
+titulo: Detector de requisitos não verificáveis
+
+--- enunciado
+"O sistema deve ser rápido" não dá para testar. Implemente `problemas(requisito)`: devolve a lista (em minúsculas, na ordem em que aparecem na lista `VAGAS`) das palavras vagas encontradas no texto, e acrescente `"sem número"` no fim se o texto não tiver nenhum algarismo. Ignore maiúsculas.
+
+--- codigo
+const VAGAS = ["rápido", "fácil", "amigável", "intuitivo", "eficiente", "adequado", "moderno", "seguro"];
+
+function problemas(requisito) {
+  return [];
+}
+
+console.log(problemas("O sistema deve ser rápido e fácil de usar."));
+console.log(problemas("A consulta de sócios deve responder em até 2 segundos para 95% das requisições."));
+
+--- solucao
+const VAGAS = ["rápido", "fácil", "amigável", "intuitivo", "eficiente", "adequado", "moderno", "seguro"];
+
+function problemas(requisito) {
+  const texto = requisito.toLowerCase();
+  const achadas = VAGAS.filter(p => texto.includes(p));
+  if (!/\d/.test(texto)) achadas.push("sem número");
+  return achadas;
+}
+
+console.log(problemas("O sistema deve ser rápido e fácil de usar."));
+console.log(problemas("A consulta de sócios deve responder em até 2 segundos para 95% das requisições."));
+
+--- testes
+problemas("O sistema deve ser rápido e fácil de usar.") ==> ["rápido", "fácil", "sem número"]
+problemas("A consulta de sócios deve responder em até 2 segundos para 95% das requisições.") ==> []
+problemas("Interface MODERNA e intuitiva") ==> ["sem número"]
+problemas("Deve ser seguro e ter 99,9% de disponibilidade") ==> ["seguro"]
+problemas("Um usuário sem treinamento deve concluir o cadastro em até 3 minutos") ==> []
+
+--- dicas
+Passe o texto para minúsculas uma vez e use `includes` para cada palavra da lista.
+
+"Tem algum algarismo?" é a expressão regular `/\d/`.
+
+Repare no terceiro teste: "moderna" e "intuitiva" não são as palavras exatas da lista — o seu detector só procura as formas listadas.
+
+--- explicacao
+Um bom requisito é **verificável**: dá para escrever um caso de teste que prova objetivamente se foi atendido. Palavras como "rápido", "fácil" e "amigável" pedem uma **métrica** ("até 2 segundos para 95% das requisições", "cadastro em até 3 minutos sem treinamento"). O detector é ingênuo de propósito (não pega "moderna"), mas já mostra a ideia das ferramentas de análise de qualidade de requisitos.
+
+=== lab er-rf-rnf
+tipo: prever
+tema: Requisitos Funcionais e Não Funcionais
+nivel: 1
+linguagem: js
+titulo: Funcional, não funcional ou regra de negócio?
+
+--- enunciado
+O código conta quantos itens de cada tipo existem na lista. Classifique cada item mentalmente antes e preveja a saída.
+
+--- codigo
+const itens = [
+  { texto: "O sistema deve emitir o boleto mensal do sócio", tipo: "RF" },
+  { texto: "A emissão do boleto deve levar no máximo 3 segundos", tipo: "RNF" },
+  { texto: "Sócio inadimplente há 3 meses é bloqueado", tipo: "Regra de negócio" },
+  { texto: "O sistema deve permitir o cadastro de dependentes", tipo: "RF" },
+  { texto: "Os dados pessoais devem ser tratados conforme a LGPD", tipo: "RNF" },
+  { texto: "O desconto de idoso é de 50%", tipo: "Regra de negócio" },
+  { texto: "O sistema deve estar disponível 99,9% do tempo", tipo: "RNF" }
+];
+
+const conta = {};
+for (const i of itens) conta[i.tipo] = (conta[i.tipo] || 0) + 1;
+console.log(conta);
+
+--- opcoes
+- { RF: 2, RNF: 3, "Regra de negócio": 2 }
+- { RF: 3, RNF: 2, "Regra de negócio": 2 }
+- { RF: 2, RNF: 2, "Regra de negócio": 3 }
+- { RF: 4, RNF: 3 }
+
+--- explicacao
+**RF** descreve o que o sistema **faz** (emitir boleto, cadastrar dependente). **RNF** descreve **como** ele deve se comportar: desempenho (3 s), conformidade legal (LGPD), disponibilidade (99,9%). **Regra de negócio** é uma política do negócio que vale **mesmo sem software** — o bloqueio do inadimplente e o desconto de idoso existiriam num controle em papel; elas originam requisitos, mas não são requisitos.
+
+# =====================================================================
+# Priorização e Gerenciamento de Requisitos
+# =====================================================================
+
+=== lab er-moscow
+tipo: desafio
+tema: Priorização e Gerenciamento de Requisitos
+nivel: 2
+linguagem: js
+titulo: Planeje a entrega com MoSCoW
+
+--- enunciado
+Implemente `planejar(requisitos, capacidade)`: devolve os `id`s que entram na entrega, com esforço total até a capacidade. Regras: todos os **Must** entram primeiro (se não couberem, devolva a string `"replanejar"`); depois os **Should**, na ordem da lista, enquanto couberem; depois os **Could** do mesmo jeito; **Won't** nunca entra.
+
+--- codigo
+const backlog = [
+  { id: "login", prioridade: "Must", esforco: 5 },
+  { id: "relatorio-pdf", prioridade: "Could", esforco: 3 },
+  { id: "pagamento", prioridade: "Must", esforco: 8 },
+  { id: "tema-escuro", prioridade: "Won't", esforco: 2 },
+  { id: "notificacoes", prioridade: "Should", esforco: 4 },
+  { id: "historico", prioridade: "Should", esforco: 6 },
+  { id: "exportar-csv", prioridade: "Could", esforco: 1 }
+];
+
+function planejar(requisitos, capacidade) {
+  return [];
+}
+
+console.log(planejar(backlog, 20));
+
+--- solucao
+const backlog = [
+  { id: "login", prioridade: "Must", esforco: 5 },
+  { id: "relatorio-pdf", prioridade: "Could", esforco: 3 },
+  { id: "pagamento", prioridade: "Must", esforco: 8 },
+  { id: "tema-escuro", prioridade: "Won't", esforco: 2 },
+  { id: "notificacoes", prioridade: "Should", esforco: 4 },
+  { id: "historico", prioridade: "Should", esforco: 6 },
+  { id: "exportar-csv", prioridade: "Could", esforco: 1 }
+];
+
+function planejar(requisitos, capacidade) {
+  const deTipo = p => requisitos.filter(r => r.prioridade === p);
+  const musts = deTipo("Must");
+  let usado = musts.reduce((s, r) => s + r.esforco, 0);
+  if (usado > capacidade) return "replanejar";
+  const entrega = musts.map(r => r.id);
+  for (const r of [...deTipo("Should"), ...deTipo("Could")]) {
+    if (usado + r.esforco <= capacidade) {
+      entrega.push(r.id);
+      usado += r.esforco;
+    }
+  }
+  return entrega;
+}
+
+console.log(planejar(backlog, 20));
+
+--- testes
+planejar(backlog, 20) ==> ["login", "pagamento", "notificacoes", "relatorio-pdf"]
+planejar(backlog, 13) ==> ["login", "pagamento"]
+planejar(backlog, 10) ==> "replanejar"
+planejar(backlog, 100) ==> ["login", "pagamento", "notificacoes", "historico", "relatorio-pdf", "exportar-csv"]
+
+--- dicas
+Separe por prioridade com `filter`. Some o esforço dos Must: se passar da capacidade, a entrega não tem valor — replaneje.
+
+Depois percorra os Should e os Could (nessa ordem), pegando quem ainda cabe.
+
+--- explicacao
+Com capacidade 20: os Must (13) entram; "notificações" (4) cabe (17); "histórico" (6) não cabe (23); então "relatório" (3) cabe (20) e "exportar" (1) já não cabe. Repare que um Could entrou e um Should ficou de fora: o método é guloso por ordem de prioridade, e a equipe pode discutir trocas. O **Won't** é fundamental: deixar explícito o que fica fora desta entrega evita expectativas falsas.
+
+=== lab er-rastreabilidade
+tipo: explorar
+tema: Priorização e Gerenciamento de Requisitos
+nivel: 2
+linguagem: js
+titulo: Matriz de rastreabilidade e análise de impacto
+
+--- enunciado
+A matriz liga cada requisito à sua origem (**para trás**) e aos casos de teste que o verificam (**para frente**). O código responde "se eu mudar este requisito, o que é afetado?" e aponta requisitos sem teste. Rode e experimente.
+
+--- codigo
+const requisitos = {
+  RF01: { origem: "Entrevista com a secretaria", testes: ["CT01", "CT02"] },
+  RF02: { origem: "Regulamento do clube", testes: ["CT03"] },
+  RF03: { origem: "Workshop com a diretoria", testes: [] },
+  RNF01: { origem: "LGPD", testes: ["CT04", "CT02"] }
+};
+
+function impacto(id) {
+  const r = requisitos[id];
+  return id + " vem de \"" + r.origem + "\" e afeta os testes: " + (r.testes.join(", ") || "nenhum");
+}
+
+console.log(impacto("RF01"));
+console.log(impacto("RNF01"));
+
+const semTeste = Object.keys(requisitos).filter(id => requisitos[id].testes.length === 0);
+console.log("requisitos sem caso de teste:", semTeste);
+
+// o caminho inverso: um teste falhou — quais requisitos ele cobre?
+const teste = "CT02";
+console.log(teste, "cobre:", Object.keys(requisitos).filter(id => requisitos[id].testes.includes(teste)));
+
+--- experimentos
+- Acrescente um caso de teste para o RF03.
+- Escreva a função `orfaos(listaDeTestes)`, que acha testes que não cobrem nenhum requisito.
+
+--- explicacao
+Rastreabilidade é seguir o requisito **nos dois sentidos**: para trás até quem pediu (para saber com quem negociar uma mudança), para frente até projeto, código e testes (para saber o que quebra). Um requisito **sem teste** é um alerta: ou ninguém vai verificá-lo, ou ele nem é verificável. A matriz é o que torna a análise de impacto de uma mudança uma consulta, não um palpite.
+
+# =====================================================================
+# Casos de Uso e Especificação
+# =====================================================================
+
+=== lab er-historia
+tipo: desafio
+tema: Casos de Uso e Especificação
+nivel: 1
+linguagem: js
+titulo: Leia uma história de usuário
+
+--- enunciado
+Implemente `lerHistoria(texto)`: se o texto seguir o formato **"Como ..., quero ..., para ..."** (maiúsculas ignoradas, ponto final opcional), devolva `{ papel, acao, beneficio }` sem espaços nas pontas; senão, devolva `null`.
+
+--- codigo
+function lerHistoria(texto) {
+  return null;
+}
+
+console.log(lerHistoria("Como sócio, quero emitir a segunda via do boleto, para pagar em dia."));
+
+--- solucao
+function lerHistoria(texto) {
+  const m = /^como (.+?), quero (.+?), para (.+?)\.?$/i.exec(texto.trim());
+  if (!m) return null;
+  return { papel: m[1].trim(), acao: m[2].trim(), beneficio: m[3].trim() };
+}
+
+console.log(lerHistoria("Como sócio, quero emitir a segunda via do boleto, para pagar em dia."));
+
+--- testes
+lerHistoria("Como sócio, quero emitir a segunda via do boleto, para pagar em dia.") ==> { papel: "sócio", acao: "emitir a segunda via do boleto", beneficio: "pagar em dia" }
+lerHistoria("como tesoureiro, quero ver os inadimplentes, para cobrar") ==> { papel: "tesoureiro", acao: "ver os inadimplentes", beneficio: "cobrar" }
+lerHistoria("O sistema deve emitir boletos") ==> null
+lerHistoria("Como sócio, quero pagar online") ==> null
+
+--- dicas
+Uma expressão regular resolve: `/^como (.+?), quero (.+?), para (.+?)\.?$/i`.
+
+`(.+?)` captura o mínimo possível; o `i` no fim ignora maiúsculas.
+
+--- explicacao
+O formato obriga a pensar em **quem** (papel), **o quê** (ação) e **por quê** (benefício) — a última parte é a que mais se esquece e a que mais importa para priorizar. A história sem "para ..." (último teste) é recusada: sem benefício, não dá para saber se é **valiosa** (o V do INVEST). E toda história precisa de critérios de aceitação para ser **testável**.
+
+=== lab er-include-extend
+tipo: prever
+tema: Casos de Uso e Especificação
+nivel: 2
+linguagem: js
+titulo: include x extend em código
+
+--- enunciado
+"Emitir boleto" **inclui** "Autenticar" (sempre executa) e é **estendido** por "Aplicar desconto de idoso" (só em certa condição). Preveja o log das duas chamadas.
+
+--- codigo
+const log = [];
+
+function autenticar(socio) { log.push("autenticou " + socio.nome); }                 // <<include>>
+function aplicarDescontoIdoso(boleto) { boleto.valor /= 2; log.push("desconto"); }   // <<extend>>
+
+function emitirBoleto(socio) {
+  autenticar(socio);                                  // sempre
+  const boleto = { valor: 100 };
+  if (socio.idade >= 60) aplicarDescontoIdoso(boleto);   // só se a condição valer
+  log.push("boleto de " + boleto.valor);
+}
+
+emitirBoleto({ nome: "Ana", idade: 30 });
+emitirBoleto({ nome: "José", idade: 72 });
+console.log(log.join(" | "));
+
+--- opcoes
+- autenticou Ana | boleto de 100 | autenticou José | desconto | boleto de 50
+- autenticou Ana | desconto | boleto de 50 | autenticou José | desconto | boleto de 50
+- boleto de 100 | autenticou José | desconto | boleto de 50
+- autenticou Ana | boleto de 100 | desconto | boleto de 50
+
+--- explicacao
+**include**: o comportamento é obrigatório e sempre executado — as duas emissões autenticaram. A seta vai do caso **base** para o **incluído**. **extend**: o comportamento é opcional/condicional — o desconto só apareceu para o José. A seta vai do caso **estendido** para o **base** (o contrário do include). Pense assim: o base não "sabe" do extend, ele só oferece um ponto em que a extensão pode entrar.
+
+# =====================================================================
+# Modelagem de Processos e BPMN
+# =====================================================================
+
+=== lab er-gateways
+tipo: prever
+tema: Modelagem de Processos e BPMN
+nivel: 2
+linguagem: js
+titulo: Gateways exclusivo, inclusivo e paralelo
+
+--- enunciado
+Depois de aprovar um pedido, o processo pode avisar o cliente por e-mail, SMS ou push. As condições estão abaixo. O código simula os três tipos de gateway. Preveja os caminhos seguidos por cada um.
+
+--- codigo
+const caminhos = { email: true, sms: false, push: true };   // condição de cada saída
+
+const exclusivo = Object.keys(caminhos).find(c => caminhos[c]);    // XOR: só o primeiro verdadeiro
+const inclusivo = Object.keys(caminhos).filter(c => caminhos[c]);  // OR: todos os verdadeiros
+const paralelo = Object.keys(caminhos);                            // AND: todos, sem condição
+
+console.log("XOR:", exclusivo, "| OR:", inclusivo.join(","), "| AND:", paralelo.join(","));
+
+--- opcoes
+- XOR: email | OR: email,push | AND: email,sms,push
+- XOR: email,push | OR: email | AND: email,sms,push
+- XOR: email | OR: email,sms,push | AND: email,push
+- XOR: push | OR: email,push | AND: email,push
+
+--- explicacao
+**Exclusivo (X)**: exatamente um caminho — o primeiro cuja condição vale. **Inclusivo (O)**: um ou mais — todos cujas condições valem. **Paralelo (+)**: todos os caminhos, sempre, sem avaliar condição (e o gateway de junção espera todos chegarem). Confundir X com O é um erro clássico de modelagem: com X, o cliente que quer e-mail e push receberia só o e-mail.
+
+=== lab er-processo-paralelo
+tipo: explorar
+tema: Modelagem de Processos e BPMN
+nivel: 2
+linguagem: js
+titulo: Um processo com gateway paralelo, executando
+
+--- enunciado
+O processo de admissão de um sócio, com um **gateway paralelo**: depois da proposta, a análise de crédito e a conferência de documentos correm **ao mesmo tempo**; a carteirinha só sai quando **as duas** terminam (junção). Rode e veja os tempos.
+
+--- codigo
+const esperar = (ms, tarefa) => new Promise(ok => setTimeout(() => { console.log("✓", tarefa, "(" + ms + " ms)"); ok(); }, ms));
+
+async function admissao() {
+  const inicio = Date.now();
+  console.log("● evento de início: proposta recebida");
+  await esperar(100, "registrar proposta");
+  console.log("+ bifurcação paralela");
+  await Promise.all([                          // gateway paralelo
+    esperar(300, "analisar crédito"),
+    esperar(200, "conferir documentos")
+  ]);
+  console.log("+ junção: as duas terminaram");
+  await esperar(100, "emitir carteirinha");
+  console.log("◉ evento de fim — total ~", Math.round((Date.now() - inicio) / 100) * 100, "ms");
+}
+
+admissao();
+
+--- experimentos
+- Faça as duas tarefas em sequência (dois `await` seguidos). Quanto aumenta o tempo total?
+- Troque `Promise.all` por `Promise.race`. Que tipo de junção isso seria — e por que é perigoso aqui?
+
+--- explicacao
+No paralelo, o tempo do trecho é o da tarefa **mais longa** (300 ms), não a soma (500 ms) — é por isso que mapear o processo (AS-IS) e redesenhá-lo (TO-BE) acha ganhos que nenhuma automação traria sozinha. A junção paralela **espera todos** os ramos; sem ela, a carteirinha poderia sair antes de o crédito ser aprovado.
+
+# =====================================================================
+# Validação, Verificação e Casos de Teste
+# =====================================================================
+
+=== lab er-valor-limite
+tipo: desafio
+tema: Validação, Verificação e Casos de Teste
+nivel: 2
+linguagem: js
+titulo: Análise de valor-limite
+
+--- enunciado
+Requisito: "a inscrição aceita idades **inteiras de 18 a 65 anos, inclusive**". A função atual tem erros **exatamente nos limites**. Conserte `idadeValida(idade)`. Os testes usam a técnica de caixa-preta de **valor-limite**: testam logo abaixo, em cima e logo acima de cada fronteira.
+
+--- codigo
+function idadeValida(idade) {
+  return idade > 18 && idade < 65;
+}
+
+console.log([17, 18, 19, 64, 65, 66].map(i => i + ":" + idadeValida(i)).join(" "));
+
+--- solucao
+function idadeValida(idade) {
+  return Number.isInteger(idade) && idade >= 18 && idade <= 65;
+}
+
+console.log([17, 18, 19, 64, 65, 66].map(i => i + ":" + idadeValida(i)).join(" "));
+
+--- testes
+[17, 18, 19].map(idadeValida) ==> [false, true, true]
+[64, 65, 66].map(idadeValida) ==> [true, true, false]
+idadeValida(18.5) ==> false
+idadeValida(30) ==> true
+idadeValida("30") ==> false
+
+--- dicas
+"De 18 a 65, inclusive" pede `>=` e `<=`.
+
+"Inteiras" também é requisito: `Number.isInteger(idade)` recusa 18.5 e o texto "30".
+
+--- explicacao
+Os erros se concentram nas **fronteiras** — é onde alguém escreve `>` no lugar de `>=`. Por isso a análise de valor-limite testa 17/18/19 e 64/65/66 em vez de valores aleatórios no meio. Junto com a **partição de equivalência** (um valor representante de cada classe: menor, válido, maior, não inteiro, não número), poucos testes cobrem o requisito inteiro — sem olhar o código (**caixa-preta**).
+
+=== lab er-verif-valid
+tipo: parsons
+tema: Validação, Verificação e Casos de Teste
+nivel: 1
+linguagem: texto
+titulo: Os níveis de teste
+
+--- enunciado
+Ordene os níveis de teste do menor para o maior escopo. Uma frase confunde validação com verificação.
+
+--- linhas
+Teste de unidade — a menor parte, isolada (uma função, uma classe)
+Teste de integração — a conversa entre módulos
+Teste de sistema — o todo, contra os requisitos especificados
+Teste de aceitação — feito pelo cliente, valida o valor de negócio
+
+--- distratores
+Teste de aceitação — verificação interna feita só pela equipe, sem o cliente
+
+--- explicacao
+Unidade, integração e sistema são **verificação** ("estamos construindo o produto corretamente?" — conforme a especificação). O de aceitação é **validação** ("estamos construindo o produto certo?"), e por isso precisa do cliente. O teste de **regressão** atravessa todos os níveis: reexecuta o que já funcionava depois de cada mudança.

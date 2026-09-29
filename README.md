@@ -29,7 +29,10 @@ Univali/
     ├── gerar.py                     ← lê as pastas acima e monta o site
     ├── materias.json                ← cadastro: nome, período, cor e sigla
     ├── bancos/<id>.json             ← resumos, flashcards e questões de cada matéria
+    ├── bancos/labs/<id>.lab         ← exercícios do Laboratório (texto puro)
+    ├── labs.py                      ← leitor dos arquivos .lab
     ├── template/                    ← base.html, app.css, app.js
+    ├── template/lab/                ← o Laboratório (motores, editor, trilha, tipos)
     ├── docs/index.html              ← versão publicada (GitHub Pages)
     └── index.html                   ← versão local, com link para os PDFs (não versionada)
 ```
@@ -73,6 +76,55 @@ Em `_build/`:
 ```
 
 `r` é o índice da alternativa correta, começando em zero.
+
+## Laboratório (aprender fazendo)
+
+Aba de cada matéria em que o código **roda de verdade no navegador**: JavaScript,
+Python (Pyodide), Prolog (Tau Prolog), SQL (SQLite via sql.js) e HTML/CSS com
+preview ao vivo. Cada linguagem roda isolada (Web Worker ou iframe), com
+tempo-limite contra laço infinito. As bibliotecas vêm de CDN na primeira vez.
+
+Cinco tipos de exercício: **explorar** (rodar, alterar, observar), **prever**
+(hipótese antes de rodar), **desafio** (testes automáticos, dicas, solução),
+**montar** (Parsons: blocos embaralhados com armadilhas) e **passo a passo**
+(execução linha por linha com pilha e variáveis, só JavaScript). Há trilha por
+tema, XP, nível, sequência de dias e revisão espaçada dos exercícios de prever,
+desafio e montar. O progresso fica no navegador (localStorage).
+
+Os exercícios ficam em `bancos/labs/<id-da-matéria>.lab`, com o código escrito
+normalmente:
+
+```
+=== banco loja                 ← script SQL reutilizável pelos labs SQL
+CREATE TABLE ...;
+
+=== lab id-unico
+tipo: prever                   ← explorar | prever | desafio | parsons | passo
+tema: Paradigma Imperativo     ← o mesmo nome de tema dos resumos
+nivel: 1                       ← 1 a 3
+linguagem: js                  ← js | python | prolog | sql | web | texto | java
+titulo: Soma com estado mutável
+
+--- enunciado
+Texto com **negrito** e `código`.
+--- codigo
+console.log(1 + 1);
+--- opcoes
+- 2
+- 11
+--- explicacao
+Por que isso acontece.
+```
+
+Outras seções: `solucao`, `testes`, `regras`, `dicas`, `experimentos`,
+`consultas` (Prolog), `linhas`/`distratores` (montar), `pergunta`. Cabeçalhos
+opcionais: `banco`, `alvo`, `ordem`, `verificar`, `resposta`, `erro`. O
+formato completo está documentado no topo de `labs.py`, e o gerador avisa de
+erros de autoria.
+
+**Conferir o conteúdo:** abra `#/m/<id>/lab/autoteste` no site. Ele roda cada
+exercício nos motores reais e aponta previsões com resposta ambígua, soluções
+que não passam nos testes e desafios cujo código inicial já passa.
 
 ## Observação
 
