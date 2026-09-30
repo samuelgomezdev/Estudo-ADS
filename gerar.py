@@ -434,25 +434,59 @@ def conferir_temas(materias):
                          + ("…" if len(curtos) > 4 else "")))
 
 
+CONTA = os.path.join(AQUI, "conta.json")
+
+
+def carrega_conta():
+    """Configuração do login do admin (Supabase). Sem conta.json, o site fica só
+    em modo visitante. Só vão para o HTML a URL do projeto e a chave PÚBLICA
+    (anon/publishable) — ela é feita para ficar no navegador; quem protege os
+    dados são as regras do banco (supabase/schema.sql)."""
+    if not os.path.exists(CONTA):
+        return None
+    try:
+        with open(CONTA, encoding="utf-8") as f:
+            c = json.load(f)
+    except (OSError, ValueError) as e:
+        AVISOS.append("conta.json ilegível (%s) — login desligado" % e)
+        return None
+    url, chave = (c.get("url") or "").strip(), (c.get("chave") or "").strip()
+    if not url or not chave:
+        return None
+    # a chave service_role (ou sb_secret_...) dá acesso total ao banco: nunca publicar
+    papel = ""
+    try:
+        import base64
+        meio = chave.split(".")[1]
+        papel = json.loads(base64.urlsafe_b64decode(meio + "=" * (-len(meio) % 4))).get("role", "")
+    except Exception:
+        pass
+    if papel == "service_role" or chave.startswith("sb_secret_"):
+        AVISOS.append("conta.json tem a chave SECRETA (service_role) — use a chave pública anon. Login desligado.")
+        return None
+    return {"url": url.rstrip("/"), "chave": chave}
+
+
 def escrever(materias, destino, local):
     with open(os.path.join(TEMPLATE, "base.html"), encoding="utf-8") as f:
         html = f.read()
     with open(os.path.join(TEMPLATE, "app.css"), encoding="utf-8") as f:
         css = f.read()
-    with open(os.path.join(TEMPLATE, "app.js"), encoding="utf-8") as f:
-        js = f.read()
-    # o laboratório vive em template/lab/: os .js entram antes do app.js (que
-    # chama window.LAB) e os .css depois do app.css, em ordem alfabética
+    # ordem dos scripts: laboratório (template/lab/, alfabética) → conta.js (usa o
+    # carregador do laboratório) → app.js (chama os dois). CSS na mesma ordem, com o app.css primeiro.
+    partes_js, partes_css = [], [css]
     if os.path.isdir(TEMPLATE_LAB):
-        partes_js, partes_css = [], []
         for arq in sorted(os.listdir(TEMPLATE_LAB)):
             with open(os.path.join(TEMPLATE_LAB, arq), encoding="utf-8") as f:
                 if arq.endswith(".js"):
                     partes_js.append(f.read())
                 elif arq.endswith(".css"):
                     partes_css.append(f.read())
-        js = "\n".join(partes_js + [js])
-        css = "\n".join([css] + partes_css)
+    for arq, lista in (("conta.js", partes_js), ("app.js", partes_js), ("conta.css", partes_css)):
+        with open(os.path.join(TEMPLATE, arq), encoding="utf-8") as f:
+            lista.append(f.read())
+    js = "\n".join(partes_js)
+    css = "\n".join(partes_css)
 
     dados = {
         "materias": materias,
@@ -460,6 +494,9 @@ def escrever(materias, destino, local):
         "raiz": os.path.basename(RAIZ),
         "gerado": datetime.datetime.now().strftime("%d/%m/%Y %H:%M"),
     }
+    conta = carrega_conta()
+    if conta:
+        dados["conta"] = conta
     blob = json.dumps(dados, ensure_ascii=False, separators=(",", ":"))
     blob = blob.replace("</", "<\\/")   # não fecha a tag <script> por engano
 

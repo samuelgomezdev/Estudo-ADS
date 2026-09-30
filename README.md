@@ -126,6 +126,41 @@ erros de autoria.
 exercício nos motores reais e aponta previsões com resposta ambígua, soluções
 que não passam nos testes e desafios cujo código inicial já passa.
 
+## Login do admin (histórico em até 5 máquinas)
+
+Visitantes usam o site sem conta — o progresso fica no navegador de cada um.
+O administrador entra pelo botão **Entrar** no topo e o histórico (quiz,
+laboratório com XP e revisões, rascunhos das discursivas) passa a ser guardado
+no **Supabase** e mesclado entre as máquinas: de cada lado fica sempre o
+registro mais avançado, então nada se perde ao usar duas máquinas.
+
+- No máximo **5 máquinas** por conta. A regra fica **no banco** (funções em
+  `supabase/schema.sql`), não no navegador. Pelo painel da conta dá para ver as
+  máquinas e desconectar uma para liberar a vaga.
+- **Sair** mantém o progresso no navegador. **Sair e desconectar esta máquina**
+  apaga o histórico local e libera a vaga (para computadores emprestados).
+
+**Configurar (uma vez):**
+
+1. Crie um projeto gratuito em supabase.com.
+2. *SQL Editor → New query*: cole `supabase/schema.sql` inteiro e clique em *Run*.
+3. *Authentication → Sign In / Providers → Email*: desligue **Allow new users to sign up**
+   (só o admin tem conta).
+4. *Authentication → Users → Add user → Create new user*: seu e-mail e uma senha
+   forte, com **Auto Confirm User** marcado.
+5. *Project Settings → API Keys*: copie a **Project URL** e a chave **anon / publishable**
+   para o `conta.json`:
+
+```json
+{ "url": "https://SEU-PROJETO.supabase.co", "chave": "a chave anon ou publishable" }
+```
+
+6. Rode o `atualizar.bat`.
+
+A chave anon é **pública por natureza** (vai para o navegador de qualquer
+visitante); quem protege os dados são as regras do banco. **Nunca** use a chave
+`service_role`/secreta — o `gerar.py` recusa essa chave e desliga o login.
+
 ## Observação
 
 Os PDFs e materiais de aula **não** fazem parte deste repositório — são material

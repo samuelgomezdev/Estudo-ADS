@@ -1218,5 +1218,20 @@
   });
   $("#ano").textContent = DADOS.gerado;
 
+  // chamado pela conta (conta.js) quando chega histórico de outra máquina:
+  // relê os dados e redesenha a tela, sem mexer num quiz ou exercício aberto
+  window.EstudoApp = {
+    recarregar: function () {
+      PROG = lerLS("estudo-ads", {}) || {};
+      rascunhos = null;
+      if (quiz || (rota.aba === "lab" && rota.sub)) return;
+      var y = window.pageYOffset;
+      if (rota.vista === "home") renderHome();
+      else renderMateria(byId[rota.mid], rota.aba);
+      atualizaTopo();
+      window.scrollTo(0, y);
+    }
+  };
+
   aplicarRota();
 })();

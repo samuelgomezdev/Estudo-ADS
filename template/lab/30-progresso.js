@@ -37,6 +37,21 @@
   L.prog = {
     dados: D,
     salvar: salvar,
+    // relê do localStorage (histórico vindo de outra máquina). Muda D no lugar e
+    // reaproveita os objetos de estado já abertos, para um exercício na tela
+    // continuar gravando no mesmo objeto.
+    recarregar: function () {
+      var n = L.lerLS(CHAVE, null) || {};
+      D.xp = n.xp || 0;
+      D.dias = n.dias || {};
+      D.labs = n.labs || {};
+      D.livre = !!n.livre;
+      var est = n.estado || {};
+      Object.keys(est).forEach(function (k) {
+        if (D.estado[k]) Object.assign(D.estado[k], est[k]);
+        else D.estado[k] = est[k];
+      });
+    },
     xpBase: xpBase,
     revisavel: function (lab) { return !!REVISAVEIS[lab.tipo]; },
     reg: reg,
