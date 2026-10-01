@@ -40,6 +40,38 @@
     return String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;")
       .replace(/>/g, "&gt;").replace(/"/g, "&quot;");
   }
+  // HTML dos resumos: só tags de formatação passam, sem atributos (exceto colspan/
+  // rowspan). <template> é inerte — nada executa durante o parse.
+  var TAGS_OK = { P: 1, B: 1, STRONG: 1, I: 1, EM: 1, U: 1, UL: 1, OL: 1, LI: 1, CODE: 1, PRE: 1, BR: 1, HR: 1,
+                  TABLE: 1, THEAD: 1, TBODY: 1, TR: 1, TH: 1, TD: 1, H3: 1, H4: 1, H5: 1, SMALL: 1, SUB: 1,
+                  SUP: 1, BLOCKQUOTE: 1, SPAN: 1, DIV: 1, S: 1, MARK: 1, KBD: 1 };
+  var TAGS_FORA = { SCRIPT: 1, STYLE: 1, IFRAME: 1, OBJECT: 1, EMBED: 1, LINK: 1, META: 1, BASE: 1, FORM: 1,
+                    INPUT: 1, BUTTON: 1, TEXTAREA: 1, SELECT: 1, SVG: 1, MATH: 1, TEMPLATE: 1, NOSCRIPT: 1 };
+  function sanitizarHtml(html) {
+    var t = document.createElement("template");
+    t.innerHTML = String(html == null ? "" : html);
+    (function limpar(no) {
+      Array.prototype.slice.call(no.childNodes).forEach(function (f) {
+        if (f.nodeType === 3) return;                                   // texto
+        if (f.nodeType !== 1) { no.removeChild(f); return; }            // comentários etc.
+        var tag = f.tagName.toUpperCase();
+        if (TAGS_FORA[tag]) { no.removeChild(f); return; }
+        limpar(f);
+        if (!TAGS_OK[tag]) {                                            // desconhecida: fica só o conteúdo
+          while (f.firstChild) no.insertBefore(f.firstChild, f);
+          no.removeChild(f);
+          return;
+        }
+        Array.prototype.slice.call(f.attributes).forEach(function (a) {
+          if (!((tag === "TD" || tag === "TH") && /^(colspan|rowspan)$/i.test(a.name) && /^\d{1,2}$/.test(a.value))) {
+            f.removeAttribute(a.name);
+          }
+        });
+      });
+    })(t.content);
+    return t.content;
+  }
+
   function shuffle(a) {
     a = a.slice();
     for (var i = a.length - 1; i > 0; i--) {
@@ -426,7 +458,7 @@
       bt.appendChild(el("i", null, "›"));
       bt.appendChild(document.createTextNode(r.tema));
       var body = el("div", "res-b");
-      body.innerHTML = r.html;
+      body.appendChild(sanitizarHtml(r.html));
       bt.onclick = function () {
         d.classList.toggle("open");
         bt.setAttribute("aria-expanded", d.classList.contains("open") ? "true" : "false");

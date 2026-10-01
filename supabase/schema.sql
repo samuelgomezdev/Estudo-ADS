@@ -34,6 +34,12 @@ revoke all on public.dispositivos, public.progresso from anon, authenticated;
 create or replace function public.limite_dispositivos()
 returns int language sql immutable as $$ select 5 $$;
 
+-- o identificador do navegador é um UUID gerado no próprio navegador
+create or replace function public.id_valido(p_device text)
+returns boolean language sql immutable as $$
+  select p_device is not null and p_device ~ '^[A-Za-z0-9-]{16,100}$'
+$$;
+
 -- Cadastra (ou só atualiza) este navegador. Devolve 'ok', 'novo' ou 'limite'.
 create or replace function public.registrar_dispositivo(p_device text, p_nome text)
 returns text
@@ -45,9 +51,7 @@ declare
   total int;
 begin
   if uid is null then raise exception 'não autenticado'; end if;
-  if p_device is null or length(p_device) < 16 or length(p_device) > 100 then
-    raise exception 'identificador de dispositivo inválido';
-  end if;
+  if not id_valido(p_device) then raise exception 'identificador de dispositivo inválido'; end if;
 
   update dispositivos set visto_em = now(), nome = nome_ok
    where user_id = uid and device_id = p_device;
@@ -62,11 +66,15 @@ begin
   return 'novo';
 end $$;
 
-create or replace function public.listar_dispositivos()
-returns table (id uuid, device_id text, nome text, criado_em timestamptz, visto_em timestamptz)
+-- A listagem NÃO devolve o device_id: com ele, uma máquina barrada pelo limite
+-- poderia copiar o identificador de outra já cadastrada e se passar por ela.
+-- O banco só diz qual linha é a máquina que perguntou.
+drop function if exists public.listar_dispositivos();
+create or replace function public.listar_dispositivos(p_device text)
+returns table (id uuid, nome text, criado_em timestamptz, visto_em timestamptz, eh_este boolean)
 language sql stable security definer set search_path = public
 as $$
-  select d.id, d.device_id, d.nome, d.criado_em, d.visto_em
+  select d.id, d.nome, d.criado_em, d.visto_em, d.device_id = p_device
     from dispositivos d
    where d.user_id = auth.uid()
    order by d.visto_em desc
@@ -83,7 +91,8 @@ create or replace function public.dispositivo_autorizado(p_device text)
 returns boolean
 language sql stable security definer set search_path = public
 as $$
-  select exists (select 1 from dispositivos where user_id = auth.uid() and device_id = p_device)
+  select id_valido(p_device)
+     and exists (select 1 from dispositivos where user_id = auth.uid() and device_id = p_device)
 $$;
 
 create or replace function public.carregar_progresso(p_device text)
@@ -104,8 +113,16 @@ declare agora timestamptz := now();
 begin
   if auth.uid() is null then raise exception 'não autenticado'; end if;
   if not dispositivo_autorizado(p_device) then raise exception 'dispositivo não autorizado'; end if;
-  if jsonb_typeof(p_dados) <> 'object' then raise exception 'formato inválido'; end if;
+  if p_dados is null or jsonb_typeof(p_dados) <> 'object' then raise exception 'formato inválido'; end if;
   if pg_column_size(p_dados) > 2000000 then raise exception 'histórico grande demais'; end if;
+  -- só as três chaves que o site sincroniza, e cada uma tem de ser um objeto
+  if exists (
+    select 1 from jsonb_each(p_dados) e
+     where e.key not in ('estudo-ads', 'estudo-ads-labprog', 'estudo-ads-disc:')
+        or jsonb_typeof(e.value) <> 'object'
+  ) then
+    raise exception 'formato inválido';
+  end if;
 
   insert into progresso (user_id, dados, atualizado_em) values (auth.uid(), p_dados, agora)
   on conflict (user_id) do update set dados = excluded.dados, atualizado_em = agora;
@@ -113,15 +130,19 @@ begin
   return agora;
 end $$;
 
+-- funções internas: ninguém chama direto pela API
+revoke all on function public.limite_dispositivos() from public, anon, authenticated;
+revoke all on function public.id_valido(text) from public, anon, authenticated;
+
 -- funções só para quem está logado
 revoke all on function public.registrar_dispositivo(text, text) from public, anon;
-revoke all on function public.listar_dispositivos() from public, anon;
+revoke all on function public.listar_dispositivos(text) from public, anon;
 revoke all on function public.remover_dispositivo(uuid) from public, anon;
 revoke all on function public.dispositivo_autorizado(text) from public, anon;
 revoke all on function public.carregar_progresso(text) from public, anon;
 revoke all on function public.salvar_progresso(text, jsonb) from public, anon;
 grant execute on function public.registrar_dispositivo(text, text) to authenticated;
-grant execute on function public.listar_dispositivos() to authenticated;
+grant execute on function public.listar_dispositivos(text) to authenticated;
 grant execute on function public.remover_dispositivo(uuid) to authenticated;
 grant execute on function public.dispositivo_autorizado(text) to authenticated;
 grant execute on function public.carregar_progresso(text) to authenticated;

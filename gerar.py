@@ -467,6 +467,37 @@ def carrega_conta():
     return {"url": url.rstrip("/"), "chave": chave}
 
 
+CDNS = "https://cdn.jsdelivr.net https://cdnjs.cloudflare.com"
+
+
+def politica_csp(conta):
+    """CSP como <meta> (o GitHub Pages não deixa configurar cabeçalhos).
+    Limites conhecidos: o site é um único HTML com scripts embutidos e os
+    exercícios de HTML rodam scripts do aluno (iframes srcdoc herdam esta
+    política), então script-src precisa de 'unsafe-inline'; os motores de
+    JS/Python/SQL precisam de eval e WebAssembly. O ganho real está em limitar
+    de onde scripts vêm e PARA ONDE dados podem ser enviados: fetch/XHR só para
+    o próprio site, o Supabase do projeto e os CDNs; imagens só locais."""
+    supa = ""
+    if conta:
+        supa = " " + conta["url"] + " " + conta["url"].replace("https://", "wss://")
+    diretivas = [
+        "default-src 'self'",
+        "script-src 'self' 'unsafe-inline' 'unsafe-eval' 'wasm-unsafe-eval' blob: " + CDNS,
+        "worker-src 'self' blob:",
+        "connect-src 'self' blob: data:" + supa + " " + CDNS,
+        "style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com",
+        "img-src 'self' data: blob:",
+        "font-src 'self' data:",
+        "frame-src 'self' blob: data:",
+        "media-src 'self' data: blob:",
+        "object-src 'none'",
+        "base-uri 'none'",
+        "form-action 'none'",
+    ]
+    return "; ".join(diretivas)
+
+
 def escrever(materias, destino, local):
     with open(os.path.join(TEMPLATE, "base.html"), encoding="utf-8") as f:
         html = f.read()
@@ -501,14 +532,12 @@ def escrever(materias, destino, local):
     blob = blob.replace("</", "<\\/")   # não fecha a tag <script> por engano
 
     html = html.replace("__CSS__", css).replace("__JS__", js).replace("__DADOS__", blob)
-    if not local:
-        html = "<!DOCTYPE html>\n<html lang=\"pt-BR\">\n<head>\n<meta charset=\"utf-8\">\n" \
-               "<meta name=\"viewport\" content=\"width=device-width,initial-scale=1\">\n" \
-               "</head>\n<body>\n" + html + "\n</body>\n</html>"
-    else:
-        html = "<!DOCTYPE html>\n<html lang=\"pt-BR\">\n<head>\n<meta charset=\"utf-8\">\n" \
-               "<meta name=\"viewport\" content=\"width=device-width,initial-scale=1\">\n" \
-               "</head>\n<body style=\"margin:0\">\n" + html + "\n</body>\n</html>"
+    cabeca = ("<!DOCTYPE html>\n<html lang=\"pt-BR\">\n<head>\n<meta charset=\"utf-8\">\n"
+              "<meta http-equiv=\"Content-Security-Policy\" content=\"" + politica_csp(conta) + "\">\n"
+              "<meta name=\"referrer\" content=\"no-referrer\">\n"
+              "<meta name=\"viewport\" content=\"width=device-width,initial-scale=1\">\n"
+              "</head>\n")
+    html = cabeca + ("<body>\n" if not local else "<body style=\"margin:0\">\n") + html + "\n</body>\n</html>"
     with open(destino, "w", encoding="utf-8") as f:
         f.write(html)
     return len(html)

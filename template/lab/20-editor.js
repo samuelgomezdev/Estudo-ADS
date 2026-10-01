@@ -89,6 +89,8 @@
     });
     setTimeout(ajustaAltura, 0);
 
+    // números de linha vêm de motores que rodam código do aluno: só aceita linha que existe
+    function linhaValida(n) { return cm && typeof n === "number" && n >= 1 && n <= cm.lineCount() && Math.floor(n) === n; }
     var api = {
       get: function () { return cm ? cm.getValue() : ta.value; },
       set: function (v) {
@@ -103,7 +105,7 @@
       },
       marcarErro: function (linha) {
         api.limparErro();
-        if (!linha || !cm) return;
+        if (!linhaValida(linha)) return;
         var h = cm.addLineClass(linha - 1, "background", "lab-cm-erro");
         marcas.push(h);
       },
@@ -115,10 +117,10 @@
         if (!cm) return;
         destaques.forEach(function (d) { cm.removeLineClass(d[0], "background", d[1]); });
         destaques = [];
-        if (linhaAnterior && linhaAnterior !== linhaAtual) {
+        if (linhaValida(linhaAnterior) && linhaAnterior !== linhaAtual) {
           destaques.push([cm.addLineClass(linhaAnterior - 1, "background", "lab-cm-anterior"), "lab-cm-anterior"]);
         }
-        if (linhaAtual) {
+        if (linhaValida(linhaAtual)) {
           destaques.push([cm.addLineClass(linhaAtual - 1, "background", "lab-cm-atual"), "lab-cm-atual"]);
           cm.scrollIntoView({ line: linhaAtual - 1, ch: 0 }, 60);
         }

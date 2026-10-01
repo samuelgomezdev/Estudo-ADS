@@ -75,11 +75,48 @@
   };
 
   // ------------------------------------------------------------ carregador
+  // SRI: hash de cada arquivo de CDN que roda na página principal. Se o CDN
+  // entregar um arquivo diferente (comprometido ou trocado), o navegador recusa.
+  // Arquivo de CDN sem hash aqui NÃO carrega — ao trocar de versão, recalcule com:
+  //   curl -s URL | openssl dgst -sha384 -binary | openssl base64 -A
+  // (Workers usam importScripts, que não aceita SRI; eles não acessam a sessão.)
+  L.SRI = {
+    "cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.18/codemirror.min.css": "sha384-zaeBlB/vwYsDRSlFajnDd7OydJ0cWk+c2OWybl3eSUf6hW2EbhlCsQPqKr3gkznT",
+    "cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.18/theme/material-darker.min.css": "sha384-eZTPTN0EvJdn23s24UDYJmUM2T7C2ZFa3qFLypeBruJv8mZeTusKUAO/j5zPAQ6l",
+    "cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.18/codemirror.min.js": "sha384-BEgQlz0fN4eG0n4jipmUe+nOg65hPY7L0E/lPVRaOPdzAfLPGEbXnpAodHtSnlwM",
+    "cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.18/mode/javascript/javascript.min.js": "sha384-g0o+WW9mdIxA7LaaCKTkRm0M5TVT+Bb4s9eocxPsI2G0Xm0POG9iD6G6qP1IIsfS",
+    "cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.18/mode/python/python.min.js": "sha384-Xy+2exU6lBoT4OpUOtnQb+cUpn+nlJQEHvRobWVtwz6wIsw4oNoO7xyd/l8rYgMy",
+    "cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.18/mode/sql/sql.min.js": "sha384-HxXmA1hLc56V6Ja4yfcCwAprmbnS4tuvKYS0qKG3t6oxOFMflcnYq5fOnt6wVCda",
+    "cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.18/mode/xml/xml.min.js": "sha384-xPpkMo5nDgD98fIcuRVYhxkZV6/9Y4L8s3p0J5c4MxgJkyKJ8BJr+xfRkq7kn6Tw",
+    "cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.18/mode/css/css.min.js": "sha384-fpeIC2FZuPmw7mIsTvgB5BNc8QVxQC/nWg2W+CgPYOAiBiYVuHe2E8HiTWHBMIJQ",
+    "cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.18/mode/clike/clike.min.js": "sha384-o9m634t2Hy35pPNKd9Xe16ntbSw11jCOuKPDrzQGXI8k87L2JZthaA3rwmJjnF7Z",
+    "cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.18/addon/mode/simple.min.js": "sha384-5+aYjV0V2W3IwhAYp/9WOrGMv1TaYkCjnkkW7Hv3yJQo28MergRCSRaUIUzDUs2J",
+    "cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.18/addon/edit/closebrackets.min.js": "sha384-69mJoUoPPF/C7qPs6lLjvXvrt6w225+rmxWqGO3a1glVjITdnnwPQOtG9FRTd2Ni",
+    "cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.18/addon/edit/matchbrackets.min.js": "sha384-LjCI3E8qhhxXZvu7+FCvqx9eZYSowFvuJ7z54KsgI/BDPGKEuysqCg/vYiKHvC4Y",
+    "cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.18/addon/selection/active-line.min.js": "sha384-hcxaXyAtJ30s2NeDu1OHWsQRiHiWuYLTbI596+YFb+f2pFhzO0mDuahZziRPPDxg",
+    "cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.18/mode/htmlmixed/htmlmixed.min.js": "sha384-xYIbc5F55vPi7pb/lUnFj3wu24HlpAMZdtBHkNrb2YhPzJV3pX7+eqXT2PXSNMrw",
+    "cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.18/addon/runmode/runmode.min.js": "sha384-/cmd3Km1T/tqET+aLxnD1Mm39cKeLo/PJND23EE1dPX1iF7ukaPcMvD0aX2gBS6d",
+    "cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.2/dist/umd/supabase.js": "sha384-Rj26LVGvoeRVR6+mwQmFfcR3QOBEwT+ZmuCWpuiqeTzJpCs0ER4ITAWGb4Hiy3Ok"
+  };
+  function integridade(url) {
+    var m = /^https:\/\/(.+)$/.exec(url);
+    if (!m) return { ok: true };                       // mesmo site: não precisa
+    var h = L.SRI[m[1]];
+    return h ? { ok: true, hash: h } : { ok: false };
+  }
   var carregados = {};
   L.carregarScript = function (url) {
     if (!carregados[url]) {
       carregados[url] = new Promise(function (ok, falha) {
+        var sri = integridade(url);
+        if (!sri.ok) {
+          console.error("Bloqueado: " + url + " não tem hash SRI cadastrado em L.SRI.");
+          delete carregados[url];
+          return falha(new Error("sem SRI: " + url));
+        }
         var s = document.createElement("script");
+        if (sri.hash) { s.integrity = sri.hash; s.crossOrigin = "anonymous"; }
+        s.referrerPolicy = "no-referrer";
         s.src = url;
         s.onload = function () { ok(); };
         s.onerror = function () { delete carregados[url]; falha(new Error("não carregou " + url)); };
@@ -91,7 +128,14 @@
   L.carregarCss = function (url) {
     if (!carregados[url]) {
       carregados[url] = new Promise(function (ok) {
+        var sri = integridade(url);
+        if (!sri.ok) {
+          console.error("Bloqueado: " + url + " não tem hash SRI cadastrado em L.SRI.");
+          return ok();
+        }
         var l = document.createElement("link");
+        if (sri.hash) { l.integrity = sri.hash; l.crossOrigin = "anonymous"; }
+        l.referrerPolicy = "no-referrer";
         l.rel = "stylesheet";
         l.href = url;
         l.onload = l.onerror = function () { ok(); };

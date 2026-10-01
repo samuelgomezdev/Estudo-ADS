@@ -164,7 +164,21 @@
   var ultimaSync = null, timer = null, emSync = false, denovo = false, registrado = false;
   var botao = null, painelAberto = null;
 
-  function erroDe(r) { return r && r.error ? String(r.error.message || r.error) : ""; }
+  // A listagem nova (schema atual) recebe o id desta máquina e devolve eh_este,
+  // sem expor o device_id de ninguém. Enquanto o banco não for atualizado, cai
+  // na versão antiga e compara localmente.
+  function listarDispositivos() {
+    var meu = idDispositivo();
+    return cliente.rpc("listar_dispositivos", { p_device: meu }).then(function (r) {
+      if (!r.error) return r.data || [];
+      return cliente.rpc("listar_dispositivos").then(function (v) {
+        if (v.error) throw v.error;
+        return (v.data || []).map(function (d) {
+          return { id: d.id, nome: d.nome, criado_em: d.criado_em, visto_em: d.visto_em, eh_este: d.device_id === meu };
+        });
+      });
+    });
+  }
 
   function conectar() {
     estado = "conectando";
@@ -235,8 +249,8 @@
 
   function sair(liberarMaquina) {
     var passo = liberarMaquina && cliente
-      ? cliente.rpc("listar_dispositivos").then(function (r) {
-          var eu = (r.data || []).filter(function (d) { return d.device_id === idDispositivo(); })[0];
+      ? listarDispositivos().then(function (ds) {
+          var eu = ds.filter(function (d) { return d.eh_este; })[0];
           return eu ? cliente.rpc("remover_dispositivo", { p_id: eu.id }) : null;
         })
       : Promise.resolve();
@@ -326,7 +340,9 @@
     if (/Email not confirmed/i.test(msg)) return "Este e-mail ainda não foi confirmado no Supabase (marque \"Auto Confirm\" ao criar o usuário).";
     if (/rate limit|too many/i.test(msg)) return "Muitas tentativas seguidas. Espere um pouco e tente de novo.";
     if (/fetch|network/i.test(msg)) return "Sem conexão com o servidor. Confira a internet.";
-    return msg;
+    // erro inesperado: nada de detalhe técnico na tela, só no console de quem está logando
+    console.warn("login:", msg);
+    return "Não foi possível entrar agora. Tente de novo em instantes.";
   }
   function abrirLogin() {
     modal("Entrar", function (m) {
@@ -411,18 +427,17 @@
           : estado === "limite" ? "Esta máquina ainda não está conectada." : "";
         bSync.hidden = estado === "limite";
         bLiberar.hidden = estado === "limite";
-        cliente.rpc("listar_dispositivos").then(function (r) {
-          var ds = r.data || [];
+        listarDispositivos().catch(function () { return []; }).then(function (ds) {
           titDisp.textContent = "Máquinas conectadas (" + ds.length + " de " + LIMITE + ")";
           lista.innerHTML = "";
           ds.forEach(function (d) {
             var li = el("li");
             var tx = el("div", "conta-disp-tx");
             tx.appendChild(el("b", null, d.nome));
-            if (d.device_id === idDispositivo()) tx.appendChild(el("span", "conta-tag eu", "esta máquina"));
+            if (d.eh_este) tx.appendChild(el("span", "conta-tag eu", "esta máquina"));
             tx.appendChild(el("small", null, "usada " + haQuanto(d.visto_em) + " · conectada em " + new Date(d.criado_em).toLocaleDateString("pt-BR")));
             li.appendChild(tx);
-            if (d.device_id !== idDispositivo()) {
+            if (!d.eh_este) {
               var b = el("button", "btn sm", "Desconectar");
               b.onclick = function () {
                 if (!confirm("Desconectar \"" + d.nome + "\"? Ela deixa de sincronizar até você entrar de novo nela.")) return;

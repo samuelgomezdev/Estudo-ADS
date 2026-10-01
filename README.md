@@ -161,6 +161,27 @@ A chave anon é **pública por natureza** (vai para o navegador de qualquer
 visitante); quem protege os dados são as regras do banco. **Nunca** use a chave
 `service_role`/secreta — o `gerar.py` recusa essa chave e desliga o login.
 
+## Segurança
+
+- **Dados de outros nunca viram HTML:** tudo que vem de usuário, dos motores do
+  laboratório (Workers e iframes rodam código do aluno) ou do banco entra na
+  página como texto. Resultados dos Workers são validados por formato antes de
+  usar (`L.limparRastro`), e o HTML dos resumos passa por uma lista de tags
+  permitidas (`sanitizarHtml` no `app.js`).
+- **Código do aluno isolado:** JS, Python, Prolog e SQL rodam em Web Workers
+  (sem acesso à página nem ao login); HTML/CSS roda em iframe `sandbox` sem
+  `allow-same-origin`.
+- **CSP** (gerada no `gerar.py`): scripts só do próprio site e dos dois CDNs;
+  envio de dados (fetch/XHR) só para o próprio site, o Supabase do projeto e os
+  CDNs; imagens só locais. Precisa de `'unsafe-inline'`/`'unsafe-eval'` por causa
+  dos exercícios — por isso é camada extra, não a defesa principal.
+- **SRI:** todo arquivo de CDN que roda na página principal tem hash em `L.SRI`
+  (`template/lab/00-base.js`); sem hash cadastrado ele não carrega. Ao trocar
+  de versão: `curl -s URL | openssl dgst -sha384 -binary | openssl base64 -A`.
+- **Supabase:** tabelas sem acesso direto; só funções que filtram por
+  `auth.uid()`, validam a entrada e garantem o limite de máquinas. Depois de
+  mudar `supabase/schema.sql`, rode o arquivo de novo no SQL Editor.
+
 ## Observação
 
 Os PDFs e materiais de aula **não** fazem parte deste repositório — são material

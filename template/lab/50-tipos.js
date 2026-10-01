@@ -282,6 +282,39 @@
     if (i < 0 && /^\d+$/.test(resp)) i = Number(resp) - 1;
     return i >= 0 && i < ops.length ? i : -1;
   };
+  // O Worker do passo a passo roda código do aluno, que pode chamar postMessage
+  // e forjar a resposta. Nada do que vem de lá é confiável: só passa o que tem
+  // o formato esperado, e todo texto vira string (renderizado como texto).
+  var EVENTOS = { linha: 1, chamada: 1, retorno: 1, fim: 1, erro: 1 };
+  function inteiro(v) { return typeof v === "number" && isFinite(v) && Math.floor(v) === v ? v : null; }
+  function texto(v, max) { return v == null ? null : String(v).slice(0, max || 2000); }
+  L.limparRastro = function (r) {
+    r = r && typeof r === "object" ? r : {};
+    var passos = Array.isArray(r.passos) ? r.passos.slice(0, 5000) : [];
+    var limpos = [];
+    passos.forEach(function (p) {
+      if (!p || typeof p !== "object" || !EVENTOS[p.e]) return;
+      var quadros = Array.isArray(p.p) ? p.p.slice(0, 200) : [];
+      limpos.push({
+        l: inteiro(p.l), e: p.e, x: texto(p.x), s: Math.max(0, inteiro(p.s) || 0),
+        p: quadros.filter(function (f) { return f && typeof f === "object"; }).map(function (f) {
+          return {
+            n: texto(f.n, 200) || "?", id: inteiro(f.id) || 0,
+            v: (Array.isArray(f.v) ? f.v.slice(0, 300) : []).filter(Array.isArray).map(function (x) {
+              var origem = x[2] === "closure" || x[2] === "this" ? x[2] : "";
+              return [texto(x[0], 200) || "", texto(x[1]) || "", origem];
+            })
+          };
+        })
+      });
+    });
+    var saida = (Array.isArray(r.saida) ? r.saida.slice(0, 2000) : []).filter(function (l) { return l && typeof l === "object"; })
+      .map(function (l) { return { tipo: /^(log|warn|error|info)$/.test(l.tipo) ? l.tipo : "log", texto: texto(l.texto) || "" }; });
+    var erro = r.erro && typeof r.erro === "object"
+      ? { nome: texto(r.erro.nome, 100) || "Erro", msg: texto(r.erro.msg) || "", linha: inteiro(r.erro.linha) } : null;
+    return { ok: r.ok !== false, passos: limpos, saida: saida, erro: erro, limite: !!r.limite, tempoEsgotado: !!r.tempoEsgotado };
+  };
+
   L.perguntaDe = function (lab) {
     if (lab.pergunta) return lab.pergunta;
     var alvo = (lab.alvo || "tudo").trim();
@@ -854,7 +887,7 @@
       aviso.hidden = true;
       velho = false;
       evento.textContent = "Gerando a execução…";
-      L.motores.passo(ed.get()).then(function (r) {
+      L.motores.passo(ed.get()).then(L.limparRastro).then(function (r) {
         if (!r.passos || !r.passos.length) {
           passos = [];
           pQuadros.innerHTML = "";
@@ -891,7 +924,7 @@
       ed.destacar(p.l, ant && ant.l);
       evento.innerHTML = "";
       var ev = el("div", "lab-ev lab-ev-" + p.e);
-      if (p.e === "linha") ev.innerHTML = "Próxima linha a executar: <b>" + p.l + "</b>";
+      if (p.e === "linha") ev.innerHTML = "Próxima linha a executar: <b>" + L.esc(p.l) + "</b>";
       else if (p.e === "chamada") ev.innerHTML = "Chamou <code>" + L.esc(p.x) + "</code> — um novo quadro entra na pilha";
       else if (p.e === "retorno") ev.innerHTML = "<code>" + L.esc(topo(p)) + "</code> vai retornar <code>" + L.esc(p.x) + "</code> — o quadro sai da pilha";
       else if (p.e === "fim") ev.innerHTML = "<b>Fim da execução.</b>";
