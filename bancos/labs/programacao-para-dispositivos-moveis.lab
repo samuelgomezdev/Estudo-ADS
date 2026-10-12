@@ -1,0 +1,1371 @@
+# Laboratório — Programação para Dispositivos Móveis
+# Confira tudo com #/m/programacao-para-dispositivos-moveis/lab/autoteste
+#
+# O Laboratório não roda Java nem Android: o que é código Android vira exercício
+# de montar (blocos), e o comportamento da plataforma (ciclo de vida, back stack,
+# Intents, recursos, layout_weight, menus) é simulado em JavaScript. SQLite roda
+# de verdade (sql.js é o próprio SQLite).
+
+=== banco clinica
+CREATE TABLE medicosCli (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  nome TEXT NOT NULL,
+  espec TEXT NOT NULL,
+  crm TEXT NOT NULL UNIQUE,
+  valor REAL NOT NULL
+);
+INSERT INTO medicosCli (nome, espec, crm, valor) VALUES
+  ('Ana Prado', 'Cardiologia', 'SC-1010', 320),
+  ('Bruno Teles', 'Pediatria', 'SC-2020', 250),
+  ('Carla Mendes', 'Cardiologia', 'SC-3030', 280),
+  ('Diego Ramos', 'Dermatologia', 'SC-4040', 300),
+  ('Elaine Costa', 'Pediatria', 'SC-5050', 230),
+  ('Fábio Lins', 'Ortopedia', 'SC-6060', 350);
+
+# =====================================================================
+# Fundamentos da Computação Móvel
+# =====================================================================
+
+=== lab fund-geracoes
+tipo: prever
+tema: Fundamentos da Computação Móvel
+nivel: 1
+linguagem: js
+titulo: Que geração de rede aguenta isso?
+alvo: ultima
+
+--- enunciado
+A função classifica a velocidade de uma conexão pela geração de rede que a oferece, usando as faixas do material: **2G** fica em dezenas a poucas centenas de kbps (voz e SMS), **3G** chega a alguns Mbps (web, fotos, vídeo). Preveja a **última** linha.
+
+--- codigo
+function geracao(kbps) {
+  if (kbps <= 384) return "2G — voz e SMS";
+  if (kbps <= 42000) return "3G — web, fotos e vídeo";
+  return "4G ou superior";
+}
+
+console.log("GPRS (80 kbps):", geracao(80));
+console.log("EDGE (236 kbps):", geracao(236));
+console.log("HSPA (7200 kbps):", geracao(7200));
+
+--- opcoes
+- HSPA (7200 kbps): 2G — voz e SMS
+- HSPA (7200 kbps): 3G — web, fotos e vídeo
+- HSPA (7200 kbps): 4G ou superior
+- HSPA (7200 kbps): undefined
+
+--- experimentos
+- Some quanto tempo leva baixar uma foto de 2 MB (16 000 kbits) em 236 kbps e em 7200 kbps.
+- Acrescente um `console.log` para 100 000 kbps.
+
+--- explicacao
+7200 kbps são 7,2 Mbps, ou seja, "alguns Mbps": é **3G** (HSPA). GPRS e EDGE são da **2G**, cujo uso típico era voz e SMS. Foi o salto da 3G que tornou viável web, fotos e vídeo no celular, e com isso o interesse pelos smartphones. O padrão de tela cheia com toque e loja de apps veio com o iPhone, em **2007**.
+
+=== lab fund-onde-roda
+tipo: desafio
+tema: Fundamentos da Computação Móvel
+nivel: 2
+linguagem: js
+titulo: Esse app roda nesse aparelho?
+
+--- enunciado
+Escreva `rodaEm(app, so)`, que devolve `true` se o app roda no sistema `so` ("Android" ou "iOS").
+
+- App **nativo** (`app.tipo === "nativo"`) só roda na plataforma para a qual foi escrito (`app.plataforma`).
+- App **híbrido** e **web app** rodam nas duas.
+
+--- codigo
+function rodaEm(app, so) {
+  return true;
+}
+
+console.log(rodaEm({ tipo: "nativo", plataforma: "Android" }, "iOS"));
+
+--- solucao
+function rodaEm(app, so) {
+  if (app.tipo === "nativo") return app.plataforma === so;
+  return true;
+}
+
+console.log(rodaEm({ tipo: "nativo", plataforma: "Android" }, "iOS"));
+
+--- testes
+rodaEm({ tipo: "nativo", plataforma: "Android" }, "iOS") ==> false
+rodaEm({ tipo: "nativo", plataforma: "iOS" }, "iOS") ==> true
+rodaEm({ tipo: "híbrido" }, "Android") ==> true
+rodaEm({ tipo: "web" }, "iOS") ==> true
+
+--- dicas
+Só o caso nativo precisa de comparação. Os outros tipos sempre rodam.
+
+`if (app.tipo === "nativo") return app.plataforma === so;`
+
+--- explicacao
+Um app nativo Android (Java/Kotlin) não roda no iOS (Swift/Objective-C), e **recompilar não basta**: é preciso reescrever ou usar um framework multiplataforma. O híbrido roda num contêiner nativo (WebView) com HTML, CSS e JS, então a mesma base de código vai para as duas lojas.
+
+# =====================================================================
+# Ambiente Android: Java, IDE e Emulador
+# =====================================================================
+
+=== lab amb-emulador
+tipo: prever
+tema: Ambiente Android: Java, IDE e Emulador
+nivel: 1
+linguagem: js
+titulo: Emulador ou aparelho real?
+alvo: ultima
+
+--- enunciado
+A regra abaixo resume o material: o emulador (AVD) é barato e cobre muitos modelos; o aparelho real reproduz **sinal, GPS, bateria, sensores e desempenho** de verdade. Preveja a última linha.
+
+--- codigo
+function ondeTestar(app) {
+  if (app.critico && app.todosMesmoAparelho) return "validação final no aparelho real";
+  if (app.usaSensores) return "aparelho real";
+  return "emulador";
+}
+
+console.log("protótipo:", ondeTestar({}));
+console.log("app de corrida:", ondeTestar({ usaSensores: true }));
+console.log("app da frota:", ondeTestar({ critico: true, todosMesmoAparelho: true, usaSensores: true }));
+
+--- opcoes
+- app da frota: emulador
+- app da frota: aparelho real
+- app da frota: validação final no aparelho real
+- app da frota: undefined
+
+--- experimentos
+- Inverta a ordem dos dois `if`. A resposta da frota muda? Qual regra deveria vir primeiro?
+- Acrescente um caso `{ muitasVersoesDeAndroid: true }`: qual ambiente cobre isso mais barato?
+
+--- explicacao
+A primeira condição verdadeira decide: o app da frota é **crítico** e **todos usam o mesmo aparelho**, então a validação final deve ser feita nele, mesmo que o desenvolvimento use o emulador. O emulador do Android Studio cria **AVDs** de vários modelos e versões. O **Profiler** acompanha CPU, memória, rede e energia, e o **breakpoint** pausa a execução para inspecionar variáveis.
+
+# =====================================================================
+# Java e Orientação a Objetos
+# =====================================================================
+
+=== lab java-byte
+tipo: prever
+tema: Java e Orientação a Objetos
+nivel: 2
+linguagem: js
+titulo: byte b = 127; b++ — e agora?
+alvo: ultima
+
+--- enunciado
+O JavaScript não tem `byte`, mas um `Int8Array` guarda números exatamente como o `byte` do Java: **8 bits com sinal, de -128 a 127**. Simulamos `byte b = 127; b++;`. Preveja a última linha.
+
+--- codigo
+const b = new Int8Array(1);   // byte b;
+b[0] = 127;                   // b = 127;
+console.log("antes:", b[0]);
+b[0]++;                       // b++;
+console.log("depois:", b[0]);
+
+--- opcoes
+- depois: 128
+- depois: 127
+- depois: -128
+- depois: 0
+
+--- experimentos
+- Comece em -128 e faça `b[0]--`.
+- Troque `Int8Array` por `Int16Array` (o `short` do Java). E agora?
+- Troque por `Uint16Array` (parecido com o `char`, de 0 a 65535) e guarde -1.
+
+--- explicacao
+127 é o maior `byte`. Somar 1 **estoura** (overflow) e o valor dá a volta para **-128**, sem erro nenhum, em Java também. Por isso a faixa de cada primitivo importa: `byte` (-128 a 127), `int` (cerca de ±2,1 bilhões), `char` (0 a 65535, sem negativos). Já atribuir um decimal a um `int` (`int x = 2.5;`) é **erro de compilação**.
+
+=== lab java-encapsular
+tipo: parsons
+tema: Java e Orientação a Objetos
+nivel: 1
+linguagem: java
+titulo: Monte a classe Veiculo encapsulada
+
+--- enunciado
+Monte a classe `Veiculo` com o atributo `placa` **encapsulado**: privado, lido por um getter e alterado por um setter. Há duas armadilhas.
+
+--- linhas
+public class Veiculo {
+    private String placa;
+    public String getPlaca() {
+        return placa;
+    }
+    public void setPlaca(String placa) {
+        this.placa = placa;
+    }
+}
+
+--- distratores
+    public String placa;
+    public void getPlaca() {
+
+--- explicacao
+**Encapsulamento** é esconder o estado (`private`) e expor uma interface pública (`getPlaca`/`setPlaca`). Atributo `public` deixa qualquer tela mudar a placa sem controle. Um getter precisa **devolver** o valor, então não pode ser `void`. E `this.placa = placa` distingue o atributo do parâmetro de mesmo nome. Centralizar o veículo numa classe evita repetir variáveis em cada tela.
+
+=== lab java-polimorfismo
+tipo: prever
+tema: Java e Orientação a Objetos
+nivel: 2
+linguagem: js
+titulo: Herança e polimorfismo
+alvo: ultima
+
+--- enunciado
+Mesma ideia do Java (`extends` e sobrescrita de método), escrita em JavaScript. Preveja a última linha.
+
+--- codigo
+class Veiculo {
+  constructor(placa) { this.placa = placa; }
+  pedagio() { return 10; }
+  descricao() { return this.placa + " paga R$ " + this.pedagio(); }
+}
+
+class Caminhao extends Veiculo {
+  constructor(placa, eixos) { super(placa); this.eixos = eixos; }
+  pedagio() { return 10 * this.eixos; }
+}
+
+const frota = [new Veiculo("ABC1D23"), new Caminhao("XYZ9K87", 3)];
+for (const v of frota) console.log(v.descricao());
+
+--- opcoes
+- XYZ9K87 paga R$ 10
+- XYZ9K87 paga R$ 30
+- XYZ9K87 paga R$ 13
+- erro
+
+--- experimentos
+- Tire o método `pedagio()` do `Caminhao`. O que muda?
+- Crie `class Moto extends Veiculo` com pedágio 5 e coloque uma na frota.
+
+--- explicacao
+`descricao()` foi **herdado** de `Veiculo`, mas a chamada `this.pedagio()` usa a versão do objeto real: no caminhão, a **sobrescrita** (10 × 3 = **30**). Isso é **polimorfismo**: a mesma mensagem, comportamentos diferentes. Não confunda com **sobrecarga**, que é ter vários métodos de mesmo nome com parâmetros diferentes (o Java aceita; o JavaScript não).
+
+# =====================================================================
+# Prototipação com Mockups
+# =====================================================================
+
+=== lab mock-fidelidade
+tipo: desafio
+tema: Prototipação com Mockups
+nivel: 2
+linguagem: js
+titulo: Classifique a fidelidade do protótipo
+
+--- enunciado
+Escreva `fidelidade(p)`. O protótipo `p` tem notas de 0 a 3 em quatro dimensões: `detalhamento`, `funcionalidade`, `interacao` (similaridade de interação) e `estetica` (refinamento estético). Some as quatro:
+
+- até 4 → `"baixa"`
+- de 5 a 8 → `"média"`
+- 9 ou mais → `"alta"`
+
+E a ferramenta (`p.ferramenta`) **não** pode influenciar o resultado.
+
+--- codigo
+function fidelidade(p) {
+  if (p.ferramenta === "papel") return "baixa";
+  return "alta";
+}
+
+console.log(fidelidade({ ferramenta: "bloco de notas", detalhamento: 3, funcionalidade: 2, interacao: 3, estetica: 3 }));
+
+--- solucao
+function fidelidade(p) {
+  const soma = p.detalhamento + p.funcionalidade + p.interacao + p.estetica;
+  if (soma <= 4) return "baixa";
+  if (soma <= 8) return "média";
+  return "alta";
+}
+
+console.log(fidelidade({ ferramenta: "bloco de notas", detalhamento: 3, funcionalidade: 2, interacao: 3, estetica: 3 }));
+
+--- testes
+fidelidade({ ferramenta: "papel", detalhamento: 1, funcionalidade: 0, interacao: 0, estetica: 1 }) ==> "baixa"
+fidelidade({ ferramenta: "Figma", detalhamento: 2, funcionalidade: 1, interacao: 2, estetica: 2 }) ==> "média"
+fidelidade({ ferramenta: "bloco de notas", detalhamento: 3, funcionalidade: 2, interacao: 3, estetica: 3 }) ==> "alta"
+fidelidade({ ferramenta: "papel", detalhamento: 3, funcionalidade: 2, interacao: 2, estetica: 2 }) ==> "alta"
+
+--- regras
+proibido: p\.ferramenta :: A ferramenta não define a fidelidade — use só as quatro dimensões
+
+--- dicas
+Some as quatro dimensões numa constante `soma`.
+
+Teste de baixo para cima: `if (soma <= 4) return "baixa"; if (soma <= 8) return "média"; return "alta";`
+
+--- explicacao
+Fidelidade se mede em quatro dimensões: **detalhamento**, **grau de funcionalidade**, **similaridade de interação** e **refinamento estético**. A ferramenta não decide nada: um mockup de alta fidelidade pode ser escrito em código num bloco de notas, e um rabisco no Figma continua sendo baixa fidelidade. Mockups validam ideias **cedo**, quando errar ainda é barato.
+
+# =====================================================================
+# Activities e Ciclo de Vida
+# =====================================================================
+
+=== lab act-ciclo
+tipo: prever
+tema: Activities e Ciclo de Vida
+nivel: 1
+linguagem: js
+titulo: Abri o app, apertei Home, voltei
+alvo: ultima
+
+--- enunciado
+Simulação do ciclo de vida de uma Activity. O usuário **abre o app**, aperta **Home** (o app sai da tela, mas não é destruído) e **volta** pelo ícone. Preveja a sequência de callbacks.
+
+--- codigo
+const log = [];
+const tela = {
+  onCreate()  { log.push("onCreate"); },
+  onStart()   { log.push("onStart"); },
+  onResume()  { log.push("onResume"); },
+  onPause()   { log.push("onPause"); },
+  onStop()    { log.push("onStop"); },
+  onRestart() { log.push("onRestart"); },
+};
+
+// abrir o app
+tela.onCreate(); tela.onStart(); tela.onResume();
+log.push("|");
+// apertar Home
+tela.onPause(); tela.onStop();
+log.push("|");
+// voltar ao app
+tela.onRestart(); tela.onStart(); tela.onResume();
+
+console.log(log.join(" "));
+
+--- opcoes
+- onCreate onStart onResume | onPause onStop | onRestart onStart onResume
+- onCreate onStart onResume | onPause onStop | onCreate onStart onResume
+- onCreate onStart onResume | onPause | onResume
+- onCreate onResume | onPause onStop | onStart onResume
+
+--- experimentos
+- Simule o usuário apertando **Voltar** em vez de Home: depois de `onStop` vem `onDestroy`, e voltar ao app começa de novo no `onCreate`.
+- Simule um diálogo cobrindo metade da tela: só `onPause`, e ao fechar, só `onResume`.
+
+--- explicacao
+Home deixa a Activity **parada** (`onStop`), não destruída. Ao voltar, ela passa por `onRestart` → `onStart` → `onResume`, sem `onCreate`. Atenção ao que cai em prova: os dados devem ser salvos em **onPause()**, porque se o sistema precisar de memória ele pode matar o processo e `onStop`/`onDestroy` nunca são chamados.
+
+=== lab act-transicao
+tipo: desafio
+tema: Activities e Ciclo de Vida
+nivel: 2
+linguagem: js
+titulo: Quais callbacks entre dois estados?
+
+--- enunciado
+Os estados de uma Activity, em ordem: `"criada"`, `"iniciada"`, `"retomada"` (em primeiro plano). Escreva `caminho(de, para)`, que devolve a lista de callbacks chamados para ir de um estado ao outro:
+
+- subindo: `onCreate` leva a "criada", `onStart` leva a "iniciada", `onResume` leva a "retomada";
+- descendo: `onPause` sai de "retomada" para "iniciada", `onStop` sai de "iniciada" para "criada".
+
+Se `de === para`, devolva `[]`.
+
+--- codigo
+function caminho(de, para) {
+  return [];
+}
+
+console.log(caminho("criada", "retomada"));
+
+--- solucao
+function caminho(de, para) {
+  const estados = ["criada", "iniciada", "retomada"];
+  const sobe = ["onStart", "onResume"];   // de criada→iniciada, iniciada→retomada
+  const desce = ["onStop", "onPause"];    // de iniciada→criada, retomada→iniciada
+  let i = estados.indexOf(de);
+  const j = estados.indexOf(para);
+  const r = [];
+  while (i < j) { r.push(sobe[i]); i++; }
+  while (i > j) { r.push(desce[i - 1]); i--; }
+  return r;
+}
+
+console.log(caminho("criada", "retomada"));
+
+--- testes
+caminho("criada", "retomada") ==> ["onStart", "onResume"]
+caminho("retomada", "criada") ==> ["onPause", "onStop"]
+caminho("iniciada", "retomada") ==> ["onResume"]
+caminho("retomada", "iniciada") ==> ["onPause"]
+caminho("criada", "criada") ==> []
+
+--- dicas
+Guarde os estados num vetor e trabalhe com os índices: subir é ir do índice menor para o maior.
+
+Subindo, o callback de cada degrau é `["onStart", "onResume"][i]`. Descendo, a ordem se inverte: primeiro `onPause`, depois `onStop`.
+
+--- explicacao
+O ciclo de vida é **simétrico**: `onStart`/`onStop` delimitam o período em que a tela está **visível**, e `onResume`/`onPause` o período em que está em **primeiro plano**, recebendo toques. Por isso cada callback de subida tem um par na descida, chamado na ordem inversa.
+
+=== lab act-backstack
+tipo: passo
+tema: Activities e Ciclo de Vida
+nivel: 1
+linguagem: js
+titulo: A pilha de Activities (back stack)
+pergunta: Qual Activity está no topo da pilha quando o programa termina?
+resposta: Carrinho
+
+--- enunciado
+Avance passo a passo e acompanhe a variável `pilha`. Cada `abrir` empilha uma Activity; **Voltar** e `finish()` desempilham a do topo.
+
+--- codigo
+const pilha = [];
+function abrir(tela) { pilha.push(tela); }
+function voltar() { pilha.pop(); }
+
+abrir("Main");
+abrir("Produtos");
+abrir("Detalhe");
+voltar();
+abrir("Carrinho");
+abrir("Pagamento");
+voltar();               // o Pagamento chamou finish()
+console.log("topo:", pilha[pilha.length - 1]);
+
+--- opcoes
+- Main
+- Detalhe
+- Carrinho
+- Pagamento
+
+--- explicacao
+A back stack é **LIFO**: a última Activity aberta é a primeira a sair. O Detalhe saiu antes de o Carrinho entrar, e o Pagamento terminou com `finish()`, então sobra Main → Produtos → **Carrinho**. A primeira tela da pilha é a que o manifesto marca com `android.intent.action.MAIN` e `android.intent.category.LAUNCHER`.
+
+=== lab act-oncreate
+tipo: parsons
+tema: Activities e Ciclo de Vida
+nivel: 1
+linguagem: java
+titulo: Monte o onCreate de uma Activity
+
+--- enunciado
+Monte o `onCreate` da tela principal: chamar o método da superclasse, ligar o layout XML e pegar o botão pelo id. Há duas armadilhas.
+
+--- linhas
+public class MainActivity extends AppCompatActivity {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        Button botao = findViewById(R.id.botao);
+    }
+}
+
+--- distratores
+        setContentView(R.id.activity_main);
+    protected void onStart(Bundle savedInstanceState) {
+
+--- explicacao
+O `onCreate()` é o **primeiro** callback e faz as inicializações. `super.onCreate()` vem antes de tudo, `setContentView()` recebe um **layout** (`R.layout...`, não `R.id`), e só depois dele o `findViewById` encontra as views. O `onStart()` não recebe Bundle.
+
+# =====================================================================
+# Recursos do Android (res, strings e R)
+# =====================================================================
+
+=== lab res-qualificador
+tipo: desafio
+tema: Recursos do Android (res, strings e R)
+nivel: 2
+linguagem: js
+titulo: Qual pasta de recurso o Android escolhe?
+
+--- enunciado
+O Android escolhe sozinho o recurso adequado ao aparelho. Escreva `escolher(pastas, tipo, qualificador)`:
+
+- se existir a pasta `tipo + "-" + qualificador` (ex.: `"values-en"`), devolva ela;
+- senão, devolva a pasta padrão (`tipo`, ex.: `"values"`).
+
+--- codigo
+function escolher(pastas, tipo, qualificador) {
+  return tipo + "-" + qualificador;
+}
+
+const res = ["values", "values-en", "layout", "layout-land", "drawable", "drawable-hdpi"];
+console.log(escolher(res, "values", "es"));
+
+--- solucao
+function escolher(pastas, tipo, qualificador) {
+  const especifica = tipo + "-" + qualificador;
+  return pastas.includes(especifica) ? especifica : tipo;
+}
+
+const res = ["values", "values-en", "layout", "layout-land", "drawable", "drawable-hdpi"];
+console.log(escolher(res, "values", "es"));
+
+--- testes
+escolher(["values", "values-en"], "values", "en") ==> "values-en"
+escolher(["values", "values-en"], "values", "es") ==> "values"
+escolher(["layout", "layout-land"], "layout", "land") ==> "layout-land"
+escolher(["drawable", "drawable-hdpi"], "drawable", "xhdpi") ==> "drawable"
+
+--- dicas
+`pastas.includes("values-es")` diz se a pasta existe.
+
+Monte o nome específico, confira se existe e, se não, caia no padrão.
+
+--- explicacao
+É por isso que a pasta **padrão** (`values`, `layout`, `drawable`) precisa existir: ela é a reserva quando nenhum qualificador combina. Um aparelho em espanhol sem `values-es` usa as strings de `values`. Os nomes das subpastas são **obrigatórios**: o Android só reconhece `layout`, `values`, `drawable`, `menu`, com ou sem qualificadores.
+
+=== lab res-getstring
+tipo: parsons
+tema: Recursos do Android (res, strings e R)
+nivel: 1
+linguagem: java
+titulo: Use o strings.xml no código Java
+
+--- enunciado
+O `res/values/strings.xml` tem `<string name="boas_vindas">Bem-vindo!</string>`. Monte o trecho Java que mostra esse texto num `TextView`. Duas armadilhas.
+
+--- linhas
+TextView titulo = findViewById(R.id.titulo);
+String texto = getString(R.string.boas_vindas);
+titulo.setText(texto);
+
+--- distratores
+String texto = getString("@string/boas_vindas");
+R.string.boas_vindas = "Bem-vindo!";
+
+--- explicacao
+No **XML** se usa `@string/boas_vindas`; no **Java**, `getString(R.string.boas_vindas)`. A classe **R** é gerada automaticamente a cada compilação e guarda **constantes inteiras** que identificam cada recurso: não dá para atribuir nada a elas e não se edita R à mão. Centralizar textos no strings.xml permite reutilizar e **traduzir** (values-en, values-es).
+
+# =====================================================================
+# Layouts: LinearLayout e RelativeLayout
+# =====================================================================
+
+=== lab lay-weight
+tipo: prever
+tema: Layouts: LinearLayout e RelativeLayout
+nivel: 2
+linguagem: js
+titulo: layout_weight divide o espaço livre
+alvo: ultima
+
+--- enunciado
+Simulação de um `LinearLayout` horizontal de **300dp**. Os dois botões têm `layout_width="0dp"` e pesos 1 e 2. O espaço livre é dividido na proporção dos pesos. Preveja a última linha.
+
+--- codigo
+function distribuir(larguraPai, filhos) {
+  const ocupado = filhos.reduce((s, f) => s + f.largura, 0);
+  const livre = larguraPai - ocupado;
+  const pesos = filhos.reduce((s, f) => s + f.peso, 0);
+  return filhos.map(f => f.largura + livre * f.peso / pesos);
+}
+
+const [cancelar, salvar] = distribuir(300, [
+  { nome: "Cancelar", largura: 0, peso: 1 },
+  { nome: "Salvar",   largura: 0, peso: 2 },
+]);
+console.log("Cancelar:", cancelar + "dp");
+console.log("Salvar:", salvar + "dp");
+
+--- opcoes
+- Salvar: 150dp
+- Salvar: 200dp
+- Salvar: 300dp
+- Salvar: 100dp
+
+--- experimentos
+- Dê `largura: 60` ao Cancelar (um `wrap_content` de 60dp) e mantenha os pesos. Quanto cada um fica?
+- Ponha peso 0 no Cancelar. O que acontece com o Salvar?
+
+--- explicacao
+Livre = 300 − 0 = 300dp, dividido em 1 + 2 = 3 partes: o Cancelar fica com 100dp e o Salvar com o **dobro, 200dp**. O peso divide o espaço **livre**, não o total: por isso, para uma proporção exata, se usa `layout_width="0dp"`. E lembre dos erros clássicos no XML: medida sem unidade (`"100"`) e valor inexistente (`wrap_content1`).
+
+=== lab lay-linear-web
+tipo: desafio
+tema: Layouts: LinearLayout e RelativeLayout
+nivel: 2
+linguagem: web
+titulo: Recrie o LinearLayout com pesos em CSS
+
+--- enunciado
+O flexbox do CSS funciona como o `LinearLayout`: `flex-direction` faz o papel de `android:orientation`, e `flex-grow` o de `layout_weight`. Faça a barra `#barra` com os botões **lado a lado**, o `#salvar` com o **dobro da largura** do `#cancelar` (pesos 1 e 2, como no exercício anterior).
+
+--- codigo
+<div id="barra">
+  <button id="cancelar">Cancelar</button>
+  <button id="salvar">Salvar</button>
+</div>
+
+<style>
+  #barra { width: 300px; }
+  button { padding: 12px 0; font-size: 16px; }
+</style>
+
+--- solucao
+<div id="barra">
+  <button id="cancelar">Cancelar</button>
+  <button id="salvar">Salvar</button>
+</div>
+
+<style>
+  #barra { width: 300px; display: flex; flex-direction: row; }
+  button { padding: 12px 0; font-size: 16px; flex-basis: 0; }
+  #cancelar { flex-grow: 1; }
+  #salvar { flex-grow: 2; }
+</style>
+
+--- testes
+os botões ficam lado a lado :: ladoALado('#cancelar', '#salvar')
+juntos ocupam a barra inteira :: Math.abs(largura('#cancelar') + largura('#salvar') - largura('#barra')) < 2
+Salvar tem o dobro do Cancelar :: Math.abs(largura('#salvar') / largura('#cancelar') - 2) < 0.1
+
+--- dicas
+`#barra { display: flex; }` já põe os filhos lado a lado (direção padrão: row, como `orientation="horizontal"`).
+
+`flex-grow` é o peso. E, como no Android com `0dp`, use `flex-basis: 0` para dividir o espaço todo, e não só a sobra.
+
+--- explicacao
+`display:flex` + `flex-direction:row` é o `LinearLayout` horizontal; `column`, o vertical. `flex-grow` divide o espaço livre na proporção dos pesos, igual ao `layout_weight`, e `flex-basis: 0` é o equivalente do `layout_width="0dp"`. Sem ele, a sobra é dividida depois do tamanho do texto e a proporção deixa de ser exata.
+
+=== lab lay-relative
+tipo: parsons
+tema: Layouts: LinearLayout e RelativeLayout
+nivel: 2
+linguagem: texto
+titulo: RelativeLayout: posicione em relação aos outros
+
+--- enunciado
+Monte o XML de um `RelativeLayout` em que o campo de senha fica **abaixo** do campo de usuário e o botão Entrar fica **no rodapé** da tela. Duas armadilhas.
+
+--- linhas
+<RelativeLayout android:layout_width="match_parent" android:layout_height="match_parent">
+    <EditText android:id="@+id/usuario" android:layout_width="match_parent" android:layout_height="wrap_content" />
+    <EditText android:id="@+id/senha" android:layout_below="@id/usuario" android:layout_width="match_parent" android:layout_height="wrap_content" />
+    <Button android:id="@+id/entrar" android:layout_alignParentBottom="true" android:layout_width="match_parent" android:layout_height="48dp" />
+</RelativeLayout>
+
+--- distratores
+    <Button android:id="@+id/entrar" android:layout_alignParentBottom="true" android:layout_width="match_parent" android:layout_height="48" />
+    <EditText android:id="@+id/senha" android:layout_below="@id/usuario" android:layout_width="wrap_content1" android:layout_height="wrap_content" />
+
+--- explicacao
+No `RelativeLayout` cada view se posiciona **em relação a outra** (`layout_below`, `layout_toRightOf`, `layout_alignLeft`) ou **ao pai** (`layout_alignParentBottom`, `layout_centerInParent`). A desvantagem: mexer no `usuario` pode exigir mexer na `senha`, que depende dele. As armadilhas são os erros clássicos de prova: medida **sem unidade** e valor que **não existe**.
+
+# =====================================================================
+# Menus e ActionBar
+# =====================================================================
+
+=== lab menu-ciclo
+tipo: prever
+tema: Menus e ActionBar
+nivel: 2
+linguagem: js
+titulo: Quantas vezes cada callback do menu roda?
+alvo: ultima
+
+--- enunciado
+Simulação do ciclo do Options Menu. O usuário abre o menu da ActionBar **três vezes**. Preveja a última linha.
+
+--- codigo
+const cont = { create: 0, prepare: 0, selected: 0 };
+let menu = null;
+
+function onCreateOptionsMenu() { cont.create++; menu = ["Buscar", "Config"]; return true; }
+function onPrepareOptionsMenu() { cont.prepare++; return true; }
+function onOptionsItemSelected(item) { cont.selected++; return true; }
+
+function abrirMenu() {
+  if (menu === null) onCreateOptionsMenu();
+  onPrepareOptionsMenu();
+}
+
+abrirMenu();
+abrirMenu();
+onOptionsItemSelected("Buscar");
+abrirMenu();
+console.log(`create=${cont.create} prepare=${cont.prepare} selected=${cont.selected}`);
+
+--- opcoes
+- create=3 prepare=3 selected=1
+- create=1 prepare=3 selected=1
+- create=1 prepare=1 selected=1
+- create=3 prepare=0 selected=1
+
+--- experimentos
+- Use `onPrepareOptionsMenu` para esconder "Config" quando o usuário não estiver logado. Por que isso não funcionaria no `onCreateOptionsMenu`?
+
+--- explicacao
+`onCreateOptionsMenu()` roda **uma vez** e infla o XML de `res/menu` com o `MenuInflater`. `onPrepareOptionsMenu()` roda **antes de cada exibição**, por isso é o lugar para habilitar, esconder ou trocar itens dinamicamente. O toque num item cai em `onOptionsItemSelected()`.
+
+=== lab menu-inflate
+tipo: parsons
+tema: Menus e ActionBar
+nivel: 1
+linguagem: java
+titulo: Monte o Options Menu
+
+--- enunciado
+Monte os dois métodos: um carrega o menu de `res/menu/menu_principal.xml` na ActionBar e o outro trata o toque no item **Sair**. Duas armadilhas.
+
+--- linhas
+@Override
+public boolean onCreateOptionsMenu(Menu menu) {
+    getMenuInflater().inflate(R.menu.menu_principal, menu);
+    return true;
+}
+@Override
+public boolean onOptionsItemSelected(MenuItem item) {
+    if (item.getItemId() == R.id.sair) {
+        finish();
+        return true;
+    }
+    return super.onOptionsItemSelected(item);
+}
+
+--- distratores
+    setContentView(R.menu.menu_principal);
+    return false;
+
+--- explicacao
+O menu é definido em **XML** (`res/menu`) e carregado pelo **MenuInflater** dentro de `onCreateOptionsMenu`, que precisa devolver `true` para o menu aparecer. `setContentView` é para o layout da tela, não para menus. O item tocado chega em `onOptionsItemSelected` e é identificado pelo id; `finish()` encerra a Activity.
+
+# =====================================================================
+# Navegação entre Telas: Intent e Bundle
+# =====================================================================
+
+=== lab int-explicita
+tipo: parsons
+tema: Navegação entre Telas: Intent e Bundle
+nivel: 1
+linguagem: java
+titulo: Abra uma tela e mande um dado
+
+--- enunciado
+Na `MainActivity`, abra a `NovaTela` com uma **Intent explícita** levando o texto `"Informação"` na chave `"info"`. Depois, na `NovaTela`, leia o dado. Duas armadilhas.
+
+--- linhas
+Intent i = new Intent(MainActivity.this, NovaTela.class);
+i.putExtra("info", "Informação");
+startActivity(i);
+// na NovaTela:
+String info = getIntent().getStringExtra("info");
+
+--- distratores
+Intent i = new Intent(Intent.ACTION_VIEW);
+String info = getIntent().getIntExtra("info");
+
+--- explicacao
+A Intent **explícita** recebe o **contexto** e a **classe de destino**: é a forma de navegar dentro do próprio app, e a mais segura. A `ACTION_VIEW` sem destino seria uma Intent **implícita**. O `putExtra` precisa ser chamado **antes** do `startActivity`, e no destino se lê com o método do mesmo tipo (`getStringExtra` para String).
+
+=== lab int-resolver
+tipo: desafio
+tema: Navegação entre Telas: Intent e Bundle
+nivel: 3
+linguagem: js
+titulo: Quem atende essa Intent?
+
+--- enunciado
+Simule o sistema escolhendo quem atende uma Intent. Escreva `resolver(intent, apps)`, que devolve a lista de **nomes** dos componentes que atendem:
+
+- Intent **explícita** (tem `intent.classe`): só o componente com aquele nome, se existir.
+- Intent **implícita** (tem `intent.acao`): todos os componentes cujo `filtros` (o intent-filter) contém a ação, na ordem da lista.
+
+--- codigo
+function resolver(intent, apps) {
+  return apps.map(a => a.nome);
+}
+
+const apps = [
+  { nome: "Discador", filtros: ["ACTION_DIAL"] },
+  { nome: "Chrome",   filtros: ["ACTION_VIEW"] },
+  { nome: "MeuApp.Detalhe", filtros: [] },
+  { nome: "Gmail",    filtros: ["ACTION_SEND", "ACTION_VIEW"] },
+];
+console.log(resolver({ acao: "ACTION_VIEW" }, apps));
+
+--- solucao
+function resolver(intent, apps) {
+  if (intent.classe) {
+    return apps.filter(a => a.nome === intent.classe).map(a => a.nome);
+  }
+  return apps.filter(a => a.filtros.includes(intent.acao)).map(a => a.nome);
+}
+
+const apps = [
+  { nome: "Discador", filtros: ["ACTION_DIAL"] },
+  { nome: "Chrome",   filtros: ["ACTION_VIEW"] },
+  { nome: "MeuApp.Detalhe", filtros: [] },
+  { nome: "Gmail",    filtros: ["ACTION_SEND", "ACTION_VIEW"] },
+];
+console.log(resolver({ acao: "ACTION_VIEW" }, apps));
+
+--- testes
+resolver({ acao: "ACTION_VIEW" }, [{ nome: "Chrome", filtros: ["ACTION_VIEW"] }, { nome: "Gmail", filtros: ["ACTION_SEND", "ACTION_VIEW"] }, { nome: "X", filtros: [] }]) ==> ["Chrome", "Gmail"]
+resolver({ acao: "ACTION_DIAL" }, [{ nome: "Discador", filtros: ["ACTION_DIAL"] }, { nome: "Chrome", filtros: ["ACTION_VIEW"] }]) ==> ["Discador"]
+resolver({ classe: "MeuApp.Detalhe" }, [{ nome: "Chrome", filtros: ["ACTION_VIEW"] }, { nome: "MeuApp.Detalhe", filtros: [] }]) ==> ["MeuApp.Detalhe"]
+resolver({ acao: "ACTION_SEND" }, [{ nome: "Chrome", filtros: ["ACTION_VIEW"] }]) ==> []
+
+--- dicas
+Comece separando os dois casos: `if (intent.classe) { ... }`.
+
+No caso implícito: `apps.filter(a => a.filtros.includes(intent.acao))` e depois `.map(a => a.nome)`.
+
+--- explicacao
+Na **explícita** o destino é conhecido, nenhum filtro é consultado: por isso uma tela sem intent-filter (`MeuApp.Detalhe`) ainda pode ser aberta. Na **implícita** o sistema procura quem **declarou** a ação no `intent-filter`; com mais de um candidato, o usuário escolhe. Como qualquer app pode se declarar, a implícita é **menos segura**.
+
+# =====================================================================
+# Guias de Interface: Android e iOS
+# =====================================================================
+
+=== lab guia-revisar
+tipo: desafio
+tema: Guias de Interface: Android e iOS
+nivel: 2
+linguagem: js
+titulo: Revise um botão para o público idoso
+
+--- enunciado
+Escreva `revisar(botao)`, que devolve a lista de problemas, **nesta ordem**:
+
+- `"alvo pequeno"` se `botao.alvoDp < 48`;
+- `"fonte fixa"` se `botao.unidadeFonte !== "sp"` (fonte que não escala);
+- `"contraste baixo"` se `botao.contraste < 4.5`;
+- `"só ícone"` se `botao.rotulo` estiver vazio.
+
+--- codigo
+function revisar(botao) {
+  const problemas = [];
+  if (botao.alvoDp < 44) problemas.push("alvo pequeno");
+  return problemas;
+}
+
+console.log(revisar({ alvoDp: 40, unidadeFonte: "dp", contraste: 3.2, rotulo: "" }));
+
+--- solucao
+function revisar(botao) {
+  const problemas = [];
+  if (botao.alvoDp < 48) problemas.push("alvo pequeno");
+  if (botao.unidadeFonte !== "sp") problemas.push("fonte fixa");
+  if (botao.contraste < 4.5) problemas.push("contraste baixo");
+  if (!botao.rotulo) problemas.push("só ícone");
+  return problemas;
+}
+
+console.log(revisar({ alvoDp: 40, unidadeFonte: "dp", contraste: 3.2, rotulo: "" }));
+
+--- testes
+revisar({ alvoDp: 40, unidadeFonte: "dp", contraste: 3.2, rotulo: "" }) ==> ["alvo pequeno", "fonte fixa", "contraste baixo", "só ícone"]
+revisar({ alvoDp: 48, unidadeFonte: "sp", contraste: 7, rotulo: "Salvar" }) ==> []
+revisar({ alvoDp: 46, unidadeFonte: "sp", contraste: 4.5, rotulo: "Enviar" }) ==> ["alvo pequeno"]
+revisar({ alvoDp: 56, unidadeFonte: "px", contraste: 4.4, rotulo: "Ok" }) ==> ["fonte fixa", "contraste baixo"]
+
+--- dicas
+O código inicial usa 44 (que é o mínimo da Apple, em **pt**). No Android o mínimo é **48dp**.
+
+Quatro `if` independentes, um para cada regra, sempre na ordem do enunciado.
+
+--- explicacao
+Para o público de maior idade: alvos de toque de pelo menos **48dp** (Android) / **44pt** (iOS), fontes **escaláveis** (`sp` no Android, Dynamic Type no iOS), contraste mínimo de **4,5:1**, cor nunca como único sinal e ícones **com rótulo**. Esses itens vêm do Material Design e das Human Interface Guidelines, cujos três temas são **clareza**, **deferência** e **profundidade**.
+
+=== lab guia-botao-web
+tipo: desafio
+tema: Guias de Interface: Android e iOS
+nivel: 1
+linguagem: web
+titulo: Um botão que um idoso consegue tocar
+
+--- enunciado
+Ajuste o botão `#ligar` para seguir as diretrizes: **altura mínima de 48px**, **largura mínima de 48px**, fonte de pelo menos **18px** e um **rótulo em texto** (não só o emoji).
+
+--- codigo
+<button id="ligar">📞</button>
+
+<style>
+  #ligar { font-size: 12px; padding: 2px; }
+</style>
+
+--- solucao
+<button id="ligar">📞 Ligar</button>
+
+<style>
+  #ligar { font-size: 18px; padding: 8px 16px; min-height: 48px; min-width: 48px; }
+</style>
+
+--- testes
+altura de pelo menos 48px :: altura('#ligar') >= 48
+largura de pelo menos 48px :: largura('#ligar') >= 48
+fonte de pelo menos 18px :: parseFloat(css('#ligar', 'font-size')) >= 18
+tem rótulo em texto :: /[A-Za-zÀ-ú]{3,}/.test(texto('#ligar'))
+
+--- dicas
+`min-height: 48px; min-width: 48px;` garante o alvo de toque, qualquer que seja o texto.
+
+Escreva a palavra dentro do botão: `📞 Ligar`.
+
+--- explicacao
+48dp é o tamanho mínimo de alvo de toque do Material Design (no iOS, 44pt). Um ícone sozinho obriga o usuário a adivinhar; com rótulo, ele lê. E fonte maior só ajuda se também **escalar** com a configuração do aparelho, por isso o Android mede texto em **sp**.
+
+# =====================================================================
+# REST e WebServices
+# =====================================================================
+
+=== lab rest-status
+tipo: prever
+tema: REST e WebServices
+nivel: 1
+linguagem: js
+titulo: Que código de status volta?
+alvo: ultima
+
+--- enunciado
+Um mini WebService REST de clientes, simulado em JavaScript. Cada recurso tem uma URI (`/clientes/15`) e o verbo HTTP diz o que fazer. Preveja a **última** linha.
+
+--- codigo
+const clientes = { 15: { id: 15, nome: "Ana" } };
+let proximo = 16;
+
+function http(verbo, uri, corpo) {
+  const m = uri.match(/^\/clientes(?:\/(\d+))?$/);
+  if (!m) return 404;
+  const id = m[1];
+  if (verbo === "GET" && id) return clientes[id] ? 200 : 404;
+  if (verbo === "POST" && !id) { clientes[proximo++] = corpo; return 201; }
+  if (verbo === "DELETE" && id) { if (!clientes[id]) return 404; delete clientes[id]; return 204; }
+  return 405;
+}
+
+console.log("GET /clientes/15 →", http("GET", "/clientes/15"));
+console.log("POST /clientes →", http("POST", "/clientes", { nome: "Bia" }));
+console.log("DELETE /clientes/15 →", http("DELETE", "/clientes/15"));
+console.log("GET /clientes/15 →", http("GET", "/clientes/15"));
+
+--- opcoes
+- GET /clientes/15 → 200
+- GET /clientes/15 → 404
+- GET /clientes/15 → 204
+- GET /clientes/15 → 500
+
+--- experimentos
+- Faça `http("GET", "/clientes/16")`. O cliente criado pelo POST existe?
+- Tente `http("PUT", "/clientes/16", { nome: "Beatriz" })` e depois implemente o PUT.
+
+--- explicacao
+O DELETE removeu o cliente 15, então o GET seguinte não acha o recurso: **404**. Os outros: 200 (OK), 201 (Created, depois do POST) e 204 (No Content, apagou e não tem corpo a devolver). REST é um **estilo arquitetural**, não um protocolo: ele usa o HTTP de forma explícita, com **verbos**, **URIs** de recursos e **códigos de status**.
+
+=== lab rest-stateless
+tipo: desafio
+tema: REST e WebServices
+nivel: 2
+linguagem: js
+titulo: Sem estado: cada requisição se basta
+
+--- enunciado
+Este serviço **guarda estado** entre requisições: lembra quem fez login e responde de acordo. Isso viola o princípio **sem estado** do REST. Reescreva `atender(req)` para que **cada requisição traga o próprio token** (`req.token`) e o serviço **não use a variável `usuarioLogado`**.
+
+Regras: sem token válido (que não esteja em `tokens`) → status **401**; com token válido → status **200** e `corpo` com o nome do dono do token.
+
+--- codigo
+const tokens = { "abc": "Ana", "xyz": "Bruno" };
+let usuarioLogado = null;
+
+function login(token) { usuarioLogado = tokens[token] || null; }
+
+function atender(req) {
+  if (!usuarioLogado) return { status: 401 };
+  return { status: 200, corpo: usuarioLogado };
+}
+
+login("abc");
+console.log(atender({ uri: "/perfil" }));
+
+--- solucao
+const tokens = { "abc": "Ana", "xyz": "Bruno" };
+
+function atender(req) {
+  const dono = tokens[req.token];
+  if (!dono) return { status: 401 };
+  return { status: 200, corpo: dono };
+}
+
+console.log(atender({ uri: "/perfil", token: "abc" }));
+
+--- testes
+atender({ uri: "/perfil", token: "abc" }) ==> { status: 200, corpo: "Ana" }
+atender({ uri: "/perfil", token: "xyz" }) ==> { status: 200, corpo: "Bruno" }
+atender({ uri: "/perfil" }) ==> { status: 401 }
+atender({ uri: "/perfil", token: "falso" }) ==> { status: 401 }
+
+--- regras
+proibido: usuarioLogado :: Sem estado: o servidor não pode lembrar quem fez login
+
+--- dicas
+Apague `usuarioLogado` e a função `login`. Tudo o que o serviço precisa tem que vir **dentro** de `req`.
+
+`const dono = tokens[req.token];` e decida o status a partir disso.
+
+--- explicacao
+**Sem estado** (stateless) quer dizer que cada requisição carrega tudo o que é preciso para ser atendida: o servidor não guarda sessão entre uma chamada e outra. Isso facilita **cache**, **escala** (qualquer servidor atende qualquer requisição) e o **sistema em camadas**, outros princípios do REST. No Android, lembre: permissão `INTERNET` no manifesto e chamadas de rede **fora da thread principal**, senão vem `NetworkOnMainThreadException`.
+
+# =====================================================================
+# Persistência com SQLite
+# =====================================================================
+
+=== lab sql-rawquery
+tipo: explorar
+tema: Persistência com SQLite
+nivel: 1
+linguagem: sql
+banco: clinica
+titulo: O SELECT por trás do rawQuery
+
+--- enunciado
+No Android, a busca de médicos por especialidade é feita assim:
+
+`db.rawQuery("SELECT nome FROM medicosCli WHERE espec = ?", new String[]{ especialidade })`
+
+O `?` é preenchido pelo vetor de argumentos. Aqui o SQLite é o de verdade: rode a consulta com o valor já colocado no lugar do `?`.
+
+--- codigo
+SELECT nome FROM medicosCli WHERE espec = 'Cardiologia';
+
+--- experimentos
+- Troque para `'Pediatria'`. Cada linha do resultado é um `c.moveToNext()` no Cursor, e `c.getString(0)` lê a coluna 0.
+- Liste `nome, valor` ordenado pelo valor: `ORDER BY valor DESC`.
+- Rode `SELECT sqlite_version();` e veja a versão do SQLite que está rodando aqui.
+
+--- explicacao
+O `?` é um **parâmetro**: o valor vai separado do SQL, então o que o usuário digita nunca vira comando (protege contra **SQL injection**). O resultado chega como um `Cursor`: `moveToNext()` avança linha a linha, `getString(0)` lê a primeira coluna e, no fim, `c.close()`. O SQLite é **embutido**, sem servidor, e o banco do app só é visível ao próprio app.
+
+=== lab sql-crud
+tipo: desafio
+tema: Persistência com SQLite
+nivel: 2
+linguagem: sql
+banco: clinica
+titulo: CRUD completo na tabela de médicos
+verificar: SELECT nome, espec, valor FROM medicosCli ORDER BY id;
+
+--- enunciado
+Faça as três operações, nesta ordem:
+
+1. **Inserir** a médica `'Gabriela Luz'`, de `'Neurologia'`, CRM `'SC-7070'`, consulta de `400`.
+2. **Atualizar** o valor da consulta de todos os médicos de `'Pediatria'` para `260`.
+3. **Excluir** o médico de CRM `'SC-4040'`.
+
+O resultado é conferido pelo estado final da tabela.
+
+--- codigo
+INSERT INTO medicosCli (nome, espec, crm, valor)
+VALUES ('Gabriela Luz', 'Neurologia', 'SC-7070', 400);
+
+--- solucao
+INSERT INTO medicosCli (nome, espec, crm, valor)
+VALUES ('Gabriela Luz', 'Neurologia', 'SC-7070', 400);
+
+UPDATE medicosCli SET valor = 260 WHERE espec = 'Pediatria';
+
+DELETE FROM medicosCli WHERE crm = 'SC-4040';
+
+--- dicas
+`UPDATE tabela SET coluna = valor WHERE condição;` Sem o WHERE, todos os médicos mudariam de preço.
+
+`DELETE FROM medicosCli WHERE crm = 'SC-4040';`
+
+--- explicacao
+No Android, esse CRUD costuma ficar numa classe que estende **SQLiteOpenHelper**: `onCreate()` cria as tabelas, `onUpgrade()` atualiza quando a versão do banco muda, e as gravações usam `getWritableDatabase()` (as leituras, `getReadableDatabase()`). Limitações do SQLite que caem em prova: DELETE em **uma tabela por vez**, sem GRANT/REVOKE e ALTER TABLE limitado. Mesmo assim ele é **transacional (ACID)**.
+
+=== lab sql-unique
+tipo: prever
+tema: Persistência com SQLite
+nivel: 1
+linguagem: sql
+banco: clinica
+titulo: CRM repetido
+alvo: celula
+erro: sim
+pergunta: O que aparece no resultado?
+
+--- enunciado
+A coluna `crm` é `UNIQUE`. O INSERT abaixo tenta cadastrar outro médico com o CRM da Ana (`SC-1010`). Preveja.
+
+--- codigo
+INSERT INTO medicosCli (nome, espec, crm, valor)
+VALUES ('Hugo Reis', 'Cardiologia', 'SC-1010', 270);
+
+SELECT COUNT(*) FROM medicosCli;
+
+--- opcoes
+- 6
+- 7
+- 0
+- erro
+
+--- experimentos
+- Troque o CRM para `'SC-8080'`. Qual id o `AUTOINCREMENT` dá ao Hugo?
+- Envolva os dois comandos com `BEGIN;` e `COMMIT;` e depois tente `ROLLBACK;` no lugar do COMMIT.
+
+--- explicacao
+A restrição `UNIQUE` recusa o INSERT (`UNIQUE constraint failed: medicosCli.crm`) e o script para ali: **erro**. Restrições assim deixam o banco garantir a regra, em vez de confiar em cada tela do app. E por ser transacional, o SQLite nunca grava uma operação pela metade.
+
+# =====================================================================
+# Desenvolvimento Híbrido: Cordova, Ionic e Capacitor
+# =====================================================================
+
+=== lab hib-ionic-comandos
+tipo: parsons
+tema: Desenvolvimento Híbrido: Cordova, Ionic e Capacitor
+nivel: 1
+linguagem: texto
+titulo: Do zero ao Android Studio com Ionic
+
+--- enunciado
+Coloque os comandos na ordem: criar o projeto, rodar no navegador, criar uma página, gerar a versão web, adicionar a plataforma Android, sincronizar e abrir no Android Studio. Duas armadilhas.
+
+--- linhas
+ionic start meuapp blank
+cd meuapp
+ionic serve
+ionic generate page detalhe
+ionic build
+ionic cap add android
+ionic cap sync
+ionic cap open android
+
+--- distratores
+ionic cap add windows
+cordova compile ios --no-mac
+
+--- explicacao
+`ionic start` cria, `ionic serve` roda no **navegador** com recarga automática e `ionic generate` cria páginas. Para virar app, o **Capacitor** empacota a versão web (`ionic build`) num projeto nativo: `cap add android` cria o projeto, `cap sync` copia o web e os plugins, `cap open android` abre no Android Studio, que compila o APK/AAB. O iOS só compila no **Xcode, em macOS**.
+
+=== lab hib-escolha
+tipo: desafio
+tema: Desenvolvimento Híbrido: Cordova, Ionic e Capacitor
+nivel: 2
+linguagem: js
+titulo: Nativo, híbrido ou web app?
+
+--- enunciado
+Escreva `abordagem(req)` seguindo a ordem das regras:
+
+1. Se `req.desempenhoMaximo` (jogo 3D, processamento pesado) → `"nativo"`.
+2. Se **não** precisa estar na loja (`req.loja === false`) → `"web app"`.
+3. Se precisa de **duas** plataformas (`req.plataformas.length === 2`) → `"híbrido"`.
+4. Senão → `"nativo"`.
+
+--- codigo
+function abordagem(req) {
+  return "híbrido";
+}
+
+console.log(abordagem({ plataformas: ["Android", "iOS"], loja: true }));
+
+--- solucao
+function abordagem(req) {
+  if (req.desempenhoMaximo) return "nativo";
+  if (req.loja === false) return "web app";
+  if (req.plataformas.length === 2) return "híbrido";
+  return "nativo";
+}
+
+console.log(abordagem({ plataformas: ["Android", "iOS"], loja: true }));
+
+--- testes
+abordagem({ plataformas: ["Android", "iOS"], loja: true }) ==> "híbrido"
+abordagem({ plataformas: ["Android", "iOS"], loja: true, desempenhoMaximo: true }) ==> "nativo"
+abordagem({ plataformas: ["Android", "iOS"], loja: false }) ==> "web app"
+abordagem({ plataformas: ["Android"], loja: true }) ==> "nativo"
+
+--- dicas
+A ordem dos `if` é a ordem das regras: a primeira que bater decide.
+
+Teste `req.loja === false`, e não `!req.loja`, para não confundir "não informado" com "não precisa".
+
+--- explicacao
+**Nativo**: linguagem e ferramentas da plataforma, acesso total ao hardware e aos padrões de interface, melhor desempenho, mas um código por plataforma. **Híbrido**: HTML, CSS e JS num contêiner nativo (**WebView**), uma base de código para as duas lojas, com acesso ao hardware por **plugins** (Cordova/Capacitor). **Web app/PWA**: roda no navegador, sem loja. O Ionic dá os componentes de interface, nos modos `md` (Android) e `ios`.
+
+# =====================================================================
+# Publicação nas Lojas de Aplicativos
+# =====================================================================
+
+=== lab pub-pendencias
+tipo: desafio
+tema: Publicação nas Lojas de Aplicativos
+nivel: 2
+linguagem: js
+titulo: O app está pronto para a loja?
+
+--- enunciado
+Escreva `pendencias(app)`, que devolve a lista do que falta, **nesta ordem**:
+
+- `"conta de desenvolvedor"` se `!app.contaPaga`;
+- `"política de privacidade"` se `!app.politicaPrivacidade`;
+- `"declaração de dados"` se `!app.declaracaoDados` (Data safety / App Privacy);
+- `"coleta desproporcional"` se algum item de `app.dadosColetados` **não** estiver em `app.dadosNecessarios`;
+- `"estabilidade"` se `app.taxaDeTravamento > 0.01` (mais de 1% das sessões).
+
+--- codigo
+function pendencias(app) {
+  const p = [];
+  if (!app.contaPaga) p.push("conta de desenvolvedor");
+  return p;
+}
+
+console.log(pendencias({
+  contaPaga: true, politicaPrivacidade: true, declaracaoDados: false,
+  dadosColetados: ["email", "localização"], dadosNecessarios: ["email"],
+  taxaDeTravamento: 0.03
+}));
+
+--- solucao
+function pendencias(app) {
+  const p = [];
+  if (!app.contaPaga) p.push("conta de desenvolvedor");
+  if (!app.politicaPrivacidade) p.push("política de privacidade");
+  if (!app.declaracaoDados) p.push("declaração de dados");
+  if (app.dadosColetados.some(d => !app.dadosNecessarios.includes(d))) p.push("coleta desproporcional");
+  if (app.taxaDeTravamento > 0.01) p.push("estabilidade");
+  return p;
+}
+
+console.log(pendencias({
+  contaPaga: true, politicaPrivacidade: true, declaracaoDados: false,
+  dadosColetados: ["email", "localização"], dadosNecessarios: ["email"],
+  taxaDeTravamento: 0.03
+}));
+
+--- testes
+pendencias({ contaPaga: true, politicaPrivacidade: true, declaracaoDados: false, dadosColetados: ["email", "localização"], dadosNecessarios: ["email"], taxaDeTravamento: 0.03 }) ==> ["declaração de dados", "coleta desproporcional", "estabilidade"]
+pendencias({ contaPaga: true, politicaPrivacidade: true, declaracaoDados: true, dadosColetados: ["email"], dadosNecessarios: ["email", "nome"], taxaDeTravamento: 0.002 }) ==> []
+pendencias({ contaPaga: false, politicaPrivacidade: false, declaracaoDados: true, dadosColetados: [], dadosNecessarios: [], taxaDeTravamento: 0 }) ==> ["conta de desenvolvedor", "política de privacidade"]
+
+--- dicas
+Um `if` por regra, na ordem do enunciado.
+
+Coleta desproporcional: `app.dadosColetados.some(d => !app.dadosNecessarios.includes(d))`.
+
+--- explicacao
+As normas de publicação juntam as **políticas da loja** (App Store Review Guidelines, Google Play Developer Program Policies) com a **lei** dos países de distribuição (LGPD, GDPR). Por isso: conta paga (Google com **taxa única**, Apple com **anuidade**), política de privacidade, declaração dos dados coletados, coleta **proporcional** à função do app e estabilidade: apps que travam são recusados ou penalizados.
+
+=== lab pub-etapas
+tipo: parsons
+tema: Publicação nas Lojas de Aplicativos
+nivel: 1
+linguagem: texto
+titulo: As etapas até o app chegar à loja
+
+--- enunciado
+Ordene as etapas para publicar um app Ionic no Google Play. Duas armadilhas.
+
+--- linhas
+Criar a conta de desenvolvedor e aceitar o contrato
+Escrever a política de privacidade e declarar os dados coletados (Data safety)
+Gerar a versão web com ionic build e sincronizar com ionic cap sync
+Compilar e assinar o AAB no Android Studio
+Enviar o AAB e preencher a ficha da loja (ícone, capturas, descrição)
+Aguardar a revisão e publicar
+
+--- distratores
+Compilar a versão iOS no Android Studio
+Publicar primeiro e escrever a política de privacidade depois das reclamações
+
+--- explicacao
+A conta e as obrigações legais vêm antes: sem política de privacidade e declaração de dados, a revisão recusa o app. O Ionic prepara o projeto, mas **quem compila é cada plataforma**: Android Studio gera o APK/AAB, e o iOS exige o **Xcode no macOS**. Produtos regulamentados (como medicamentos) ainda precisam restringir países e faixa etária.
+
+# =====================================================================
+# TypeScript
+# =====================================================================
+
+=== lab ts-for-in-of
+tipo: prever
+tema: TypeScript
+nivel: 1
+linguagem: js
+titulo: for...in ou for...of?
+alvo: ultima
+
+--- enunciado
+O TypeScript tem os mesmos laços do JavaScript, então este código se comporta igual nos dois. Preveja a **última** linha.
+
+--- codigo
+const produtos = ["Caneta", "Caderno", "Mochila"];
+
+let comIn = "";
+for (const x in produtos) comIn += x + " ";
+
+let comOf = "";
+for (const x of produtos) comOf += x + " ";
+
+console.log("in:", comIn);
+console.log("of:", comOf);
+
+--- opcoes
+- of: 0 1 2
+- of: Caneta Caderno Mochila
+- of: undefined undefined undefined
+- of: 3
+
+--- experimentos
+- Troque o vetor por um objeto `{ nome: "Ana", idade: 20 }` e rode só o `for...in`.
+- Tente o `for...of` no objeto. Que erro aparece?
+
+--- explicacao
+`for...in` percorre as **chaves** (num vetor, os índices `0 1 2`); `for...of` percorre os **valores** (`Caneta Caderno Mochila`). Truque para lembrar: **of** = **o**s valores **f**inais. E as variáveis: `let` é de bloco e pode ser reatribuída, `const` é de bloco e não pode, `var` é de função (forma antiga).
+
+=== lab ts-venda
+tipo: desafio
+tema: TypeScript
+nivel: 2
+linguagem: js
+titulo: A classe Venda do material
+
+--- enunciado
+No TypeScript do material a classe é assim:
+
+`class Venda { constructor(private produtos: Produto[]) {} somarValores(): number { ... } }`
+
+Aqui ela está em JavaScript (sem os tipos, que somem na compilação). Complete `somarValores()` usando `for...of` e crie também `maisCaro()`, que devolve o **nome** do produto de maior valor (ou `null` se não houver produtos).
+
+--- codigo
+class Venda {
+  constructor(produtos) { this.produtos = produtos; }
+  somarValores() {
+    let total = 0;
+    for (const p in this.produtos) total += p.valor;
+    return total;
+  }
+}
+
+const v = new Venda([{ nome: "Caneta", valor: 3 }, { nome: "Mochila", valor: 120 }]);
+console.log(v.somarValores());
+
+--- solucao
+class Venda {
+  constructor(produtos) { this.produtos = produtos; }
+  somarValores() {
+    let total = 0;
+    for (const p of this.produtos) total += p.valor;
+    return total;
+  }
+  maisCaro() {
+    let maior = null;
+    for (const p of this.produtos) {
+      if (maior === null || p.valor > maior.valor) maior = p;
+    }
+    return maior ? maior.nome : null;
+  }
+}
+
+const v = new Venda([{ nome: "Caneta", valor: 3 }, { nome: "Mochila", valor: 120 }]);
+console.log(v.somarValores());
+
+--- testes
+new Venda([{ nome: "Caneta", valor: 3 }, { nome: "Mochila", valor: 120 }]).somarValores() ==> 123
+new Venda([]).somarValores() ==> 0
+new Venda([{ nome: "Caneta", valor: 3 }, { nome: "Mochila", valor: 120 }, { nome: "Lápis", valor: 2 }]).maisCaro() ==> "Mochila"
+new Venda([]).maisCaro() ==> null
+
+--- dicas
+Rode o código inicial: dá `NaN`. Com `for...in`, `p` é o **índice** ("0", "1"), e `"0".valor` é `undefined`.
+
+Troque para `for...of`. Para `maisCaro`, guarde o maior produto visto até agora e compare `p.valor > maior.valor`.
+
+--- explicacao
+O bug clássico do `for...in` em vetor: ele entrega os **índices**, não os produtos. No TypeScript, `constructor(private produtos: Produto[])` já declara e preenche o atributo privado, e uma **interface** `Produto { nome: string; valor: number }` seria o contrato: define a forma, não implementa nada, e some depois da compilação.

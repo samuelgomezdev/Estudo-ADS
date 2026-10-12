@@ -372,6 +372,19 @@
       "exp": "Android (Java/Kotlin, Android Studio) e iOS (Objective-C/Swift, Xcode) têm sistemas, ferramentas e lojas diferentes. Um app nativo de um não roda no outro e precisa ser reescrito; recompilar não basta. Frameworks multiplataforma compartilham código, mas não mudam essa incompatibilidade do app nativo."
     },
     {
+      "tema": "Fundamentos da Computação Móvel",
+      "q": "Sobre a história dos smartphones e das plataformas móveis, é correto afirmar que:",
+      "op": [
+        "o iPhone, lançado em 2007, foi o primeiro smartphone da história.",
+        "o primeiro aparelho com Android foi lançado antes do iPhone, em 2005.",
+        "a rede 2G já oferecia velocidade de vários Mbps, suficiente para vídeo.",
+        "já existiam smartphones antes do iPhone, como o IBM Simon (1994), e o primeiro aparelho Android saiu em 2008.",
+        "a computação ubíqua surgiu com os smartphones e foi proposta pela Apple."
+      ],
+      "r": 3,
+      "exp": "O iPhone (2007) popularizou o padrão atual (tela cheia sensível ao toque, gestos e loja de apps), mas não foi o primeiro smartphone: IBM Simon (1994), BlackBerry, Palm e Nokia/Symbian vieram antes. O primeiro Android é de 2008. A 2G ficava em dezenas a poucas centenas de kbps, e a computação ubíqua é de Mark Weiser (Xerox PARC, anos 1990)."
+    },
+    {
       "tema": "Ambiente Android: Java, IDE e Emulador",
       "q": "Em dispositivos móveis, as plataformas de desenvolvimento normalmente utilizam uma linguagem como linguagem nativa. Considerando o sistema operacional Android, qual é a sua linguagem de programação nativa?",
       "op": [

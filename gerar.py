@@ -34,6 +34,8 @@ IGNORAR_PADRAO = [
     "Project-01", "Project-02", "node_modules", "AquaFoz_Imagens",
 ]
 IGNORAR_REGEX = [r"^\.", r"^HOW[- ]", r"^Hands", r"^_"]
+# arquivos que não são material de estudo (comprovantes de envio do AVA etc.)
+IGNORAR_ARQUIVOS = [r"^task-receipt-\d+\.txt$", r"^desktop\.ini$"]
 
 CORES = ["#ef4444", "#8b5cf6", "#06b6d4", "#2563eb", "#f59e0b", "#22c55e",
          "#ec4899", "#14b8a6", "#a855f7", "#f97316", "#3b82f6", "#84cc16",
@@ -346,7 +348,7 @@ def arquivos_de(pasta, cache):
         except OSError:
             continue
         ext = os.path.splitext(nome)[1].lower()
-        if ext not in EXTS:
+        if ext not in EXTS or any(re.search(rx, nome, re.I) for rx in IGNORAR_ARQUIVOS):
             continue
         try:
             tam = os.path.getsize(p)
