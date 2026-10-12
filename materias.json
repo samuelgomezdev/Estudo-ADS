@@ -106,6 +106,20 @@
       "sigla": "RWD",
       "cor": "#06b6d4",
       "sem_pasta": true
+    },
+    "Programação para Dispositivos Móveis": {
+      "id": "programacao-para-dispositivos-moveis",
+      "nome": "Programação para Dispositivos Móveis",
+      "periodo": 4,
+      "sigla": "PDM",
+      "cor": "#10b981"
+    },
+    "Teste de Software": {
+      "id": "teste-de-software",
+      "nome": "Teste de Software",
+      "periodo": 4,
+      "sigla": "TS",
+      "cor": "#ef4444"
     }
   }
 }

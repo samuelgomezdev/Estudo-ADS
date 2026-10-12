@@ -1,0 +1,1560 @@
+{
+  "id": "programacao-para-dispositivos-moveis",
+  "nome": "Programação para Dispositivos Móveis",
+  "periodo": 4,
+  "sigla": "PDM",
+  "cor": "#10b981",
+  "resumos": [
+    {
+      "tema": "Fundamentos da Computação Móvel",
+      "html": "<p>O <b>padrão atual de smartphone</b> (tela sensível ao toque em tela cheia, interface por gestos e loja de aplicativos) foi popularizado pelo <b>iPhone, em 2007</b>. Smartphones já existiam antes (IBM Simon de 1994, BlackBerry, Palm, Nokia com Symbian), e o primeiro aparelho Android só saiu em 2008.</p>\n<p><b>Gerações de rede:</b> a <b>2G</b> (GSM, GPRS, EDGE) tinha como uso típico voz e SMS, com dezenas a poucas centenas de kbps. A <b>3G</b> chegou a alguns Mbps e abriu espaço para web, fotos, vídeo e multimídia, o que aumentou o interesse pelos smartphones.</p>\n<p><b>Computação ubíqua</b> (Mark Weiser, Xerox PARC, anos 1990): computadores de vários tipos presentes no ambiente, interagindo com as pessoas de forma quase imperceptível. Hoje se vê em smartphones, wearables e IoT.</p>\n<p><b>Plataformas:</b> Android (Java/Kotlin, Android Studio, Google Play) e iOS (Objective-C/Swift, Xcode, App Store). Um app nativo de uma não roda na outra; recompilar não basta, é preciso reescrever ou usar um framework multiplataforma.</p>"
+    },
+    {
+      "tema": "Ambiente Android: Java, IDE e Emulador",
+      "html": "<p><b>Linguagem nativa do Android:</b> Java (hoje o Kotlin também é oficial). <b>IDE oficial:</b> Android Studio, baseado no IntelliJ IDEA, com SDK, editor de layout, Gradle e o <b>Android Emulator</b>, que cria dispositivos virtuais (AVDs). O Eclipse com plugin ADT foi descontinuado.</p>\n<p><b>Depuração:</b> o <b>breakpoint</b> pausa a execução num ponto do código para inspecionar variáveis, ver a pilha de chamadas e avançar passo a passo. O <b>monitor de recursos (Profiler)</b> acompanha CPU, memória, rede e energia em tempo real e ajuda a achar vazamentos e consumo excessivo.</p>\n<p><b>Emulador x dispositivo real:</b> o emulador é barato e cobre muitos modelos e versões. O dispositivo real reproduz sinal, GPS, bateria, sensores e desempenho de verdade. Quando todos os usuários têm o mesmo aparelho e o app é crítico, a validação final deve ser no aparelho real.</p>"
+    },
+    {
+      "tema": "Java e Orientação a Objetos",
+      "html": "<p><b>Tipos primitivos e limites:</b> byte (-128 a 127), int (cerca de ±2,1 bilhões), char (0 a 65535, sem negativos), boolean (só true/false), float/double para decimais. Atribuir decimal a int dá erro de compilação.</p>\n<p><b>Modificadores de acesso:</b> <code>private</code> (só a própria classe), <code>protected</code> (classe, subclasses e pacote), <code>public</code> (todos).</p>\n<p><b>Pilares da OO:</b> <b>encapsulamento</b> (ocultar os detalhes internos e expor uma interface pública com getters e setters), <b>herança</b> (reaproveitar atributos e métodos de outra classe) e <b>polimorfismo</b> (o mesmo método com comportamentos diferentes). <b>Sobrecarga</b> é ter vários métodos com o mesmo nome e parâmetros diferentes.</p>\n<p><b>Operadores:</b> <code>++</code> e <code>--</code> são unários de incremento e decremento; <code>==</code>, <code>!=</code>, <code>&gt;=</code>, <code>&lt;=</code> são relacionais; <code>=</code> e <code>+=</code> são de atribuição.</p>\n<p><b>Por que usar classes:</b> uma classe <code>Veiculo</code> centraliza dados e operações e é reaproveitada em todas as telas; repetir variáveis em cada tela gera duplicação e inconsistência.</p>"
+    },
+    {
+      "tema": "Prototipação com Mockups",
+      "html": "<p><b>Mockup</b> é um rascunho visual da interface usado no início do projeto para <b>validar as ideias</b> com cliente e equipe antes de programar. Facilita a ideação colaborativa e costuma reduzir custo, porque os erros aparecem cedo.</p>\n<p><b>Dimensões de fidelidade:</b> <b>detalhamento</b> (quantidade de detalhes), <b>grau de funcionalidade</b> (o que o protótipo suporta), <b>similaridade de interação</b> (o quanto usar se parece com o app real, a sensação de que já funciona) e <b>refinamento estético</b> (aparência visual).</p>\n<p><b>Graus:</b> baixa fidelidade (papel, caneta, quadro, sem funcionalidade), média e alta fidelidade (próximo do final, com alguma funcionalidade e dados). A ferramenta não define a fidelidade: um mockup de alta fidelidade pode ser escrito em código num bloco de notas.</p>"
+    },
+    {
+      "tema": "Activities e Ciclo de Vida",
+      "html": "<p><b>Activity</b> é o componente que exibe a interface e recebe a interação do usuário. Outros componentes: <b>Service</b> (tarefas longas em segundo plano), <b>BroadcastReceiver</b> (reage a avisos do sistema) e <b>Content Provider</b> (compartilha dados).</p>\n<p><b>Ciclo de vida:</b> <code>onCreate()</code> → <code>onStart()</code> → <code>onResume()</code> (em primeiro plano) → <code>onPause()</code> → <code>onStop()</code> → <code>onDestroy()</code>. O <code>onCreate()</code> é o primeiro e faz as inicializações (<code>setContentView()</code>). Os dados devem ser salvos em <code>onPause()</code>, porque <code>onStop()</code> e <code>onDestroy()</code> podem não ser chamados se o sistema encerrar o processo.</p>\n<p><b>Pilha de Activities (back stack):</b> LIFO, a última aberta é a primeira a sair ao tocar em voltar. Para encerrar uma Activity, o desenvolvedor chama <code>finish()</code>.</p>\n<p><b>Tela inicial:</b> definida no manifesto pelo <code>intent-filter</code> com <code>android.intent.action.MAIN</code> e <code>android.intent.category.LAUNCHER</code>.</p>"
+    },
+    {
+      "tema": "Recursos do Android (res, strings e R)",
+      "html": "<p><b>Recursos</b> são itens externos ao código guardados na pasta <code>res/</code>, organizados em subpastas obrigatórias por tipo (<code>layout</code>, <code>values</code>, <code>drawable</code>, <code>menu</code>) e por configuração (<code>values-en</code>, <code>layout-land</code>, <code>drawable-hdpi</code>). O Android escolhe sozinho o recurso adequado ao idioma, tela e orientação do aparelho.</p>\n<p><b>strings.xml</b> fica em <code>res/values/</code> e guarda pares nome/valor. Uso: <code>@string/nome</code> no XML e <code>getString(R.string.nome)</code> no Java. Centraliza, permite reutilizar e traduzir. Tipos de recurso de texto: String, String Array e Plurals.</p>\n<p><b>R.java</b> é gerada automaticamente a cada compilação e contém constantes inteiras para cada recurso (<code>R.layout.activity_main</code>, <code>R.id.botao</code>), ligando o XML ao Java. Não se altera à mão.</p>"
+    },
+    {
+      "tema": "Layouts: LinearLayout e RelativeLayout",
+      "html": "<p><b>LinearLayout:</b> organiza os componentes em linha, na direção de <code>android:orientation</code> (horizontal ou vertical). O atributo <code>layout_weight</code> distribui o espaço livre: maior peso ocupa mais espaço (com pesos 1 e 2, o segundo ocupa o dobro).</p>\n<p><b>RelativeLayout:</b> posiciona cada componente em relação a outro (<code>layout_below</code>, <code>layout_toRightOf</code>, <code>layout_alignLeft</code>) ou ao pai (<code>layout_alignParentBottom</code>, <code>layout_centerInParent</code>). Desvantagem: alterar um componente pode exigir alterar os que dependem dele.</p>\n<p><b>Erros clássicos no XML:</b> medida sem unidade (<code>\"100\"</code> em vez de <code>\"100dp\"</code>) e valores inexistentes (<code>wrap_content1</code>). Valores válidos de largura e altura: <code>wrap_content</code>, <code>match_parent</code> ou medida com unidade.</p>"
+    },
+    {
+      "tema": "Menus e ActionBar",
+      "html": "<p><b>Tipos de menu:</b> <b>Options Menu</b> (itens na barra de ações), <b>menu de contexto</b> (toque longo numa view), <b>Popup Menu</b> (ancorado a uma view, abaixo dela ou acima se faltar espaço) e <b>Navigation Drawer</b> (gaveta lateral).</p>\n<p><b>ActionBar / Toolbar:</b> barra no topo da Activity com título, botões de ação, abas e menus. É o padrão de design mais importante da tela principal.</p>\n<p><b>Ciclo do menu:</b> o menu é definido em XML em <code>res/menu</code>, carregado pelo <b>MenuInflater</b> em <code>onCreateOptionsMenu()</code> (chamado uma vez), ajustado dinamicamente em <code>onPrepareOptionsMenu()</code> (antes de cada exibição) e tratado em <code>onOptionsItemSelected()</code>.</p>\n<pre><code>getMenuInflater().inflate(R.menu.menu_principal, menu);</code></pre>"
+    },
+    {
+      "tema": "Navegação entre Telas: Intent e Bundle",
+      "html": "<p><b>Intent</b> é a mensagem entre componentes: abre Activities, inicia Services e envia broadcasts, inclusive entre apps.</p>\n<p><b>Explícita:</b> indica a classe de destino; recebe contexto e classe. É a forma de abrir telas do próprio app e a mais segura. <b>Implícita:</b> declara uma ação (<code>ACTION_VIEW</code>, <code>ACTION_DIAL</code>, <code>ACTION_SEND</code>) e o sistema escolhe quem atende, que pode ser outro app ou o próprio se declarar o <code>intent-filter</code>. Por não especificar o destino, é menos segura.</p>\n<pre><code>Intent i = new Intent(MainActivity.this, NovaTela.class);\ni.putExtra(\"info\", \"Informação\");\nstartActivity(i);\n// no destino:\nString info = getIntent().getStringExtra(\"info\");</code></pre>\n<p><b>Bundle:</b> agrupa dados e é enviado com <code>putExtras(bundle)</code>. É opcional, viaja junto com a Intent (não fica global) e também serve para salvar estado em <code>onSaveInstanceState</code>.</p>"
+    },
+    {
+      "tema": "Guias de Interface: Android e iOS",
+      "html": "<p><b>Guias:</b> Material Design (Android) e Human Interface Guidelines (iOS). No Android, as diretrizes ligadas à aparência e ao comportamento incluem usabilidade, animação e layout; padrões comuns como a gaveta de navegação dão experiência familiar.</p>\n<p><b>Três temas da Apple:</b> <b>clareza</b> (texto legível, foco na função), <b>deferência</b> (a interface não compete com o conteúdo) e <b>profundidade</b> (camadas visuais e transições que transmitem hierarquia e vitalidade).</p>\n<p><b>Público de maior idade:</b> alvos de toque de pelo menos 48 dp / 44 pt, fontes grandes e escaláveis (sp, Dynamic Type), contraste mínimo de 4,5:1, cor nunca como único sinal, telas enxutas, ícones com rótulo, gestos simples, confirmação e desfazer, suporte a TalkBack e VoiceOver, e testes com usuários reais.</p>"
+    },
+    {
+      "tema": "REST e WebServices",
+      "html": "<p><b>REST</b> é um <b>estilo arquitetural</b> para WebServices, não um protocolo. Princípios: cliente-servidor, <b>sem estado</b> (cada requisição é independente), cache, interface uniforme e sistema em camadas. É orientado a <b>recursos</b>, cada um identificado por URI (<code>/clientes/15</code>).</p>\n<p>Usa o HTTP de forma explícita: <b>verbos</b> (GET, POST, PUT, DELETE), <b>códigos de status</b> (200, 201, 404, 500) e cabeçalhos <code>Accept</code> e <code>Content-Type</code> para o formato (JSON, XML).</p>\n<p><b>SOAP x REST:</b> SOAP é protocolo rígido (envelope XML, WSDL, WS-*); REST é mais leve e menos burocrático. <b>SOA:</b> uma funcionalidade comum é publicada uma vez como serviço e consumida por sistemas em qualquer linguagem.</p>\n<p><b>No Android:</b> permissão <code>INTERNET</code> e chamadas de rede fora da thread principal (senão <code>NetworkOnMainThreadException</code>).</p>"
+    },
+    {
+      "tema": "Persistência com SQLite",
+      "html": "<p><b>SQLite</b>: banco embutido, <b>sem servidor</b> e sem administração, de código aberto e escrito em C, nativo no Android. O banco criado pelo app é acessível por nome a qualquer classe do app, mas não a outros apps.</p>\n<p><b>Conexão recomendada:</b> estender <code>SQLiteOpenHelper</code>, com <code>onCreate()</code> (cria as tabelas) e <code>onUpgrade()</code> (atualiza ao mudar a versão), e obter o banco com <code>getWritableDatabase()</code> (gravar) ou <code>getReadableDatabase()</code> (ler).</p>\n<pre><code>Cursor c = db.rawQuery(\n    \"SELECT nome FROM medicosCli WHERE espec = ?\",\n    new String[]{ especialidade });\nwhile (c.moveToNext()) { ... c.getString(0) ... }\nc.close();</code></pre>\n<p><b>Limitações:</b> DELETE em uma tabela por vez, sem GRANT/REVOKE, triggers parciais e ALTER TABLE limitado. É transacional (ACID).</p>"
+    },
+    {
+      "tema": "Desenvolvimento Híbrido: Cordova, Ionic e Capacitor",
+      "html": "<p><b>Nativo:</b> linguagem e ferramentas da plataforma, acesso total aos recursos e aos padrões de interface. <b>Híbrido:</b> HTML, CSS e JavaScript empacotados num contêiner nativo (WebView), uma base de código para várias plataformas, instalado pelas lojas; o suporte pode custar mais. <b>Web app/PWA:</b> roda no navegador e pode ser instalado em certas situações.</p>\n<p><b>Apache Cordova:</b> arquitetura com Web App, WebView e Cordova Plugins; os plugins básicos se chamam <b>Core Plugins</b>. <b>Capacitor:</b> sucessor moderno, empacota o app web em projetos nativos e dá acesso ao hardware por APIs e plugins.</p>\n<p><b>Ionic:</b> biblioteca de componentes de interface (funciona com Angular, React, Vue ou JS puro) com <b>modos</b> <code>md</code> (Android) e <code>ios</code>. Comandos: <code>ionic start app blank</code> (cria), <code>ionic serve</code> (roda no navegador), <code>ionic generate</code> (cria páginas), <code>ionic cap add/sync/open android</code>.</p>"
+    },
+    {
+      "tema": "Publicação nas Lojas de Aplicativos",
+      "html": "<p>As normas de publicação combinam as <b>políticas próprias de cada loja</b> (App Store Review Guidelines e Google Play Developer Program Policies) com a <b>legislação dos países</b> de distribuição (LGPD, GDPR, Anvisa etc.).</p>\n<p><b>Requisitos:</b> conta de desenvolvedor paga e aceite do contrato (Google Play com taxa única, Apple com anuidade); política de privacidade e declaração dos dados coletados (Data safety no Google, App Privacy na Apple); coleta proporcional à função do app; desempenho e estabilidade (apps que travam são recusados ou penalizados).</p>\n<p><b>Produtos regulamentados</b> (como medicamentos): restringir países e faixa etária e comprovar a regularidade do vendedor.</p>\n<p><b>Build de um app Ionic:</b> o Ionic prepara o projeto e cada plataforma compila: Android Studio (APK/AAB) e Xcode (iOS, só em macOS).</p>"
+    },
+    {
+      "tema": "TypeScript",
+      "html": "<p><b>Variáveis:</b> <code>let</code> (bloco, reatribuível), <code>const</code> (bloco, não reatribuível) e <code>var</code> (função, forma antiga). <b>Tipos:</b> <code>string</code>, <code>number</code>, <code>boolean</code>, <code>Array&lt;string&gt;</code> ou <code>string[]</code>.</p>\n<p><b>Interface:</b> contrato que define propriedades e métodos que uma classe (com <code>implements</code>) deve ter, sem implementar; some na compilação.</p>\n<p><b>Laços:</b> <code>for...in</code> percorre as <b>chaves</b> (índices) e <code>for...of</code> percorre os <b>valores</b>.</p>\n<pre><code>class Venda {\n  constructor(private produtos: Produto[]) {}\n  somarValores(): number {\n    let total = 0;\n    for (const p of this.produtos) total += p.valor;\n    return total;\n  }\n}</code></pre>"
+    }
+  ],
+  "flashcards": [
+    {
+      "tema": "Fundamentos da Computação Móvel",
+      "p": "Qual aparelho popularizou o padrão atual de smartphone e quando?",
+      "r": "O iPhone, da Apple, em 2007. Smartphones já existiam antes (IBM Simon, BlackBerry, Palm, Symbian)."
+    },
+    {
+      "tema": "Fundamentos da Computação Móvel",
+      "p": "Qual geração de rede tornou o acesso multimídia viável no celular?",
+      "r": "A 3G, com velocidades de alguns Mbps. Na 2G o uso típico era voz e SMS."
+    },
+    {
+      "tema": "Fundamentos da Computação Móvel",
+      "p": "O que é computação ubíqua?",
+      "r": "A presença de computadores de vários tipos no ambiente, interagindo com as pessoas de forma quase imperceptível (Mark Weiser, Xerox PARC)."
+    },
+    {
+      "tema": "Fundamentos da Computação Móvel",
+      "p": "Um app nativo Android roda no iOS se for recompilado?",
+      "r": "Não. Os sistemas, linguagens e APIs são diferentes; o app nativo precisa ser reescrito ou feito com framework multiplataforma."
+    },
+    {
+      "tema": "Ambiente Android: Java, IDE e Emulador",
+      "p": "Qual é a IDE oficial para desenvolver para Android?",
+      "r": "O Android Studio, mantido pelo Google e baseado no IntelliJ IDEA."
+    },
+    {
+      "tema": "Ambiente Android: Java, IDE e Emulador",
+      "p": "O que faz um breakpoint?",
+      "r": "Pausa a execução num ponto do código para inspecionar variáveis e avançar passo a passo durante a depuração."
+    },
+    {
+      "tema": "Ambiente Android: Java, IDE e Emulador",
+      "p": "Qual ferramenta mostra o consumo de CPU, memória, rede e energia do app?",
+      "r": "O monitor de recursos (Profiler) do Android Studio."
+    },
+    {
+      "tema": "Ambiente Android: Java, IDE e Emulador",
+      "p": "Quando preferir o dispositivo real ao emulador?",
+      "r": "Quando o app é crítico e os usuários têm um modelo conhecido: o aparelho real reproduz sinal, sensores, bateria e desempenho de verdade."
+    },
+    {
+      "tema": "Java e Orientação a Objetos",
+      "p": "Qual a faixa do tipo byte em Java?",
+      "r": "De -128 a 127."
+    },
+    {
+      "tema": "Java e Orientação a Objetos",
+      "p": "Qual modificador restringe o acesso à própria classe?",
+      "r": "private."
+    },
+    {
+      "tema": "Java e Orientação a Objetos",
+      "p": "O que é sobrecarga de métodos?",
+      "r": "Vários métodos com o mesmo nome na mesma classe, diferindo na lista de parâmetros (quantidade, tipo ou ordem)."
+    },
+    {
+      "tema": "Java e Orientação a Objetos",
+      "p": "O que é encapsulamento?",
+      "r": "Ocultar os detalhes internos da classe e expor só uma interface pública, normalmente com atributos private e getters/setters."
+    },
+    {
+      "tema": "Prototipação com Mockups",
+      "p": "Qual a principal função de um mockup?",
+      "r": "Validar as ideias iniciais com cliente e equipe antes de desenvolver o software."
+    },
+    {
+      "tema": "Prototipação com Mockups",
+      "p": "Quais são as quatro dimensões de fidelidade de um protótipo?",
+      "r": "Detalhamento, grau de funcionalidade, similaridade de interação e refinamento estético."
+    },
+    {
+      "tema": "Prototipação com Mockups",
+      "p": "O que mede a similaridade de interação?",
+      "r": "A sensação de que o protótipo já funciona: o quanto usá-lo se parece com usar o app real."
+    },
+    {
+      "tema": "Activities e Ciclo de Vida",
+      "p": "Qual é o primeiro método do ciclo de vida de uma Activity?",
+      "r": "onCreate()."
+    },
+    {
+      "tema": "Activities e Ciclo de Vida",
+      "p": "Em qual método salvar dados da Activity?",
+      "r": "onPause(), porque onStop() e onDestroy() podem não ser chamados se o sistema encerrar o processo."
+    },
+    {
+      "tema": "Activities e Ciclo de Vida",
+      "p": "Qual o mecanismo da pilha de Activities?",
+      "r": "LIFO: a última Activity aberta é a primeira a sair ao tocar em voltar."
+    },
+    {
+      "tema": "Activities e Ciclo de Vida",
+      "p": "Como definir qual Activity abre primeiro?",
+      "r": "No AndroidManifest, com intent-filter contendo a ação android.intent.action.MAIN e a categoria android.intent.category.LAUNCHER."
+    },
+    {
+      "tema": "Recursos do Android (res, strings e R)",
+      "p": "Onde fica o strings.xml e como referenciar uma string?",
+      "r": "Em res/values/strings.xml. No XML: @string/nome. No Java: getString(R.string.nome)."
+    },
+    {
+      "tema": "Recursos do Android (res, strings e R)",
+      "p": "Para que serve a classe R?",
+      "r": "Gerada automaticamente, contém constantes para cada recurso e liga os arquivos XML ao código Java."
+    },
+    {
+      "tema": "Recursos do Android (res, strings e R)",
+      "p": "Como oferecer o app em inglês sem mudar o código?",
+      "r": "Criando res/values-en/strings.xml com as traduções; o Android escolhe pelo idioma do aparelho."
+    },
+    {
+      "tema": "Layouts: LinearLayout e RelativeLayout",
+      "p": "Qual atributo define a direção do LinearLayout?",
+      "r": "android:orientation, com horizontal ou vertical."
+    },
+    {
+      "tema": "Layouts: LinearLayout e RelativeLayout",
+      "p": "O que faz o layout_weight?",
+      "r": "Distribui o espaço livre: o item de maior peso ocupa mais espaço."
+    },
+    {
+      "tema": "Layouts: LinearLayout e RelativeLayout",
+      "p": "Qual a principal característica do RelativeLayout?",
+      "r": "Posicionar cada componente em relação a outro componente ou ao contêiner pai."
+    },
+    {
+      "tema": "Layouts: LinearLayout e RelativeLayout",
+      "p": "O que há de errado em android:layout_width=\"100\"?",
+      "r": "Falta a unidade de medida; o correto é \"100dp\"."
+    },
+    {
+      "tema": "Menus e ActionBar",
+      "p": "Quem carrega o XML do menu?",
+      "r": "O MenuInflater, normalmente em onCreateOptionsMenu()."
+    },
+    {
+      "tema": "Menus e ActionBar",
+      "p": "Qual método ajusta o menu antes de cada exibição?",
+      "r": "onPrepareOptionsMenu()."
+    },
+    {
+      "tema": "Menus e ActionBar",
+      "p": "Qual menu aparece ancorado abaixo de uma view (ou acima, se faltar espaço)?",
+      "r": "O Popup Menu."
+    },
+    {
+      "tema": "Navegação entre Telas: Intent e Bundle",
+      "p": "Quais parâmetros recebe uma Intent explícita?",
+      "r": "O contexto atual e a classe de destino: new Intent(this, NovaTela.class)."
+    },
+    {
+      "tema": "Navegação entre Telas: Intent e Bundle",
+      "p": "Como enviar e ler um dado entre telas?",
+      "r": "Envio: intent.putExtra(\"chave\", valor). Leitura no destino: getIntent().getStringExtra(\"chave\")."
+    },
+    {
+      "tema": "Navegação entre Telas: Intent e Bundle",
+      "p": "Por que a Intent implícita é menos segura?",
+      "r": "Porque não especifica o destino; qualquer app com o intent-filter correspondente pode recebê-la."
+    },
+    {
+      "tema": "Guias de Interface: Android e iOS",
+      "p": "Quais são os três temas do iOS?",
+      "r": "Clareza, deferência e profundidade."
+    },
+    {
+      "tema": "Guias de Interface: Android e iOS",
+      "p": "Qual o alvo de toque mínimo recomendado?",
+      "r": "48 dp no Android e 44 pt no iOS."
+    },
+    {
+      "tema": "Guias de Interface: Android e iOS",
+      "p": "Qual o contraste mínimo recomendado entre texto e fundo?",
+      "r": "4,5:1 (WCAG)."
+    },
+    {
+      "tema": "REST e WebServices",
+      "p": "REST é protocolo?",
+      "r": "Não. É um estilo arquitetural; quem é protocolo é o SOAP."
+    },
+    {
+      "tema": "REST e WebServices",
+      "p": "O que significa REST ser stateless?",
+      "r": "Cada requisição é independente e traz tudo o que o servidor precisa, sem depender de estado guardado entre chamadas."
+    },
+    {
+      "tema": "REST e WebServices",
+      "p": "Como um recurso é identificado no REST?",
+      "r": "Por um identificador único, geralmente uma URI, como /clientes/15."
+    },
+    {
+      "tema": "Persistência com SQLite",
+      "p": "Qual classe a Google recomenda estender para usar o SQLite?",
+      "r": "SQLiteOpenHelper, sobrescrevendo onCreate() e onUpgrade()."
+    },
+    {
+      "tema": "Persistência com SQLite",
+      "p": "Quais métodos abrem o banco para gravar e para ler?",
+      "r": "getWritableDatabase() e getReadableDatabase()."
+    },
+    {
+      "tema": "Persistência com SQLite",
+      "p": "Por que usar ? nas consultas SQLite?",
+      "r": "Para passar os valores separadamente, evitando problemas com aspas e SQL injection."
+    },
+    {
+      "tema": "Desenvolvimento Híbrido: Cordova, Ionic e Capacitor",
+      "p": "Quais são os componentes da arquitetura Cordova?",
+      "r": "Web App, WebView e Cordova Plugins."
+    },
+    {
+      "tema": "Desenvolvimento Híbrido: Cordova, Ionic e Capacitor",
+      "p": "Qual a função do Capacitor?",
+      "r": "Empacotar o app web em projetos nativos e dar acesso a recursos do dispositivo por APIs e plugins."
+    },
+    {
+      "tema": "Desenvolvimento Híbrido: Cordova, Ionic e Capacitor",
+      "p": "Quais são os modos de interface do Ionic?",
+      "r": "md (Material Design, Android) e ios (padrão Apple)."
+    },
+    {
+      "tema": "Desenvolvimento Híbrido: Cordova, Ionic e Capacitor",
+      "p": "O que faz ionic start meuProjeto blank?",
+      "r": "Cria um novo projeto Ionic com o template em branco."
+    },
+    {
+      "tema": "Publicação nas Lojas de Aplicativos",
+      "p": "Quanto custam as contas de desenvolvedor?",
+      "r": "Google Play: taxa única (cerca de US$ 25). Apple: anuidade (cerca de US$ 99)."
+    },
+    {
+      "tema": "Publicação nas Lojas de Aplicativos",
+      "p": "Quem compila um app Ionic para as lojas?",
+      "r": "As ferramentas nativas: Android Studio para Android e Xcode (em macOS) para iOS."
+    },
+    {
+      "tema": "TypeScript",
+      "p": "Quais palavras declaram variáveis em TypeScript?",
+      "r": "let, const e var."
+    },
+    {
+      "tema": "TypeScript",
+      "p": "Diferença entre for...in e for...of?",
+      "r": "for...in percorre as chaves (índices); for...of percorre os valores."
+    },
+    {
+      "tema": "TypeScript",
+      "p": "Para que serve uma interface em TypeScript?",
+      "r": "Definir um contrato de propriedades e métodos que uma classe deve seguir."
+    }
+  ],
+  "questoes": [
+    {
+      "tema": "Fundamentos da Computação Móvel",
+      "q": "O smartphone se tornou um fenômeno mundial e agrupa inúmeras funções antes desempenhadas por equipamentos diferentes. De acordo com essa afirmação, selecione a alternativa correta.",
+      "op": [
+        "Os smartphones surgiram com o lançamento do iPhone, em 2007, pela Apple. Esses dispositivos funcionavam com redes de segunda geração.",
+        "O Android foi o primeiro sistema operacional utilizado por smartphones (exceto o iPhone).",
+        "O padrão de smartphones que você conhece hoje foi desenvolvido pela Nokia, utilizando o sistema Android.",
+        "O padrão de smartphones utilizado hoje foi inicialmente desenvolvido pela Apple, com o iPhone.",
+        "O iPhone foi lançado como uma tentativa da Apple de concorrer com o sistema Android, do Google, amplamente utilizado por outras empresas."
+      ],
+      "r": 3,
+      "exp": "O padrão atual (tela sensível ao toque em tela cheia, interface por gestos e loja de aplicativos) foi popularizado pelo iPhone em 2007. Smartphones já existiam antes (IBM Simon, BlackBerry, Palm, Symbian), o primeiro Android só saiu em 2008, a Nokia usava Symbian e o iPhone veio antes do Android, não como resposta a ele."
+    },
+    {
+      "tema": "Fundamentos da Computação Móvel",
+      "q": "A mobilidade trazida pelos smartphones traz diversas facilidades. De acordo com a evolução da tecnologia, é correto afirmar que:",
+      "op": [
+        "na segunda geração de redes celulares, as chamadas de vídeo eram um dos principais usos das plataformas.",
+        "na terceira geração de redes celulares, houve um aumento do interesse devido ao melhor acesso aos conteúdos multimídia.",
+        "o principal uso de rede na terceira geração de redes celulares foi a troca de mensagens de texto por SMS.",
+        "as conexões na segunda geração de redes celulares já eram consideradas estáveis para o uso de streaming.",
+        "as redes de terceira geração tinham a velocidade máxima em torno de 110Kbps, o suficiente para uso geral."
+      ],
+      "r": 1,
+      "exp": "Com a 3G a velocidade passou a permitir navegação, fotos, vídeos e multimídia, o que aumentou o interesse pelos dispositivos. Na 2G o uso era voz e SMS, sem velocidade para vídeo ou streaming, e a 3G chegava a alguns Mbps, bem acima de 110 kbps."
+    },
+    {
+      "tema": "Fundamentos da Computação Móvel",
+      "q": "A respeito da computação ubíqua, é possível afirmar que:",
+      "op": [
+        "os smartphones não fazem parte desse conceito.",
+        "a expressão se refere à presença de computadores convencionais no dia a dia das pessoas, respondendo a comandos de voz.",
+        "é a onipresença de computadores dos mais variados tipos interagindo com as pessoas de maneira imperceptível.",
+        "foi um projeto de um cientista da Xerox, chamado Mark Weiser, o qual não foi realizado por falta de interesse comercial.",
+        "os smartphones são incluídos no conceito de ubiquidade por terem comandos de voz."
+      ],
+      "r": 2,
+      "exp": "Computação ubíqua (Mark Weiser, Xerox PARC, anos 1990) é a presença de computadores de vários tipos integrados ao ambiente, interagindo de forma quase imperceptível. Os smartphones fazem parte do conceito pela onipresença e conectividade, e a ideia se concretizou com IoT e wearables."
+    },
+    {
+      "tema": "Fundamentos da Computação Móvel",
+      "q": "O mercado está dividido basicamente entre Android, do Google, e iOS, do iPhone. Sobre o desenvolvimento de aplicativos para essas plataformas, é correto afirmar que:",
+      "op": [
+        "a linguagem de programação padrão, utilizada em ambas as plataformas, é o Java.",
+        "os sistemas operacionais mobile têm um ecossistema comum, permitindo que aplicações sejam compartilhadas.",
+        "o desenvolvimento para iPhone/iOS é feito principalmente em C e Java.",
+        "uma aplicação desenvolvida para um dos sistemas precisa ser apenas recompilada para que funcione no outro.",
+        "uma aplicação desenvolvida para um dos sistemas é totalmente incompatível com o outro, precisando ser reescrita."
+      ],
+      "r": 4,
+      "exp": "Android (Java/Kotlin, Android Studio) e iOS (Objective-C/Swift, Xcode) têm sistemas, ferramentas e lojas diferentes. Um app nativo de um não roda no outro e precisa ser reescrito; recompilar não basta. Frameworks multiplataforma compartilham código, mas não mudam essa incompatibilidade do app nativo."
+    },
+    {
+      "tema": "Ambiente Android: Java, IDE e Emulador",
+      "q": "Em dispositivos móveis, as plataformas de desenvolvimento normalmente utilizam uma linguagem como linguagem nativa. Considerando o sistema operacional Android, qual é a sua linguagem de programação nativa?",
+      "op": [
+        "Html",
+        "C#",
+        "Swift",
+        "Delphi",
+        "Java"
+      ],
+      "r": 4,
+      "exp": "Java é a linguagem nativa histórica do Android (hoje o Kotlin também é oficial). HTML é marcação usada no híbrido, C# aparece no Xamarin/Unity, Swift é do iOS e Delphi gera apps multiplataforma, mas não é nativo do Android."
+    },
+    {
+      "tema": "Ambiente Android: Java, IDE e Emulador",
+      "q": "Uma IDE poderosa ajuda o desenvolvedor gerenciando e organizando o projeto e automatizando processos. Dentre as plataformas a seguir, qual é a indicada pela Android para desenvolver aplicativos?",
+      "op": [
+        "Visual Studio",
+        "NetBeans",
+        "Android Studio",
+        "Eclipse",
+        "RAD Studio"
+      ],
+      "r": 2,
+      "exp": "O Android Studio é a IDE oficial, mantida pelo Google e baseada no IntelliJ IDEA, com SDK, emulador, editor de layout e Gradle. O Eclipse com plugin ADT foi usado no passado e foi descontinuado."
+    },
+    {
+      "tema": "Ambiente Android: Java, IDE e Emulador",
+      "q": "O Android disponibiliza em seu SDK um emulador oficial. Selecione a opção que representa essa ferramenta:",
+      "op": [
+        "BlueStacks",
+        "Android Emulator",
+        "Android X84",
+        "GenyMotion",
+        "Virtual Box"
+      ],
+      "r": 1,
+      "exp": "O Android Emulator acompanha o SDK e o Android Studio e cria dispositivos virtuais (AVDs). BlueStacks e Genymotion são de terceiros, VirtualBox é virtualização genérica e Android X84 não é ferramenta oficial."
+    },
+    {
+      "tema": "Ambiente Android: Java, IDE e Emulador",
+      "q": "Existem recursos em que o aplicativo para o seu fluxo de execução em determinado local e disponibiliza ao usuário diversas funcionalidades para identificar possíveis problemas na execução. Qual das opções representa essa funcionalidade?",
+      "op": [
+        "Verificador de sintaxe",
+        "Repositórios de versionamento",
+        "Plugins",
+        "Renderização dos layouts",
+        "Break points"
+      ],
+      "r": 4,
+      "exp": "O breakpoint pausa a execução durante o debug para inspecionar variáveis, avaliar expressões e avançar passo a passo. Verificador de sintaxe não pausa a execução, versionamento controla histórico e a renderização de layouts é só pré-visualização."
+    },
+    {
+      "tema": "Ambiente Android: Java, IDE e Emulador",
+      "q": "Se um aplicativo consumir memória e processamento de forma desmoderada, pode comprometer o funcionamento do dispositivo e frustrar o usuário. Indique qual opção é uma ferramenta que auxilia o desenvolvedor a evitar essa situação.",
+      "op": [
+        "Monitor de recursos",
+        "Gradle",
+        "Dispositivos reais",
+        "Emuladores",
+        "Boas práticas de programação"
+      ],
+      "r": 0,
+      "exp": "O monitor de recursos (Profiler do Android Studio) acompanha CPU, memória, rede e energia em tempo real. Gradle é build, dispositivos e emuladores servem para testar, e boas práticas previnem, mas não são uma ferramenta."
+    },
+    {
+      "tema": "Java e Orientação a Objetos",
+      "q": "Os tipos primitivos têm limites mínimos e máximos de dados que podem armazenar. Qual das afirmativas apresenta uma atribuição de valor válida?",
+      "op": [
+        "Variável do tipo “int” valor 3,5f.",
+        "Variável do tipo “boolean” valor 10.",
+        "Variável do tipo “byte” valor 40000.",
+        "Variável do tipo “int” valor 645.",
+        "Variável do tipo “char” valor -88."
+      ],
+      "r": 3,
+      "exp": "int guarda inteiros de -2.147.483.648 a 2.147.483.647, então 645 é válido. 3.5f é float (perderia precisão), boolean só aceita true/false, byte vai de -128 a 127 e char vai de 0 a 65535, sem negativos."
+    },
+    {
+      "tema": "Java e Orientação a Objetos",
+      "q": "Marque a alternativa que representa o modificador que permite que métodos e variáveis sejam acessados apenas pela própria classe.",
+      "op": [
+        "private",
+        "public",
+        "float",
+        "protect",
+        "byte"
+      ],
+      "r": 0,
+      "exp": "private restringe o acesso à própria classe e é a base do encapsulamento. public libera para todos, protected (grafia correta) libera para subclasses e pacote, e float e byte são tipos primitivos."
+    },
+    {
+      "tema": "Java e Orientação a Objetos",
+      "q": "O Java tem uma técnica que faz com que os detalhes internos do funcionamento dos métodos de uma classe permaneçam ocultos para os objetos. Marque a alternativa que indica a técnica descrita:",
+      "op": [
+        "Polimorfismo",
+        "Herança",
+        "Private",
+        "Protect",
+        "Encapsulamento"
+      ],
+      "r": 4,
+      "exp": "Encapsulamento oculta os detalhes internos e expõe só uma interface pública (getters e setters). private é o modificador usado para implementá-lo, não a técnica em si."
+    },
+    {
+      "tema": "Java e Orientação a Objetos",
+      "q": "Em Java, uma classe pode ter várias implementações de um mesmo método, desde que a passagem de parâmetros seja diferente. Esse recurso é conhecido como:",
+      "op": [
+        "Herança",
+        "Static",
+        "Sobrecarga",
+        "Encapsulamento",
+        "Final"
+      ],
+      "r": 2,
+      "exp": "Sobrecarga (overloading) é ter vários métodos com o mesmo nome e listas de parâmetros diferentes (quantidade, tipo ou ordem). Não confundir com sobrescrita (overriding), que redefine na subclasse um método herdado."
+    },
+    {
+      "tema": "Java e Orientação a Objetos",
+      "q": "Marque a alternativa que contém operadores unários e de incremento e decremento.",
+      "op": [
+        "“-” e “+”",
+        "“==” e “!=”",
+        "“>=” e “<=”",
+        "“=” e “+=”",
+        "“++” e “--”"
+      ],
+      "r": 4,
+      "exp": "++ e -- atuam sobre um único operando e somam ou subtraem 1. == e != e >= e <= são relacionais, = e += são de atribuição, e - e + podem indicar sinal, mas não são incremento/decremento."
+    },
+    {
+      "tema": "Prototipação com Mockups",
+      "q": "Desenhar um mockup é uma boa prática no desenvolvimento de aplicativos móveis. Uma das principais funções de um mockup é:",
+      "op": [
+        "detalhar os requisitos não funcionais a serem implementados.",
+        "validar a versão final do sistema, após o desenvolvimento.",
+        "validar as ideias iniciais antes de desenvolver o software.",
+        "testar os casos de uso levantados durante a análise de requisitos.",
+        "escolher as tecnologias a serem utilizadas para o desenvolvimento."
+      ],
+      "r": 2,
+      "exp": "O mockup é um rascunho visual usado no início para validar com cliente e equipe a ideia, as funcionalidades e o fluxo de telas, antes de gastar com programação. Não detalha requisitos não funcionais, não valida a versão final e não escolhe tecnologias."
+    },
+    {
+      "tema": "Prototipação com Mockups",
+      "q": "A exatidão de um protótipo em relação ao que é esperado é chamada de fidelidade. Quando se avalia a similaridade da interação, se está falando de:",
+      "op": [
+        "detalhamento da interface do usuário.",
+        "semelhança visual entre a aplicação e seu rascunho.",
+        "funcionalidades disponibilizadas pelo mockup.",
+        "sensação que o usuário tem de que o aplicativo já está semifuncional.",
+        "atendimento de todos os requisitos de sistema."
+      ],
+      "r": 3,
+      "exp": "A similaridade de interação mede o quanto usar o protótipo se parece com usar o app real, a ponto de o usuário sentir que ele já funciona. Semelhança visual é refinamento estético e funcionalidades disponíveis é grau de funcionalidade."
+    },
+    {
+      "tema": "Prototipação com Mockups",
+      "q": "A fidelidade de um mockup pode ser avaliada de acordo com algumas dimensões. A dimensão que trata das particularidades suportadas pelo desenho da interface gráfica é chamada de:",
+      "op": [
+        "similaridade de interação.",
+        "testabilidade.",
+        "grau de funcionalidade.",
+        "detalhamento.",
+        "refinamento estético."
+      ],
+      "r": 2,
+      "exp": "Grau de funcionalidade indica o que o protótipo suporta (botões que respondem, navegação que funciona). As dimensões são: detalhamento, grau de funcionalidade, similaridade de interação e refinamento estético. Testabilidade não é uma delas."
+    },
+    {
+      "tema": "Prototipação com Mockups",
+      "q": "Mockups podem trazer vantagens ou desvantagens ao projeto, de acordo com as escolhas da sua elaboração. Em relação a uma característica dos mockups, é correto afirmar que:",
+      "op": [
+        "sempre aumentam o custo final do sistema por tomarem um tempo desnecessário para a criação.",
+        "necessitam de pessoal altamente especializado para elaboração, pois só podem ser elaborados usando softwares específicos.",
+        "facilitam a ideação e o desenvolvimento colaborativo, permitindo a construção em conjunto.",
+        "não precisam ser discutidos com o demandante do sistema por serem apenas mais um diagrama.",
+        "são considerados mockups apenas os rascunhos de alta fidelidade, com grande detalhamento da interface."
+      ],
+      "r": 2,
+      "exp": "O mockup torna a ideia concreta e permite que cliente, usuários e equipe construam a solução juntos. Ele costuma reduzir custo (erros aparecem cedo), pode ser feito em papel, deve ser discutido com o cliente e existe em baixa, média e alta fidelidade."
+    },
+    {
+      "tema": "Prototipação com Mockups",
+      "q": "Mockups podem ser classificados em baixa, média ou alta fidelidade. Em relação aos graus de fidelidade, escolha a alternativa correta.",
+      "op": [
+        "Mockups de alta fidelidade podem apresentar alguma funcionalidade e acesso a dados, mas não podem ser escritos em ferramentas como o bloco de notas; precisam de softwares mais específicos.",
+        "Mockups de alta fidelidade podem ser desenvolvidos em ferramentas como o bloco de notas.",
+        "Mockups de média fidelidade podem ser desenvolvidos usando papel e caneta.",
+        "Mockups de baixa fidelidade precisam obrigatoriamente ser desenvolvidos em software.",
+        "Mockups de baixa fidelidade devem apresentar alguma funcionalidade, mesmo que mínima."
+      ],
+      "r": 1,
+      "exp": "O que define a fidelidade é o resultado, não a ferramenta: um mockup de alta fidelidade pode ser escrito em código (HTML, CSS e JavaScript) num editor simples. Papel e caneta são típicos da baixa fidelidade, que não exige software nem funcionalidade."
+    },
+    {
+      "tema": "Activities e Ciclo de Vida",
+      "q": "Activities são responsáveis pela exibição das interfaces de usuário. Marque a opção que representa uma interação do usuário com uma Activity.",
+      "op": [
+        "Informar login e senha para acessar o aplicativo.",
+        "Receber notificação do sistema e processar ações adequadas.",
+        "Processar rotinas de longa duração.",
+        "Realizar conexões com a rede de dados.",
+        "Enviar solicitação para o sistema na busca de um aplicativo."
+      ],
+      "r": 0,
+      "exp": "Digitar login e senha e tocar num botão é interação direta com a tela, o papel da Activity. Notificações do sistema são do BroadcastReceiver, rotinas longas são do Service, rede roda em segundo plano e buscar um app é feito por Intent."
+    },
+    {
+      "tema": "Activities e Ciclo de Vida",
+      "q": "Ao ir para segundo plano, uma Activity é colocada em uma pilha para poder recuperar o foco depois. Indique o mecanismo básico dessa pilha.",
+      "op": [
+        "FIFO – Primeiro a Entrar, Primeiro a Sair.",
+        "LIFO – Último a Entrar, Primeiro a Sair.",
+        "HIFO – Maior Entrada, Primeira a Sair.",
+        "LOFO – Menor Entrada, Primeiro a Sair.",
+        "FEFO – Primeiro a Expirar, Primeiro a Sair."
+      ],
+      "r": 1,
+      "exp": "A back stack é uma pilha: a última Activity aberta fica no topo e sai primeiro quando o usuário toca em voltar. FIFO é fila, e HIFO, LOFO e FEFO são critérios de estoque."
+    },
+    {
+      "tema": "Activities e Ciclo de Vida",
+      "q": "No ciclo de vida da Activity, qual é o primeiro método a ser chamado quando a sua execução é solicitada?",
+      "op": [
+        "onResume()",
+        "onPause()",
+        "onDestroy()",
+        "onCreate()",
+        "onStart()"
+      ],
+      "r": 3,
+      "exp": "A ordem de início é onCreate() → onStart() → onResume(). No onCreate() ficam as inicializações, como o setContentView(). onPause() é chamado ao perder o foco e onDestroy() é o último do ciclo."
+    },
+    {
+      "tema": "Activities e Ciclo de Vida",
+      "q": "Dependendo da situação, alguns métodos do ciclo de vida podem não ser executados e a Activity pode ser eliminada sem salvar os dados. Qual método normalmente é utilizado para a persistência de dados em uma Activity?",
+      "op": [
+        "onCreate()",
+        "setContentView()",
+        "findViewById()",
+        "onStart()",
+        "onPause()"
+      ],
+      "r": 4,
+      "exp": "onPause() é chamado sempre que a Activity perde o foco e é o único com execução praticamente garantida antes de sair do primeiro plano. onStop() e onDestroy() podem não rodar se o sistema matar o processo. setContentView() e findViewById() nem são do ciclo de vida."
+    },
+    {
+      "tema": "Activities e Ciclo de Vida",
+      "q": "Qual dos métodos a seguir é utilizado para finalizar e destruir uma Activity do sistema?",
+      "op": [
+        "onResume()",
+        "finish()",
+        "findViewById()",
+        "onStart()",
+        "onCreate()"
+      ],
+      "r": 1,
+      "exp": "finish() é chamado pelo desenvolvedor para encerrar a Activity: o sistema passa por onPause(), onStop() e onDestroy() e a remove da pilha. Os métodos on...() são chamados pelo sistema, não servem para encerrar."
+    },
+    {
+      "tema": "Recursos do Android (res, strings e R)",
+      "q": "Ao desenvolver para Android, é fundamental conhecer os recursos disponíveis e também é possível desenvolver recursos próprios. Sobre o conceito de recursos, é correto afirmar:",
+      "op": [
+        "Recursos são disponibilizados pelo Android Studio, ambiente de desenvolvimento do Android.",
+        "São exemplos de recursos originais, por exemplo, os relacionados a layout de interface.",
+        "Os recursos originais somente podem ser utilizados sem possibilidades de estender suas funcionalidades.",
+        "Na verdade, no Android não existem recursos originais disponíveis.",
+        "Para utilizar recursos no Android, é preciso instalar bibliotecas adicionais."
+      ],
+      "r": 1,
+      "exp": "Recursos originais são os que a plataforma já oferece na pasta res/: layouts, strings, cores, drawables, menus e estilos. Eles vêm da plataforma (SDK), não do Android Studio, podem ser estendidos e não exigem bibliotecas extras."
+    },
+    {
+      "tema": "Recursos do Android (res, strings e R)",
+      "q": "Pode-se padronizar o rótulo de um botão alterando o arquivo strings.xml. Acerca desse arquivo, é correto afirmar:",
+      "op": [
+        "É importante saber que existe esse recurso porque é assim que o Android exibe toda e qualquer mensagem da aplicação.",
+        "O arquivo string.xml fica localizado no diretório de resources e é utilizado para armazenar strings e seus valores.",
+        "O arquivo string.xml, apesar de referenciar as strings e seus valores, não é considerado um recurso.",
+        "Não existe a necessidade de realizar a identificação ID de arquivos string, diferentemente de outros recursos.",
+        "O arquivo string.xml jamais deve ser alterado, pois podem ocorrer diversos problemas com mensagens na aplicação."
+      ],
+      "r": 1,
+      "exp": "O arquivo fica em res/values/strings.xml e guarda pares nome/valor, usados por @string/nome no XML e R.string.nome no Java. Ele é um recurso, cada string precisa de nome (ID) e deve ser alterado sempre que preciso."
+    },
+    {
+      "tema": "Recursos do Android (res, strings e R)",
+      "q": "A pasta res usa várias subpastas que classificam os resources por tipo e configuração. Com base nisso, é correto afirmar:",
+      "op": [
+        "A pasta res serve somente para organizar os arquivos necessários para externalizar no projeto Android.",
+        "A pasta res possui subpastas e a classificação dos recursos por tipo é opcional nessa estrutura.",
+        "A subdivisão em subpastas conforme a classificação dos recursos é importante para organização e localização.",
+        "Manipulação de câmera é um exemplo de recurso que existe dentro da pasta res e serve para armazenar esses recursos.",
+        "A pasta res somente é gerada no projeto quando existem arquivos necessários para externalizar."
+      ],
+      "r": 2,
+      "exp": "As subpastas por tipo (layout, values, drawable) e por configuração (values-en, layout-land, drawable-hdpi) organizam o projeto e permitem ao Android escolher o recurso certo para cada aparelho. A classificação é obrigatória e a câmera é acessada por código, não por res."
+    },
+    {
+      "tema": "Recursos do Android (res, strings e R)",
+      "q": "A classe R.java é gerada automaticamente e faz o relacionamento entre os arquivos .xml e .java do projeto. Escolha a alternativa correta acerca da sua finalidade:",
+      "op": [
+        "A classe R.java tem o objetivo de manter os arquivos .xml e os .java do projeto intactos.",
+        "A classe R.java é um recurso do Android e tem como finalidade apoiar a sincronização entre arquivos.",
+        "A classe R.java tem métodos que facilitam gerar sincronismo na aplicação, sem necessidade de conhecer melhor seus recursos.",
+        "A classe R.java tem por finalidade manter a sincronia entre o arquivo .xml do projeto e o .java do desenvolvimento.",
+        "A classe R.java tem por objetivo manter objetos estáticos do projeto e por isso não pode ser alterada."
+      ],
+      "r": 3,
+      "exp": "A R.java contém constantes inteiras para cada recurso (R.layout.activity_main, R.string.app_name, R.id.botao) e liga o XML ao Java, sendo regenerada a cada compilação. Ela não tem métodos, e não se altera à mão porque é gerada automaticamente, não por ser estática."
+    },
+    {
+      "tema": "Recursos do Android (res, strings e R)",
+      "q": "Os recursos de string fornecem textos para o aplicativo com estilo e formatação opcionais. A utilização do recurso de strings permite:",
+      "op": [
+        "criar as varáveis utilizadas no aplicativo.",
+        "criar recursos de strings reutilizáveis para aplicação.",
+        "criar mensagens de texto padronizadas.",
+        "definir o layout de strings, por exemplo, fonte.",
+        "padronizar nomes de telas da aplicação."
+      ],
+      "r": 1,
+      "exp": "Os recursos de string (String, String Array e Plurals) permitem definir o texto uma vez e reutilizá-lo em layouts e código, o que facilita manutenção e tradução. Variáveis ficam no Java, e fonte e cor são definidas por estilos."
+    },
+    {
+      "tema": "Layouts: LinearLayout e RelativeLayout",
+      "q": "O LinearLayout é o tipo de layout mais utilizado no Android. Assinale a alternativa correta acerca desse layout:",
+      "op": [
+        "O LinearLayout tem esse nome justamente porque possibilita o alinhamento de componentes somente na horizontal.",
+        "O LinearLayout é o mais utilizado porque permite recursos mais impressionantes que o RelativeLayout.",
+        "O LinearLayout permite o alinhamento de componentes tanto na horizontal como na vertical.",
+        "O LinearLayout é o componente de layout mais utilizado na plataforma Android, por ser mais fácil de trabalhar.",
+        "O LinearLayout permite que os componentes sejam posicionados um em relação à posição do outro."
+      ],
+      "r": 2,
+      "exp": "O LinearLayout organiza os componentes em linha, e a direção vem de android:orientation (horizontal ou vertical). Posicionar um componente em relação a outro é característica do RelativeLayout."
+    },
+    {
+      "tema": "Layouts: LinearLayout e RelativeLayout",
+      "q": "Assinale a alternativa que descreve corretamente a principal característica do RelativeLayout:",
+      "op": [
+        "O RelativeLayout permite que um componente filho tenha a sua posição atribuída em relação à posição de outro componente.",
+        "O RelativeLayout permite que os componentes sejam alinhados na linha da vertical ou da horizontal sempre empilhados.",
+        "O RelativeLayout tem a vantagem, em relação ao LinearLayout, de permitir utilizar componentes em colunas.",
+        "O RelativeLayout é um complemento do LinearLayout, sua utilização está relacionada ao primeiro.",
+        "O RelativeLayout permite recursos fantásticos, mas sua utilização também requer componentes gráficos diferenciados."
+      ],
+      "r": 0,
+      "exp": "No RelativeLayout cada componente é posicionado em relação a outro ou ao pai, com atributos como layout_below, layout_toRightOf e layout_alignParentBottom. Empilhar em linha é do LinearLayout e colunas são do GridLayout e TableLayout."
+    },
+    {
+      "tema": "Layouts: LinearLayout e RelativeLayout",
+      "q": "No LinearLayout, o atributo android:layout_weight pode ser manipulado. Assinale o que ocorre quando se manipula o valor desse atributo:",
+      "op": [
+        "Permite que um item de maior peso seja posicionado mais ao fim da lista.",
+        "Permite que um item de maior peso seja posicionado mais ao topo da lista.",
+        "Permite que um item de maior peso seja colocado mais ao fundo dos demais.",
+        "Permite que um item de maior peso possa expandir e usar mais espaço na tela.",
+        "Permite que um item de maior peso seja exibido com prioridade ao carregar a tela."
+      ],
+      "r": 3,
+      "exp": "layout_weight distribui o espaço livre proporcionalmente: com pesos 1 e 2, o segundo ocupa o dobro. A ordem dos itens vem da ordem no XML. É comum usar layout_width=\"0dp\" junto com o peso."
+    },
+    {
+      "tema": "Layouts: LinearLayout e RelativeLayout",
+      "q": "Uma grande desvantagem do RelativeLayout é que, ao alterar um componente, pode ser necessário alterar todos os outros. Por que isso ocorre?",
+      "op": [
+        "Ocorre pelo fato da hierarquia de componentes.",
+        "Ocorre pelo fato da relatividade da posição de um com o outro.",
+        "Ocorre pelo fato do RelativeLayout encapsular os componentes.",
+        "O RelativeLayout não apresenta esse tipo de desvantagem.",
+        "Ocorre pela necessidade de ajuste manual no posicionamento dos componentes."
+      ],
+      "r": 1,
+      "exp": "Cada componente depende da posição de outro (layout_below=\"@id/botao1\"), então mover ou remover um quebra os que dependem dele, em cadeia. O ajuste manual é consequência dessa dependência, não a causa."
+    },
+    {
+      "tema": "Layouts: LinearLayout e RelativeLayout",
+      "q": "“Indicado quando as posições dos componentes podem ser melhor descritas em relação a outro elemento (à esquerda) ou à área de fronteira do pai (lado direito, ou centrado).” De acordo com essa afirmativa, é correto dizer que se trata de:",
+      "op": [
+        "LinearLayout e RelativeLayout.",
+        "Sistemas de layout.",
+        "Somente LinearLayout.",
+        "Essa afirmativa não faz sentido para layouts.",
+        "Somente RelativeLayout."
+      ],
+      "r": 4,
+      "exp": "Posicionar em relação a outro elemento ou às bordas do pai é a definição clássica do RelativeLayout. O LinearLayout só empilha em sequência."
+    },
+    {
+      "tema": "Menus e ActionBar",
+      "q": "Há um elemento responsável por carregar o XML do menu. Qual das alternativas apresenta esse elemento?",
+      "op": [
+        "RadioGroup.",
+        "Menu flutuante.",
+        "OptionMenu.",
+        "Menu Inflater.",
+        "Menu contextual."
+      ],
+      "r": 3,
+      "exp": "O MenuInflater infla o XML do menu, normalmente em onCreateOptionsMenu(): getMenuInflater().inflate(R.menu.menu_principal, menu). O OptionMenu recebe o XML carregado, e o menu contextual também depende do MenuInflater."
+    },
+    {
+      "tema": "Menus e ActionBar",
+      "q": "A barra de ações fornece uma estrutura visual e elementos interativos familiares aos usuários. Qual das alternativas é considerada uma barra dentro do aplicativo?",
+      "op": [
+        "Toolbar.",
+        "ListView.",
+        "ViewGroup.",
+        "RadioButton.",
+        "OptionMenu."
+      ],
+      "r": 0,
+      "exp": "A Toolbar é o componente que funciona como barra de ações (app bar), com título, navegação e itens de menu. ListView é lista, ViewGroup é a base dos contêineres e OptionMenu é o menu exibido na barra."
+    },
+    {
+      "tema": "Menus e ActionBar",
+      "q": "Após criar uma ActionBar, qual método é executado sempre antes de o menu ser mostrado e pode ser usado para habilitar/desabilitar itens ou modificar algum conteúdo dinamicamente?",
+      "op": [
+        "onOptionsItemSelected.",
+        "onPrepareOptionsMenu.",
+        "onCreateOptionsMenu.",
+        "onMenuItemClick.",
+        "onCreateContextMenu."
+      ],
+      "r": 1,
+      "exp": "onPrepareOptionsMenu() roda antes de cada exibição do menu. onCreateOptionsMenu() roda uma vez para inflar o XML, onOptionsItemSelected() trata o clique e onCreateContextMenu() cria o menu de contexto."
+    },
+    {
+      "tema": "Menus e ActionBar",
+      "q": "É o menu que exibe seus itens abaixo do texto âncora e, se não houver espaço, acima dele. Seus itens aparecem em lista vertical e servem para ações estendidas relacionadas à Activity. Que menu é esse?",
+      "op": [
+        "Menu PopUp.",
+        "Menu contextual.",
+        "Menu Inflater.",
+        "Option Menu.",
+        "Navigation Drawer."
+      ],
+      "r": 0,
+      "exp": "O Popup Menu é ancorado a uma view: aparece abaixo dela ou acima, se faltar espaço. O menu contextual abre por toque longo, o Option Menu fica na barra de ações e o Navigation Drawer é o painel lateral."
+    },
+    {
+      "tema": "Menus e ActionBar",
+      "q": "Esse componente é o padrão de design mais importante da tela principal, que abriga botões com ações, tabs e menus para interagir com usuários. Assinale a alternativa que define o componente citado.",
+      "op": [
+        "OptionMenu.",
+        "ActionBar.",
+        "ViewGroup.",
+        "Menu contextual.",
+        "ListView."
+      ],
+      "r": 1,
+      "exp": "A ActionBar é a barra no topo da Activity que abriga título, botões de ação, abas e menus. O OptionMenu é o que aparece dentro dela."
+    },
+    {
+      "tema": "Navegação entre Telas: Intent e Bundle",
+      "q": "Em uma aplicação Android multitelas, os dados seguem sempre de uma tela anterior para uma posterior. Das opções a seguir, somente uma está correta. Assinale-a:",
+      "op": [
+        "Deve-se escrever: Intent i = new Intent(novaTela.java); i.putExtras(“Info”,”Informação”).",
+        "Deve-se escrever: Intent i = new Intent(contextoAtual.this, novaTela.class); i.putExtras(”Informação”).",
+        "Pode-se escrever: Intent i = new Intent(contextoAtual.this, novaTela.class); i.putExtra(“info”,”Informação”).",
+        "O programador obrigatoriamente deverá utilizar o bundle: Intent i = new Intent(contextoAtual.this, novaTela.class); Bundle bDados = new Bundle(); bDados.putString(“info”,”informação”); i.putExtra(“info”,”Informação”).",
+        "O programador obrigatoriamente deverá utilizar o bundle: Intent i = new Intent(contextoAtual.this, novaTela.java); Bundle bDados = new Bundle(); bDados.putString(“info”,”informação”); i.putExtra(bDados)."
+      ],
+      "r": 2,
+      "exp": "O construtor recebe o contexto atual e a classe de destino (novaTela.class), e putExtra recebe um par chave/valor; o destino lê com getIntent().getStringExtra(\"info\"). novaTela.java não é referência válida, putExtras com uma string solta não existe, o Bundle é opcional e um Bundle é enviado com putExtras(bundle)."
+    },
+    {
+      "tema": "Navegação entre Telas: Intent e Bundle",
+      "q": "A invocação de novas telas é realizada a partir de um objeto da classe Intent. Supondo a criação de nova tela, qual das opções está correta para o comando de invocação?",
+      "op": [
+        "Ao se criar um objeto intent implícito, deve-se utilizar a instrução intent nome_objeto = new Intent(parâmetro), sendo opcional a inserção ou não de parâmetros para a criação do objeto.",
+        "Ao se criar um objeto intent explícito, deve-se utilizar a instrução intent nome_objeto = new Intent(parâmetro1, parâmetro2), sendo o parâmetro1 (opcional) referente ao contexto/pacote da classe da nova intenção, e o parâmetro2, a classe propriamente dita.",
+        "Ao se criar um objeto intent (implícito ou explícito), deve-se utilizar a instrução intent nome_objeto = new Intent(parâmetro1, parâmetro2), sendo o parâmetro1 referente ao contexto/pacote da classe da nova intenção, e o parâmetro2, a classe propriamente dita.",
+        "Ao se criar um objeto intent de forma implícita, deve-se utilizar a instrução intent nome_objeto = new Intent(parâmetro1, parâmetro2), sendo o parâmetro1 referente ao contexto/pacote da classe da nova intenção, e o parâmetro2, a classe propriamente dita.",
+        "Ao se criar um objeto intent de forma explícita, deve-se utilizar a instrução intent nome_objeto = new Intent(parâmetro1, parâmetro2), sendo o parâmetro1 referente ao contexto/pacote da classe da nova intenção, e o parâmetro2, a classe propriamente dita."
+      ],
+      "r": 4,
+      "exp": "A Intent explícita informa exatamente a classe de destino e recebe dois parâmetros obrigatórios: contexto e classe (new Intent(MainActivity.this, NovaTela.class)). A implícita não usa contexto e classe, e sim uma ação (como ACTION_VIEW) e dados."
+    },
+    {
+      "tema": "Navegação entre Telas: Intent e Bundle",
+      "q": "Para que uma activity (que não seja a principal) seja invocada, é necessária a utilização de um objeto Intent. Sobre um Intent, sua utilização e características, é correto dizer que:",
+      "op": [
+        "Intents são objetos para troca de mensagens entre objetos de uma aplicação Android, e exatamente por esse motivo tais objetos são utilizados exclusivamente para a inicialização de novas atividades e troca de informações entre elas.",
+        "Intents são objetos para troca de mensagens entre objetos de uma aplicação Android. Apesar de serem utilizados para abertura de novas telas, os intents podem ser utilizados para iniciar serviços e transmissões de mensagens/dados entre objetos e aplicações.",
+        "Intents podem, além de mensagens, trocar todo tipo de informação entre os componentes de uma aplicação Android. Apesar de serem frequentemente utilizados para a inicialização de uma nova atividade, os intents permitem também a manipulação dos recursos internos do sistema Android.",
+        "Os intents não devem ser utilizados para iniciar atividades. Por questões de segurança, recomenda-se que um objeto específico para cada nova activity seja criado, executando posteriormente para sua apresentação o método Active(true).",
+        "Todo intent pode não somente iniciar uma nova atividade como também encerrá-la. Uma vez que um intent assume a forma de uma atividade, todo controle dessa atividade é passado para ele."
+      ],
+      "r": 1,
+      "exp": "Intents carregam mensagens entre componentes: abrem Activities, iniciam Services (startService) e enviam broadcasts, inclusive entre apps. Não são exclusivas de telas, não manipulam recursos do sistema, Active(true) não existe e quem encerra a Activity é o finish()."
+    },
+    {
+      "tema": "Navegação entre Telas: Intent e Bundle",
+      "q": "A combinação dos objetos Intent e Bundle permite que dados sejam trocados entre as activities. A respeito dessa troca de mensagens, é correto afirmar que:",
+      "op": [
+        "A troca de dados por meio da combinação entre os objetos intent e bundle normalmente é realizada de forma explícita, pois apenas assim o desenvolvedor garante que os dados serão entregues à activity correta. Se for utilizado um intent implícito sem configuração adequada, a operação pode gerar erro ou comportamento inesperado.",
+        "Ao armazenar os dados em um objeto bundle, garante-se que esses dados permanecerão disponíveis para qualquer tela da aplicação, podendo ser recuperados posteriormente a qualquer momento.",
+        "É possível realizar a troca de informações entre as telas basta somente a utilização do objeto bundle, sem o objeto intent. Isso caracteriza o envio de mensagens de forma implícita.",
+        "É necessário que a recuperação da mensagem seja realizada imediatamente na atividade que foi invocada. Para isso, deve-se criar um novo objeto intent antes de acessar o bundle.",
+        "Objetos do tipo bundle podem ser utilizados somente quando se deseja transferir dados entre telas, sendo necessário que os dados sejam recuperados imediatamente na tela seguinte após sua transferência."
+      ],
+      "r": 0,
+      "exp": "Para entregar dados a uma tela específica do app usa-se Intent explícita; uma implícita mal configurada pode dar ActivityNotFoundException. O Bundle viaja com a Intent e não fica global, precisa de uma Intent para ir, o destino usa getIntent() e o Bundle também serve para salvar estado (onSaveInstanceState)."
+    },
+    {
+      "tema": "Navegação entre Telas: Intent e Bundle",
+      "q": "Em relação aos intents explícitos e implícitos, sua segurança e sintaxe, qual das opções está correta?",
+      "op": [
+        "Intents explícitos podem ser utilizados para invocação de atividades tanto internas quanto externas à aplicação. O fato de especificar qual atividade será invocada reduz a segurança da aplicação.",
+        "Intents explícitos podem ser utilizados para invocação de atividades tanto internas quanto externas à aplicação. O fato de não especificar qual atividade será invocada reduz a segurança da aplicação.",
+        "Intents explícitos podem ser utilizados somente para invocação de atividades externas à aplicação. O fato de não especificar qual atividade será invocada reduz a segurança da aplicação.",
+        "Intents implícitos podem ser utilizados para invocação de atividades tanto internas quanto externas ao aplicativo. Contudo, o fato de não especificar qual atividade será invocada reduz a segurança da aplicação.",
+        "Intents implícitos podem ser utilizados somente para invocação de atividades externas à aplicação. O fato de não especificar qual atividade será invocada reduz a segurança da aplicação."
+      ],
+      "r": 3,
+      "exp": "A implícita declara uma ação e o sistema escolhe quem atende, que pode ser outro app ou o próprio (se declarar o intent-filter). Como o destino não é especificado, outro app pode interceptá-la, o que reduz a segurança. A explícita especifica a classe e é a mais segura."
+    },
+    {
+      "tema": "Guias de Interface: Android e iOS",
+      "q": "Sobre as diretrizes (guidelines) de Android e iOS, analise: I. Segundo o guia Android, é necessário que os desenvolvedores sigam somente as diretrizes relacionadas aos padrões visuais e de navegação. II. No guia do iOS, um designer pode oferecer um produto extraordinário no topo da App Store, desde que atenda às altas expectativas de qualidade e funcionalidade. III. Para a Apple, três temas diferenciam o iOS: clareza, deferência e profundidade. É correto apenas o que se afirma em:",
+      "op": [
+        "I, II e III.",
+        "I e III.",
+        "II e III.",
+        "I.",
+        "I e II."
+      ],
+      "r": 2,
+      "exp": "I é falsa pelo \"somente\": as diretrizes também tratam de acessibilidade, desempenho e qualidade. II reproduz o guia da Apple e III traz os três temas do iOS."
+    },
+    {
+      "tema": "Guias de Interface: Android e iOS",
+      "q": "Segundo o guia do desenvolvedor Android, os usuários têm expectativa alta em relação à aparência e ao comportamento, e os desenvolvedores devem seguir as diretrizes do guia. Assinale a alternativa que cita alguns exemplos dessas diretrizes.",
+      "op": [
+        "Economia, usabilidade e animação.",
+        "Performance, layout e usabilidade.",
+        "Integração, layout e usabilidade.",
+        "Usabilidade, animação e layout.",
+        "Integração, economia e layout."
+      ],
+      "r": 3,
+      "exp": "Aparência e comportamento correspondem a usabilidade (fácil de entender e usar), animação (transições e feedback) e layout (organização visual). Economia, integração e performance são preocupações de qualidade, mas não descrevem aparência e comportamento. Gabarito por interpretação do enunciado."
+    },
+    {
+      "tema": "Guias de Interface: Android e iOS",
+      "q": "Para a Apple, três temas principais diferenciam a plataforma iOS de outras. Assinale a alternativa correta sobre os três temas.",
+      "op": [
+        "Clareza, deferência e profundidade.",
+        "Clareza, layout e profundidade.",
+        "Clareza, layout e desempenho.",
+        "Desempenho, profundidade e layout.",
+        "Profundidade, layout e animação."
+      ],
+      "r": 0,
+      "exp": "Clareza (clarity): texto legível e foco na função. Deferência (deference): a interface não compete com o conteúdo. Profundidade (depth): camadas e transições que mostram hierarquia."
+    },
+    {
+      "tema": "Guias de Interface: Android e iOS",
+      "q": "Um dos temas abordados pela Apple é o conceito de profundidade. Assinale a alternativa correta de acordo com o guia da Apple.",
+      "op": [
+        "Está relacionado ao conceito de tamanho em 3D dos widgets.",
+        "São conceitos relacionados à profundidade do alcance da execução de um comando.",
+        "É um conceito relacionado à camada de desempenho do aplicativo.",
+        "São camadas visuais distintas que transmitem vitalidade e facilitam a compreensão.",
+        "É um conceito novo da Apple."
+      ],
+      "r": 3,
+      "exp": "Profundidade usa camadas visuais distintas e movimentos realistas para transmitir hierarquia e vitalidade e facilitar a compreensão e a navegação. Não tem relação com 3D de widgets, comandos ou desempenho."
+    },
+    {
+      "tema": "Guias de Interface: Android e iOS",
+      "q": "Segundo o guia do desenvolvedor Android, para fornecer uma experiência mais familiar é necessário usar os padrões mais comuns. Assinale a alternativa correta sobre um dos padrões do guia.",
+      "op": [
+        "Aproveitar os recursos de APIs disponibilizadas na comunidade.",
+        "Trabalhar com layout mínimo sem focar em outros requisitos.",
+        "Reaproveitar o código, facilitando a manutenção posterior.",
+        "Trabalhar com bibliotecas e padrões do fabricante do sistema operativo.",
+        "Mostrar e ocultar a navegação do seu aplicativo com a gaveta de navegação."
+      ],
+      "r": 4,
+      "exp": "A gaveta de navegação (Navigation Drawer) é um padrão de interface do guia Android. As demais opções são práticas de desenvolvimento, não padrões de interface."
+    },
+    {
+      "tema": "REST e WebServices",
+      "q": "Os WebServices em conformidade com o estilo REST fornecem interoperabilidade entre sistemas na Internet. Com relação ao REST, assinale a alternativa correta:",
+      "op": [
+        "O REST (Representational State Transfer) é um estilo de comunicação utilizado em WebServices.",
+        "O REST (Representational State Transfer) é um exemplo de arquitetura orientada a objetos distribuídos.",
+        "O REST é um protocolo de comunicação baseado em HTTP que surgiu com o objetivo de simplificar o acesso aos WebServices.",
+        "No REST, as comunicações são controladas pelo servidor WebServices. A informação deve ser conhecida somente pelo cliente e pelo servidor.",
+        "O REST é definido através de quatro elementos de interface caracterizados pelos endpoints de API."
+      ],
+      "r": 0,
+      "exp": "REST é um estilo arquitetural (princípios e restrições), não um protocolo; quem é protocolo é o SOAP. É orientado a recursos (não a objetos distribuídos como CORBA/RMI), a comunicação é iniciada pelo cliente e é stateless."
+    },
+    {
+      "tema": "REST e WebServices",
+      "q": "Uma organização tem vários softwares, cada um escrito em uma linguagem diferente, que realizam a mesma operação de cadastro de clientes. Ao mudar para uma arquitetura orientada a serviços, a recomendação do gerente de TI foi:",
+      "op": [
+        "Construir um sistema em uma única linguagem e eliminar todos os demais sistemas envolvidos nessa mesma operação.",
+        "Criar um método para validação do cadastro único de clientes em cada um dos softwares, usando a mesma lógica.",
+        "Criar um serviço RESTful usando protocolo SOAP para manter informações centralizadas, permitindo consistência nos dados.",
+        "Disponibilizar um portlet para que cada software possa converter os dados de clientes em XML padrão e validá-los com base na lógica centralizada.",
+        "Disponibilizar WebService para validar e cadastrar clientes de forma que os demais softwares consumam esse serviço da mesma maneira."
+      ],
+      "r": 4,
+      "exp": "Em SOA a funcionalidade comum é publicada uma vez como serviço e consumida por todos, independentemente da linguagem. Repetir o método mantém a duplicação, \"RESTful com SOAP\" é contraditório e portlets são componentes de portal."
+    },
+    {
+      "tema": "REST e WebServices",
+      "q": "As informações que uma aplicação gerencia (produtos, clientes, vendas) são chamadas de recursos no modelo REST. Acerca desses recursos, assinale a alternativa correta:",
+      "op": [
+        "Um recurso no REST pode ser comparado a um método que executa alguma operação solicitada.",
+        "Um dos princípios do REST define que todo recurso deverá possuir um ID de identificação.",
+        "Um recurso é uma forma de comunicação, assim como SOAP ou XML, que possibilita troca de informações.",
+        "Um recurso é qualquer informação que está contida em um JSON e é trocada entre WebServices.",
+        "Um recurso caracterizado por distinguir formatos disponíveis como JSON e XML para troca de informações."
+      ],
+      "r": 1,
+      "exp": "Todo recurso precisa ser identificável de forma única, geralmente por URI (/clientes/15). O recurso é o \"substantivo\"; as operações são os verbos HTTP. JSON e XML são formatos de representação, não o recurso."
+    },
+    {
+      "tema": "REST e WebServices",
+      "q": "O RESTful utiliza integralmente o que já é padrão no protocolo HTTP, sem inventar protocolos específicos. Sobre esse conceito, assinale a alternativa correta:",
+      "op": [
+        "Apresenta estado entre as comunicações, ou seja, cada comunicação não é independente e uniforme (padronizada).",
+        "É necessário que a aplicação cliente saiba como a aplicação servidor irá armazenar dado por exemplo.",
+        "As URIs são usadas como uma alternativa ao protocolo HTTP, permitindo que o serviço opere também por outro protocolo.",
+        "Ao utilizar HTTP, o REST necessita que os formatos utilizados para tráfego sejam somente SOAP.",
+        "Ele usa o protocolo HTTP (verbos, accept headers, códigos de estado HTTP, Content-Type) de forma explícita e representativa para se comunicar."
+      ],
+      "r": 4,
+      "exp": "Verbos (GET, POST, PUT, DELETE) indicam a operação, códigos de status (200, 201, 404, 500) o resultado, e Accept/Content-Type o formato. REST é stateless, o cliente não precisa saber como o servidor armazena, URIs identificam recursos e não há exigência de SOAP."
+    },
+    {
+      "tema": "REST e WebServices",
+      "q": "O REST é considerado uma forma \"menos burocrática\" de implementar WebServices em comparação ao SOAP. Acerca da diferença entre SOAP e REST, assinale a alternativa correta:",
+      "op": [
+        "A principal diferença entre as duas é que SOAP utiliza XML e REST utiliza JSON para troca de informações.",
+        "SOAP é utilizada com servidores de aplicação mais antigos enquanto REST é mais atual.",
+        "A arquitetura SOAP exige mais camadas de complexidade do que o REST, que usa somente HTTP.",
+        "O SOAP é recomendado em operações mais críticas que o REST devido a sua arquitetura.",
+        "A grande diferença está relacionada à necessidade de tráfego de rede, fazendo que o REST se torne inviável em alto volumes."
+      ],
+      "r": 2,
+      "exp": "SOAP é protocolo rígido: envelope XML, contrato WSDL e a pilha WS-*. REST usa diretamente o HTTP. REST também pode usar XML, SOAP continua em uso em sistemas atuais e REST gera mensagens mais leves, funcionando bem em alto volume."
+    },
+    {
+      "tema": "Persistência com SQLite",
+      "q": "O SQLite está no contexto da persistência de dados no Android. Qual das opções está correta sobre as características desse banco?",
+      "op": [
+        "Trata-se de um banco de dados embutido com servidor, realizando os procedimentos de leitura e escrita diretamente no arquivo.",
+        "O SQLite é gerenciado automaticamente pela plataforma Android, mas não é suportado por suas principais versões.",
+        "Sua utilização requer algum tipo de configuração ou processo administrativo; sem necessidade inclusive de definir os comandos SQL para criar e atualizar o banco de dados.",
+        "Qualquer banco de dados poderá ser acessado por seu nome a partir de qualquer classe da aplicação, mas não poderá ser acessado fora dela.",
+        "Diversos bancos de dados não poderão ser acessados somente por seu nome a partir de qualquer classe da aplicação, mas poderão ser acessados fora dela."
+      ],
+      "r": 3,
+      "exp": "Pela documentação, o banco criado pelo app fica na área privada dele: qualquer classe do app o abre pelo nome, outros apps não (a menos que se use um Content Provider). O SQLite é embutido e sem servidor, suportado desde as primeiras versões, sem administração, mas exige os comandos SQL de criação."
+    },
+    {
+      "tema": "Persistência com SQLite",
+      "q": "A partir de uma instância de SQLiteOpenHelper, quais métodos devem ser invocados para realizar operações de gravação e leitura no banco de dados?",
+      "op": [
+        "getWritableDatabase() e getReadableDatabase().",
+        "getWritableDatabase() e query().",
+        "SQLiteDatabase() e getReadableDatabase().",
+        "setWriteDatabase() e setReadDatabase().",
+        "setWritableDatabase() e setReadableDatabase()."
+      ],
+      "r": 0,
+      "exp": "getWritableDatabase() abre para gravação (e leitura) e getReadableDatabase() para leitura, ambos devolvendo um SQLiteDatabase. query() consulta mas não abre o banco, SQLiteDatabase é a classe e os métodos set...() não existem."
+    },
+    {
+      "tema": "Persistência com SQLite",
+      "q": "A própria Google indica uma forma de conexão com o banco SQLite. Qual subclasse deve ser utilizada?",
+      "op": [
+        "SQLiteReadHelper.",
+        "SQLiteCreateHelper.",
+        "SQLiteOpenHelper.",
+        "SQLiteManageHelper.",
+        "SQLiteHelper."
+      ],
+      "r": 2,
+      "exp": "Recomenda-se estender SQLiteOpenHelper e sobrescrever onCreate() (cria as tabelas) e onUpgrade() (atualiza quando a versão muda). Os outros nomes não existem na API."
+    },
+    {
+      "tema": "Persistência com SQLite",
+      "q": "O SQLite não é o único banco suportado pelo Android. Marque a opção que melhor descreve os motivos de o SQLite ser o mais indicado.",
+      "op": [
+        "Por ser uma biblioteca em C, realizar o próprio gerenciamento e suportar todos os comandos SQL.",
+        "Por ser escrito em java, a mesma linguagem de programação utilizada para escrever aplicativos Android.",
+        "Por ser a única opção gratuita e livre de qualquer tipo de licença.",
+        "Porque foi desenvolvido pela própria Google, empresa responsável pelo Android.",
+        "Por ser open source e escrito em C (o que garante suporte nativo no Android)."
+      ],
+      "r": 4,
+      "exp": "Código aberto (domínio público) e escrito em C, é leve, rápido e incorporado nativamente ao Android. Não suporta todo o SQL, não é escrito em Java, não é a única opção gratuita e foi criado por D. Richard Hipp, não pela Google."
+    },
+    {
+      "tema": "Persistência com SQLite",
+      "q": "O SQLite também tem limitações. Assinale a opção que as descreve:",
+      "op": [
+        "Atomicidade, delete múltiplas tabelas, triggers e alter table.",
+        "Delete múltiplas tabelas, revoke, grant, triggers e alter table.",
+        "Right join, alter table, revoke, grant e update.",
+        "Durabilidade, triggers, delete em múltiplas tabelas, joins e alter table.",
+        "Joins, delete, alter table, grant e revoke."
+      ],
+      "r": 1,
+      "exp": "Limitações: DELETE em uma tabela por vez, sem GRANT/REVOKE (banco local sem servidor nem usuários), triggers parciais e ALTER TABLE limitado. Atomicidade e durabilidade (ACID), JOINs em geral, DELETE simples e UPDATE são suportados."
+    },
+    {
+      "tema": "Desenvolvimento Híbrido: Cordova, Ionic e Capacitor",
+      "q": "Para o desenvolvimento de aplicações, existem as nativas e as desenvolvidas com metodologias híbridas. O que é correto afirmar sobre o desenvolvimento híbrido?",
+      "op": [
+        "Utiliza uma plataforma comum, a web, para criar a aplicação; posteriormente transformando-as em aplicações nativas.",
+        "São aplicações mais leves que as aplicações nativas, pois rodam por meio do navegador.",
+        "São produzidas utilizando HTML, CSS e JavaScript, sendo executadas a partir da Internet.",
+        "Para executar uma aplicação desenvolvida hibridamente, o usuário deverá utilizar um navegador, seja Chrome ou Safari.",
+        "O desempenho de aplicativos desenvolvidos com essa tecnologia são lentos e, por isso, esse recurso quase não é utilizado."
+      ],
+      "r": 0,
+      "exp": "O app é feito com tecnologias web e empacotado (Cordova, Ionic, Capacitor) como app instalável que roda numa WebView com acesso a recursos do aparelho. Costuma ser mais pesado que o nativo, é instalado pela loja (não roda pelo navegador) e é bastante usado."
+    },
+    {
+      "tema": "Desenvolvimento Híbrido: Cordova, Ionic e Capacitor",
+      "q": "Desenvolvimento específico para cada plataforma é chamado de desenvolvimento nativo. Marque a alternativa que melhor corresponde a esse tipo de desenvolvimento.",
+      "op": [
+        "É quando toda e qualquer funcionalidade de uma determinada plataforma fica à disposição, sem restrições, podendo implementar padrões de interface gráfica e de experiência com o usuário.",
+        "É quando algumas funcionalidades de uma plataforma ficam à disposição, podendo implementar padrões específicos de interface gráfica.",
+        "É quando toda e qualquer funcionalidade de uma determinada plataforma fica à disposição, com restrições relativamente consideráveis, sem a possibilidade de implementar algum padrão de experiência com o usuário.",
+        "É quando algumas funcionalidades de uma plataforma ficam à disposição, sem a possibilidade de implementar algum padrão de interface gráfica.",
+        "É quando algumas funcionalidades de uma determinada plataforma ficam à disposição, com algumas restrições quanto à possibilidade de implementar algum padrão de interface gráfica e de experiência com o usuário."
+      ],
+      "r": 0,
+      "exp": "No nativo usam-se as ferramentas e a linguagem da plataforma (Java/Kotlin, Swift), com acesso a todas as funcionalidades sem restrições e aos padrões de interface e UX dela. \"Algumas funcionalidades\" e \"restrições\" descrevem melhor o híbrido."
+    },
+    {
+      "tema": "Desenvolvimento Híbrido: Cordova, Ionic e Capacitor",
+      "q": "O desenvolvimento híbrido mistura o nativo (recursos de hardware) com o web (HTML5, CSS e JavaScript). Marque a alternativa que melhor conceitua o desenvolvimento híbrido.",
+      "op": [
+        "Uma aplicação híbrida pode oferecer uma funcionalidade semelhante a um aplicativo. A maior desvantagem é que a aplicação não pode ser vista por meio de uma loja de aplicativos.",
+        "Um aplicativo híbrido é projetado para trabalhar em múltiplas plataformas, não podendo ser executado em um dispositivo que não utilize o mesmo sistema operacional.",
+        "Um aplicativo híbrido necessita ser atualizado a cada nova atualização de versão do sistema operacional do dispositivo, sendo necessário realizar as atualizações via loja de aplicativos.",
+        "Uma aplicação híbrida permite que seu uso seja semelhante ao de um aplicativo móvel. No entanto, deve ser executada em dispositivo que não utilize o mesmo sistema operacional.",
+        "Uma aplicação híbrida é desenvolvida para funcionar em múltiplas plataformas, sendo que os custos de apoio a uma aplicação híbrida podem ser maiores que os custos de apoio a uma aplicação nativa."
+      ],
+      "r": 4,
+      "exp": "Uma base de código atende várias plataformas, mas o suporte pode custar mais por causa de plugins, camadas intermediárias e diferenças entre sistemas. Apps híbridos são distribuídos pelas lojas e não precisam ser atualizados a cada versão do sistema."
+    },
+    {
+      "tema": "Desenvolvimento Híbrido: Cordova, Ionic e Capacitor",
+      "q": "Interações mais específicas com o dispositivo são controladas por plugins e ferramentas desenvolvidas para o sistema operacional. Qual opção é um exemplo de framework que possibilita a comunicação com as funcionalidades nativas do dispositivo?",
+      "op": [
+        "Ionic Framework.",
+        "Apache Cordova.",
+        "APIs do Android.",
+        "SDK do Java.",
+        "Framework AngularJS."
+      ],
+      "r": 1,
+      "exp": "O Apache Cordova faz a ponte entre o código web e as funcionalidades nativas por meio de plugins (o Capacitor é a alternativa mais recente). O Ionic cuida da interface, as APIs do Android são do nativo e o AngularJS organiza o front-end."
+    },
+    {
+      "tema": "Desenvolvimento Híbrido: Cordova, Ionic e Capacitor",
+      "q": "A grande vantagem do Cordova é o pacote de plugins que ele fornece. Conforme a arquitetura de uma aplicação Cordova, quais são os seus principais componentes?",
+      "op": [
+        "LocalStorage, IndexedDB e WebSQL.",
+        "Web App, LocalStorage e WebSQL.",
+        "IndexedDB, WebView e Cordova Plugins.",
+        "Web App, WebView e Cordova Plugins.",
+        "Web App, WebView e LocalStorage."
+      ],
+      "r": 3,
+      "exp": "Web App (o app em HTML, CSS e JS), WebView (o navegador embutido que o executa) e Cordova Plugins (a ponte para o hardware). LocalStorage, IndexedDB e WebSQL são armazenamento do navegador, não componentes da arquitetura."
+    },
+    {
+      "tema": "Desenvolvimento Híbrido: Cordova, Ionic e Capacitor",
+      "q": "Existe um conjunto de plugins padrões básicos que dá acesso a acelerômetro, GPS, bateria, câmera, contatos etc. Como é chamado esse conjunto, conforme a documentação oficial do Apache Cordova?",
+      "op": [
+        "Core Plugins.",
+        "Plugins Framework.",
+        "NPM Plugins.",
+        "Plugins APIs Guide.",
+        "Cordova Plugins NPM."
+      ],
+      "r": 0,
+      "exp": "A documentação chama de Core Plugins o conjunto básico mantido pelo próprio projeto. O npm é só o gerenciador por onde os plugins são instalados."
+    },
+    {
+      "tema": "Desenvolvimento Híbrido: Cordova, Ionic e Capacitor",
+      "q": "Considerando as características do desenvolvimento híbrido, qual alternativa apresenta corretamente uma característica dessa abordagem?",
+      "op": [
+        "O desenvolvimento híbrido utiliza tecnologias web, como HTML5, JavaScript e CSS, para construir aplicações destinadas a diferentes plataformas móveis.",
+        "O desenvolvimento híbrido requer a criação de uma aplicação independente para cada sistema operacional, pois não permite o reaproveitamento do código-fonte.",
+        "A utilização do Ionic depende principalmente do Angular, não sendo possível utilizar outras bibliotecas ou tecnologias JavaScript em sua estrutura de desenvolvimento.",
+        "A arquitetura orientada a serviços limita-se ao desenvolvimento aos recursos disponíveis diretamente no dispositivo móvel, dispensando a integração com serviços externos.",
+        "O uso de componentes nativos reduz a necessidade de tecnologias web, levando as aplicações híbridas a serem desenvolvidas como aplicações nativas."
+      ],
+      "r": 0,
+      "exp": "O híbrido usa tecnologias web empacotadas em contêiner nativo e reaproveita uma base de código. O Ionic também funciona com React, Vue ou JavaScript puro, e SOA depende justamente de serviços externos."
+    },
+    {
+      "tema": "Desenvolvimento Híbrido: Cordova, Ionic e Capacitor",
+      "q": "Considerando o uso do Capacitor no desenvolvimento com Ionic, qual é sua principal finalidade?",
+      "op": [
+        "Oferecer componentes visuais completos e prontos para uso como alternativa à linguagem de marcação HTML e o CSS.",
+        "Permitir que aplicações desenvolvidas com tecnologias web sejam executadas em plataformas móveis e tenham acesso a recursos nativos por meio de APIs e plugins.",
+        "Fornecer um ambiente específico e customizado que permita executar testes rápidos da aplicação diretamente no dispositivo móvel, sem a necessidade de tantos recursos.",
+        "Gerenciar as dependências do projeto e disponibilizar os pacotes necessários para sua execução.",
+        "Adaptar o layout da aplicação para diferentes tamanhos de tela, sem necessidade de configuração adicional."
+      ],
+      "r": 1,
+      "exp": "O Capacitor empacota o app web em projetos nativos e faz a ponte com o hardware por APIs e plugins. Componentes visuais são do Ionic, testes rápidos do Ionic CLI (ionic serve), dependências do npm e responsividade do CSS."
+    },
+    {
+      "tema": "Desenvolvimento Híbrido: Cordova, Ionic e Capacitor",
+      "q": "I. Uma aplicação Ionic pode apresentar diferenças visuais em seus componentes conforme a plataforma em que é executada, utilizando modos de interface específicos. PORQUE II. O Ionic possui estilos e comportamentos associados aos modos de interface, permitindo que botões, barras de navegação e caixas de diálogo assumam características visuais compatíveis com diferentes plataformas. Assinale a alternativa correta.",
+      "op": [
+        "A afirmação I é verdadeira, e a II é falsa.",
+        "As afirmações I e II são verdadeiras, mas a II não justifica a I.",
+        "As afirmações I e II são verdadeiras, e a II justifica a I.",
+        "A afirmação I é falsa, e a II é verdadeira.",
+        "As afirmações I e II são falsas."
+      ],
+      "r": 2,
+      "exp": "O Ionic tem modos de interface: md (Material Design, Android) e ios (padrão Apple). A diferença visual da I existe porque cada modo traz estilos e comportamentos próprios (II), então a II justifica a I."
+    },
+    {
+      "tema": "Desenvolvimento Híbrido: Cordova, Ionic e Capacitor",
+      "q": "Classifique em V ou F: I. PWAs usam tecnologias web para oferecer experiência semelhante à de aplicativos, acessadas pelo navegador e, em certas situações, instaladas. II. A principal característica da abordagem multiplataforma é exigir implementação independente para cada sistema. III. O ganho de produtividade do multiplataforma ocorre porque cada plataforma exige uma base de código diferente. IV. A prototipação no Ionic tem como finalidade exclusiva a comunicação com recursos nativos. V. PWAs ampliam a distribuição de aplicações web com características semelhantes às de um aplicativo.",
+      "op": [
+        "F – F – V – F – V.",
+        "F – V – F – V – F.",
+        "V – F – V – F – F.",
+        "V – F – F – F – V.",
+        "V – V – F – F – V."
+      ],
+      "r": 3,
+      "exp": "I e V são verdadeiras. II e III invertem a ideia do multiplataforma, que é reaproveitar uma única base de código. IV é falsa: a prototipação serve para validar interface e fluxo; o acesso a recursos nativos é do Capacitor e dos plugins."
+    },
+    {
+      "tema": "Desenvolvimento Híbrido: Cordova, Ionic e Capacitor",
+      "q": "Observe o comando: ionic start meuProjeto blank. Assinale a alternativa que identifica corretamente a finalidade desse comando.",
+      "op": [
+        "Executar a aplicação Ionic no navegador para visualizar seu funcionamento.",
+        "Instalar o Visual Studio Code para editar os arquivos do projeto.",
+        "Publicar a aplicação Ionic nas lojas de aplicativos Android e iOS.",
+        "Adicionar um novo componente visual à interface da aplicação.",
+        "Criar um novo projeto Ionic utilizando um modelo inicial em branco."
+      ],
+      "r": 4,
+      "exp": "ionic start cria o projeto, meuProjeto é o nome e blank é o template em branco (há também tabs e sidemenu). Rodar no navegador é ionic serve e criar componente é ionic generate component."
+    },
+    {
+      "tema": "Publicação nas Lojas de Aplicativos",
+      "q": "Existem normas e regras que regulamentam a publicação de aplicativos na Apple App Store e na Google Play Store. Sobre essas normas, é correto afirmar que:",
+      "op": [
+        "as normas são baseadas nas leis norte-americanas, mesmo que o aplicativo seja utilizado em outros países.",
+        "as normas aplicadas são as leis e regras dos países onde o aplicativo será disponibilizado e utilizado.",
+        "as normas são baseadas em princípios próprios de cada companhia, além da legislação local de onde o aplicativo será distribuído.",
+        "as normas não são influenciadas por leis locais ou de qualquer país, sendo determinadas pelas empresas.",
+        "as normas são determinadas por princípios de direitos humanos e são bastante semelhantes entre as app stores."
+      ],
+      "r": 2,
+      "exp": "Cada loja tem políticas próprias (App Store Review Guidelines e Developer Program Policies) e, além delas, o app precisa cumprir as leis dos países onde é distribuído. Só as leis locais seria incompleto."
+    },
+    {
+      "tema": "Publicação nas Lojas de Aplicativos",
+      "q": "A publicação na Google Play e na Apple App Store é regulada por diretrizes de segurança e de experiência do usuário. Considerando essas normativas, é correto afirmar que:",
+      "op": [
+        "a Google mantém uma política rígida de análise de desempenho de aplicações.",
+        "a Apple mantém uma política rígida de análise de desempenho de aplicações.",
+        "ambas as empresas possuem uma política rígida de desempenho de aplicações.",
+        "o desempenho da aplicação é considerado, mas não é fator determinante na aceitação.",
+        "o desempenho não é fator levado em consideração na aceitação por uma app store."
+      ],
+      "r": 2,
+      "exp": "A Apple tem a seção Performance nas diretrizes e recusa apps instáveis ou incompletos. O Google acompanha estabilidade (Android vitals) e penaliza desempenho ruim. Gabarito por interpretação: as duas tratam desempenho como requisito."
+    },
+    {
+      "tema": "Publicação nas Lojas de Aplicativos",
+      "q": "Publicar nas lojas oficiais significa estar em conformidade com as diretrizes de cada companhia. A esse respeito, é correto afirmar que:",
+      "op": [
+        "os critérios de privacidade e transparência no uso de dados de usuários são objetivos na Apple, mas subjetivos para a Google.",
+        "os critérios de privacidade e transparência no uso de dados de usuários são objetivos na Google, mas subjetivos para a Apple.",
+        "a privacidade e transparência no uso de dados de usuários são regidas por leis internacionais e não dependem da política das app stores.",
+        "ambas as app stores apresentam normas explícitas que regulamentam o acesso a dados e o uso que se dará aos dados coletados.",
+        "é livre ao desenvolvedor solicitar quaisquer dados ao usuário, independentemente de fazerem sentido com a aplicação - desde que o usuário aceite os termos de uso."
+      ],
+      "r": 3,
+      "exp": "Apple exige política de privacidade e rótulos de privacidade (App Privacy); Google exige política de privacidade e o formulário Data safety. Leis como LGPD e GDPR valem junto com as políticas das lojas, e a coleta deve ser proporcional à função do app."
+    },
+    {
+      "tema": "Publicação nas Lojas de Aplicativos",
+      "q": "Existem requisitos que os desenvolvedores devem cumprir antes da publicação nas lojas de aplicativos. Sobre esses requisitos, é correto afirmar que:",
+      "op": [
+        "ambas as plataformas exigem conta de desenvolvedor paga e assinatura de contrato digital.",
+        "a Google Play exige a criação de uma conta de desenvolvedor gratuita e a aceitação do contrato.",
+        "a publicação na Apple App Store realiza a cobrança por aplicativo publicado e não pela conta de desenvolvedor.",
+        "a publicação na Google Play Store realiza a cobrança por aplicativo publicado, e não pela conta de desenvolvedor.",
+        "ambas as plataformas exigem o pagamento de taxa anual para publicação de apps nas lojas."
+      ],
+      "r": 0,
+      "exp": "As duas cobram pela conta e exigem aceite do contrato: Google Play com taxa única (cerca de US$ 25) e Apple com anuidade (cerca de US$ 99). Nenhuma cobra por app publicado e só a Apple é anual."
+    },
+    {
+      "tema": "Publicação nas Lojas de Aplicativos",
+      "q": "Uma aplicação Ionic pode ser executada em Android e iOS. Sobre a geração do arquivo para publicação, é correto afirmar que:",
+      "op": [
+        "o Ionic produz o executável de ambas as plataformas, ou seja, produz o entregável para Android e iOS via linha de comando.",
+        "o Ionic prepara o projeto, mas a compilação é executada por cada plataforma: Android Studio para Android e Xcode para iOS.",
+        "o Ionic gera o executável do Android via linha de comando e prepara o projeto do iOS que deve ser compilado via Xcode.",
+        "a compilação via Ionic para ambas as plataformas pode ser realizada utilizando qualquer sistema operacional: Windows, Linux ou MacOS.",
+        "como o Ionic é um framework baseado em linguagens web, a aplicação não necessita de compilação para ser publicada e executada em Android e iOS."
+      ],
+      "r": 1,
+      "exp": "O Ionic compila o código web e o Capacitor sincroniza com os projetos nativos; ionic cap open android abre no Android Studio (gera APK/AAB) e ionic cap open ios no Xcode. O iOS exige macOS e o app precisa ser compilado para ir às lojas."
+    },
+    {
+      "tema": "TypeScript",
+      "q": "Quais das palavras reservadas no TypeScript são utilizadas para declarar variáveis?",
+      "op": [
+        "Int, float e double.",
+        "Public, private e const.",
+        "Let, var e const.",
+        "Interface, class e function.",
+        "Class, let e var."
+      ],
+      "r": 2,
+      "exp": "let (escopo de bloco, reatribuível), var (escopo de função, forma antiga) e const (escopo de bloco, não reatribuível). Números usam o tipo number, public/private são modificadores e interface/class/function declaram estruturas."
+    },
+    {
+      "tema": "TypeScript",
+      "q": "Qual é a sintaxe correta para declarar um array de strings no TypeScript?",
+      "op": [
+        "let listaArray: Array<string>.",
+        "var listaArray: Array<” ”>.",
+        "const listaArray: Array<”string”>.",
+        "let listaArray: Array<number>.",
+        "let listaArray: Array = string."
+      ],
+      "r": 0,
+      "exp": "Array<string> (ou string[]) declara um array de strings. Com aspas vira tipo literal, number é outro tipo e \"Array = string\" é sintaxe inválida."
+    },
+    {
+      "tema": "TypeScript",
+      "q": "Qual é o valor impresso a partir do trecho: function acao(qntIteracoes: number) { while (qntIteracoes > 0) { if (qntIteracoes % 2 != 0) { alert(qntIteracoes); } qntIteracoes--; } } acao(10);",
+      "op": [
+        "9, 7, 5, 3 e 1.",
+        "10, 8, 6, 4 e 2.",
+        "9, 5, 5, 1 e 0.",
+        "10, 7, 5, 3 e 1.",
+        "10, 8, 6, 4, 2 e 0."
+      ],
+      "r": 0,
+      "exp": "O laço vai de 10 até 1, e o if só deixa passar os ímpares (resto da divisão por 2 diferente de zero). Ao chegar a 0 a condição > 0 falha, então o 0 não é impresso."
+    },
+    {
+      "tema": "TypeScript",
+      "q": "Qual é a função de uma interface no TypeScript?",
+      "op": [
+        "Essencial para declarar uma classe.",
+        "Utilizada para definir um conjunto de variáveis reutilizáveis.",
+        "Atuar como uma função.",
+        "Mesma utilidade de uma classe.",
+        "Servir como conjunto de exigências que uma classe deve seguir."
+      ],
+      "r": 4,
+      "exp": "A interface é um contrato: define propriedades e métodos que um objeto ou classe (com implements) deve ter, sem implementá-los. A classe implementa comportamento e cria objetos; a interface só descreve a estrutura e some na compilação."
+    },
+    {
+      "tema": "TypeScript",
+      "q": "Qual é a diferença do for..in e do for..of, respectivamente?",
+      "op": [
+        "São usados de forma equivalente.",
+        "Iterar entre as chaves e os valores.",
+        "Iterar entre números e strings.",
+        "Percorrer vetores de números e strings.",
+        "Somente a sintaxe, não há diferença semântica."
+      ],
+      "r": 1,
+      "exp": "for...in percorre as chaves (em arrays, os índices 0, 1, 2) e for...of percorre os valores de um iterável. Os dois funcionam com vários tipos; a diferença é o que cada um devolve."
+    }
+  ],
+  "discursivas": [
+    {
+      "tema": "Fundamentos da Computação Móvel",
+      "q": "Uma fintech sem agências físicas quer modelar o acesso dos usuários às contas correntes e aos cartões de crédito (sem pensar ainda em linguagem, banco ou protocolo). Responda: 1) Qual é o principal meio de acesso? 2) Quem é o público-alvo? 3) Quais são os requisitos da plataforma e como atendê-los?",
+      "r": "1) O principal meio é o aplicativo móvel (mobile first): o smartphone é o dispositivo mais usado para acessar a internet e o app aproveita biometria, câmera (QR Code do Pix, boleto, selfie e documento no cadastro), notificações push, NFC e geolocalização para detectar fraude, além de permitir vincular o aparelho à conta. Como apoio, uma versão web responsiva e atendimento por chat no app, que substitui a agência. Estudo de caso: Nubank, Inter, C6 e PicPay. 2) Adultos de 18 a 40 anos, digitalizados e insatisfeitos com tarifas e burocracia: jovens abrindo a primeira conta, autônomos e MEIs, desbancarizados e público de renda média e média-baixa. Por ser heterogêneo, exige interface simples, acessibilidade e funcionamento em celulares de entrada com conexão instável. 3) Funcionais: onboarding 100% digital com KYC (documento, selfie, prova de vida), autenticação com senha/PIN, biometria e dois fatores, saldo e extrato, Pix, TED e boletos, cartão virtual e físico com fatura, limite e bloqueio imediato, notificações em tempo real e atendimento por chat. Não funcionais: segurança (criptografia, expiração de sessão, antifraude), conformidade com Banco Central e LGPD, disponibilidade 24x7, desempenho, usabilidade, acessibilidade e responsividade, compatibilidade Android/iOS, escalabilidade em picos e auditoria por log. Atores: cliente, atendimento e sistemas externos (Pix, bandeira, bureau de crédito)."
+    },
+    {
+      "tema": "Ambiente Android: Java, IDE e Emulador",
+      "q": "Um app Android de gestão de tarefas é usado por colaboradores remotos, todos com o mesmo modelo de smartphone, e é essencial para a operação. Antes de uma atualização delicada, há duas opções de teste: A) emulador do SDK; B) dispositivo real. Qual você escolhe e por quê?",
+      "r": "Opção B, dispositivo real. A principal vantagem do emulador, cobrir muitos modelos e versões sem comprar aparelhos, não se aplica: todos usam a mesma marca e modelo, então um ou poucos aparelhos iguais cobrem 100% do cenário. O app é essencial e os colaboradores estão em locais remotos, onde suporte e correção são difíceis, então o erro precisa aparecer antes da atualização, num teste fiel às condições de campo: sinal instável, GPS, bateria, câmera, sensores, notificações e desempenho real. O emulador simula o hardware por software e pode divergir do aparelho, inclusive nas customizações do fabricante. O custo de separar alguns aparelhos é pequeno diante do prejuízo de uma atualização defeituosa. O emulador continua útil nas fases iniciais e em testes automatizados, mas a validação final é no aparelho real, de preferência com liberação em etapas."
+    },
+    {
+      "tema": "Java e Orientação a Objetos",
+      "q": "Um app de controle de frota (o motorista seleciona o veículo e informa odômetro, data, hora, motivo e estado do veículo no início e no fim do trajeto) está no início. Opção A: criar a classe Veiculo com atributos (id, descricao, placa, odometro) e métodos centralizados, e as telas só declaram o objeto. Opção B: declarar as variáveis repetidas em cada tela. Qual você recomenda e por quê?",
+      "r": "Opção A. A classe centraliza a estrutura e as operações do veículo e é reutilizada em todas as telas, enquanto a B repete código. Na manutenção, um dado novo (combustível, motorista) é alterado só na classe; na B seria preciso mexer em cada tela, com risco de esquecer alguma. O encapsulamento (atributos private com getters e setters) permite validar dados, por exemplo impedir odômetro final menor que o inicial. Há uma única definição de veículo, o que garante consistência: no código da Opção B uma variável aparece como descricao numa tela e nome em outra, e o odometro vira String. A Opção A aproveita a orientação a objetos de Java, permitindo herança (Caminhao e Carro como subclasses) e polimorfismo, e deixa o projeto organizado para crescer e para o trabalho em equipe."
+    },
+    {
+      "tema": "Prototipação com Mockups",
+      "q": "Maria, dona da pet shop Cãozinho Feliz, quer o rascunho de um app em que o cliente faça login (conta própria, Google ou Facebook), se cadastre se não tiver conta e agende, edite ou exclua atendimentos (vacina, medicação, banho e tosa). Faça o mockup das telas de login, agendamento e confirmação.",
+      "r": "Tela 1, Login: logo e ilustração da loja, campos de e-mail e senha, botão Entrar, separador \"ou entre com\", botões Continuar com Google e Continuar com Facebook e o link \"Ainda não tem conta? Cadastre-se\". Tela 2, Agendamento: seleção do pet, escolha do serviço (banho, tosa, vacina, medicação), data em faixa de dias, horários disponíveis, campo de observações e botão Agendar atendimento. Tela 3, Confirmação: ícone de sucesso, mensagem \"Agendamento confirmado!\", resumo (pet, serviço, data, horário, local) e os botões Editar agendamento, Excluir agendamento e Voltar ao início, que atendem à edição e exclusão pedidas. É um protótipo de baixa/média fidelidade: os botões sociais usam uma letra no lugar do logotipo oficial."
+    },
+    {
+      "tema": "Activities e Ciclo de Vida",
+      "q": "O app de notas UNIWEBS será reformulado com uma tela de autenticação (login e senha). Opção A: manter a tela inicial atual (código do aluno + consultar) e adicionar um botão que abre a nova Activity de login. Opção B: eliminar a Activity antiga e configurar no manifesto a Activity de login com intent-filter MAIN/LAUNCHER, tornando-a a primeira tela. Qual você recomenda e por quê?",
+      "r": "Opção B. O objetivo da reformulação é que a autenticação seja a nova tela inicial, e o intent-filter com android.intent.action.MAIN e android.intent.category.LAUNCHER é exatamente o que define a Activity de entrada no Android. Na Opção A a tela antiga continuaria sendo a porta de entrada e as notas, que são dados pessoais, seguiriam acessíveis só com o código, sem senha: a autenticação viraria opcional. A B também simplifica o fluxo (o app abre direto no login), elimina código duplicado e mantém uma única porta de entrada. Cuidados: remover o intent-filter MAIN/LAUNCHER da Activity antiga (senão o app ganha dois ícones) e reaproveitar a lógica de consulta de notas na Activity exibida após o login."
+    },
+    {
+      "tema": "Recursos do Android (res, strings e R)",
+      "q": "Ao construir aplicativos, muitas vezes é preciso escrever mais de uma vez a mesma string de mensagem exibida na tela. Sinalize uma alternativa de correção usando a estrutura de recursos do Android.",
+      "r": "Declarar as mensagens como recursos de string em res/values/strings.xml (por exemplo <string name=\"msg_erro_login\">Login ou senha inválidos</string>) e referenciá-las pelo nome: @string/msg_erro_login no layout XML e getString(R.string.msg_erro_login) no Java. Vantagens: centralização (o texto muda em um só lugar), reutilização em várias telas, internacionalização com pastas alternativas como values-en e values-es escolhidas automaticamente pelo idioma do aparelho, separação entre conteúdo e lógica e conformidade com a boa prática da plataforma de não deixar textos fixos (hardcoded) no código e nos layouts."
+    },
+    {
+      "tema": "Layouts: LinearLayout e RelativeLayout",
+      "q": "Analise dois trechos de um RelativeLayout e aponte um erro em cada: (1) um Button com android:layout_width=\"100\"; (2) um EditText com android:layout_width=\"wrap_content1\".",
+      "r": "Trecho 1 (Button): android:layout_width=\"100\" está sem unidade de medida; dimensões numéricas precisam de unidade, o correto é \"100dp\". Trecho 2 (EditText): android:layout_width=\"wrap_content1\" não existe, há um \"1\" sobrando por erro de digitação; os valores válidos são wrap_content, match_parent ou uma medida com unidade. Nos dois casos o valor de largura é inválido: o Android Studio acusa o erro e a tela pode falhar ao ser inflada ou o projeto não compila."
+    },
+    {
+      "tema": "Menus e ActionBar",
+      "q": "Uma empresa de aplicativos precisa de um app que liste clientes e permita interagir com a empresa ou com os demais clientes. Você deve desenvolver a tela principal usando menus para que os usuários encontrem maneiras de se comunicar e resolver problemas. Como proceder e quais técnicas usar?",
+      "r": "Definir o menu em XML na pasta res/menu, com itens como Ligar para a empresa, Enviar e-mail e Ajuda, textos no strings.xml e ícones como recursos. Na Activity, sobrescrever onCreateOptionsMenu() e usar o MenuInflater para carregar o menu na barra de ações (Toolbar), e tratar os cliques em onOptionsItemSelected(). Cada item aciona uma Intent: ACTION_DIAL para ligar (abre o discador e não exige permissão, ao contrário de ACTION_CALL), ACTION_SENDTO para e-mail ou SMS e ACTION_SEND para compartilhar. Os clientes ficam num ListView ou RecyclerView, e um menu de contexto (toque longo) oferece Ligar e Enviar mensagem com os dados do cliente escolhido. Técnicas: Options Menu na barra de ações, menu de contexto, menu em XML com MenuInflater, tratamento de eventos, Intents, recursos e lista."
+    },
+    {
+      "tema": "Navegação entre Telas: Intent e Bundle",
+      "q": "Um banco digital quer um quiz que determine o perfil de investidor (pergunta sobre anos até a aposentadoria valendo 0 a 10 e seis afirmações de 1 a 5; Conservador < 18, Moderado > 18 e < 33, Agressivo > 33 e < 46, Superagressivo > 46). Qual a melhor configuração de interface, aplicando navegação e troca de informações entre telas? Crie as telas.",
+      "r": "Três Activities em sequência. Tela 1, Início (MainActivity): apresenta o questionário e o botão Começar. Tela 2, Questionário (QuizActivity): as sete perguntas com opções de resposta e o botão Ver meu perfil, que soma os pontos. Tela 3, Resultado (ResultadoActivity): pontuação, perfil e explicação, com botões Ver investimentos sugeridos e Refazer questionário. A navegação usa Intent explícita, e a pontuação passa da QuizActivity para a ResultadoActivity com putExtra(\"pontuacao\", total), lida no destino com getIntent().getIntExtra(\"pontuacao\", 0). Chamar finish() no questionário evita que o voltar o reabra. Separar as telas dá a cada uma uma única responsabilidade. Atenção: a pontuação máxima possível é 40 (10 + 6 x 5) e a mínima é 6, então o perfil Superagressivo (mais de 46) nunca é atingido, e a tabela não diz onde ficam exatamente 18 e 33; foi assumido 18 = Moderado e 33 = Agressivo."
+    },
+    {
+      "tema": "Guias de Interface: Android e iOS",
+      "q": "Um novo aplicativo será usado em sua grande maioria por um público de maior idade. Consultando as recomendações dos guias de Android e iOS, identifique e justifique as recomendações que devem ser seguidas para evitar problemas com o público-alvo.",
+      "r": "Áreas de toque grandes (no mínimo 48 dp no Android e 44 pt no iOS) com espaço entre botões, contra toques errados por tremor ou menor precisão motora. Texto grande e ajustável, em unidades escaláveis (sp) e respeitando o tamanho de fonte do sistema (Dynamic Type), por causa da presbiopia. Contraste mínimo de 4,5:1 (WCAG) e cor nunca como único recurso, porque a sensibilidade a contraste e a distinção de cores diminuem. Interface enxuta, uma tarefa por tela, navegação previsível e padrões da plataforma, para reduzir a carga cognitiva. Ícones acompanhados de rótulo e linguagem simples. Gestos simples, sem gestos ocultos. Feedback claro, confirmação antes de ações irreversíveis e opção de desfazer. Acessibilidade nativa (TalkBack, VoiceOver, contentDescription). Sem prazos curtos nem mensagens que somem rápido. E testar o protótipo com usuários reais do público-alvo."
+    },
+    {
+      "tema": "REST e WebServices",
+      "q": "Você precisa consumir a API WhatsAppServices (https://api.WhatsAppServices/message/sendText) para que um botão do app envie uma requisição com os parâmetros token, type (\"text\"), message, device_id e recipient. Apresente um código simples, sem tratamento de erros.",
+      "r": "Uma requisição REST do tipo POST disparada pelo clique no botão. Adiciona-se a permissão android.permission.INTERNET no manifesto. No clique, o app lê telefone e mensagem e chama, numa thread separada (o Android lança NetworkOnMainThreadException se a rede rodar na thread da interface), um método que monta os cinco parâmetros codificados com URLEncoder, abre um HttpURLConnection com setRequestMethod(\"POST\"), setDoOutput(true) e Content-Type application/x-www-form-urlencoded, escreve os parâmetros no OutputStream e lê o código de resposta (200 = sucesso), exibido num Toast via runOnUiThread. O try/catch existe só porque o Java exige tratar as exceções. Em produção o token não deve ficar fixo no código."
+    },
+    {
+      "tema": "Persistência com SQLite",
+      "q": "Para um app de agendamento de consultas, crie: A) o banco \"dadosMedicos\" com a tabela \"medicosCli\" (_id INTEGER PRIMARY KEY AUTOINCREMENT, nome VARCHAR(80), espec VARCHAR(80)); B) os comandos que recuperam a lista de médicos da especialidade escolhida pelo usuário.",
+      "r": "A) openOrCreateDatabase(\"dadosMedicos\", MODE_PRIVATE, null) abre ou cria o banco e db.execSQL(\"CREATE TABLE IF NOT EXISTS medicosCli (_id INTEGER PRIMARY KEY AUTOINCREMENT, nome VARCHAR(80), espec VARCHAR(80))\") cria a tabela; os médicos são inseridos com INSERT INTO medicosCli (nome, espec) VALUES (...). B) Primeiro SELECT DISTINCT espec FROM medicosCli ORDER BY espec preenche um Spinner com as especialidades. Depois db.rawQuery(\"SELECT _id, nome FROM medicosCli WHERE espec = ? ORDER BY nome\", new String[]{especialidade}) traz os médicos da especialidade escolhida; o ? evita problemas com aspas e SQL injection. O Cursor é percorrido com moveToNext() e getString(), o resultado vai para um ArrayAdapter num ListView, e cursor e banco são fechados com close()."
+    },
+    {
+      "tema": "Desenvolvimento Híbrido: Cordova, Ionic e Capacitor",
+      "q": "Com o Ionic Framework (ambiente: Node.js, Git, VSCode, Android Studio e SDK do Java), desenvolva uma pequena aplicação que acesse a câmera do dispositivo Android, capture uma imagem e a apresente na tela. Entregue a implementação do componente que manipula a câmera, apenas para Android.",
+      "r": "Ambiente: Node.js (npm e Ionic CLI), Git, VSCode, Android Studio (SDK, emulador, APK) e JDK (Gradle), com JAVA_HOME e ANDROID_HOME configurados. Projeto: npm install -g @ionic/cli, ionic start fotoApp blank --type=angular --capacitor e npm install @capacitor/camera. No componente HomePage, o método assíncrono tirarFoto() chama Camera.getPhoto({quality: 90, allowEditing: false, resultType: CameraResultType.Uri, source: CameraSource.Camera}) e guarda imagem.webPath na variável foto; o template tem um ion-button que chama tirarFoto() e um ion-img com *ngIf=\"foto\" e [src]=\"foto\". No AndroidManifest.xml entra a permissão android.permission.CAMERA. Para rodar: ionic build, ionic cap add android, ionic cap sync e ionic cap open android (ou ionic cap run android). Na primeira vez o sistema pede permissão de uso da câmera."
+    },
+    {
+      "tema": "Desenvolvimento Híbrido: Cordova, Ionic e Capacitor",
+      "q": "A rede de restaurantes Receitas da Nona recebe pedidos por telefone e WhatsApp e sofre com demora, falta de acompanhamento e falhas na ordem dos pedidos. Elabore uma proposta técnica de app em Ionic (realizar pedidos, acompanhar a solicitação, pagar digitalmente; integrar pagamentos, notificações e localização; Android e iOS; prazo curto e equipe reduzida) cobrindo arquitetura, interface, integrações, multiplataforma, produtividade e avaliação técnica.",
+      "r": "Arquitetura: Ionic com Angular e Capacitor; o código web roda numa WebView e o Capacitor gera os projetos Android e iOS; HttpClient consome uma API REST em HTTPS; back-end com usuários, produtos e pedidos; armazenamento local só do token e do carrinho (@capacitor/preferences). Interface: login e cadastro com ion-input, ion-button e ion-toast; catálogo com ion-searchbar, ion-segment, ion-card, ion-infinite-scroll e ion-skeleton-text; carrinho com ion-item-sliding e ion-footer com total; pagamento com ion-radio-group e ion-modal; acompanhamento com etapas em ion-list, ion-chip, ion-progress-bar e ion-refresher; navegação com ion-tabs. Integrações: pagamento pelo back-end com gateway (Pix e cartão tokenizado, confirmação por webhook); localização com @capacitor/geolocation para endereço e taxa; notificações com @capacitor/push-notifications e Firebase Cloud Messaging a cada mudança de status. Multiplataforma: uma base de código, correções valem para os dois sistemas (ionic cap sync), estilo adaptado por plataforma e equipe única. Produtividade: Ionic CLI, ionic serve com recarga automática, componentes prontos, conhecimento web, plugins e live updates. Benefícios: prazo, custo e equipe enxuta. Desafios: desempenho inferior ao nativo em listas grandes (rolagem virtual), dependência de plugins, Mac e conta Apple para iOS, aprovação nas lojas, nenhum segredo no app e testes em vários aparelhos. Conclusão: o Ionic é adequado ao projeto."
+    },
+    {
+      "tema": "Publicação nas Lojas de Aplicativos",
+      "q": "Um app de e-commerce de uma rede de farmácias (medicamentos, cosméticos e perfumarias; entrega em casa ou retirada no balcão; sem permissões extras além das de um e-commerce; sem restrição de local nem de público) está bem desenvolvido e testado, mas foi recusado nas duas lojas. a) Qual seria o motivo da recusa? b) Como resolver o problema?",
+      "r": "a) O app vende medicamentos, produtos regulamentados, e foi enviado sem restrição de local nem de público. As lojas exigem que o app cumpra a legislação de cada país onde é distribuído, que produtos regulamentados só sejam oferecidos onde a venda é legal, com classificação indicativa adequada (sem vender medicamentos a menores) e com comprovação de que o vendedor é regularizado. O enunciado descarta problema técnico (app testado) e permissões (não pede extras). b) Restringir a distribuição ao Brasil nas consoles das lojas; preencher a classificação etária e restringir a maiores de 18 com confirmação de idade; seguir as normas da Anvisa (vender online só o permitido, exigir e validar receita com o farmacêutico, não vender controlados sem os requisitos); comprovar a regularidade da farmácia (CNPJ, licença sanitária, farmacêutico responsável com CRF) e exibir esses dados no app; publicar política de privacidade (LGPD) e preencher os formulários de privacidade das lojas; reenviar com notas para a revisão e conta de teste."
+    },
+    {
+      "tema": "TypeScript",
+      "q": "Para o protótipo de um site de vendas, em TypeScript: a) crie uma classe Produto com pelo menos 5 atributos e seus valores; b) crie uma classe Venda que recebe um array de produtos no construtor e tem um método que soma os valores; c) crie pelo menos dois produtos, insira-os na Venda e faça a soma, usando os tipos do TypeScript.",
+      "r": "a) Classe Produto com seis atributos tipados: nome, descricao e fabricante (string), valor e quantidadeEstoque (number) e disponivel (boolean), atribuídos pelo construtor. b) Classe Venda com o atributo privado produtos: Produto[] recebido no construtor e o método somarValores(): number, que percorre os produtos com for...of e acumula produto.valor. c) Uma cadeira de R$ 450,90 e uma mesa de R$ 899,90 entram em new Venda([cadeira, mesa]); somarValores().toFixed(2) imprime \"Total da venda: R$ 1350.80\" (o toFixed evita imprecisões do ponto flutuante). Código compilado com tsc venda.ts e executado com node venda.js."
+    }
+  ],
+  "colas": [
+    {
+      "titulo": "Ciclo de vida da Activity",
+      "mnemonico": "Mnemônico: \"Cria, Começa, Retoma — Pausa, Para, Destrói\".",
+      "pontos": [
+        "onCreate(): primeiro método; setContentView() e inicializações.",
+        "onStart() → visível; onResume() → em primeiro plano, interagindo.",
+        "onPause(): perdeu o foco; é aqui que se salvam os dados.",
+        "onStop() e onDestroy(): podem não ser chamados se o sistema matar o processo.",
+        "finish(): o desenvolvedor encerra a Activity.",
+        "Back stack é LIFO."
+      ]
+    },
+    {
+      "titulo": "Componentes do Android",
+      "mnemonico": "Mnemônico: \"A Sala de Bate-Papo Conta\" → Activity, Service, BroadcastReceiver, ContentProvider.",
+      "pontos": [
+        "Activity: tela e interação com o usuário.",
+        "Service: tarefa longa em segundo plano, sem interface.",
+        "BroadcastReceiver: reage a avisos do sistema.",
+        "Content Provider: compartilha dados entre apps.",
+        "Intent: a mensagem que liga todos eles."
+      ]
+    },
+    {
+      "titulo": "Intent explícita x implícita",
+      "mnemonico": "Explícita diz QUEM; implícita diz O QUÊ.",
+      "pontos": [
+        "Explícita: new Intent(this, Destino.class) — telas do próprio app, mais segura.",
+        "Implícita: new Intent(Intent.ACTION_DIAL, uri) — o sistema escolhe quem atende.",
+        "putExtra(chave, valor) envia; getIntent().getXxxExtra(chave) lê.",
+        "Bundle é opcional; vai com putExtras(bundle).",
+        "Tela inicial: intent-filter MAIN + LAUNCHER no manifesto."
+      ]
+    },
+    {
+      "titulo": "Recursos e layouts",
+      "mnemonico": "\"res guarda, R aponta\".",
+      "pontos": [
+        "res/values/strings.xml → @string/nome e R.string.nome.",
+        "Subpastas por tipo e por configuração (values-en, layout-land).",
+        "R.java: gerada, constantes inteiras, nunca editar.",
+        "LinearLayout: orientation + layout_weight.",
+        "RelativeLayout: posição em relação a outro ou ao pai.",
+        "Medidas sempre com unidade: 100dp, 16sp."
+      ]
+    },
+    {
+      "titulo": "Menus",
+      "mnemonico": "\"Infla, prepara, seleciona\".",
+      "pontos": [
+        "onCreateOptionsMenu(): MenuInflater infla o XML (uma vez).",
+        "onPrepareOptionsMenu(): ajusta antes de cada exibição.",
+        "onOptionsItemSelected(): trata o clique.",
+        "Popup: ancorado a uma view. Contextual: toque longo. Drawer: gaveta lateral.",
+        "Toolbar/ActionBar: a barra que abriga ações, abas e menus."
+      ]
+    },
+    {
+      "titulo": "Mockups e fidelidade",
+      "mnemonico": "Mnemônico: \"De Graça Sinto Refinamento\" → Detalhamento, Grau de funcionalidade, Similaridade de interação, Refinamento estético.",
+      "pontos": [
+        "Função: validar ideias antes de programar.",
+        "Baixa fidelidade: papel e caneta, sem funcionalidade.",
+        "Alta fidelidade: perto do final; pode ser feita até em código num bloco de notas.",
+        "Facilita o trabalho colaborativo e reduz custo."
+      ]
+    },
+    {
+      "titulo": "SQLite no Android",
+      "mnemonico": "\"Abre com o Helper, escreve ou lê, fecha o cursor\".",
+      "pontos": [
+        "Embutido, sem servidor, escrito em C, código aberto.",
+        "Estender SQLiteOpenHelper: onCreate() e onUpgrade().",
+        "getWritableDatabase() / getReadableDatabase().",
+        "rawQuery com ? e Cursor com moveToNext(); fechar com close().",
+        "Limitações: sem GRANT/REVOKE, DELETE de uma tabela, triggers e ALTER TABLE parciais."
+      ]
+    },
+    {
+      "titulo": "REST",
+      "mnemonico": "\"Recurso tem endereço, verbo diz a ação, status diz o resultado\".",
+      "pontos": [
+        "Estilo arquitetural, não protocolo (SOAP é protocolo).",
+        "Stateless, cliente-servidor, cache, interface uniforme, camadas.",
+        "GET, POST, PUT, DELETE + 200, 201, 404, 500.",
+        "Accept e Content-Type definem o formato (JSON, XML).",
+        "Android: permissão INTERNET e rede fora da thread principal."
+      ]
+    },
+    {
+      "titulo": "Híbrido: Cordova, Ionic e Capacitor",
+      "mnemonico": "\"Ionic desenha, Capacitor conecta, loja publica\".",
+      "pontos": [
+        "Híbrido: HTML, CSS e JS numa WebView, uma base para várias plataformas.",
+        "Cordova: Web App + WebView + Plugins; Core Plugins.",
+        "Capacitor: empacota e dá acesso ao hardware.",
+        "Ionic: componentes, modos md e ios; funciona com Angular, React ou Vue.",
+        "ionic start, ionic serve, ionic generate, ionic cap sync/open.",
+        "Build final: Android Studio e Xcode (macOS)."
+      ]
+    },
+    {
+      "titulo": "Publicação nas lojas",
+      "mnemonico": "\"Política da loja + lei do país\".",
+      "pontos": [
+        "Conta paga: Google taxa única, Apple anual.",
+        "Política de privacidade, Data safety (Google) e App Privacy (Apple).",
+        "Coleta de dados proporcional à função do app.",
+        "Desempenho e estabilidade contam na aprovação.",
+        "Produto regulamentado: restringir país e idade e comprovar licença."
+      ]
+    }
+  ],
+  "links": []
+}
