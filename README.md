@@ -11,11 +11,11 @@ de todas as matérias, em um único site que funciona offline.
 | | |
 |---|---|
 | Matérias | 17 |
-| Questões de múltipla escolha | 696 |
-| Flashcards | 644 |
-| Resumos | 106 |
-| Colas / mapas mentais | 97 |
-| Exercícios do Laboratório | 282 |
+| Questões de múltipla escolha | 800 |
+| Flashcards | 708 |
+| Resumos | 121 |
+| Colas / mapas mentais | 110 |
+| Exercícios do Laboratório | 318 |
 
 ## Como funciona
 

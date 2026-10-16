@@ -2992,5 +2992,271 @@
    "tam": "2.0 MB",
    "href": "../Programa%C3%A7%C3%A3o%20para%20Dispositivos%20M%C3%B3veis/webservices-restful.pdf"
   }
+ ],
+ "Teste de Software": [
+  {
+   "nome": "124_artigo_metodos_ageis_scrum_e_kanban_1",
+   "ext": "pdf",
+   "tam": "581 KB",
+   "href": "../Teste%20de%20Software/124_artigo_metodos_ageis_scrum_e_kanban_1.pdf"
+  },
+  {
+   "nome": "AnáliseRelevânciaTestes",
+   "ext": "pdf",
+   "tam": "211 KB",
+   "href": "../Teste%20de%20Software/An%C3%A1liseRelev%C3%A2nciaTestes.pdf"
+  },
+  {
+   "nome": "Aula15-Testes-caixa-preta-2-tabela-decisao-casos-uso",
+   "ext": "pdf",
+   "tam": "350 KB",
+   "href": "../Teste%20de%20Software/Aula15-Testes-caixa-preta-2-tabela-decisao-casos-uso.pdf"
+  },
+  {
+   "nome": "Automation_in_usabilitytesting_Virtanen_Final_publ",
+   "ext": "pdf",
+   "tam": "1018 KB",
+   "href": "../Teste%20de%20Software/Automation_in_usabilitytesting_Virtanen_Final_publ.pdf"
+  },
+  {
+   "nome": "C01_Introducao_testes_software-2026-06-30T10_03_16-03_00-2026-06-30T17_12_16-03_00",
+   "ext": "pdf",
+   "tam": "1.7 MB",
+   "href": "../Teste%20de%20Software/C01_Introducao_testes_software-2026-06-30T10_03_16-03_00-2026-06-30T17_12_16-03_00.pdf"
+  },
+  {
+   "nome": "Cenarios_Caso_de_Uso_Biblioteca",
+   "ext": "docx",
+   "tam": "10 KB",
+   "href": "../Teste%20de%20Software/Cenarios_Caso_de_Uso_Biblioteca.docx"
+  },
+  {
+   "nome": "Ferramentas_de_Testes__Um_Estudo_Comparativo_entre_Cypress__Playwright_e_Selenium_Webdriver final",
+   "ext": "pdf",
+   "tam": "649 KB",
+   "href": "../Teste%20de%20Software/Ferramentas_de_Testes__Um_Estudo_Comparativo_entre_Cypress__Playwright_e_Selenium_Webdriver%20final.pdf"
+  },
+  {
+   "nome": "O que são testes exploratórios_ _ Atlassian",
+   "ext": "pdf",
+   "tam": "173 KB",
+   "href": "../Teste%20de%20Software/O%20que%20s%C3%A3o%20testes%20explorat%C3%B3rios_%20_%20Atlassian.pdf"
+  },
+  {
+   "nome": "O que é Testes de Software - Portal GSTI",
+   "ext": "pdf",
+   "tam": "248 KB",
+   "href": "../Teste%20de%20Software/O%20que%20%C3%A9%20Testes%20de%20Software%20-%20Portal%20GSTI.pdf"
+  },
+  {
+   "nome": "Plano_de_Teste_Novo_Cliente",
+   "ext": "docx",
+   "tam": "15 KB",
+   "href": "../Teste%20de%20Software/Plano_de_Teste_Novo_Cliente.docx"
+  },
+  {
+   "nome": "Relatorio_Estudo_Teste_de_Software",
+   "ext": "md",
+   "tam": "23 KB",
+   "href": "../Teste%20de%20Software/Relatorio_Estudo_Teste_de_Software.md"
+  },
+  {
+   "nome": "Relatorio_Testes_de_Software",
+   "ext": "md",
+   "tam": "29 KB",
+   "href": "../Teste%20de%20Software/Relatorio_Testes_de_Software.md"
+  },
+  {
+   "nome": "Repositório Aberto da Universidade do Porto_ Automação de testes de aplicações móveis sem necessidade de programação",
+   "ext": "pdf",
+   "tam": "116 KB",
+   "href": "../Teste%20de%20Software/Reposit%C3%B3rio%20Aberto%20da%20Universidade%20do%20Porto_%20Automa%C3%A7%C3%A3o%20de%20testes%20de%20aplica%C3%A7%C3%B5es%20m%C3%B3veis%20sem%20necessidade%20de%20programa%C3%A7%C3%A3o.pdf"
+  },
+  {
+   "nome": "Robot Framework User Guide",
+   "ext": "pdf",
+   "tam": "10.6 MB",
+   "href": "../Teste%20de%20Software/Robot%20Framework%20User%20Guide.pdf"
+  },
+  {
+   "nome": "TCC_Artigo_ImportanciaTestesSoftware",
+   "ext": "pdf",
+   "tam": "1.4 MB",
+   "href": "../Teste%20de%20Software/TCC_Artigo_ImportanciaTestesSoftware.pdf"
+  },
+  {
+   "nome": "Testes de Software_ por que são necessários e quando adicionam valor_ – Squadra Digital",
+   "ext": "pdf",
+   "tam": "3.2 MB",
+   "href": "../Teste%20de%20Software/Testes%20de%20Software_%20por%20que%20s%C3%A3o%20necess%C3%A1rios%20e%20quando%20adicionam%20valor_%20%E2%80%93%20Squadra%20Digital.pdf"
+  },
+  {
+   "nome": "Tutorial de UML _ Lucidchart",
+   "ext": "pdf",
+   "tam": "740 KB",
+   "href": "../Teste%20de%20Software/Tutorial%20de%20UML%20_%20Lucidchart.pdf"
+  },
+  {
+   "nome": "Técnicas de Caixa Preta de Teste de Software - DevMedia",
+   "ext": "pdf",
+   "tam": "1.5 MB",
+   "href": "../Teste%20de%20Software/T%C3%A9cnicas%20de%20Caixa%20Preta%20de%20Teste%20de%20Software%20-%20DevMedia.pdf"
+  },
+  {
+   "nome": "Técnicas de VV&T - Validação, Verificação e Teste",
+   "ext": "pdf",
+   "tam": "431 KB",
+   "href": "../Teste%20de%20Software/T%C3%A9cnicas%20de%20VV%26T%20-%20Valida%C3%A7%C3%A3o%2C%20Verifica%C3%A7%C3%A3o%20e%20Teste.pdf"
+  },
+  {
+   "nome": "Você sabe o que é Teste Caixa Branca e Teste Caixa Preta_ _ by Ingrid Carvalho _ Medium",
+   "ext": "pdf",
+   "tam": "1.3 MB",
+   "href": "../Teste%20de%20Software/Voc%C3%AA%20sabe%20o%20que%20%C3%A9%20Teste%20Caixa%20Branca%20e%20Teste%20Caixa%20Preta_%20_%20by%20Ingrid%20Carvalho%20_%20Medium.pdf"
+  },
+  {
+   "nome": "Web Accessibility Evaluation Tools List _ Web Accessibility Initiative (WAI) _ W3C",
+   "ext": "pdf",
+   "tam": "1.1 MB",
+   "href": "../Teste%20de%20Software/Web%20Accessibility%20Evaluation%20Tools%20List%20_%20Web%20Accessibility%20Initiative%20%28WAI%29%20_%20W3C.pdf"
+  },
+  {
+   "nome": "abordagens-teste",
+   "ext": "pdf",
+   "tam": "1.4 MB",
+   "href": "../Teste%20de%20Software/abordagens-teste.pdf"
+  },
+  {
+   "nome": "casos-de-teste",
+   "ext": "pdf",
+   "tam": "1.7 MB",
+   "href": "../Teste%20de%20Software/casos-de-teste.pdf"
+  },
+  {
+   "nome": "criterios-teste",
+   "ext": "pdf",
+   "tam": "2.2 MB",
+   "href": "../Teste%20de%20Software/criterios-teste.pdf"
+  },
+  {
+   "nome": "extração-casos-teste-modelos-processos-negócio",
+   "ext": "pdf",
+   "tam": "354 KB",
+   "href": "../Teste%20de%20Software/extra%C3%A7%C3%A3o-casos-teste-modelos-processos-neg%C3%B3cio.pdf"
+  },
+  {
+   "nome": "ferramentas-teste",
+   "ext": "pdf",
+   "tam": "1.5 MB",
+   "href": "../Teste%20de%20Software/ferramentas-teste.pdf"
+  },
+  {
+   "nome": "framework-automatiza-teste-api-saas",
+   "ext": "pdf",
+   "tam": "2.9 MB",
+   "href": "../Teste%20de%20Software/framework-automatiza-teste-api-saas.pdf"
+  },
+  {
+   "nome": "geração-de-casos-de-teste",
+   "ext": "pdf",
+   "tam": "1.3 MB",
+   "href": "../Teste%20de%20Software/gera%C3%A7%C3%A3o-de-casos-de-teste.pdf"
+  },
+  {
+   "nome": "gerenciamento-de-problemas",
+   "ext": "pdf",
+   "tam": "9.7 MB",
+   "href": "../Teste%20de%20Software/gerenciamento-de-problemas.pdf"
+  },
+  {
+   "nome": "gerenciamento-de-testes",
+   "ext": "pdf",
+   "tam": "2.7 MB",
+   "href": "../Teste%20de%20Software/gerenciamento-de-testes.pdf"
+  },
+  {
+   "nome": "importancia-teste-desenvolvimento-software",
+   "ext": "pdf",
+   "tam": "555 KB",
+   "href": "../Teste%20de%20Software/importancia-teste-desenvolvimento-software.pdf"
+  },
+  {
+   "nome": "jerh57,+11Gestão.Org_912_Gerenciamento+de+Teste...296-302 (1)",
+   "ext": "pdf",
+   "tam": "720 KB",
+   "href": "../Teste%20de%20Software/jerh57%2C%2B11Gest%C3%A3o.Org_912_Gerenciamento%2Bde%2BTeste...296-302%20%281%29.pdf"
+  },
+  {
+   "nome": "jerh57,+11Gestão.Org_912_Gerenciamento+de+Teste...296-302",
+   "ext": "pdf",
+   "tam": "720 KB",
+   "href": "../Teste%20de%20Software/jerh57%2C%2B11Gest%C3%A3o.Org_912_Gerenciamento%2Bde%2BTeste...296-302.pdf"
+  },
+  {
+   "nome": "niveis-teste",
+   "ext": "pdf",
+   "tam": "1.3 MB",
+   "href": "../Teste%20de%20Software/niveis-teste.pdf"
+  },
+  {
+   "nome": "planejamento-testes",
+   "ext": "pdf",
+   "tam": "1.4 MB",
+   "href": "../Teste%20de%20Software/planejamento-testes.pdf"
+  },
+  {
+   "nome": "tabelas-de-decisão-e-testes",
+   "ext": "pdf",
+   "tam": "1.2 MB",
+   "href": "../Teste%20de%20Software/tabelas-de-decis%C3%A3o-e-testes.pdf"
+  },
+  {
+   "nome": "teste-exploratorio",
+   "ext": "pdf",
+   "tam": "1.3 MB",
+   "href": "../Teste%20de%20Software/teste-exploratorio.pdf"
+  },
+  {
+   "nome": "teste-integração-software",
+   "ext": "pdf",
+   "tam": "4.8 MB",
+   "href": "../Teste%20de%20Software/teste-integra%C3%A7%C3%A3o-software.pdf"
+  },
+  {
+   "nome": "teste-software",
+   "ext": "pdf",
+   "tam": "3.6 MB",
+   "href": "../Teste%20de%20Software/teste-software.pdf"
+  },
+  {
+   "nome": "testes-de-caixa-branca",
+   "ext": "pdf",
+   "tam": "1.8 MB",
+   "href": "../Teste%20de%20Software/testes-de-caixa-branca.pdf"
+  },
+  {
+   "nome": "testes-de-caixa-preta",
+   "ext": "pdf",
+   "tam": "9.7 MB",
+   "href": "../Teste%20de%20Software/testes-de-caixa-preta.pdf"
+  },
+  {
+   "nome": "testes-interface-robo",
+   "ext": "pdf",
+   "tam": "2.4 MB",
+   "href": "../Teste%20de%20Software/testes-interface-robo.pdf"
+  },
+  {
+   "nome": "testes-unitarios",
+   "ext": "pdf",
+   "tam": "2.8 MB",
+   "href": "../Teste%20de%20Software/testes-unitarios.pdf"
+  },
+  {
+   "nome": "tipos-teste",
+   "ext": "pdf",
+   "tam": "1.3 MB",
+   "href": "../Teste%20de%20Software/tipos-teste.pdf"
+  }
  ]
 }

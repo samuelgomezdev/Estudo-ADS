@@ -1,0 +1,1967 @@
+{
+  "id": "teste-de-software",
+  "nome": "Teste de Software",
+  "periodo": 4,
+  "sigla": "TS",
+  "cor": "#ef4444",
+  "resumos": [
+    {
+      "tema": "Fundamentos do Teste de Software",
+      "html": "<p><b>Teste de software</b> é a investigação do software para fornecer informações sobre a sua <b>qualidade</b> em relação ao contexto em que ele deve operar. Inclui usar o produto para <b>encontrar defeitos</b>.</p>\n<p><b>Princípio de Dijkstra:</b> testes mostram a <b>presença</b> de defeitos, nunca a sua <b>ausência</b>. Teste exaustivo é impossível; o objetivo é reduzir o risco, não \"garantir\" software sem erros.</p>\n<p><b>Por que testar:</b> melhora a qualidade e, feito cedo, <b>reduz custo e tempo</b>. Um defeito encontrado nos requisitos custa muito menos que o mesmo defeito encontrado depois da entrega. Por isso o teste acompanha <b>todo o ciclo de vida</b>, não só o final.</p>\n<p><b>Erro → defeito → falha:</b></p>\n<ul>\n<li><b>Erro (engano):</b> ação humana equivocada. Ex.: o programador não tratou peças maiores que a área da impressora 3D.</li>\n<li><b>Defeito (bug):</b> o problema que ficou no código. Ex.: o driver não valida as medidas.</li>\n<li><b>Falha:</b> a manifestação visível na execução. Ex.: a impressora imprime na parede do cubo de vidro.</li>\n</ul>"
+    },
+    {
+      "tema": "Verificação e Validação",
+      "html": "<p><b>Verificação:</b> \"estamos construindo o produto <b>corretamente</b>?\" Confere se o software atende aos <b>requisitos/especificação</b>. É <b>estática</b>: analisa artefatos sem executar (revisões, inspeções, walkthroughs, listagens de código, relatórios do programador e da compilação).</p>\n<p><b>Validação:</b> \"estamos construindo o produto <b>certo</b>?\" Confere se atende às <b>expectativas do cliente</b>. É <b>dinâmica</b>: executa o software (testes, aceitação).</p>\n<p><b>Macete:</b> <b>V</b>erificação = você <b>v</b>ê sem rodar · v<b>A</b>lidação = o software está <b>A</b>ndando.</p>\n<p>Alguns materiais dividem a própria validação em <b>estática</b> (feita manualmente, sem executar) e <b>dinâmica</b> (executando, normalmente automatizada). O que vale guardar: <b>estática = sem executar; dinâmica = executando</b>.</p>\n<p><b>Pegadinha:</b> em questões com \"respectivamente\", confira a ordem: verificação = requisitos; validação = cliente.</p>\n<p><b>Caso da empresa de logística:</b> testar só no fim, sem revisões de requisitos e sem aceitação com o cliente, entrega um software \"sem relação com o que foi pedido\". Faltou V&amp;V ao longo do ciclo e uma <b>matriz de rastreabilidade</b> requisito ↔ caso de teste.</p>"
+    },
+    {
+      "tema": "Abordagens: Caixa-Preta, Branca e Cinza",
+      "html": "<p><b>Caixa-preta</b> (teste funcional, comportamental): não vê o código; parte dos <b>requisitos</b> (entrada → saída esperada). Encontra campo obrigatório aceito em branco, valor fora do intervalo, funcionalidade ausente. Quem faz precisa conhecer <b>requisitos e regras de negócio</b>, não programação.</p>\n<p><b>Caixa-branca</b> (caixa de vidro, caixa-transparente, <b>teste estrutural</b>): vê o <b>código-fonte</b>. Testa condições, fluxo de dados, ciclos, caminhos lógicos e código nunca executado. Encontra cálculo errado, laço finalizado errado (<i>off-by-one</i>), condição mal escrita, código morto. Normalmente é feito pelo <b>programador</b>.</p>\n<p><b>Caixa-cinza:</b> conhecimento <b>parcial</b> da estrutura (ex.: acesso às estruturas <b>SQL / banco de dados</b>, engenharia reversa), com avaliação pela saída.</p>\n<p><b>Pegadinhas:</b> \"caixa-fonte\" e \"caixa-interna\" <b>não existem</b>. \"Estrutura interna\" é descrição, não nome de técnica.</p>\n<p><b>Pistas no enunciado:</b> código-fonte / laços / condições → branca; estudar requisitos / saídas de cada ação → preta; SQL / conhecimento parcial → cinza.</p>"
+    },
+    {
+      "tema": "Níveis de Teste",
+      "html": "<ul>\n<li><b>Unidade:</b> a menor parte isolada (função, método, classe), feita pelo <b>desenvolvedor</b>, normalmente caixa-branca. Pega laço infinito ou que encerra inesperadamente, cálculo de juros errado.</li>\n<li><b>Integração:</b> módulos se comunicando; pega <b>problemas de transmissão de dados</b> (um módulo envia reais e o outro espera centavos).</li>\n<li><b>Sistema:</b> o software completo contra os requisitos <b>funcionais e não funcionais</b> (carga, segurança, confiabilidade). Feito pela equipe de testes.</li>\n<li><b>Aceitação:</b> o cliente/usuário aprova formalmente. Tipos: <b>do usuário</b>, <b>de entrega</b> (entre equipes) e <b>de contrato e regulamento</b> (cláusulas e legislação, ex.: LGPD). Alfa e beta também são aceitação.</li>\n<li><b>Regressão:</b> em qualquer nível, retesta <b>todo o software</b> após uma mudança para ver se o que funcionava não quebrou. Essencial no ciclo incremental.</li>\n<li><b>Operação:</b> com o sistema em produção (instalação, backup, recuperação).</li>\n</ul>\n<p><b>Caso da empresa do amigo:</b> fazia unitários e testes com usuários, mas os problemas apareciam em partes já prontas → faltava <b>regressão</b>.</p>"
+    },
+    {
+      "tema": "Tipos de Teste e Qualidade (ISO)",
+      "html": "<p><b>Tipos de teste:</b></p>\n<ul>\n<li><b>Desempenho/performance:</b> tempo de resposta e comportamento sob carga (não funcional). <b>Stress:</b> além do limite.</li>\n<li><b>Usabilidade:</b> um <b>usuário real</b> executa uma <b>tarefa</b> enquanto é <b>observado</b> (erros, dificuldades, tempo). Não confundir com grupo focal (opinião de grupo), questionário, robô de tempo de resposta (performance) ou acessos aleatórios (<i>monkey testing</i>).</li>\n<li><b>Segurança</b> (acesso indevido), <b>instalação</b> (instalar/desinstalar), <b>manutenção</b> (após alterações em produção).</li>\n</ul>\n<p><b>Fatores de qualidade ISO 9126 → 25010:</b> funcionalidade, confiabilidade, usabilidade, eficiência, manutenibilidade, portabilidade (a 25010 acrescenta compatibilidade e segurança).</p>\n<ul>\n<li><b>Compatibilidade:</b> coexistir e trocar dados com outros sistemas.</li>\n<li><b>Portabilidade:</b> rodar em outro ambiente.</li>\n<li><b>Eficiência:</b> desempenho × recursos usados.</li>\n<li><b>Usabilidade:</b> facilidade de aprender e operar.</li>\n<li><b>Robustez</b> (parte da confiabilidade): funcionar em condições não previstas.</li>\n</ul>\n<p>Os fatores <b>não levam necessariamente à medição direta</b>: dão base para <b>medidas indiretas</b> e uma <b>lista de verificação</b> que orienta a avaliação.</p>"
+    },
+    {
+      "tema": "Processo de Teste e PMBOK",
+      "html": "<p><b>Ciclo de vida de testes:</b> (procedimentos iniciais) → <b>planejamento</b> → <b>preparação</b> → <b>especificação</b> → <b>execução</b> → <b>entrega</b>.</p>\n<ul>\n<li><b>Procedimentos iniciais:</b> entender os requisitos de negócio, acordo inicial.</li>\n<li><b>Planejamento:</b> estratégia e plano de teste (escopo, prazos, recursos, riscos).</li>\n<li><b>Preparação:</b> o <b>ambiente</b> de teste (equipamentos, ferramentas, massa de dados, pessoas).</li>\n<li><b>Especificação:</b> <b>elaborar e revisar casos e roteiros de teste</b> — é o planejamento detalhado, \"a fundo\".</li>\n<li><b>Execução:</b> rodar e registrar resultados e defeitos.</li>\n<li><b>Entrega:</b> encerramento, relatório final, lições aprendidas, arquivamento.</li>\n</ul>\n<p><b>Testes como projeto (PMBOK):</b> o projeto de testes é <b>independente</b> do de desenvolvimento. Grupos: iniciação → planejamento → execução → <b>monitoramento e controle</b> (compara realizado × planejado) → encerramento.</p>\n<p><b>Escopo</b> define o que entra <b>e o que fica fora</b>, evita atividades não planejadas (<i>scope creep</i>), não é isolado e, se falhar, afeta cronograma, orçamento e aceitação.</p>\n<p><b>Maior propósito do planejamento de testes:</b> criar uma referência estruturada que oriente a equipe, especificando metodologias, critérios e procedimentos.</p>"
+    },
+    {
+      "tema": "Documentação: IEEE 829",
+      "html": "<p>A <b>IEEE 829</b> padroniza os documentos de teste. Lista clássica de 8:</p>\n<p><b>Preparação:</b></p>\n<ul>\n<li><b>Plano de Teste</b> — o documento principal: escopo, abordagem, recursos, <b>papéis</b>, cronograma, critérios.</li>\n<li><b>Especificação de Projeto de Teste</b> — refina a abordagem e identifica as funcionalidades a testar.</li>\n<li><b>Especificação de Caso de Teste</b> — entradas, resultados esperados, condições.</li>\n<li><b>Especificação de Procedimento de Teste</b> — passos para executar os casos.</li>\n<li><b>Relatório de Encaminhamento (Transmissão) de Item</b> — quais itens/versões vão para teste ou reteste.</li>\n</ul>\n<p><b>Relatório (execução):</b></p>\n<ul>\n<li><b>Log (Diário) de Teste</b> — registro cronológico de <b>tudo</b> o que aconteceu (\"registro de bordo\").</li>\n<li><b>Relatório de Incidente de Teste</b> — eventos que <b>exigem investigação</b> (defeitos): o canal formal testador → desenvolvedor (\"boletim de ocorrência\").</li>\n<li><b>Relatório-Resumo de Teste</b> — consolidação do ciclo e recomendação de liberação.</li>\n</ul>\n<p>Encontrar um defeito e não reportá-lo equivale a não tê-lo encontrado. A versão 2008 reorganiza os documentos (ex.: Plano Mestre de Teste), mas as provas cobram a lista clássica.</p>"
+    },
+    {
+      "tema": "Casos de Uso e Casos de Teste",
+      "html": "<p><b>Diagrama de caso de uso (UML):</b> define <b>a forma de interação dos usuários com o software, por meio das funcionalidades</b> — mostra o <i>quê</i>, não o <i>como</i>. Quatro papéis: <b>cenário</b> (sequência de eventos), <b>atores</b> (boneco: pessoa, sistema, dispositivo), <b>caso de uso</b> (elipse) e <b>comunicação</b> (linha ator ↔ caso de uso).</p>\n<p><b>Caso de teste:</b> documento que especifica em detalhe como uma parte do software será testada; verifica se as <b>funcionalidades e requisitos</b> foram construídos como pedido. Resultado <b>positivo</b> (obtido = esperado) ou <b>negativo</b> (obtido ≠ esperado → defeito). Casos derivados de caso de uso precisam de <b>pré-condições e pós-condições</b>.</p>\n<p><b>Do caso de uso ao caso de teste:</b> fluxos → cenários → resultados esperados.</p>\n<p><b>Exemplo da biblioteca:</b> fluxo básico (pede, está disponível, devolve em até 7 dias), FA1 (indisponível → lista de espera) e FA2 (devolve depois de 7 dias → multa de R$ 10,00). São <b>3 cenários</b> (FA1 e FA2 não se combinam: sem empréstimo não há atraso). Valor-limite: devolução no 7º dia sem multa, no 8º com multa.</p>"
+    },
+    {
+      "tema": "Técnicas de Caixa-Preta",
+      "html": "<p>Técnicas <b>funcionais</b>, baseadas na especificação, sem olhar o código:</p>\n<ul>\n<li><b>Particionamento de equivalência:</b> divide as entradas em classes válidas e inválidas e testa <b>um valor de cada</b> (pode ser do meio). Ano de 1899 a 2019 → 1898, 1987, 2020.</li>\n<li><b>Análise de valor-limite:</b> testa nas <b>bordas</b>, dos dois lados. Mês de 1 a 12 → 0, 1, 12, 13.</li>\n<li><b>Tabela de decisão:</b> combinações de condições → ações (ex.: descontos bronze, prata, ouro).</li>\n<li><b>Transição de estados:</b> estado atual + evento → próximo estado (ex.: relógio que alterna horário, cronômetro e despertador).</li>\n<li><b>Casos de uso:</b> fluxos básico, alternativos e de exceção, com pré e pós-condições.</li>\n<li><b>Grafo de causa e efeito.</b></li>\n</ul>\n<p><b>Fontes</b> para projetar: requisitos, casos de uso, histórias de usuário, regras de negócio, protótipos, manuais, histórico de defeitos. <b>Condução:</b> priorizar por risco, plano, matriz de rastreabilidade, executar, registrar, retestar.</p>\n<p><b>Caso Informatiza:</b> testadores de caixa-preta treinados em programação → desalinhamento. Caixa-preta exige domínio de <b>requisitos e regras de negócio</b> e das técnicas funcionais.</p>"
+    },
+    {
+      "tema": "Tabela de Decisão",
+      "html": "<p>A tabela de decisão é uma técnica de <b>teste funcional</b> (caixa-preta). Elementos: <b>condições, ações, combinações e regras</b> — cada coluna é uma regra.</p>\n<p>Com <i>n</i> condições binárias há até <b>2<sup>n</sup></b> regras (3 condições → 8 colunas).</p>\n<p><b>Minimização:</b> mesclar colunas que executam a <b>mesma ação</b>, marcando como indiferente (–) a condição que não influencia. Não se eliminam condições nem ações.</p>\n<p><b>Casos de teste:</b> criados depois da estabilização (análise + minimização); <b>cada coluna vira um caso de teste</b>.</p>\n<p><b>Boa cobertura</b> porque usa as regras da tabela, que especificam as combinações de entradas e as ações/saídas esperadas.</p>\n<p><b>Exemplo minimizado:</b> cliente cadastrado e compra &gt; R$ 500 → 10%; cadastrado e compra ≤ R$ 500 → 5%; não cadastrado (valor indiferente) → 0%.</p>\n<p><b>Passos:</b> estudar a tabela → condições e ações → completude (2<sup>n</sup>) e consistência → minimizar → um caso por coluna → valores concretos → rastreabilidade → executar → registrar → regressão.</p>"
+    },
+    {
+      "tema": "Técnicas de Caixa-Branca",
+      "html": "<p>Técnicas <b>estruturais</b>, baseadas no código-fonte:</p>\n<ul>\n<li><b>Grafo de fluxo:</b> nós (blocos de comandos) e arestas (desvios); pode ser extraído do <b>código ou de um fluxograma</b> e é a base da complexidade ciclomática.</li>\n<li><b>Complexidade ciclomática (McCabe):</b> quantos <b>caminhos independentes</b> há no conjunto-base = número mínimo de casos de teste. <code>V(G) = E − N + 2</code> = nº de decisões + 1 = nº de regiões. Acima de 10: código difícil de testar e manter.</li>\n<li><b>Caminho básico:</b> testar cada caminho independente.</li>\n<li><b>Teste de condição:</b> exercita as <b>condições lógicas (booleanas)</b> do módulo, inclusive cada parte de <code>&amp;&amp;</code> e <code>||</code>.</li>\n<li><b>Teste de laços:</b> simples (pular, 1×, 2×, m×, n−1, n, n+1); <b>aninhados → abordagem de Beizer</b> (de dentro para fora, externos no mínimo); não estruturados → refatorar.</li>\n<li><b>Fluxo de dados:</b> onde cada variável é definida e usada.</li>\n<li><b>Cobertura:</b> comandos, decisões (ramos), condições, caminhos. Ferramenta Java: JaCoCo.</li>\n</ul>\n<pre><code>double calcularMulta(int diasAtraso) {\n    if (diasAtraso &lt;= 7) return 0;   // 1 decisão\n    else return 10.0;\n}   // V(G) = 2 → testar 7 dias e 8 dias</code></pre>"
+    },
+    {
+      "tema": "Testes Exploratórios",
+      "html": "<p><b>Teste exploratório:</b> aprender, projetar e executar <b>ao mesmo tempo</b>, sem roteiro pronto. O testador precisa ser <b>curioso, criativo, crítico e autogerenciável</b>.</p>\n<p><b>Técnicas:</b></p>\n<ul>\n<li><b>Heurística:</b> experiência, limites, todos os ambientes (SFDPOT: Structure, Function, Data, Platform, Operations, Time).</li>\n<li><b>Test oracle:</b> comparar com uma referência confiável (ex.: o módulo antigo).</li>\n<li><b>Checklist Phoenix:</b> lista de perguntas — qual é o problema, os detalhes, quem resolve.</li>\n<li><b>Porquês:</b> perguntar \"por quê?\" até chegar à causa.</li>\n<li><b>Motivos para falhas:</b> causas comuns direcionam os testes.</li>\n</ul>\n<p><b>Estratégias:</b> <b>session based</b> (charter + tempo definido/time-box, foco sem interrupções, debriefing) e <b>free style</b> (liberdade total, documentação mínima: erros e soluções).</p>\n<p><b>Charter:</b> missão (o que explorar, com quais heurísticas, para descobrir o quê), heurísticas, registro (notas, defeitos, riscos, tempo, cobertura) e debriefing.</p>"
+    },
+    {
+      "tema": "Teste de Unidade, TDD e JUnit",
+      "html": "<p><b>Teste de unidade:</b> feito pelos <b>programadores</b>, sem envolver o módulo ou o sistema como um todo. Elementos (Pressman):</p>\n<ul>\n<li><b>Interface:</b> entrada e saída de dados da unidade.</li>\n<li><b>Estrutura de dados locais:</b> integridade ao incluir, alterar e excluir.</li>\n<li><b>Condições-limite:</b> valores extremos.</li>\n<li><b>Caminhos independentes:</b> todos executados.</li>\n<li><b>Caminhos de manipulação de erro:</b> mensagens que orientam o usuário sem interromper o sistema.</li>\n</ul>\n<p><b>Automação:</b> facilita a integração, evita novos erros em partes prontas (regressão) e documenta as funcionalidades.</p>\n<p><b>TDD (Test-Driven Development):</b> <b>técnica de desenvolvimento</b> (não é ciclo de vida nem ferramenta) do XP (Kent Beck) em que o teste vem <b>antes</b> do código. Ciclo <b>Red → Green → Refactor</b>.</p>\n<p><b>JUnit</b> (Java): <code>@Test</code>, <code>@BeforeEach</code>/<code>@AfterEach</code> (JUnit 4: <code>@Before</code>), <code>@ParameterizedTest</code> com <code>@CsvSource</code>/<code>@ValueSource</code>, <code>assertEquals</code>, <code>assertTrue</code>, <code>assertFalse</code>, <code>assertThrows</code>. Integra com Maven, Gradle e CI/CD.</p>\n<p><b>Outras linguagens:</b> NUnit (C#), Jest (JavaScript), RSpec (Ruby), Pytest (Python).</p>"
+    },
+    {
+      "tema": "Ferramentas e Automação",
+      "html": "<ul>\n<li><b>Selenium:</b> automação web, open source, várias linguagens, multinavegador; exige programação.\n<ul>\n<li><b>IDE:</b> plugin do navegador, <b>record-and-playback</b> (gravar, salvar e reproduzir), sem programação.</li>\n<li><b>RC:</b> primeira versão programável, servidor intermediário injetando JavaScript; <b>descontinuado</b>.</li>\n<li><b>WebDriver:</b> envia comandos ao navegador por um <b>driver específico</b> (ChromeDriver, GeckoDriver); padrão W3C.</li>\n<li><b>Grid:</b> execução <b>em paralelo</b> em várias máquinas e navegadores (hub e nodes).</li>\n</ul></li>\n<li><b>Cypress / Playwright:</b> E2E web com JavaScript/TypeScript.</li>\n<li><b>TestLink:</b> <b>gerenciamento</b> de testes (casos, planos, testadores, relatórios) — não é ferramenta de carga.</li>\n<li><b>JMeter / k6 / Gatling:</b> carga e desempenho.</li>\n<li><b>IBM Rational Functional Tester:</b> automação funcional <b>comercial</b>.</li>\n<li><b>Katalon Studio:</b> baseado no Selenium, low-code, relatórios HTML/CSV/PDF, Test Suites atribuídas via TestOps.</li>\n</ul>\n<p><b>Robot Framework:</b> seções <code>*** Settings ***</code>, <code>*** Variables ***</code>, <code>*** Test Cases ***</code> (<b>obrigatória</b>), <code>*** Keywords ***</code>. Variáveis: <code>${escalar}</code>, <code>@{lista}</code>, <code>&amp;{dicionário}</code>.</p>\n<p><b>Ferramentas contribuem</b> com previsibilidade da verificação, registros formais e <b>arquivos de log</b> com evidências.</p>\n<p><b>Automatizar:</b> regressão, <b>carga/desempenho</b>, tarefas repetitivas, funcionalidades críticas. <b>Manual:</b> exploratório, usabilidade, funcionalidades novas ou instáveis.</p>"
+    },
+    {
+      "tema": "Gerenciamento de Problemas e Defeitos",
+      "html": "<p><b>Gerenciamento de problemas:</b> planejar, acompanhar e testar em cada etapa para evitar erros que causem falhas. Melhorias: garantia de funcionamento do todo, atendimento dos requisitos, redução de erros e <b>aumento da proatividade</b>.</p>\n<p><b>Reativo × proativo:</b> reativo só percebe depois que o problema atingiu o cliente; proativo antecipa com testes planejados.</p>\n<ul>\n<li><b>Base de erros conhecidos:</b> registra erros e soluções de contorno → cerca de <b>80% resolvidos no primeiro nível</b>, evitando reincidência.</li>\n<li><b>Solução de contorno (workaround):</b> <b>provisória</b>, restabelece o serviço sem apontar nem eliminar a causa.</li>\n<li><b>Solução definitiva:</b> atua na <b>causa raiz</b>; aplicada depois que a de contorno é validada e aceita (etapa 6).</li>\n</ul>\n<p><b>Triagem:</b> antes de abrir chamado, confirmar se é defeito (impressora \"não conectada\" com LED de energia apagado → não abrir: é desinformação do usuário).</p>\n<p><b>Ciclo de vida do defeito:</b> Nova → Designação → Teste → Verificação → Conclusão, com desvios para <b>Reabertura</b>, <b>Rejeição</b> (não é defeito válido) e <b>Adiado</b> (reconhecido, corrigido numa versão futura).</p>\n<p><b>Caso do produto 99:</b> o sistema travava após o 99º cadastro. Quem deveria ter pego: o <b>testador</b>, com valor-limite (99, 100, 101) e teste de volume.</p>"
+    }
+  ],
+  "flashcards": [
+    {
+      "tema": "Fundamentos do Teste de Software",
+      "p": "O que é teste de software?",
+      "r": "Investigação do software para informar sua qualidade no contexto em que deve operar, incluindo usá-lo para encontrar defeitos."
+    },
+    {
+      "tema": "Fundamentos do Teste de Software",
+      "p": "Princípio de Dijkstra",
+      "r": "Testes mostram a presença de defeitos, nunca a sua ausência."
+    },
+    {
+      "tema": "Fundamentos do Teste de Software",
+      "p": "Erro × defeito × falha",
+      "r": "Erro = ação humana equivocada; defeito = o problema que ficou no código; falha = a manifestação visível na execução."
+    },
+    {
+      "tema": "Fundamentos do Teste de Software",
+      "p": "Por que testar cedo?",
+      "r": "Um defeito encontrado nos requisitos custa muito menos que o mesmo defeito encontrado após a entrega."
+    },
+    {
+      "tema": "Verificação e Validação",
+      "p": "Verificação pergunta…",
+      "r": "Estamos construindo o produto corretamente? (requisitos; estática, sem executar)"
+    },
+    {
+      "tema": "Verificação e Validação",
+      "p": "Validação pergunta…",
+      "r": "Estamos construindo o produto certo? (cliente; dinâmica, executando)"
+    },
+    {
+      "tema": "Verificação e Validação",
+      "p": "Macete de V&V",
+      "r": "Verificação = você vê sem rodar · vAlidação = o software está Andando."
+    },
+    {
+      "tema": "Abordagens: Caixa-Preta, Branca e Cinza",
+      "p": "Caixa-preta testa com base em…",
+      "r": "Requisitos — entrada × saída esperada, sem ver o código. Sinônimos: teste funcional, comportamental."
+    },
+    {
+      "tema": "Abordagens: Caixa-Preta, Branca e Cinza",
+      "p": "Caixa-branca testa com base em…",
+      "r": "Código-fonte — condições, laços, caminhos, fluxo de dados."
+    },
+    {
+      "tema": "Abordagens: Caixa-Preta, Branca e Cinza",
+      "p": "Sinônimos de caixa-branca",
+      "r": "Caixa de vidro, caixa-transparente, teste estrutural. (\"Caixa-fonte\" e \"caixa-interna\" não existem.)"
+    },
+    {
+      "tema": "Abordagens: Caixa-Preta, Branca e Cinza",
+      "p": "Caixa-cinza",
+      "r": "Conhecimento parcial da estrutura (ex.: SQL/banco de dados), com avaliação pela saída."
+    },
+    {
+      "tema": "Níveis de Teste",
+      "p": "Teste de unidade",
+      "r": "Testa a menor parte isolada (função/método), feito pelo programador."
+    },
+    {
+      "tema": "Níveis de Teste",
+      "p": "Teste de integração",
+      "r": "Testa a comunicação entre módulos; acha problemas de transmissão de dados."
+    },
+    {
+      "tema": "Níveis de Teste",
+      "p": "Teste de sistema",
+      "r": "Software completo × requisitos funcionais e não funcionais."
+    },
+    {
+      "tema": "Níveis de Teste",
+      "p": "Teste de aceitação — tipos",
+      "r": "Do usuário, de entrega (entre equipes) e de contrato e regulamento."
+    },
+    {
+      "tema": "Níveis de Teste",
+      "p": "Teste de regressão",
+      "r": "Reexecutar os testes (todo o software) após uma alteração para ver se o que funcionava quebrou."
+    },
+    {
+      "tema": "Tipos de Teste e Qualidade (ISO)",
+      "p": "Teste de usabilidade",
+      "r": "Usuário real + tarefa + observação de erros, dificuldades e tempo."
+    },
+    {
+      "tema": "Tipos de Teste e Qualidade (ISO)",
+      "p": "Desempenho × stress",
+      "r": "Desempenho: tempo de resposta sob carga esperada. Stress: além do limite."
+    },
+    {
+      "tema": "Tipos de Teste e Qualidade (ISO)",
+      "p": "Fatores ISO de qualidade servem para…",
+      "r": "Base para medidas indiretas e checklist de avaliação (não necessariamente medição direta)."
+    },
+    {
+      "tema": "Tipos de Teste e Qualidade (ISO)",
+      "p": "Robustez",
+      "r": "Funcionar em condições não previstas; faz parte da confiabilidade."
+    },
+    {
+      "tema": "Processo de Teste e PMBOK",
+      "p": "Fases do ciclo de vida de testes",
+      "r": "Planejamento, preparação, especificação, execução, entrega."
+    },
+    {
+      "tema": "Processo de Teste e PMBOK",
+      "p": "Fase \"preparação\"",
+      "r": "Montar o ambiente de teste (equipamentos, ferramentas, massa de dados, pessoas)."
+    },
+    {
+      "tema": "Processo de Teste e PMBOK",
+      "p": "Fase \"especificação\"",
+      "r": "Elaborar e revisar casos e roteiros de teste (o planejamento a fundo)."
+    },
+    {
+      "tema": "Processo de Teste e PMBOK",
+      "p": "PMBOK: comparar realizado × planejado",
+      "r": "Monitoramento e controle."
+    },
+    {
+      "tema": "Processo de Teste e PMBOK",
+      "p": "Escopo define…",
+      "r": "O que entra e o que fica fora do projeto."
+    },
+    {
+      "tema": "Documentação: IEEE 829",
+      "p": "Documento principal da IEEE 829",
+      "r": "Plano de teste (escopo, abordagem, recursos, papéis, cronograma, critérios)."
+    },
+    {
+      "tema": "Documentação: IEEE 829",
+      "p": "Documentos de relatório da IEEE 829",
+      "r": "Log (diário) de teste, relatório de incidente e relatório-resumo."
+    },
+    {
+      "tema": "Documentação: IEEE 829",
+      "p": "Relatório de incidente",
+      "r": "Eventos que exigem investigação — canal formal testador → desenvolvedor."
+    },
+    {
+      "tema": "Documentação: IEEE 829",
+      "p": "Diário (log) de teste",
+      "r": "Registro cronológico de tudo o que ocorreu na execução."
+    },
+    {
+      "tema": "Documentação: IEEE 829",
+      "p": "Relatório de encaminhamento de item",
+      "r": "Quais itens/versões vão para teste ou reteste."
+    },
+    {
+      "tema": "Casos de Uso e Casos de Teste",
+      "p": "Diagrama de caso de uso define…",
+      "r": "A forma de interação dos usuários com o software, por meio das funcionalidades."
+    },
+    {
+      "tema": "Casos de Uso e Casos de Teste",
+      "p": "Quatro papéis do diagrama de caso de uso",
+      "r": "Cenário, atores, caso de uso e comunicação."
+    },
+    {
+      "tema": "Casos de Uso e Casos de Teste",
+      "p": "Resultados de um caso de teste",
+      "r": "Positivo (obtido = esperado) ou negativo (obtido ≠ esperado)."
+    },
+    {
+      "tema": "Casos de Uso e Casos de Teste",
+      "p": "Caso de teste baseado em caso de uso precisa de…",
+      "r": "Pré-condições e pós-condições."
+    },
+    {
+      "tema": "Técnicas de Caixa-Preta",
+      "p": "Particionamento de equivalência",
+      "r": "Um valor de cada classe (válida/inválida). Ano 1899–2019 → 1898, 1987, 2020."
+    },
+    {
+      "tema": "Técnicas de Caixa-Preta",
+      "p": "Análise de valor-limite",
+      "r": "Valores nas bordas, dos dois lados. Mês 1–12 → 0, 1, 12, 13."
+    },
+    {
+      "tema": "Técnicas de Caixa-Preta",
+      "p": "Transição de estados",
+      "r": "Estado atual + evento → próximo estado (ex.: relógio horário/cronômetro/despertador)."
+    },
+    {
+      "tema": "Tabela de Decisão",
+      "p": "Elementos da tabela de decisão",
+      "r": "Condições, ações, combinações e regras (cada coluna é uma regra)."
+    },
+    {
+      "tema": "Tabela de Decisão",
+      "p": "Minimizar a tabela de decisão",
+      "r": "Mesclar colunas com a mesma ação, marcando a condição irrelevante como indiferente (–)."
+    },
+    {
+      "tema": "Tabela de Decisão",
+      "p": "Tabela de decisão → casos de teste",
+      "r": "Após a minimização, cada coluna/regra vira um caso de teste."
+    },
+    {
+      "tema": "Tabela de Decisão",
+      "p": "n condições binárias geram…",
+      "r": "Até 2ⁿ regras (3 condições → 8)."
+    },
+    {
+      "tema": "Técnicas de Caixa-Branca",
+      "p": "Complexidade ciclomática",
+      "r": "Número de caminhos independentes: V(G) = E − N + 2 = decisões + 1."
+    },
+    {
+      "tema": "Técnicas de Caixa-Branca",
+      "p": "Teste de condição",
+      "r": "Exercita as condições lógicas (booleanas) do módulo."
+    },
+    {
+      "tema": "Técnicas de Caixa-Branca",
+      "p": "Laços aninhados",
+      "r": "Abordagem de Beizer: do mais interno para fora, externos no mínimo."
+    },
+    {
+      "tema": "Técnicas de Caixa-Branca",
+      "p": "Grafo de fluxo",
+      "r": "Nós (blocos) e arestas (desvios), extraído do código ou de fluxograma; base da complexidade ciclomática."
+    },
+    {
+      "tema": "Testes Exploratórios",
+      "p": "Perfil do testador exploratório",
+      "r": "Curioso, criativo, crítico e autogerenciável."
+    },
+    {
+      "tema": "Testes Exploratórios",
+      "p": "Test oracle",
+      "r": "Comparar com uma referência confiável (ex.: o módulo antigo)."
+    },
+    {
+      "tema": "Testes Exploratórios",
+      "p": "Checklist Phoenix",
+      "r": "Lista de perguntas: qual o problema, os detalhes, quem resolve."
+    },
+    {
+      "tema": "Testes Exploratórios",
+      "p": "Session based × free style",
+      "r": "Session based: charter + tempo definido + debriefing. Free style: liberdade total, documentação mínima."
+    },
+    {
+      "tema": "Teste de Unidade, TDD e JUnit",
+      "p": "TDD",
+      "r": "Técnica de desenvolvimento: teste escrito antes do código; ciclo Red → Green → Refactor."
+    },
+    {
+      "tema": "Teste de Unidade, TDD e JUnit",
+      "p": "Estrutura de dados locais (teste de unidade)",
+      "r": "Integridade dos dados ao incluir, alterar e excluir."
+    },
+    {
+      "tema": "Teste de Unidade, TDD e JUnit",
+      "p": "Caminhos de manipulação de erro",
+      "r": "Mensagens de erro que orientam o usuário sem interromper o sistema."
+    },
+    {
+      "tema": "Teste de Unidade, TDD e JUnit",
+      "p": "@BeforeEach (JUnit 5)",
+      "r": "Roda antes de cada teste para preparar o cenário (JUnit 4: @Before)."
+    },
+    {
+      "tema": "Teste de Unidade, TDD e JUnit",
+      "p": "Frameworks de teste unitário",
+      "r": "JUnit (Java), NUnit (C#), Jest (JavaScript), RSpec (Ruby), Pytest (Python)."
+    },
+    {
+      "tema": "Ferramentas e Automação",
+      "p": "Componentes do Selenium",
+      "r": "IDE (grava e reproduz), RC (antigo, descontinuado), WebDriver (driver nativo do navegador), Grid (paralelo)."
+    },
+    {
+      "tema": "Ferramentas e Automação",
+      "p": "Robot Framework: seção obrigatória",
+      "r": "*** Test Cases ***"
+    },
+    {
+      "tema": "Ferramentas e Automação",
+      "p": "Robot Framework: variáveis",
+      "r": "${escalar}, @{lista}, &{dicionário}."
+    },
+    {
+      "tema": "Ferramentas e Automação",
+      "p": "TestLink",
+      "r": "Gerenciamento de testes (casos, planos, testadores, relatórios). Não é carga."
+    },
+    {
+      "tema": "Ferramentas e Automação",
+      "p": "O que vale automatizar?",
+      "r": "Regressão, carga/desempenho, tarefas repetitivas, funcionalidades críticas. Manual: exploratório, usabilidade, funcionalidades novas."
+    },
+    {
+      "tema": "Gerenciamento de Problemas e Defeitos",
+      "p": "Solução de contorno",
+      "r": "Provisória: restabelece o serviço sem eliminar a causa."
+    },
+    {
+      "tema": "Gerenciamento de Problemas e Defeitos",
+      "p": "Solução definitiva",
+      "r": "Atua na causa raiz; aplicada após o contorno ser validado (etapa 6)."
+    },
+    {
+      "tema": "Gerenciamento de Problemas e Defeitos",
+      "p": "Base de erros conhecidos",
+      "r": "Registra erros e contornos → ~80% resolvidos no primeiro nível."
+    },
+    {
+      "tema": "Gerenciamento de Problemas e Defeitos",
+      "p": "Ciclo de vida do defeito",
+      "r": "Nova → Designação → Teste → Verificação → Conclusão; desvios: Reabertura, Rejeição, Adiado."
+    },
+    {
+      "tema": "Gerenciamento de Problemas e Defeitos",
+      "p": "Defeito adiado × rejeitado",
+      "r": "Adiado: válido, corrigido numa versão futura. Rejeitado: não é defeito."
+    }
+  ],
+  "questoes": [
+    {
+      "tema": "Fundamentos do Teste de Software",
+      "q": "Qual definição representa teste de software?",
+      "op": [
+        "Etapa em que somente o cliente usa o sistema para aprová-lo.",
+        "Investigação do software para fornecer informações sobre sua qualidade em relação ao contexto em que ele deve operar, incluindo usar o produto para encontrar defeitos.",
+        "Atividade feita somente no início do projeto, para aprovar os requisitos.",
+        "Processo que atrasa a entrega e só se justifica em sistemas críticos.",
+        "Avaliação do desempenho individual dos programadores da equipe."
+      ],
+      "r": 1,
+      "exp": "Teste é investigação da qualidade no contexto de uso, e isso inclui procurar defeitos. As outras alternativas restringem o teste a um momento ou a uma pessoa, ou confundem com avaliação de pessoas."
+    },
+    {
+      "tema": "Fundamentos do Teste de Software",
+      "q": "Os testes de software são importantes porque:",
+      "op": [
+        "Asseguram a eliminação completa dos erros antes da entrega.",
+        "Pioram a imagem da empresa ao revelar erros.",
+        "Aumentam o custo total do projeto sem retorno.",
+        "Melhoram a qualidade dos softwares produzidos.",
+        "Garantem que o software não terá nenhum defeito."
+      ],
+      "r": 3,
+      "exp": "Teste melhora a qualidade e reduz custo. Palavras absolutas como \"garantem\", \"nenhum\" e \"eliminação completa\" quase sempre indicam a alternativa errada (princípio de Dijkstra)."
+    },
+    {
+      "tema": "Fundamentos do Teste de Software",
+      "q": "Segundo o princípio atribuído a Dijkstra, os testes:",
+      "op": [
+        "Só são válidos quando cobrem todas as entradas possíveis.",
+        "Provam que o software está livre de defeitos quando todos passam.",
+        "Mostram a presença de defeitos, nunca a sua ausência.",
+        "Substituem as revisões de requisitos.",
+        "Devem ser feitos apenas depois da implantação."
+      ],
+      "r": 2,
+      "exp": "Um teste que passa só diz que aquele caso funcionou. Como o teste exaustivo é impossível, o objetivo é reduzir o risco, não provar ausência de defeitos."
+    },
+    {
+      "tema": "Fundamentos do Teste de Software",
+      "q": "Sobre o custo de corrigir um defeito ao longo do ciclo de vida, é correto afirmar:",
+      "op": [
+        "Um defeito encontrado nos requisitos custa muito menos que o mesmo defeito encontrado após a entrega.",
+        "Depois da entrega o custo cai, pois o cliente ajuda a corrigir.",
+        "Testar cedo aumenta o custo porque exige mais documentação.",
+        "O custo é o mesmo em qualquer fase, por isso testar no fim é suficiente.",
+        "Defeitos de requisitos só podem ser encontrados depois do código pronto."
+      ],
+      "r": 0,
+      "exp": "Quanto mais tarde o defeito é descoberto, mais artefatos precisam ser refeitos. Por isso o teste deve acompanhar todo o ciclo de vida."
+    },
+    {
+      "tema": "Fundamentos do Teste de Software",
+      "q": "Uma impressora 3D imprime uma peça sobre a parede do cubo de vidro porque o driver não valida as medidas, já que o programador não tratou peças maiores que a área. \"Imprimir na parede\" é:",
+      "op": [
+        "Um defeito, causado por uma falha do programador.",
+        "Um incidente sem relação com o código.",
+        "Um erro do usuário, que não deveria abrir chamado.",
+        "Um erro, causado por uma falha no driver.",
+        "Uma falha, causada por um defeito no driver, que teve origem num erro do programador."
+      ],
+      "r": 4,
+      "exp": "Erro (engano humano) → defeito (o problema que fica no código) → falha (o que se vê na execução). A impressão errada é a manifestação visível: a falha."
+    },
+    {
+      "tema": "Fundamentos do Teste de Software",
+      "q": "Após o desenvolvimento e os testes funcionais e estruturais de uma rede social para um público específico, o que seria mais pertinente?",
+      "op": [
+        "Teste de performance com somente um usuário testando, com foco em usabilidade.",
+        "Verificação da linguagem, do hardware e do conhecimento do desenvolvedor.",
+        "Acompanhamento de um usuário testando, especificações menos detalhadas e plano de teste não funcional.",
+        "Testes de desempenho e stress, com preocupação somente com a implementação.",
+        "Revisões técnicas eficientes, especificações funcionais e não funcionais corretas e a elaboração de um plano de teste."
+      ],
+      "r": 4,
+      "exp": "Performance não se mede com um usuário; especificação menos detalhada piora o teste; \"somente\" invalida a última. Revisões, boas especificações e plano de teste cobrem a qualidade de forma completa."
+    },
+    {
+      "tema": "Verificação e Validação",
+      "q": "Verificação e validação consistem, respectivamente, em:",
+      "op": [
+        "Analisar se o software atende às expectativas do cliente e analisar se ele atende aos requisitos.",
+        "Executar o software e revisar o código.",
+        "Planejar os testes e executar os testes.",
+        "Medir o desempenho e medir a usabilidade.",
+        "Analisar se o software atende aos requisitos e analisar se ele atende às expectativas do cliente."
+      ],
+      "r": 4,
+      "exp": "Verificação: \"construindo o produto corretamente?\" (requisitos). Validação: \"construindo o produto certo?\" (cliente). A ordem invertida é a pegadinha clássica do \"respectivamente\"."
+    },
+    {
+      "tema": "Verificação e Validação",
+      "q": "O que diferencia validação e verificação?",
+      "op": [
+        "A validação é estática e a verificação é dinâmica.",
+        "Na validação ocorre uma verificação dinâmica e na verificação ela é realizada de forma estática.",
+        "A validação assegura os requisitos e só a verificação deve ter plano de testes.",
+        "A verificação é feita pelo cliente e a validação pelo programador.",
+        "As duas são sempre feitas sem executar o software."
+      ],
+      "r": 1,
+      "exp": "Verificação analisa artefatos sem executar (revisões, inspeções). Validação executa o software. Plano de teste existe nas duas."
+    },
+    {
+      "tema": "Verificação e Validação",
+      "q": "Qual a diferença entre validação estática e validação dinâmica, segundo o material?",
+      "op": [
+        "A estática só ocorre após a implantação.",
+        "A estática é feita pelo cliente e a dinâmica pelo desenvolvedor.",
+        "Não há diferença: são nomes diferentes para o mesmo teste.",
+        "A estática é feita manualmente, sem executar; a dinâmica é feita executando o software, normalmente de forma automatizada.",
+        "A estática executa o software e a dinâmica apenas lê o código."
+      ],
+      "r": 3,
+      "exp": "É uma simplificação do material: o que vale é estática = sem executar; dinâmica = executando. Na prática existe teste dinâmico manual e análise estática automatizada."
+    },
+    {
+      "tema": "Verificação e Validação",
+      "q": "Para verificar o driver de uma impressora 3D, a equipe deve:",
+      "op": [
+        "Entregar a impressora ao cliente e observar se ele fica satisfeito.",
+        "Analisar as listagens do código e os relatórios do programador e da compilação.",
+        "Aguardar os chamados de suporte em produção.",
+        "Imprimir peças aleatórias até que algo dê errado.",
+        "Pedir aos usuários que respondam a um questionário."
+      ],
+      "r": 1,
+      "exp": "Verificação é estática: analisa artefatos (código, relatórios) contra a especificação. Observar o cliente usando seria validação."
+    },
+    {
+      "tema": "Verificação e Validação",
+      "q": "A pergunta \"estamos construindo o produto certo?\" corresponde a:",
+      "op": [
+        "Inspeção de código.",
+        "Gerenciamento de configuração.",
+        "Validação.",
+        "Teste de unidade.",
+        "Verificação."
+      ],
+      "r": 2,
+      "exp": "Produto certo = o que o cliente precisa = validação. \"Produto corretamente\" (conforme a especificação) é verificação."
+    },
+    {
+      "tema": "Verificação e Validação",
+      "q": "Uma empresa de logística recebeu um software \"sem relação com o que foi pedido\", embora a equipe tenha feito ciclos de teste após o fim do desenvolvimento. A causa principal foi:",
+      "op": [
+        "Escolha errada da linguagem de programação.",
+        "Excesso de testes de unidade.",
+        "Uso de testes automatizados em vez de manuais.",
+        "Falta de verificação e validação ao longo do ciclo: sem revisões de requisitos e sem aceitação com o cliente.",
+        "Falta de teste de desempenho."
+      ],
+      "r": 3,
+      "exp": "Testando só no fim, a equipe conferiu o que foi construído, não o que foi pedido. Revisões de requisitos, matriz de rastreabilidade e testes de aceitação teriam evitado o problema."
+    },
+    {
+      "tema": "Abordagens: Caixa-Preta, Branca e Cinza",
+      "q": "Dentre os testes de software pode-se incluir: I. Caixa-preta; II. Caixa-cinza; III. Caixa-branca; IV. Performance; V. Integração.",
+      "op": [
+        "I, II e III apenas.",
+        "I e III apenas.",
+        "IV e V apenas.",
+        "I, III e V apenas.",
+        "I, II, III, IV e V."
+      ],
+      "r": 4,
+      "exp": "Todos são técnicas ou tipos de teste válidos. Quando o enunciado diz \"pode-se incluir\" e todos os itens são válidos, a resposta é a que tem todos."
+    },
+    {
+      "tema": "Abordagens: Caixa-Preta, Branca e Cinza",
+      "q": "Qual técnica avalia o comportamento interno do software por meio de teste de condição, fluxo de dados, ciclos, caminhos lógicos e código nunca executado?",
+      "op": [
+        "Teste de aceitação.",
+        "Teste de usabilidade.",
+        "Caixa-preta.",
+        "Caixa-branca.",
+        "Teste exploratório free style."
+      ],
+      "r": 3,
+      "exp": "Condições, laços, caminhos e código morto só se enxergam olhando o código: caixa-branca (estrutural)."
+    },
+    {
+      "tema": "Abordagens: Caixa-Preta, Branca e Cinza",
+      "q": "Testes na estrutura interna do software (laços, chamadas de função, decisões lógicas), normalmente feitos pelo programador, são chamados de:",
+      "op": [
+        "Caixa-interna.",
+        "Caixa-preta.",
+        "Teste de aceitação.",
+        "Caixa-fonte.",
+        "Caixa-branca."
+      ],
+      "r": 4,
+      "exp": "\"Caixa-fonte\" e \"caixa-interna\" não existem. Sinônimos válidos de caixa-branca: caixa de vidro, caixa-transparente e teste estrutural."
+    },
+    {
+      "tema": "Abordagens: Caixa-Preta, Branca e Cinza",
+      "q": "Quais problemas são tipicamente encontrados pelo teste de caixa-branca?",
+      "op": [
+        "Telas confusas para o usuário final.",
+        "Lentidão com muitos usuários simultâneos.",
+        "Campos obrigatórios aceitos em branco e valores fora do intervalo.",
+        "Cálculos com respostas erradas e finalização errada de laços de repetição.",
+        "Funcionalidades pedidas pelo cliente que não foram implementadas."
+      ],
+      "r": 3,
+      "exp": "Caixa-branca olha o código: cálculo errado, laço que termina uma vez antes ou depois (off-by-one), condição mal escrita. Campos em branco e valores fora do intervalo são achados de caixa-preta."
+    },
+    {
+      "tema": "Abordagens: Caixa-Preta, Branca e Cinza",
+      "q": "Um testador estudou muito os requisitos para conhecer as saídas esperadas de cada ação do sistema. Ele está usando a abordagem:",
+      "op": [
+        "Caixa-preta.",
+        "Teste estrutural.",
+        "Caixa de vidro.",
+        "Caixa-transparente.",
+        "Caixa-branca."
+      ],
+      "r": 0,
+      "exp": "Partir dos requisitos (entrada → saída esperada) sem olhar o código é caixa-preta. As demais alternativas são todas nomes de caixa-branca."
+    },
+    {
+      "tema": "Abordagens: Caixa-Preta, Branca e Cinza",
+      "q": "Quais problemas são tipicamente encontrados pelo teste de caixa-preta?",
+      "op": [
+        "Código que nunca é executado.",
+        "Cálculos com respostas erradas e finalização errada de laços.",
+        "Variáveis declaradas e nunca usadas.",
+        "Permitir deixar campos obrigatórios em branco e aceitar valores fora do intervalo especificado.",
+        "Condições booleanas mal escritas dentro de um método."
+      ],
+      "r": 3,
+      "exp": "Caixa-preta compara o comportamento com a especificação: obrigatoriedade, faixas válidas, funcionalidade ausente. As outras são achados de caixa-branca."
+    },
+    {
+      "tema": "Abordagens: Caixa-Preta, Branca e Cinza",
+      "q": "Um testador tem acesso às estruturas SQL do sistema e as manipula para verificar as saídas ao acessar o banco de dados. Que abordagem é essa?",
+      "op": [
+        "Caixa-cinza.",
+        "Teste de usabilidade.",
+        "Caixa-branca.",
+        "Teste de aceitação.",
+        "Caixa-preta."
+      ],
+      "r": 0,
+      "exp": "Conhecimento parcial da estrutura interna (o banco, o SQL) com avaliação pela saída é caixa-cinza."
+    },
+    {
+      "tema": "Níveis de Teste",
+      "q": "A fase de teste que testa as menores unidades do software é o:",
+      "op": [
+        "Teste de aceitação.",
+        "Teste de sistema.",
+        "Teste de unidade.",
+        "Teste de integração.",
+        "Teste de operação."
+      ],
+      "r": 2,
+      "exp": "Unidade = função, método ou classe isolados. Integração testa módulos conversando; sistema, o todo."
+    },
+    {
+      "tema": "Níveis de Teste",
+      "q": "O teste de sistema valida:",
+      "op": [
+        "Somente a aprovação formal do cliente.",
+        "Somente a comunicação entre dois módulos.",
+        "Os requisitos funcionais e não funcionais do software completo.",
+        "Somente o código nunca executado.",
+        "Somente os métodos isolados de cada classe."
+      ],
+      "r": 2,
+      "exp": "No nível de sistema o software está completo e é confrontado com todos os requisitos, inclusive desempenho, segurança e confiabilidade."
+    },
+    {
+      "tema": "Níveis de Teste",
+      "q": "Em qual nível de teste o próprio desenvolvedor testa o código que escreveu?",
+      "op": [
+        "Teste de sistema.",
+        "Teste unitário.",
+        "Teste beta.",
+        "Teste de aceitação.",
+        "Teste de contrato e regulamento."
+      ],
+      "r": 1,
+      "exp": "O teste de unidade é feito pelo programador, normalmente com caixa-branca. Aceitação é do cliente; sistema, da equipe de testes."
+    },
+    {
+      "tema": "Níveis de Teste",
+      "q": "Qual problema é típico de ser encontrado no teste de integração?",
+      "op": [
+        "Falta de cláusula da LGPD no contrato.",
+        "Mensagens de erro pouco claras para o usuário.",
+        "Laço infinito dentro de um método.",
+        "Problemas de transmissão de dados entre os módulos.",
+        "Insatisfação do cliente com o fluxo de trabalho."
+      ],
+      "r": 3,
+      "exp": "Integração testa a comunicação: um módulo envia reais e o outro espera centavos, formatos de data diferentes. Laço infinito é achado de unidade."
+    },
+    {
+      "tema": "Níveis de Teste",
+      "q": "Além do teste de aceitação do usuário, quais são os outros dois tipos de teste de aceitação?",
+      "op": [
+        "De entrega e de contrato e regulamento.",
+        "De unidade e de integração.",
+        "De caixa-preta e de caixa-branca.",
+        "De carga e de stress.",
+        "De instalação e de desinstalação."
+      ],
+      "r": 0,
+      "exp": "Aceitação de entrega ocorre entre equipes; a de contrato e regulamento confere cláusulas contratuais e legislação (ex.: LGPD)."
+    },
+    {
+      "tema": "Níveis de Teste",
+      "q": "O teste que reexecuta os testes após uma alteração para garantir que problemas resolvidos não voltaram e que o que funcionava não quebrou é o teste de:",
+      "op": [
+        "Usabilidade.",
+        "Aceitação.",
+        "Stress.",
+        "Regressão.",
+        "Instalação."
+      ],
+      "r": 3,
+      "exp": "Regressão abrange todo o software e é essencial no ciclo incremental: cada mudança pode ter efeitos colaterais em partes já prontas."
+    },
+    {
+      "tema": "Níveis de Teste",
+      "q": "A empresa de um amigo faz testes unitários e testes com usuários, mas os problemas sempre aparecem em partes do sistema que já estavam prontas. Qual teste está faltando?",
+      "op": [
+        "Teste de unidade.",
+        "Teste de regressão.",
+        "Teste de usabilidade.",
+        "Teste exploratório free style.",
+        "Teste de aceitação do usuário."
+      ],
+      "r": 1,
+      "exp": "Unitários testam unidades isoladas e os usuários focam na novidade. Ninguém reexecuta os testes das partes antigas depois de cada mudança: falta uma suíte de regressão, de preferência automatizada."
+    },
+    {
+      "tema": "Níveis de Teste",
+      "q": "Um laço infinito, ou que encerra inesperadamente, deve ser identificado preferencialmente no teste:",
+      "op": [
+        "De aceitação.",
+        "De usabilidade.",
+        "De entrega.",
+        "De unidade.",
+        "De contrato e regulamento."
+      ],
+      "r": 3,
+      "exp": "É um defeito dentro de um método, visível olhando o código: o nível certo é o de unidade, a barreira mais barata."
+    },
+    {
+      "tema": "Tipos de Teste e Qualidade (ISO)",
+      "q": "Sobre os fatores de qualidade da ISO (9126/25010), é correto afirmar que:",
+      "op": [
+        "Eficiência é a capacidade de funcionar em condições não previstas.",
+        "Compatibilidade é a capacidade de funcionar em condições não previstas.",
+        "Todos os fatores são medidos diretamente por ferramentas automáticas.",
+        "Portabilidade é a capacidade de funcionar em condições não previstas.",
+        "Não levam necessariamente à medição direta, mas fornecem base para medidas indiretas e uma lista de verificação que norteia a avaliação."
+      ],
+      "r": 4,
+      "exp": "Funcionar em condições não previstas é robustez (parte da confiabilidade). Os fatores ISO servem de checklist e base para medidas indiretas."
+    },
+    {
+      "tema": "Tipos de Teste e Qualidade (ISO)",
+      "q": "Em que consistem os testes de usabilidade?",
+      "op": [
+        "Reunir um grupo de usuários para discutir suas opiniões sobre o sistema.",
+        "Usar um robô para medir o tempo de resposta de cada tela.",
+        "Fazer acessos aleatórios ao sistema para ver se ele trava.",
+        "Mostrar o sistema a um usuário, pedir que realize uma tarefa e observar suas reações: erros, dificuldades e eficiência.",
+        "Enviar um questionário de satisfação aos usuários."
+      ],
+      "r": 3,
+      "exp": "Usabilidade = usuário real + tarefa + observação. As outras são grupo focal, questionário, teste de performance e monkey testing."
+    },
+    {
+      "tema": "Tipos de Teste e Qualidade (ISO)",
+      "q": "Um teste que submete o sistema a uma carga além do seu limite para ver como ele se comporta é o teste de:",
+      "op": [
+        "Stress.",
+        "Aceitação.",
+        "Instalação.",
+        "Usabilidade.",
+        "Unidade."
+      ],
+      "r": 0,
+      "exp": "Desempenho mede tempo de resposta sob carga normal/esperada; stress vai além do limite para descobrir onde e como o sistema quebra."
+    },
+    {
+      "tema": "Tipos de Teste e Qualidade (ISO)",
+      "q": "No modelo de qualidade da ISO, a capacidade do software de rodar em outro ambiente (outro sistema operacional ou hardware) é:",
+      "op": [
+        "Usabilidade.",
+        "Manutenibilidade.",
+        "Compatibilidade.",
+        "Portabilidade.",
+        "Robustez."
+      ],
+      "r": 3,
+      "exp": "Portabilidade = rodar em outro ambiente. Compatibilidade = coexistir e trocar dados com outros sistemas."
+    },
+    {
+      "tema": "Tipos de Teste e Qualidade (ISO)",
+      "q": "No modelo de qualidade da ISO, a capacidade do software de coexistir e trocar dados com outros sistemas é:",
+      "op": [
+        "Robustez.",
+        "Usabilidade.",
+        "Portabilidade.",
+        "Compatibilidade.",
+        "Eficiência."
+      ],
+      "r": 3,
+      "exp": "Compatibilidade (incluída na ISO 25010) trata de coexistência e interoperabilidade."
+    },
+    {
+      "tema": "Tipos de Teste e Qualidade (ISO)",
+      "q": "Funcionar corretamente mesmo em condições não previstas (entradas inesperadas, falhas do ambiente) caracteriza:",
+      "op": [
+        "Facilidade de uso.",
+        "Portabilidade.",
+        "Compatibilidade.",
+        "Eficiência.",
+        "Robustez, que faz parte da confiabilidade."
+      ],
+      "r": 4,
+      "exp": "Robustez é a resistência a situações não previstas, parte da confiabilidade. Questões costumam atribuir essa definição a outros fatores para confundir."
+    },
+    {
+      "tema": "Processo de Teste e PMBOK",
+      "q": "No ciclo de vida de testes (planejamento, preparação, especificação, execução e entrega), qual fase elabora e revisa os casos e roteiros de teste?",
+      "op": [
+        "Planejamento.",
+        "Preparação.",
+        "Execução.",
+        "Entrega.",
+        "Especificação."
+      ],
+      "r": 4,
+      "exp": "Especificação é o planejamento detalhado, \"a fundo\": casos e roteiros. Preparação monta o ambiente; planejamento define estratégia e plano."
+    },
+    {
+      "tema": "Processo de Teste e PMBOK",
+      "q": "No ciclo de vida de testes, a fase de preparação tem como objetivo:",
+      "op": [
+        "Escrever o relatório final e as lições aprendidas.",
+        "Elaborar e revisar os casos de teste.",
+        "Montar o ambiente de teste: equipamentos, ferramentas, massa de dados e pessoas.",
+        "Rodar os testes e registrar os defeitos.",
+        "Definir a estratégia geral do teste."
+      ],
+      "r": 2,
+      "exp": "Pegadinha frequente: preparação é do ambiente, não dos casos (esses são da especificação)."
+    },
+    {
+      "tema": "Processo de Teste e PMBOK",
+      "q": "Qual é o maior propósito do planejamento de testes?",
+      "op": [
+        "Estabelecer uma referência estruturada que oriente os profissionais, especificando metodologias, critérios e procedimentos.",
+        "Levantar os requisitos com o cliente.",
+        "Desenhar a arquitetura do sistema.",
+        "Descartar os logs de execução antigos.",
+        "Definir os padrões de codificação da equipe de desenvolvimento."
+      ],
+      "r": 0,
+      "exp": "O planejamento produz o plano de teste, a referência de todo o trabalho. Padrões de código, arquitetura e levantamento de requisitos pertencem a outras áreas."
+    },
+    {
+      "tema": "Processo de Teste e PMBOK",
+      "q": "Sobre o gerenciamento do escopo (PMBOK) num projeto de testes: I. Define as entregas, mas não considera o que fica fora. II. Evita atividades não planejadas. III. É executado de forma isolada, sem interagir com outras áreas. IV. Falhas no escopo impactam cronograma, orçamento e critérios de aceitação. Estão corretas:",
+      "op": [
+        "II e IV apenas.",
+        "I, II e III apenas.",
+        "I, II, III e IV.",
+        "I e II apenas.",
+        "III e IV apenas."
+      ],
+      "r": 0,
+      "exp": "O escopo define o que entra E o que fica fora (I errada) e depende de comunicação, tempo e custos (III errada)."
+    },
+    {
+      "tema": "Processo de Teste e PMBOK",
+      "q": "Em um projeto de testes conduzido pelo PMBOK, qual grupo de processos avalia se as atividades estão sendo feitas conforme o planejado?",
+      "op": [
+        "Monitoramento e controle.",
+        "Iniciação.",
+        "Planejamento.",
+        "Execução.",
+        "Encerramento."
+      ],
+      "r": 0,
+      "exp": "Monitoramento e controle compara realizado × planejado e corrige desvios."
+    },
+    {
+      "tema": "Processo de Teste e PMBOK",
+      "q": "A fase de entrega do ciclo de vida de testes corresponde a:",
+      "op": [
+        "Entender os requisitos de negócio.",
+        "Escrever os casos de teste.",
+        "Montar o ambiente de testes.",
+        "Encerrar o ciclo: relatório final, lições aprendidas e arquivamento.",
+        "Entregar o código ao cliente sem novos testes."
+      ],
+      "r": 3,
+      "exp": "Entrega é o encerramento do processo de teste, quando o aprendizado é registrado e o material arquivado."
+    },
+    {
+      "tema": "Documentação: IEEE 829",
+      "q": "Qual documento da IEEE 829 registra problemas, erros e acontecimentos relevantes que exigirão avaliação posterior?",
+      "op": [
+        "Plano de teste.",
+        "Relatório de incidente de teste.",
+        "Especificação de procedimento de teste.",
+        "Relatório de encaminhamento de item de teste.",
+        "Diário (log) de teste."
+      ],
+      "r": 1,
+      "exp": "O diário registra TUDO, em ordem cronológica. O relatório de incidente registra só o que exige investigação: é o canal formal testador → desenvolvedor."
+    },
+    {
+      "tema": "Documentação: IEEE 829",
+      "q": "Asserção I: o relatório de encaminhamento de itens de teste permite identificar componentes que precisam de ajuste ou nova verificação. PORQUE Asserção II: esse relatório define o escopo dos testes e os papéis dos testadores.",
+      "op": [
+        "As duas são verdadeiras e a II justifica a I.",
+        "A asserção I é verdadeira e a II é falsa.",
+        "A asserção I é falsa e a II é verdadeira.",
+        "As duas são verdadeiras, mas a II não justifica a I.",
+        "As duas são falsas."
+      ],
+      "r": 1,
+      "exp": "O relatório de encaminhamento indica quais itens vão para teste ou reteste. Escopo e papéis dos testadores são do plano de teste."
+    },
+    {
+      "tema": "Documentação: IEEE 829",
+      "q": "Qual é o documento principal da IEEE 829, com escopo, abordagem, recursos, papéis, cronograma e critérios?",
+      "op": [
+        "Especificação de caso de teste.",
+        "Relatório-resumo de teste.",
+        "Relatório de incidente.",
+        "Log de teste.",
+        "Plano de teste."
+      ],
+      "r": 4,
+      "exp": "O plano de teste é a base de todos os outros documentos."
+    },
+    {
+      "tema": "Documentação: IEEE 829",
+      "q": "O log (diário) de teste da IEEE 829 é:",
+      "op": [
+        "A lista de itens enviados para reteste.",
+        "O registro cronológico de tudo o que aconteceu durante a execução dos testes.",
+        "O documento que lista apenas os defeitos encontrados.",
+        "O conjunto de entradas e saídas esperadas.",
+        "A recomendação final de liberação da versão."
+      ],
+      "r": 1,
+      "exp": "Macete: diário = registro de bordo; incidente = boletim de ocorrência; resumo = consolidação."
+    },
+    {
+      "tema": "Documentação: IEEE 829",
+      "q": "Uma empresa planeja e executa testes conforme a IEEE 829, mas os softwares saem com erros que foram detectados na codificação, e os desenvolvedores nunca foram informados. Qual documento, sobretudo, deixou de ser produzido?",
+      "op": [
+        "Especificação de caso de teste.",
+        "Plano de teste.",
+        "Especificação de projeto de teste.",
+        "Especificação de procedimento de teste.",
+        "Relatório de incidente de teste."
+      ],
+      "r": 4,
+      "exp": "Planejamento e execução existiram; faltaram os documentos de relatório, em especial o de incidente, que leva o defeito do testador ao desenvolvedor. Defeito encontrado e não reportado é como defeito não encontrado."
+    },
+    {
+      "tema": "Documentação: IEEE 829",
+      "q": "O relatório-resumo de teste tem como função:",
+      "op": [
+        "Descrever os passos para executar um caso de teste.",
+        "Indicar quais versões vão para reteste.",
+        "Consolidar os resultados do ciclo e recomendar (ou não) a liberação da versão.",
+        "Definir o escopo e os papéis dos testadores.",
+        "Registrar cada passo executado em ordem cronológica."
+      ],
+      "r": 2,
+      "exp": "Sem o resumo, os gestores não têm visão consolidada e podem liberar versões com defeitos conhecidos."
+    },
+    {
+      "tema": "Casos de Uso e Casos de Teste",
+      "q": "O diagrama de caso de uso da UML define:",
+      "op": [
+        "Os estados internos de um objeto.",
+        "A estrutura das tabelas do banco de dados.",
+        "A ordem de execução dos testes de regressão.",
+        "A forma de interação dos usuários com o software, por meio das funcionalidades.",
+        "A sequência de chamadas entre os objetos no código."
+      ],
+      "r": 3,
+      "exp": "Caso de uso mostra o QUÊ o sistema faz para seus atores, não o COMO."
+    },
+    {
+      "tema": "Casos de Uso e Casos de Teste",
+      "q": "Quais são os quatro papéis do diagrama de caso de uso?",
+      "op": [
+        "Atores, caso de teste, plano de teste e comunicação.",
+        "Classes, atributos, métodos e associações.",
+        "Cenário, atores, caso de uso e comunicação.",
+        "Requisitos, código, testes e implantação.",
+        "Estados, eventos, transições e ações."
+      ],
+      "r": 2,
+      "exp": "Caso de teste e plano de teste NÃO fazem parte do diagrama: são derivados dele."
+    },
+    {
+      "tema": "Casos de Uso e Casos de Teste",
+      "q": "Quais elementos o caso de teste verifica?",
+      "op": [
+        "Apenas o desempenho do servidor.",
+        "Apenas a qualidade visual das telas.",
+        "Apenas a produtividade da equipe.",
+        "Se as funcionalidades e os requisitos do software foram construídos conforme o pedido inicial.",
+        "Apenas o custo do projeto."
+      ],
+      "r": 3,
+      "exp": "O caso de teste confronta o software com o que foi pedido: funcionalidades e requisitos."
+    },
+    {
+      "tema": "Casos de Uso e Casos de Teste",
+      "q": "Quais são os dois resultados possíveis de um caso de teste?",
+      "op": [
+        "Rápido ou lento.",
+        "Aprovado pelo cliente ou rejeitado pelo gerente.",
+        "Manual ou automatizado.",
+        "Estático ou dinâmico.",
+        "Positivo (obtido igual ao esperado) ou negativo (obtido diferente do esperado)."
+      ],
+      "r": 4,
+      "exp": "Resultado negativo indica um defeito a registrar."
+    },
+    {
+      "tema": "Casos de Uso e Casos de Teste",
+      "q": "Ao criar casos de teste a partir de casos de uso, cada caso de teste deve conter:",
+      "op": [
+        "Pré-condições e pós-condições.",
+        "O custo estimado de cada defeito.",
+        "O código-fonte completo do sistema.",
+        "A complexidade ciclomática do módulo.",
+        "Apenas o nome do testador."
+      ],
+      "r": 0,
+      "exp": "Pré-condição é o estado necessário para começar (ex.: aluno cadastrado); pós-condição é o estado esperado ao final (ex.: livro emprestado)."
+    },
+    {
+      "tema": "Casos de Uso e Casos de Teste",
+      "q": "Na biblioteca, o fluxo básico é pedir o livro disponível e devolvê-lo em até 7 dias. FA1: o livro está indisponível (o aluno vai para a lista de espera). FA2: a devolução ocorre após 7 dias (multa de R$ 10,00). Quantos cenários existem?",
+      "op": [
+        "1 cenário: o fluxo básico.",
+        "4 cenários, incluindo FB + FA1 + FA2.",
+        "6 cenários, um para cada passo.",
+        "3 cenários: FB, FB + FA1 e FB + FA2.",
+        "2 cenários: FA1 e FA2."
+      ],
+      "r": 3,
+      "exp": "FA1 e FA2 não se combinam: sem empréstimo não há devolução atrasada. Cada cenário é um caminho completo pelo caso de uso."
+    },
+    {
+      "tema": "Casos de Uso e Casos de Teste",
+      "q": "Com a regra \"devolução em até 7 dias sem multa; depois disso, multa de R$ 10,00\", quais casos de teste de valor-limite são os mais indicados?",
+      "op": [
+        "Devolução no 7º dia (sem multa) e no 8º dia (com multa).",
+        "Apenas devolução no 15º dia.",
+        "Devolução no 1º dia e no 30º dia.",
+        "Devolução no 3º dia e no 4º dia.",
+        "Apenas devolução no 7º dia."
+      ],
+      "r": 0,
+      "exp": "O defeito costuma morar na borda: um \"<\" no lugar de \"<=\" só aparece testando exatamente 7 e 8."
+    },
+    {
+      "tema": "Técnicas de Caixa-Preta",
+      "q": "Um campo aceita anos de 1899 a 2019. Usando particionamento de equivalência, um conjunto adequado de valores de teste é:",
+      "op": [
+        "1987 apenas.",
+        "1898, 1987 e 2020.",
+        "2019 e 2020 apenas.",
+        "0, 1 e 2.",
+        "1899, 1900, 2018 e 2019."
+      ],
+      "r": 1,
+      "exp": "Particionamento: um valor de cada classe — inválida abaixo (1898), válida (1987, pode ser do meio) e inválida acima (2020)."
+    },
+    {
+      "tema": "Técnicas de Caixa-Preta",
+      "q": "Um campo aceita meses de 1 a 12. Usando análise de valor-limite, os valores a testar são:",
+      "op": [
+        "1, 6 e 12.",
+        "-1, 6 e 24.",
+        "6 apenas.",
+        "2, 3, 10 e 11.",
+        "0, 1, 12 e 13."
+      ],
+      "r": 4,
+      "exp": "Valor-limite testa as bordas dos dois lados: logo abaixo (0), no limite inferior (1), no superior (12) e logo acima (13)."
+    },
+    {
+      "tema": "Técnicas de Caixa-Preta",
+      "q": "Uma tabacaria dá descontos diferentes conforme a faixa do cliente (bronze, prata, ouro) e o valor da compra. A técnica mais indicada para testar essas combinações é:",
+      "op": [
+        "Teste de laços.",
+        "Test oracle.",
+        "Complexidade ciclomática.",
+        "Tabela de decisão.",
+        "Transição de estados."
+      ],
+      "r": 3,
+      "exp": "Combinações de condições que levam a ações diferentes são o caso típico de tabela de decisão."
+    },
+    {
+      "tema": "Técnicas de Caixa-Preta",
+      "q": "Um relógio digital alterna entre os modos horário, cronômetro e despertador a cada toque de um botão. A técnica mais indicada é:",
+      "op": [
+        "Teste de condição.",
+        "Transição de estados.",
+        "Tabela de decisão.",
+        "Análise de valor-limite.",
+        "Particionamento de equivalência."
+      ],
+      "r": 1,
+      "exp": "Estado atual + evento → próximo estado: é transição de estados."
+    },
+    {
+      "tema": "Técnicas de Caixa-Preta",
+      "q": "Qual a diferença entre particionamento de equivalência e análise de valor-limite?",
+      "op": [
+        "O particionamento é de caixa-branca e o valor-limite é de caixa-preta.",
+        "O particionamento escolhe um valor representativo de cada classe (pode ser do meio); o valor-limite escolhe valores nas bordas das classes.",
+        "O particionamento testa todos os valores possíveis da faixa.",
+        "São a mesma técnica com nomes diferentes.",
+        "O valor-limite só pode ser usado com números negativos."
+      ],
+      "r": 1,
+      "exp": "As duas são de caixa-preta e se complementam: o particionamento reduz a quantidade de testes, e o valor-limite mira onde os defeitos costumam estar."
+    },
+    {
+      "tema": "Técnicas de Caixa-Preta",
+      "q": "A empresa Informatiza usa caixa-preta como abordagem principal, mas treina seus testadores em linguagens de programação, lógica e orientação a objetos, e problemas funcionais passam despercebidos. O treinamento deveria focar em:",
+      "op": [
+        "Complexidade ciclomática e grafos de fluxo.",
+        "Mais linguagens de programação.",
+        "Administração de banco de dados.",
+        "Requisitos, regras de negócio e técnicas funcionais (equivalência, valor-limite, tabela de decisão).",
+        "Arquitetura de hardware."
+      ],
+      "r": 3,
+      "exp": "Programação é conhecimento de caixa-branca. Caixa-preta exige saber o que o sistema DEVE fazer, ou seja, requisitos e regras de negócio."
+    },
+    {
+      "tema": "Tabela de Decisão",
+      "q": "Na minimização de uma tabela de decisão, deve-se:",
+      "op": [
+        "Eliminar todas as ações repetidas.",
+        "Eliminar as condições que aparecem em mais de uma coluna.",
+        "Remover as colunas com resultado negativo.",
+        "Mesclar as colunas que executam a mesma ação, marcando como indiferente a condição que não influencia.",
+        "Transformar cada condição em um caso de uso."
+      ],
+      "r": 3,
+      "exp": "Não se eliminam condições nem ações: juntam-se regras com a mesma ação, usando \"–\" (indiferente)."
+    },
+    {
+      "tema": "Tabela de Decisão",
+      "q": "A tabela de decisão é uma técnica de qual abordagem?",
+      "op": [
+        "Testes estruturais (caixa-branca).",
+        "Testes de instalação.",
+        "Testes funcionais (caixa-preta).",
+        "Testes exploratórios free style.",
+        "Testes de desempenho."
+      ],
+      "r": 2,
+      "exp": "Ela parte das regras de negócio da especificação, não do código."
+    },
+    {
+      "tema": "Tabela de Decisão",
+      "q": "Quais são os elementos de uma tabela de decisão?",
+      "op": [
+        "Planos, logs, incidentes e resumos.",
+        "Condições, ações, combinações e regras.",
+        "Nós, arestas, regiões e caminhos.",
+        "Atores, cenários, casos de uso e comunicação.",
+        "Estados, eventos e transições."
+      ],
+      "r": 1,
+      "exp": "Cada coluna é uma regra: uma combinação de condições e a ação que ela dispara."
+    },
+    {
+      "tema": "Tabela de Decisão",
+      "q": "Por que a tabela de decisão oferece boa cobertura de testes?",
+      "op": [
+        "Porque testa todas as linhas de código do sistema.",
+        "Porque usa as regras definidas na tabela, que especificam as combinações de entradas e as ações/saídas esperadas.",
+        "Porque é sempre automatizada.",
+        "Porque dispensa a especificação dos requisitos.",
+        "Porque substitui os testes de regressão."
+      ],
+      "r": 1,
+      "exp": "Cada combinação relevante vira uma regra e cada regra vira um caso de teste, então nenhuma combinação fica esquecida."
+    },
+    {
+      "tema": "Tabela de Decisão",
+      "q": "Quando e como são criados os casos de teste a partir de uma tabela de decisão?",
+      "op": [
+        "Antes de montar a tabela; cada condição vira um caso de teste.",
+        "Após a implantação; cada chamado vira um caso de teste.",
+        "Durante a codificação; cada linha de código vira um caso de teste.",
+        "Depois da estabilização (análise e minimização); cada coluna/regra vira um caso de teste.",
+        "Antes da minimização; cada ação vira um caso de teste."
+      ],
+      "r": 3,
+      "exp": "Primeiro a tabela fica completa e consistente, depois é minimizada, e só então cada coluna gera um caso de teste."
+    },
+    {
+      "tema": "Tabela de Decisão",
+      "q": "Uma regra de negócio tem 3 condições do tipo sim/não. Antes da minimização, quantas regras (colunas) a tabela de decisão completa pode ter?",
+      "op": [
+        "6.",
+        "16.",
+        "8.",
+        "9.",
+        "3."
+      ],
+      "r": 2,
+      "exp": "Com n condições binárias há até 2ⁿ combinações: 2³ = 8."
+    },
+    {
+      "tema": "Técnicas de Caixa-Branca",
+      "q": "O teste de condição exercita:",
+      "op": [
+        "As telas do sistema na ordem em que o usuário as usa.",
+        "As pré-condições dos casos de uso.",
+        "As condições lógicas (booleanas) contidas em um módulo, inclusive cada parte de expressões compostas.",
+        "As condições contratuais do projeto.",
+        "O ambiente de rede onde o sistema roda."
+      ],
+      "r": 2,
+      "exp": "Em if (a && b), o teste de condição faz cada parte (a e b) assumir verdadeiro e falso."
+    },
+    {
+      "tema": "Técnicas de Caixa-Branca",
+      "q": "A complexidade ciclomática (McCabe) indica:",
+      "op": [
+        "A quantidade de defeitos já corrigidos.",
+        "O tempo de execução do programa.",
+        "A quantidade de linhas de código.",
+        "O número de usuários simultâneos suportados.",
+        "Quantos caminhos independentes existem no conjunto-base, ou seja, o número mínimo de casos de teste para percorrê-los."
+      ],
+      "r": 4,
+      "exp": "V(G) = E − N + 2 = decisões + 1. Acima de 10, o código fica difícil de testar e manter."
+    },
+    {
+      "tema": "Técnicas de Caixa-Branca",
+      "q": "Sobre a notação de grafos de fluxo, é correto afirmar:",
+      "op": [
+        "Substitui o plano de teste.",
+        "Pode ser extraída do código ou de um fluxograma e serve de base para calcular a complexidade ciclomática.",
+        "Representa a interação dos atores com o sistema.",
+        "Só pode ser desenhada depois que o sistema está em produção.",
+        "É uma técnica de caixa-preta."
+      ],
+      "r": 1,
+      "exp": "Nós representam blocos de comandos e arestas, os desvios. É a ferramenta visual do teste de caminho básico."
+    },
+    {
+      "tema": "Técnicas de Caixa-Branca",
+      "q": "Para testar ciclos (laços) aninhados, recomenda-se:",
+      "op": [
+        "Usar teste de usabilidade.",
+        "A abordagem de Beizer: começar pelo laço mais interno, mantendo os externos no mínimo, e ir para fora.",
+        "Testar todas as combinações de iterações de todos os laços.",
+        "Testar apenas o laço mais externo.",
+        "Substituir os laços por tabela de decisão."
+      ],
+      "r": 1,
+      "exp": "Testar todas as combinações explodiria o número de casos. Laços não estruturados devem ser refatorados."
+    },
+    {
+      "tema": "Técnicas de Caixa-Branca",
+      "q": "Um grafo de fluxo tem 9 arestas e 7 nós. Qual é a complexidade ciclomática?",
+      "op": [
+        "3.",
+        "18.",
+        "4.",
+        "16.",
+        "2."
+      ],
+      "r": 2,
+      "exp": "V(G) = E − N + 2 = 9 − 7 + 2 = 4 caminhos independentes."
+    },
+    {
+      "tema": "Técnicas de Caixa-Branca",
+      "q": "Um método tem três comandos if independentes, sem laços. Qual é a sua complexidade ciclomática?",
+      "op": [
+        "3.",
+        "4.",
+        "6.",
+        "8.",
+        "1."
+      ],
+      "r": 1,
+      "exp": "V(G) = número de decisões + 1 = 3 + 1 = 4."
+    },
+    {
+      "tema": "Técnicas de Caixa-Branca",
+      "q": "Sobre o teste de caixa-branca, é correto afirmar:",
+      "op": [
+        "São feitos exclusivamente pelo cliente.",
+        "Substituem os testes de aceitação.",
+        "Só podem ser feitos manualmente.",
+        "São testes estruturais, ligados ao código-fonte.",
+        "São testes funcionais, que dispensam o acesso ao código."
+      ],
+      "r": 3,
+      "exp": "Caixa-branca = estrutural = código-fonte. Ferramentas como JaCoCo medem a cobertura alcançada."
+    },
+    {
+      "tema": "Testes Exploratórios",
+      "q": "Um colega foi mal ao fazer testes exploratórios: seguia o que lhe mandavam, sem questionar nem propor nada. O que o material diz sobre o perfil do testador exploratório?",
+      "op": [
+        "Ele precisa ser curioso, criativo, crítico e autogerenciável.",
+        "Ele precisa ser especialista em banco de dados.",
+        "Ele precisa apenas executar scripts automatizados.",
+        "Ele precisa evitar fazer perguntas para não atrasar o projeto.",
+        "Ele precisa seguir um roteiro detalhado escrito por outra pessoa."
+      ],
+      "r": 0,
+      "exp": "No exploratório não há roteiro pronto: aprender, projetar e executar acontecem juntos, então o testador precisa de iniciativa."
+    },
+    {
+      "tema": "Testes Exploratórios",
+      "q": "Ao testar um software bancário, o testador usa sua experiência, explora valores-limite e executa o sistema em todos os ambientes (navegadores, sistemas operacionais). Que técnica exploratória é essa?",
+      "op": [
+        "Test oracle.",
+        "Free style.",
+        "Porquês.",
+        "Heurística.",
+        "Checklist Phoenix."
+      ],
+      "r": 3,
+      "exp": "Heurística usa experiência, limites e ambientes (SFDPOT: Structure, Function, Data, Platform, Operations, Time)."
+    },
+    {
+      "tema": "Testes Exploratórios",
+      "q": "Um novo módulo deve se comportar exatamente como o módulo antigo, e o testador compara os resultados dos dois. Que técnica é essa?",
+      "op": [
+        "Checklist Phoenix.",
+        "Heurística.",
+        "Session based.",
+        "Tabela de decisão.",
+        "Test oracle."
+      ],
+      "r": 4,
+      "exp": "O oráculo é uma referência confiável do resultado certo; aqui, o módulo antigo."
+    },
+    {
+      "tema": "Testes Exploratórios",
+      "q": "Uma técnica exploratória baseada numa lista de perguntas (qual é o problema, quais os detalhes, quem pode resolver) é:",
+      "op": [
+        "Heurística.",
+        "Checklist Phoenix.",
+        "Transição de estados.",
+        "Test oracle.",
+        "Free style."
+      ],
+      "r": 1,
+      "exp": "O Checklist Phoenix organiza a investigação por perguntas."
+    },
+    {
+      "tema": "Testes Exploratórios",
+      "q": "A estratégia exploratória com liberdade total e documentação mínima (apenas erros e soluções) é a:",
+      "op": [
+        "Heurística.",
+        "Test oracle.",
+        "Session based.",
+        "Abordagem de Beizer.",
+        "Free style."
+      ],
+      "r": 4,
+      "exp": "Free style é livre; session based tem charter e tempo definido."
+    },
+    {
+      "tema": "Testes Exploratórios",
+      "q": "A estratégia session based (baseada em sessões) se caracteriza por:",
+      "op": [
+        "Testes feitos pelo cliente em produção.",
+        "Um charter com a missão e um tempo definido (time-box), foco sem interrupções e debriefing ao final.",
+        "Um roteiro passo a passo escrito antes.",
+        "Liberdade total e nenhum registro.",
+        "Execução apenas por ferramentas automatizadas."
+      ],
+      "r": 1,
+      "exp": "O charter diz o que explorar, com quais heurísticas e para descobrir o quê; ao fim, o debriefing registra defeitos, riscos e cobertura."
+    },
+    {
+      "tema": "Teste de Unidade, TDD e JUnit",
+      "q": "O que é TDD?",
+      "op": [
+        "Uma técnica de desenvolvimento baseada na criação dos testes antes do desenvolvimento do código.",
+        "Um modelo de ciclo de vida de software.",
+        "Uma ferramenta de automação de testes web.",
+        "Uma técnica obsoleta, substituída pelos testes manuais.",
+        "Um teste feito pelo usuário final."
+      ],
+      "r": 0,
+      "exp": "TDD (Kent Beck, XP) é técnica de desenvolvimento, não ciclo de vida nem ferramenta. Quem escreve os testes é o desenvolvedor."
+    },
+    {
+      "tema": "Teste de Unidade, TDD e JUnit",
+      "q": "Qual a ordem correta do ciclo do TDD?",
+      "op": [
+        "Red (teste que falha) → Green (código mínimo para passar) → Refactor (melhorar o código).",
+        "Refactor → Red → Green.",
+        "Codificar → Testar → Implantar.",
+        "Red → Refactor → Green.",
+        "Green → Red → Refactor."
+      ],
+      "r": 0,
+      "exp": "Primeiro o teste falha (prova que ele testa algo), depois o código mínimo o faz passar, e a refatoração acontece protegida pelos testes."
+    },
+    {
+      "tema": "Teste de Unidade, TDD e JUnit",
+      "q": "Para realizar testes de unidade, quem a empresa deve recrutar?",
+      "op": [
+        "Programadores.",
+        "Gerentes de projeto.",
+        "Usuários finais.",
+        "Clientes.",
+        "Equipe de suporte."
+      ],
+      "r": 0,
+      "exp": "O teste de unidade é feito por quem escreveu o código, sem envolver o módulo ou o sistema como um todo."
+    },
+    {
+      "tema": "Teste de Unidade, TDD e JUnit",
+      "q": "No teste de unidade, qual elemento verifica se os dados são gravados corretamente no banco ao incluir, alterar e excluir?",
+      "op": [
+        "Interface.",
+        "Condições-limite.",
+        "Caminhos independentes.",
+        "Caminhos de manipulação de erro.",
+        "Estrutura de dados locais."
+      ],
+      "r": 4,
+      "exp": "A estrutura de dados locais garante a integridade dos dados que a unidade manipula."
+    },
+    {
+      "tema": "Teste de Unidade, TDD e JUnit",
+      "q": "No teste de unidade, qual elemento verifica se as mensagens de erro orientam o usuário sem interromper o sistema?",
+      "op": [
+        "Condições-limite.",
+        "Interface.",
+        "Estrutura de dados locais.",
+        "Caminhos de manipulação de erro.",
+        "Caminhos independentes."
+      ],
+      "r": 3,
+      "exp": "Os caminhos de manipulação de erro conferem que a exceção é tratada e a mensagem é útil."
+    },
+    {
+      "tema": "Teste de Unidade, TDD e JUnit",
+      "q": "Qual ferramenta de teste unitário em Java compara o resultado esperado com o obtido usando asserções como assertEquals?",
+      "op": [
+        "JUnit.",
+        "JMeter.",
+        "Jest.",
+        "TestLink.",
+        "Selenium IDE."
+      ],
+      "r": 0,
+      "exp": "JUnit é Java; Jest é JavaScript; Selenium é automação web; TestLink é gestão; JMeter é carga."
+    },
+    {
+      "tema": "Teste de Unidade, TDD e JUnit",
+      "q": "Integração facilitada, menos erros novos em partes prontas e documentação das funcionalidades são benefícios de:",
+      "op": [
+        "Testes manuais feitos apenas no fim do projeto.",
+        "Testes de unidade automatizados.",
+        "Testes exploratórios free style.",
+        "Testes de usabilidade com grupo focal.",
+        "Revisões informais de código."
+      ],
+      "r": 1,
+      "exp": "Uma suíte automatizada roda a cada mudança (regressão) e cada teste descreve o comportamento esperado da unidade."
+    },
+    {
+      "tema": "Teste de Unidade, TDD e JUnit",
+      "q": "No JUnit 5, qual anotação marca um método que deve rodar antes de CADA teste da classe, por exemplo para criar o objeto testado?",
+      "op": [
+        "@BeforeEach.",
+        "@AfterEach.",
+        "@Test.",
+        "@CsvSource.",
+        "@ParameterizedTest."
+      ],
+      "r": 0,
+      "exp": "@BeforeEach prepara (no JUnit 4, @Before); @AfterEach libera recursos; @ParameterizedTest com @CsvSource/@ValueSource repete o teste com vários valores."
+    },
+    {
+      "tema": "Teste de Unidade, TDD e JUnit",
+      "q": "Associe o framework de teste unitário à linguagem. Qual alternativa está correta?",
+      "op": [
+        "NUnit → JavaScript; JUnit → Python; Pytest → Ruby.",
+        "Jest → JavaScript; NUnit → C#; Pytest → Python.",
+        "JUnit → C#; Jest → Ruby; RSpec → Java.",
+        "RSpec → Python; Pytest → Java; JUnit → JavaScript.",
+        "Jest → Java; NUnit → Python; Pytest → C#."
+      ],
+      "r": 1,
+      "exp": "JUnit (Java), NUnit (C#/.NET), Jest (JavaScript), RSpec (Ruby), Pytest (Python)."
+    },
+    {
+      "tema": "Ferramentas e Automação",
+      "q": "Como as ferramentas de teste contribuem para a qualidade do software?",
+      "op": [
+        "Eliminam a necessidade de requisitos.",
+        "Substituem completamente o testador humano.",
+        "Aumentam a previsibilidade da verificação, consolidando registros formais de execução e permitindo recuperar evidências.",
+        "Garantem que o software não terá defeitos.",
+        "Tornam dispensável o plano de teste."
+      ],
+      "r": 2,
+      "exp": "Desconfie de palavras absolutas: \"garantem\", \"substituem\", \"dispensável\". O ganho real é previsibilidade e evidência."
+    },
+    {
+      "tema": "Ferramentas e Automação",
+      "q": "Além de executar testes, um benefício das ferramentas automatizadas é:",
+      "op": [
+        "Gerar arquivos de log com os testes feitos e os problemas encontrados.",
+        "Dispensar a correção dos defeitos.",
+        "Escrever os requisitos do sistema.",
+        "Aprovar formalmente o software no lugar do cliente.",
+        "Definir o orçamento do projeto."
+      ],
+      "r": 0,
+      "exp": "O log é evidência: mostra o que foi testado, quando e com qual resultado."
+    },
+    {
+      "tema": "Ferramentas e Automação",
+      "q": "O recurso de record-and-playback do Selenium IDE permite:",
+      "op": [
+        "Gerenciar planos de teste e atribuir testadores.",
+        "Gravar, salvar e reproduzir scripts de teste sem precisar programar.",
+        "Executar testes em paralelo em várias máquinas.",
+        "Gerar o código-fonte do sistema a partir dos testes.",
+        "Medir a carga de milhares de usuários simultâneos."
+      ],
+      "r": 1,
+      "exp": "O IDE grava as ações no navegador e as reproduz. Paralelismo é do Grid; carga é do JMeter; gestão é do TestLink."
+    },
+    {
+      "tema": "Ferramentas e Automação",
+      "q": "Qual seção é obrigatória num arquivo de testes do Robot Framework?",
+      "op": [
+        "*** Settings ***",
+        "*** Test Cases ***",
+        "*** Keywords ***",
+        "*** Variables ***",
+        "*** Documentation ***"
+      ],
+      "r": 1,
+      "exp": "Sem casos de teste não há o que executar. Documentation nem é seção: fica em Settings ou em [Documentation]. Em arquivos de recursos, Test Cases não é permitida."
+    },
+    {
+      "tema": "Ferramentas e Automação",
+      "q": "Qual descrição de componente do Selenium está correta?",
+      "op": [
+        "WebDriver: recebe os comandos e os envia ao navegador por meio de um driver específico (ChromeDriver, GeckoDriver).",
+        "Selenium IDE: executa testes em paralelo em várias máquinas.",
+        "Selenium Grid: grava e reproduz as ações do usuário no navegador.",
+        "WebDriver: só funciona com a linguagem Java.",
+        "Selenium RC: é a versão mais recente e recomendada."
+      ],
+      "r": 0,
+      "exp": "IDE grava; RC é antigo e descontinuado; WebDriver usa driver nativo e várias linguagens; Grid paraleliza."
+    },
+    {
+      "tema": "Ferramentas e Automação",
+      "q": "Como se declara uma variável escalar no Robot Framework?",
+      "op": [
+        "@(nome_da_variavel)",
+        "$(nome_da_variavel)",
+        "%nome_da_variavel%",
+        "#{nome_da_variavel}",
+        "${nome_da_variavel}"
+      ],
+      "r": 4,
+      "exp": "Escalar ${...}, lista @{...}, dicionário &{...}. Sempre com chaves, nunca com parênteses."
+    },
+    {
+      "tema": "Ferramentas e Automação",
+      "q": "Qual tipo de teste é mais indicado para automação?",
+      "op": [
+        "Testes de funcionalidades raramente usadas.",
+        "Testes de carga e desempenho.",
+        "Testes exploratórios.",
+        "Testes de funcionalidades novas e ainda instáveis.",
+        "Testes de usabilidade."
+      ],
+      "r": 1,
+      "exp": "Simular centenas de usuários simultâneos só é viável com ferramenta (JMeter, k6, Gatling). Exploratório, usabilidade e funcionalidades instáveis rendem mais manualmente."
+    },
+    {
+      "tema": "Ferramentas e Automação",
+      "q": "Sobre o TestLink, é correto afirmar:",
+      "op": [
+        "É uma ferramenta comercial da IBM.",
+        "É uma ferramenta de gerenciamento de testes: organiza casos e planos, atribui testadores e gera relatórios.",
+        "É um framework de teste unitário para Java.",
+        "É uma ferramenta de teste de carga.",
+        "É o componente do Selenium que executa testes em paralelo."
+      ],
+      "r": 1,
+      "exp": "TestLink gerencia; não automatiza nem faz carga. A ferramenta comercial da IBM é o Rational Functional Tester."
+    },
+    {
+      "tema": "Ferramentas e Automação",
+      "q": "Um sistema web tem muitas interações de interface e um grande número de combinações de navegadores, e a equipe usa o Robot Framework. Qual combinação do Selenium é a mais indicada?",
+      "op": [
+        "Selenium RC, por ser a versão mais estável.",
+        "WebDriver (base da SeleniumLibrary) com Grid para executar em paralelo.",
+        "Selenium IDE, para gravar cada combinação manualmente.",
+        "Apenas o IDE, sem nenhum código.",
+        "TestLink no lugar do Selenium."
+      ],
+      "r": 1,
+      "exp": "O WebDriver controla o navegador de verdade e o Grid distribui as permutações entre máquinas e navegadores. A DatabaseLibrary pode validar o banco."
+    },
+    {
+      "tema": "Gerenciamento de Problemas e Defeitos",
+      "q": "Quais melhorias o gerenciamento de problemas traz para o desenvolvimento?",
+      "op": [
+        "Garantia de que nenhum usuário abrirá chamados.",
+        "Maior garantia de funcionamento do sistema como um todo, atendimento dos requisitos, redução de erros e aumento da proatividade.",
+        "Eliminação total dos defeitos e dispensa dos testes.",
+        "Redução da proatividade, já que os problemas são tratados só quando aparecem.",
+        "Substituição do plano de teste pelo suporte ao cliente."
+      ],
+      "r": 1,
+      "exp": "Gerenciar problemas é antecipar (proativo) em vez de apagar incêndios (reativo)."
+    },
+    {
+      "tema": "Gerenciamento de Problemas e Defeitos",
+      "q": "Comparando teste manual e automatizado, o material aponta que o automatizado é mais vantajoso porque:",
+      "op": [
+        "Só pode ser usado depois da implantação.",
+        "Testa várias partes ao mesmo tempo, facilita alterar o código com segurança e permite repetir os testes na versão compilada.",
+        "Encontra todos os defeitos de usabilidade.",
+        "Não precisa de manutenção dos scripts.",
+        "Dispensa totalmente o testador humano."
+      ],
+      "r": 1,
+      "exp": "A automação é repetível e rápida, ideal para regressão; mas exige manutenção e não substitui o olhar humano em usabilidade e exploração."
+    },
+    {
+      "tema": "Gerenciamento de Problemas e Defeitos",
+      "q": "Cerca de 80% dos casos são resolvidos já no primeiro nível de atendimento graças a:",
+      "op": [
+        "Abertura de chamado para toda notificação recebida.",
+        "Eliminação dos testes de regressão.",
+        "Reescrita do sistema a cada erro.",
+        "Uma base que registra os erros conhecidos e suas soluções de contorno, evitando reincidência.",
+        "Contratação de mais programadores."
+      ],
+      "r": 3,
+      "exp": "Com a base de erros conhecidos, o primeiro nível consulta a solução já documentada em vez de escalar o problema."
+    },
+    {
+      "tema": "Gerenciamento de Problemas e Defeitos",
+      "q": "A solução de contorno (workaround) é:",
+      "op": [
+        "Um tipo de teste de regressão.",
+        "A correção definitiva da causa raiz.",
+        "A rejeição de um defeito inválido.",
+        "Um documento da IEEE 829.",
+        "Uma solução provisória que restabelece o serviço sem apontar nem eliminar a causa do erro."
+      ],
+      "r": 4,
+      "exp": "O contorno devolve o serviço rápido; a solução definitiva vem depois e ataca a causa raiz."
+    },
+    {
+      "tema": "Gerenciamento de Problemas e Defeitos",
+      "q": "Qual conceito resolve o problema de forma definitiva, e em que momento ele é aplicado?",
+      "op": [
+        "A rejeição do defeito, aplicada na triagem.",
+        "A solução de contorno, aplicada antes de qualquer análise.",
+        "O teste exploratório, aplicado na etapa 1.",
+        "A solução definitiva, que atua na causa raiz e é aplicada depois que a solução de contorno é validada e aceita (etapa 6).",
+        "O relatório-resumo, aplicado na abertura do chamado."
+      ],
+      "r": 3,
+      "exp": "Primeiro se restabelece o serviço (contorno); validado o contorno, aplica-se a correção da causa."
+    },
+    {
+      "tema": "Gerenciamento de Problemas e Defeitos",
+      "q": "Um usuário notifica \"impressora não conectada\", mas o LED de energia dela está apagado. O procedimento correto é:",
+      "op": [
+        "Executar a regressão completa do sistema.",
+        "Reabrir todos os defeitos do driver.",
+        "Não abrir chamado de defeito: trata-se de desinformação do usuário (a impressora está desligada).",
+        "Abrir um defeito crítico no driver.",
+        "Adiar a correção para a próxima versão."
+      ],
+      "r": 2,
+      "exp": "A triagem confirma se é defeito antes de registrar. Sem energia não há conexão, e não há nada a corrigir no software."
+    },
+    {
+      "tema": "Gerenciamento de Problemas e Defeitos",
+      "q": "No ciclo de vida do defeito, o estado \"Adiado\" significa que o defeito:",
+      "op": [
+        "Não é um defeito válido.",
+        "Já foi corrigido e verificado.",
+        "Acabou de ser registrado.",
+        "Foi reconhecido como válido, mas a correção ficará para uma versão futura.",
+        "Voltou a acontecer depois de corrigido."
+      ],
+      "r": 3,
+      "exp": "Fluxo: Nova → Designação → Teste → Verificação → Conclusão. Desvios: Reabertura (voltou), Rejeição (não é defeito) e Adiado (fica para depois)."
+    },
+    {
+      "tema": "Gerenciamento de Problemas e Defeitos",
+      "q": "No ciclo de vida do defeito, o estado \"Rejeição\" ocorre quando:",
+      "op": [
+        "O defeito é corrigido numa versão futura.",
+        "A análise conclui que não se trata de um defeito válido.",
+        "O defeito é atribuído a um desenvolvedor.",
+        "O defeito é encerrado com sucesso.",
+        "A correção falha no reteste."
+      ],
+      "r": 1,
+      "exp": "Rejeitado = não é defeito (ex.: comportamento conforme a especificação, ou erro do usuário). Reabertura = a correção não funcionou."
+    },
+    {
+      "tema": "Gerenciamento de Problemas e Defeitos",
+      "q": "O Sispro travava depois do 99º produto cadastrado e o problema só foi descoberto em produção. Quem deveria tê-lo identificado e com qual técnica?",
+      "op": [
+        "O testador, com análise de valor-limite (99, 100, 101) e teste de volume.",
+        "O gerente de projeto, revisando o cronograma.",
+        "O designer, revisando as telas.",
+        "A equipe de suporte, após o primeiro chamado.",
+        "O cliente, durante o uso normal do sistema."
+      ],
+      "r": 0,
+      "exp": "Descobrir em produção é o gerenciamento reativo. Testes de limite e de volume, regressão automatizada e aceitação com dados reais tornam o processo proativo."
+    }
+  ],
+  "discursivas": [
+    {
+      "tema": "Níveis de Teste",
+      "q": "Pedro trabalha num sistema financeiro desenvolvido em ciclo incremental. Explique como cada nível de teste (unitário, integração, sistema e aceitação) ajuda a entregar software de qualidade.",
+      "r": "Unitário: garante os cálculos (juros compostos, arredondamento, correção monetária) com valores-limite; é a barreira mais barata e, automatizado, vira regressão a cada incremento. Integração: garante que os módulos trocam dados sem distorcer valores (reais × centavos, formatos de data), essencial porque cada incremento se conecta aos anteriores. Sistema: valida o software completo contra os requisitos funcionais e não funcionais críticos (carga, segurança, confiabilidade). Aceitação: o usuário confirma que atende ao negócio — é a validação que aprova a entrada em uso. Cada nível é uma camada de proteção; pular uma transfere o risco para o cliente."
+    },
+    {
+      "tema": "Verificação e Validação",
+      "q": "Uma empresa de logística reclamou que o software entregue \"não tem relação com o que foi pedido\" e que há funcionalidades não implementadas, embora a equipe tenha feito ciclos de teste depois do fim do desenvolvimento. Identifique o problema e proponha correções.",
+      "r": "Problema: ausência de verificação e validação ao longo do ciclo de vida. 1) Testes tarde demais: só depois do código pronto, com os defeitos de requisitos já espalhados. 2) Sem verificação estática: não houve revisões nem inspeções de requisitos, então a equipe testou contra o que foi construído e não contra o que foi pedido. 3) Sem validação com o cliente: nenhum teste de aceitação antes da entrega. Correções: revisões de requisitos com o cliente, matriz de rastreabilidade requisito ↔ caso de teste, plano de teste desde o planejamento, testes em todos os níveis e aceitação antes da entrega."
+    },
+    {
+      "tema": "Técnicas de Caixa-Preta",
+      "q": "A Informatiza usa caixa-preta como abordagem principal, mas treina os testadores em linguagens, lógica e orientação a objetos, e problemas funcionais passam despercebidos. Qual é o problema e o que recomendar?",
+      "r": "Problema: desalinhamento entre a abordagem e a capacitação. Programação é conhecimento de caixa-branca; caixa-preta exige domínio de requisitos e regras de negócio e das técnicas funcionais (particionamento de equivalência, valor-limite, tabela de decisão, causa e efeito, casos de uso), além do processo de teste. Recomendações: retreinar a equipe em requisitos e técnicas funcionais, envolver os testadores no levantamento de requisitos, usar matriz de rastreabilidade e testes de aceitação, e aproveitar o conhecimento de programação de forma complementar (caixa-branca nos unitários ou caixa-cinza)."
+    },
+    {
+      "tema": "Documentação: IEEE 829",
+      "q": "Uma empresa planeja e executa testes conforme a IEEE 829, mas os softwares saem com erros que foram detectados durante a codificação, e os desenvolvedores nunca foram informados. a) Quais documentos não foram produzidos? b) Qual a função e o impacto de cada um? c) Que medidas adotar?",
+      "r": "a) Os três documentos de relatório: Log (Diário) de Teste, Relatório de Incidente de Teste e Relatório-Resumo de Teste. b) Log: registro cronológico da execução; sem ele não há evidência do que foi testado. Incidente: canal formal testador → desenvolvedor (entradas, esperado × obtido, passos, gravidade); sem ele o desenvolvedor não sabe do erro — exatamente o caso. Resumo: visão consolidada e recomendação de liberação; sem ele os gestores liberam versões com defeitos conhecidos. Defeito encontrado e não reportado equivale a defeito não encontrado. c) Modelos obrigatórios conforme a norma; ferramenta de gestão de defeitos (Jira, Mantis, Bugzilla, Azure DevOps); fluxo de vida do defeito (registra → triagem → corrige → reteste/regressão → fecha); critério de liberação sem defeitos críticos abertos; rastreabilidade requisito → caso → incidente → correção; reuniões de triagem, indicadores e capacitação na escrita de relatórios."
+    },
+    {
+      "tema": "Processo de Teste e PMBOK",
+      "q": "A empresa XYZ precisa validar o formulário \"Novo Cliente\" (Nome/Razão Social com no mínimo 2 palavras, CPF/CNPJ validado, data de nascimento DD/MM/AAAA, CEP válido nos Correios, data de cadastro automática e não editável, telefone com DDD + 8 dígitos, celular com DDD + 9, UF com 2 letras, botões Salvar e Cancelar). Descreva, passo a passo, o plano de teste.",
+      "r": "1) Identificação: teste de caixa-preta com particionamento de equivalência, valor-limite e tabela de decisão. 2) Objetivo. 3) Escopo: o que está dentro e fora. 4) Ambiente (navegadores, massa de dados, acesso à base dos Correios). 5) Critérios de entrada e saída. 6) Passo a passo: planejar → preparar a massa de dados → conferir a interface → testar campo a campo → obrigatórios → Salvar → Cancelar → registrar resultados → retestar e rodar regressão → encerrar. 7) Casos de teste, por exemplo: CPF válido 529.982.247-25 aceito e 111.111.111-11 rejeitado; CNPJ 11.222.333/0001-81 aceito; 29/02/2000 aceito e 29/02/2001 rejeitado; CEP 01310100 aceito e 00000000 rejeitado; telefone com 10 dígitos e celular com 11 aceitos; data de cadastro preenchida ao salvar e não editável; Cancelar limpa os campos sem gravar. 8) Riscos da especificação: razão social de uma palavra só, data de nascimento exigida para CNPJ, dependência da base dos Correios. 9) Entregáveis: casos, log, incidentes e relatório-resumo."
+    },
+    {
+      "tema": "Níveis de Teste",
+      "q": "Uma equipe faz testes unitários e testes com usuários, mas os problemas sempre aparecem em partes do sistema que já estavam prontas. Qual nível de teste está faltando? Justifique.",
+      "r": "Teste de regressão. A equipe não reexecuta os testes das partes já prontas a cada alteração. Mudanças num ponto causam efeitos colaterais em outro: os unitários testam unidades isoladas e os usuários focam na novidade, então ninguém confere o que já funcionava. Solução: montar uma suíte de regressão automatizada, executada a cada alteração (de preferência no pipeline de CI)."
+    },
+    {
+      "tema": "Ferramentas e Automação",
+      "q": "Um sistema de RH precisa de uma ferramenta que automatize os testes, exporte relatórios em CSV e PDF (para abrir no Excel e no Word) e organize os casos em pacotes atribuídos a cada testador. Qual ferramenta você indica e por quê?",
+      "r": "Katalon Studio: automação web, API e mobile com low-code e scripts em Java/Groovy (é baseado no Selenium); exporta relatórios em HTML, CSV e PDF — o CSV abre no Excel e o PDF pode ser editado no Word; organiza os casos em Test Suites (pacotes) atribuídos aos testadores pelo TestOps, garantindo rastreabilidade. Alternativa: TestLink, forte em gestão de casos e planos, mas sem automação própria."
+    },
+    {
+      "tema": "Gerenciamento de Problemas e Defeitos",
+      "q": "O Sispro travava depois do 99º produto cadastrado, e o problema só foi descoberto pelo cliente, em produção. a) Quem deveria ter identificado a falha? b) Por que o gerenciamento foi reativo? c) Como evitar?",
+      "r": "a) O testador, aplicando análise de valor-limite (99, 100, 101 produtos). b) Reativo porque o problema só foi percebido em produção, depois de afetar o cliente; não houve teste de limite nem de volume. c) Análise de valor-limite, teste de volume/carga, validação dos requisitos com o cliente (qual a quantidade máxima esperada?), tratamento de erros, regressão automatizada e testes de aceitação com dados reais."
+    },
+    {
+      "tema": "Processo de Teste e PMBOK",
+      "q": "A CleanWorld vai desenvolver um app que conecta clientes a lavanderias e entregadores. Quais etapas de acompanhamento dos testes você proporia, do início à implantação?",
+      "r": "1) Concepção e requisitos testáveis. 2) Planejamento dos testes (plano de teste). 3) Análise e projeto: casos de uso → casos de teste. 4) Gerenciamento de configuração. 5) Implementação e testes unitários. 6) Integração com as APIs de mapas, lavanderias e entregadores. 7) Teste de sistema: funcionais e não funcionais (desempenho, segurança, LGPD, Android e iOS). 8) Regressão a cada versão. 9) Aceitação (alfa e beta). 10) Implantação e gerenciamento de problemas. 11) Métricas e melhoria contínua."
+    },
+    {
+      "tema": "Técnicas de Caixa-Preta",
+      "q": "A SuperNova vai testar seu sistema com caixa-preta. Quais fontes de informação usar, quais critérios aplicar e como conduzir o teste?",
+      "r": "Fontes: requisitos, casos de uso, histórias de usuário, regras de negócio, protótipos, manuais, conversas com usuários e histórico de defeitos. Critérios: particionamento de equivalência, valor-limite, tabela de decisão, transição de estados, casos de uso, campos obrigatórios e formatos, tratamento de erros, perfis e permissões, integração entre funcionalidades, desempenho, usabilidade, compatibilidade e regressão. Condução: priorizar por risco (funcionalidades críticas primeiro), elaborar o plano de testes e a matriz de rastreabilidade, executar, registrar defeitos, retestar e produzir relatórios e métricas."
+    },
+    {
+      "tema": "Técnicas de Caixa-Branca",
+      "q": "Uma unidade de código foi liberada para teste de caixa-branca. Descreva os passos para testá-la.",
+      "r": "1) Entender a unidade (entradas, saídas, regras). 2) Desenhar o grafo de fluxo. 3) Calcular a complexidade ciclomática (V(G) = E − N + 2). 4) Identificar os caminhos independentes. 5) Definir os critérios de cobertura (comandos, decisões, condições) e a meta. 6) Projetar os casos de teste, um por caminho, com valores-limite. 7) Implementar em JUnit, com mocks para dependências, e integrar ao CI. 8) Medir a cobertura com JaCoCo. 9) Analisar resultados e registrar defeitos. 10) Relatório e inclusão dos testes na regressão."
+    },
+    {
+      "tema": "Tabela de Decisão",
+      "q": "Descreva como criar casos de teste a partir de uma tabela de decisão.",
+      "r": "Estudar a tabela → identificar condições e ações → verificar completude (2ⁿ combinações) e consistência (a mesma combinação não pode levar a ações diferentes) → registrar falhas da especificação → minimizar, mesclando colunas com a mesma ação → criar um caso de teste por coluna → escolher valores concretos para cada condição → montar a matriz de rastreabilidade → revisar → preparar o ambiente → executar → registrar defeitos → relatório e regressão."
+    },
+    {
+      "tema": "Testes Exploratórios",
+      "q": "Escreva um charter de teste exploratório de 15 minutos para a funcionalidade de login.",
+      "r": "Missão: explorar o login com heurísticas de entrada, limites e segurança para descobrir falhas de autenticação, validação e mensagens de erro. Heurísticas: campos vazios, credenciais inválidas, valores-limite do tamanho da senha, caracteres especiais, maiúsculas/minúsculas, tentativa de injeção de SQL/script, mensagem genérica (não revelar se o usuário existe), bloqueio após várias tentativas, navegação (voltar após logout, acesso direto a URL interna sem login). Registro: notas, defeitos, questões e riscos, distribuição do tempo e cobertura. Ao fim, debriefing com o líder."
+    },
+    {
+      "tema": "Teste de Unidade, TDD e JUnit",
+      "q": "Um módulo de hospedagem precisa saber se a quantidade de dias é par ou ímpar. Escreva a classe Java e a classe de teste JUnit.",
+      "r": "Classe: public class ValidaDiasHospedagem { public boolean isPar(int dias) { return dias % 2 == 0; } }. Teste (JUnit 5): uma classe ValidaDiasHospedagemTest com um atributo validador criado num método @BeforeEach; testes @Test: assertTrue(validador.isPar(4)) para par, assertFalse(validador.isPar(7)) para ímpar, assertTrue(validador.isPar(0)) para o zero e assertFalse(validador.isPar(1)) para um dia. Imports: static org.junit.jupiter.api.Assertions.*, org.junit.jupiter.api.BeforeEach e org.junit.jupiter.api.Test. No JUnit 4: org.junit.Test, org.junit.Before e static org.junit.Assert.*."
+    },
+    {
+      "tema": "Ferramentas e Automação",
+      "q": "a) Descreva os componentes do Selenium. b) Para um sistema com muitas interações de interface e grande número de combinações de navegadores, testado com Robot Framework, qual componente indicar?",
+      "r": "a) Selenium IDE: plugin do navegador com record-and-playback, sem programação e limitado. Selenium RC: primeira versão programável, com servidor intermediário injetando JavaScript; descontinuado. Selenium WebDriver: envia comandos ao navegador por driver nativo (ChromeDriver, GeckoDriver), várias linguagens, padrão W3C. Selenium Grid: execução em paralelo em várias máquinas e navegadores (hub e nodes). b) WebDriver + Grid integrados ao Robot Framework: a SeleniumLibrary usa o WebDriver, o Grid paraleliza o grande número de permutações e a DatabaseLibrary valida o banco."
+    },
+    {
+      "tema": "Casos de Uso e Casos de Teste",
+      "q": "Monte os fluxos e os cenários do caso de uso \"Controlar retirada de livro\" de uma biblioteca: o aluno pede o livro; se disponível, recebe e devolve em até 7 dias; se indisponível, entra na lista de espera; após 7 dias, paga multa de R$ 10,00.",
+      "r": "Atores: Aluno e Bibliotecária. Fluxo básico: 1) o aluno pede o livro; 2) a bibliotecária verifica a disponibilidade; 3) o livro é entregue; 4) o aluno devolve em até 7 dias; 5) o livro volta a ficar disponível. FA1 (do passo 2): livro indisponível → nome na lista de espera → fim sem empréstimo. FA2 (do passo 4): devolução após 7 dias → multa de R$ 10,00 → volta ao passo 5. Cenários: C1 = FB (sem multa); C2 = FB + FA1 (lista de espera); C3 = FB + FA2 (multa). FA1 e FA2 não se combinam. Casos de valor-limite: devolução no 7º dia (sem multa) e no 8º (com multa). Lacuna de requisito: o que acontece com quem está na lista de espera quando o livro volta? Esclarecer antes de testar."
+    }
+  ],
+  "colas": [
+    {
+      "titulo": "Verificação × Validação",
+      "mnemonico": "Mnemônico: \"Verificação você Vê sem rodar; vAlidação o software está Andando\".",
+      "pontos": [
+        "Verificação: produto CORRETAMENTE? → requisitos → estática (revisões, inspeções).",
+        "Validação: produto CERTO? → cliente → dinâmica (executa, aceitação).",
+        "\"Respectivamente\": confira a ordem — pegadinha clássica.",
+        "Verificar o driver = analisar listagens do código e relatórios da compilação."
+      ]
+    },
+    {
+      "titulo": "As três caixas",
+      "mnemonico": "Mnemônico: \"Preta lê o Pedido, Branca lê o Bit-a-bit, Cinza lê o banCo\".",
+      "pontos": [
+        "Preta: requisitos, sem código → campo em branco aceito, valor fora da faixa.",
+        "Branca (vidro, transparente, estrutural): código → cálculo errado, laço off-by-one.",
+        "Cinza: conhecimento parcial → SQL / banco de dados.",
+        "\"Caixa-fonte\" e \"caixa-interna\" NÃO existem."
+      ]
+    },
+    {
+      "titulo": "Níveis de teste",
+      "mnemonico": "Mnemônico: \"U-I-S-A, e a Regressão vigia tudo\".",
+      "pontos": [
+        "Unidade: menor parte, programador; laço infinito.",
+        "Integração: módulos conversando; transmissão de dados.",
+        "Sistema: funcionais + não funcionais.",
+        "Aceitação: usuário, de entrega, de contrato e regulamento.",
+        "Regressão: todo o software, após cada mudança."
+      ]
+    },
+    {
+      "titulo": "Ciclo de vida de testes",
+      "mnemonico": "Mnemônico: \"Planejo, Preparo, Especifico, Executo, Entrego\" (PPEEE).",
+      "pontos": [
+        "Planejamento: estratégia e plano de teste.",
+        "Preparação: AMBIENTE (não os casos!).",
+        "Especificação: elaborar e revisar casos e roteiros — planejar a fundo.",
+        "Execução: rodar e registrar.",
+        "Entrega: encerramento e lições aprendidas.",
+        "PMBOK: realizado × planejado = monitoramento e controle."
+      ]
+    },
+    {
+      "titulo": "IEEE 829",
+      "mnemonico": "Mnemônico: diário = \"registro de bordo\"; incidente = \"boletim de ocorrência\".",
+      "pontos": [
+        "Plano de teste: escopo, papéis, cronograma (documento principal).",
+        "Encaminhamento de item: o que vai para teste/reteste.",
+        "Log/diário: TUDO, em ordem cronológica.",
+        "Incidente: o que EXIGE INVESTIGAÇÃO → avisa o desenvolvedor.",
+        "Resumo: consolida e recomenda a liberação."
+      ]
+    },
+    {
+      "titulo": "Técnicas de caixa-preta",
+      "mnemonico": "Mnemônico: \"um de cada grupo, as bordas, as combinações, os estados\".",
+      "pontos": [
+        "Particionamento: um valor por classe (1899–2019 → 1898, 1987, 2020).",
+        "Valor-limite: bordas dos dois lados (1–12 → 0, 1, 12, 13).",
+        "Tabela de decisão: combinações → ações (bronze, prata, ouro).",
+        "Transição de estados: relógio horário/cronômetro/despertador.",
+        "Caso de uso: pré e pós-condições."
+      ]
+    },
+    {
+      "titulo": "Tabela de decisão",
+      "mnemonico": "Mnemônico: \"CACR\" → Condições, Ações, Combinações, Regras.",
+      "pontos": [
+        "n condições sim/não → até 2ⁿ regras.",
+        "Minimizar = mesclar colunas com a MESMA AÇÃO (indiferente \"–\").",
+        "1 coluna = 1 caso de teste, depois da minimização.",
+        "É técnica FUNCIONAL (caixa-preta)."
+      ]
+    },
+    {
+      "titulo": "Caixa-branca: McCabe e cia.",
+      "mnemonico": "Mnemônico: \"Arestas menos Nós mais 2\" → V(G) = E − N + 2.",
+      "pontos": [
+        "V(G) = decisões + 1 = regiões do grafo = caminhos independentes.",
+        "Acima de 10: difícil de testar e manter.",
+        "Teste de condição: condições booleanas.",
+        "Laços aninhados: Beizer (de dentro para fora).",
+        "Grafo de fluxo: do código ou do fluxograma."
+      ]
+    },
+    {
+      "titulo": "Exploratório",
+      "mnemonico": "Mnemônico: testador \"4C\" → Curioso, Criativo, Crítico e autoControlado (autogerenciável).",
+      "pontos": [
+        "Heurística: experiência + limites + ambientes.",
+        "Test oracle: comparar com referência (módulo antigo).",
+        "Checklist Phoenix: lista de perguntas.",
+        "Session based: charter + time-box; free style: liberdade total."
+      ]
+    },
+    {
+      "titulo": "Unidade, TDD e JUnit",
+      "mnemonico": "Mnemônico: \"semáforo do TDD\" → Vermelho, Verde, Refatora.",
+      "pontos": [
+        "TDD = técnica de desenvolvimento (não ciclo de vida, não ferramenta).",
+        "Dados locais: incluir/alterar/excluir; manipulação de erro: mensagem sem travar.",
+        "@BeforeEach prepara; assertEquals/True/False/Throws comparam.",
+        "JUnit Java · NUnit C# · Jest JS · RSpec Ruby · Pytest Python."
+      ]
+    },
+    {
+      "titulo": "Ferramentas",
+      "mnemonico": "Mnemônico Selenium: \"IDE Grava, RC Ressuscitou não, WebDriver Dirige, Grid Gira em paralelo\".",
+      "pontos": [
+        "TestLink: gestão (não carga). JMeter: carga. IBM RFT: comercial.",
+        "Katalon: low-code, relatórios CSV/PDF, Test Suites.",
+        "Robot: *** Test Cases *** obrigatória; variável ${nome}.",
+        "Automatizar: regressão, carga/desempenho, repetitivos. Manual: exploratório, usabilidade."
+      ]
+    },
+    {
+      "titulo": "Problemas e defeitos",
+      "mnemonico": "Mnemônico: \"Contorno Conserta agora, Definitiva Derruba a causa\".",
+      "pontos": [
+        "Contorno: provisório, sem achar a causa.",
+        "Definitiva: causa raiz, após validar o contorno (etapa 6).",
+        "Base de erros conhecidos: ~80% no primeiro nível.",
+        "Erro (humano) → defeito (código) → falha (execução).",
+        "Adiado = válido, fica para depois; Rejeitado = não é defeito."
+      ]
+    },
+    {
+      "titulo": "Dicas de prova",
+      "mnemonico": "Mnemônico: \"palavra absoluta, alternativa suspeita\".",
+      "pontos": [
+        "\"Somente\", \"nunca\", \"sempre\", \"garante\", \"nenhum erro\" → quase sempre errada.",
+        "\"Pode-se incluir\" e todos os itens válidos → a resposta é todos.",
+        "Asserção-razão: avalie I, depois II, e só então se II justifica I.",
+        "4 alternativas iguais trocando um termo: a certa costuma ter estrutura diferente."
+      ]
+    }
+  ],
+  "links": []
+}

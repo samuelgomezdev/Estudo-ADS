@@ -1,0 +1,1499 @@
+# Laboratório — Teste de Software
+# Confira tudo com #/m/teste-de-software/lab/autoteste
+#
+# A matéria é sobre testar, então quase tudo aqui é JavaScript de verdade: o
+# aluno escreve as funções testadas, calcula valores-limite, monta tabela de
+# decisão, mede complexidade ciclomática e simula o ciclo de vida do defeito.
+# JUnit e Robot Framework não rodam no navegador: viram exercícios de montar.
+
+# =====================================================================
+# Fundamentos do Teste de Software
+# =====================================================================
+
+=== lab fund-dijkstra
+tipo: prever
+tema: Fundamentos do Teste de Software
+nivel: 1
+linguagem: js
+titulo: Todos os testes passaram. Está sem defeito?
+alvo: ultima
+
+--- enunciado
+O módulo de hospedagem diz se a quantidade de dias é ímpar. A suíte de testes tem quatro casos e **todos passam**. Depois, alguém chama a função com um valor que ninguém testou. Preveja a **última** linha.
+
+--- codigo
+function isImpar(dias) {
+  return dias % 2 === 1;
+}
+
+const suite = [[1, true], [2, false], [7, true], [10, false]];
+const passou = suite.every(([d, esperado]) => isImpar(d) === esperado);
+console.log("suíte passou?", passou);
+console.log("isImpar(-3):", isImpar(-3));
+
+--- opcoes
+- isImpar(-3): true
+- isImpar(-3): false
+- isImpar(-3): undefined
+- isImpar(-3): erro
+
+--- experimentos
+- Troque a comparação por `dias % 2 !== 0` e rode de novo.
+- Acrescente `[-3, true]` na suíte. O que acontece com a linha "suíte passou?" antes da correção?
+
+--- explicacao
+Em JavaScript (e em Java), `-3 % 2` dá **-1**, não 1, então a função diz que -3 não é ímpar. A suíte inteira passava e o **defeito estava lá**. É o princípio de **Dijkstra**: testes mostram a **presença** de defeitos, nunca a **ausência**. Teste exaustivo é impossível; o objetivo é escolher bem os casos (aqui, a classe dos negativos ficou de fora) para reduzir o risco.
+
+=== lab fund-erro-defeito-falha
+tipo: desafio
+tema: Fundamentos do Teste de Software
+nivel: 1
+linguagem: js
+titulo: Erro, defeito ou falha?
+
+--- enunciado
+Escreva `classificar(ocorrencia)`, que devolve `"erro"`, `"defeito"` ou `"falha"` conforme **onde** a ocorrência está:
+
+- `ocorrencia.onde === "pessoa"` → foi uma ação humana equivocada → `"erro"`
+- `ocorrencia.onde === "codigo"` → o problema ficou no código → `"defeito"`
+- `ocorrencia.onde === "execucao"` → apareceu ao rodar o sistema → `"falha"`
+
+--- codigo
+function classificar(ocorrencia) {
+  return "erro";
+}
+
+console.log(classificar({ descricao: "a impressora imprime na parede do cubo", onde: "execucao" }));
+
+--- solucao
+function classificar(ocorrencia) {
+  if (ocorrencia.onde === "pessoa") return "erro";
+  if (ocorrencia.onde === "codigo") return "defeito";
+  return "falha";
+}
+
+console.log(classificar({ descricao: "a impressora imprime na parede do cubo", onde: "execucao" }));
+
+--- testes
+classificar({ descricao: "o programador não tratou peças maiores que a área", onde: "pessoa" }) ==> "erro"
+classificar({ descricao: "o driver não valida as medidas", onde: "codigo" }) ==> "defeito"
+classificar({ descricao: "a impressora imprime na parede do cubo", onde: "execucao" }) ==> "falha"
+
+--- dicas
+Um `if` para cada lugar. O que sobrar é falha.
+
+--- explicacao
+A cadeia é sempre **erro → defeito → falha**: o engano humano (erro) deixa um problema no código (defeito), que se manifesta ao executar (falha). Um defeito pode nunca virar falha se aquele trecho nunca rodar, e é por isso que o teste procura **executar** os caminhos certos.
+
+# =====================================================================
+# Verificação e Validação
+# =====================================================================
+
+=== lab vv-classificar
+tipo: desafio
+tema: Verificação e Validação
+nivel: 1
+linguagem: js
+titulo: Verificação ou validação?
+
+--- enunciado
+Escreva `vv(atividade)`, que devolve `"verificação"` ou `"validação"`.
+
+- Se a atividade **executa** o software (`atividade.executa === true`), é **validação** (dinâmica).
+- Se não executa (revisão, inspeção, leitura de código ou de relatório), é **verificação** (estática).
+
+--- codigo
+function vv(atividade) {
+  return "validação";
+}
+
+console.log(vv({ nome: "inspeção dos requisitos", executa: false }));
+
+--- solucao
+function vv(atividade) {
+  return atividade.executa ? "validação" : "verificação";
+}
+
+console.log(vv({ nome: "inspeção dos requisitos", executa: false }));
+
+--- testes
+vv({ nome: "inspeção dos requisitos", executa: false }) ==> "verificação"
+vv({ nome: "analisar as listagens do driver e os relatórios da compilação", executa: false }) ==> "verificação"
+vv({ nome: "teste de aceitação com o cliente", executa: true }) ==> "validação"
+vv({ nome: "usuário realiza uma tarefa observado", executa: true }) ==> "validação"
+
+--- dicas
+Um operador ternário resolve: `condição ? "a" : "b"`.
+
+--- explicacao
+**Verificação**: "estamos construindo o produto **corretamente**?" — confere contra os requisitos, sem executar. **Validação**: "estamos construindo o produto **certo**?" — executa e confere com o que o cliente precisa. Macete: **V**erificação você **v**ê sem rodar; v**A**lidação o software está **A**ndando.
+
+# =====================================================================
+# Abordagens: Caixa-Preta, Branca e Cinza
+# =====================================================================
+
+=== lab caixa-offbyone
+tipo: prever
+tema: Abordagens: Caixa-Preta, Branca e Cinza
+nivel: 2
+linguagem: js
+titulo: O laço que para uma vez antes
+alvo: ultima
+
+--- enunciado
+A função soma as parcelas de um financiamento. Quem olha o **código** (caixa-branca) desconfia do `<` no laço. Preveja a última linha.
+
+--- codigo
+function totalParcelas(parcelas) {
+  let total = 0;
+  for (let i = 0; i < parcelas.length - 1; i++) {
+    total += parcelas[i];
+  }
+  return total;
+}
+
+console.log("uma parcela:", totalParcelas([500]));
+console.log("três parcelas:", totalParcelas([100, 200, 300]));
+
+--- opcoes
+- três parcelas: 600
+- três parcelas: 300
+- três parcelas: 500
+- três parcelas: 0
+
+--- experimentos
+- Corrija o laço para `i < parcelas.length` e confira as duas linhas.
+- Que caso de teste de **caixa-preta** pegaria esse defeito sem ver o código?
+
+--- explicacao
+O `- 1` faz o laço parar **uma volta antes** (*off-by-one*): soma 100 + 200 = **300** e esquece a última parcela. "Finalização errada de laços" e "cálculos com respostas erradas" são achados típicos de **caixa-branca**, que olha condições, laços e caminhos. Caixa-preta também acharia a falha (esperado 600, obtido 300), mas sem saber onde ela está.
+
+=== lab caixa-qual
+tipo: desafio
+tema: Abordagens: Caixa-Preta, Branca e Cinza
+nivel: 1
+linguagem: js
+titulo: Qual caixa é essa?
+
+--- enunciado
+Escreva `qualCaixa(teste)` que devolve `"preta"`, `"branca"` ou `"cinza"`:
+
+- `teste.veCodigo === true` → `"branca"` (vê o código-fonte).
+- `teste.conhecimentoParcial === true` (ex.: acessa o SQL do banco) → `"cinza"`.
+- caso contrário → `"preta"` (só requisitos: entrada e saída esperada).
+
+--- codigo
+function qualCaixa(teste) {
+  if (teste.veCodigo) return "branca";
+  return "preta";
+}
+
+console.log(qualCaixa({ descricao: "manipula as estruturas SQL", conhecimentoParcial: true }));
+
+--- solucao
+function qualCaixa(teste) {
+  if (teste.veCodigo) return "branca";
+  if (teste.conhecimentoParcial) return "cinza";
+  return "preta";
+}
+
+console.log(qualCaixa({ descricao: "manipula as estruturas SQL", conhecimentoParcial: true }));
+
+--- testes
+qualCaixa({ descricao: "testa laços e condições", veCodigo: true }) ==> "branca"
+qualCaixa({ descricao: "manipula as estruturas SQL", conhecimentoParcial: true }) ==> "cinza"
+qualCaixa({ descricao: "estudou os requisitos para saber as saídas" }) ==> "preta"
+
+--- dicas
+Falta um `if` para o conhecimento parcial, antes do `return "preta"`.
+
+--- explicacao
+**Branca** (caixa de vidro, transparente, estrutural): código-fonte. **Preta** (funcional, comportamental): requisitos. **Cinza**: conhecimento parcial da estrutura, como o banco de dados, com avaliação pela saída. "Caixa-fonte" e "caixa-interna" não existem.
+
+# =====================================================================
+# Níveis de Teste
+# =====================================================================
+
+=== lab nivel-integracao
+tipo: prever
+tema: Níveis de Teste
+nivel: 2
+linguagem: js
+titulo: Cada módulo passa sozinho. E juntos?
+alvo: ultima
+
+--- enunciado
+O módulo de **contas** devolve o saldo em **reais**. O módulo de **investimentos** espera receber **centavos**. Os testes de unidade dos dois passam. Preveja a última linha, quando eles são ligados.
+
+--- codigo
+// módulo de contas: saldo em reais
+function saldoEmReais() { return 1500; }
+
+// módulo de investimentos: espera centavos
+function podeInvestir(saldoCentavos) { return saldoCentavos >= 100000; } // mínimo R$ 1.000,00
+
+console.log("unidade contas:", saldoEmReais() === 1500);
+console.log("unidade investimentos:", podeInvestir(150000) === true);
+console.log("integração:", podeInvestir(saldoEmReais()));
+
+--- opcoes
+- integração: true
+- integração: false
+- integração: 1500
+- integração: undefined
+
+--- experimentos
+- Faça a conversão no meio: `podeInvestir(saldoEmReais() * 100)`.
+- Pense: em qual nível um teste com o fluxo inteiro de transferência entraria?
+
+--- explicacao
+R$ 1.500 entram como **1500 centavos** (R$ 15,00) e a regra recusa o investimento: **false**. Cada unidade estava certa isoladamente; o defeito está na **comunicação**. É o achado típico do **teste de integração**: problemas de **transmissão de dados** entre módulos.
+
+=== lab nivel-regressao
+tipo: passo
+tema: Níveis de Teste
+nivel: 2
+linguagem: js
+titulo: A mudança que quebrou o que funcionava
+pergunta: Quantos testes da suíte de regressão falham depois da mudança?
+resposta: 1
+
+--- enunciado
+O frete era grátis acima de R$ 200. Alguém mudou a regra para "acima de R$ 300", mas a função também é usada pelo cupom de primeira compra. Avance e acompanhe `falhas`.
+
+--- codigo
+let limite = 200;
+function freteGratis(valor, primeiraCompra) {
+  return primeiraCompra || valor > limite;
+}
+
+const suite = [
+  { valor: 250, primeira: false, esperado: true },
+  { valor: 100, primeira: true,  esperado: true },
+  { valor: 150, primeira: false, esperado: false },
+];
+
+limite = 300; // a mudança
+let falhas = 0;
+for (const t of suite) {
+  if (freteGratis(t.valor, t.primeira) !== t.esperado) falhas++;
+}
+console.log("falhas:", falhas);
+
+--- opcoes
+- 0
+- 1
+- 2
+- 3
+
+--- explicacao
+Só o primeiro caso falha: R$ 250 deixou de ter frete grátis. Pode ser exatamente o que se queria (então o teste é atualizado) ou um efeito colateral (então é defeito). Quem decide é a regra de negócio, mas **quem avisa é a regressão**: reexecutar a suíte **inteira** a cada mudança é o que faltava na empresa em que "os problemas aparecem em partes já prontas".
+
+=== lab nivel-qual
+tipo: desafio
+tema: Níveis de Teste
+nivel: 1
+linguagem: js
+titulo: Em que nível esse defeito deveria aparecer?
+
+--- enunciado
+Escreva `nivel(defeito)` que devolve o nível de teste mais indicado para pegar o defeito:
+
+- `"laço"` ou `"cálculo"` → `"unidade"`
+- `"transmissão de dados"` → `"integração"`
+- `"desempenho"` ou `"segurança"` → `"sistema"`
+- `"não atende ao negócio"` → `"aceitação"`
+
+--- codigo
+function nivel(defeito) {
+  return "unidade";
+}
+
+console.log(nivel("transmissão de dados"));
+
+--- solucao
+function nivel(defeito) {
+  const tabela = {
+    "laço": "unidade", "cálculo": "unidade",
+    "transmissão de dados": "integração",
+    "desempenho": "sistema", "segurança": "sistema",
+    "não atende ao negócio": "aceitação",
+  };
+  return tabela[defeito];
+}
+
+console.log(nivel("transmissão de dados"));
+
+--- testes
+nivel("laço") ==> "unidade"
+nivel("cálculo") ==> "unidade"
+nivel("transmissão de dados") ==> "integração"
+nivel("desempenho") ==> "sistema"
+nivel("segurança") ==> "sistema"
+nivel("não atende ao negócio") ==> "aceitação"
+
+--- dicas
+Um objeto funciona como tabela: `const tabela = { "laço": "unidade", ... }` e `return tabela[defeito];`.
+
+--- explicacao
+**Unidade**: a menor parte, feita pelo programador. **Integração**: módulos conversando. **Sistema**: software completo contra requisitos **funcionais e não funcionais** (desempenho e segurança são não funcionais). **Aceitação**: o usuário aprova o que atende ao negócio — do usuário, de entrega, ou de contrato e regulamento.
+
+# =====================================================================
+# Tipos de Teste e Qualidade (ISO)
+# =====================================================================
+
+=== lab tipo-stress
+tipo: prever
+tema: Tipos de Teste e Qualidade (ISO)
+nivel: 2
+linguagem: js
+titulo: Desempenho, e depois stress
+alvo: ultima
+
+--- enunciado
+Um servidor atende bem até 1000 usuários simultâneos; depois disso o tempo de resposta dispara e, acima de 1500, ele cai. A simulação abaixo roda a carga esperada (desempenho) e cargas além do limite (stress). Preveja a última linha.
+
+--- codigo
+function tempoResposta(usuarios) {
+  if (usuarios > 1500) return "caiu";
+  if (usuarios > 1000) return Math.round(200 * usuarios / 1000) * 3 + " ms";
+  return Math.round(200 * usuarios / 1000) + " ms";
+}
+
+console.log("desempenho (800):", tempoResposta(800));
+console.log("stress (1200):", tempoResposta(1200));
+console.log("stress (2000):", tempoResposta(2000));
+
+--- opcoes
+- stress (2000): 400 ms
+- stress (2000): 1200 ms
+- stress (2000): caiu
+- stress (2000): 160 ms
+
+--- experimentos
+- Descubra, por tentativa, o primeiro número de usuários em que o servidor cai.
+- Por que esse teste quase sempre é **automatizado** (JMeter, k6, Gatling)?
+
+--- explicacao
+O teste de **desempenho** mede o tempo de resposta sob a carga **esperada**; o de **stress** vai **além do limite** para ver onde e como o sistema quebra. Com 2000 usuários ele **caiu**. Simular centenas de usuários simultâneos só é viável com ferramenta, por isso carga e desempenho estão no topo da lista do que vale automatizar.
+
+=== lab tipo-iso
+tipo: desafio
+tema: Tipos de Teste e Qualidade (ISO)
+nivel: 2
+linguagem: js
+titulo: Que fator de qualidade é esse?
+
+--- enunciado
+Escreva `fatorISO(situacao)` que devolve o fator de qualidade da ISO correspondente:
+
+- `"roda em outro sistema operacional"` → `"portabilidade"`
+- `"troca dados com o ERP da empresa"` → `"compatibilidade"`
+- `"funciona mesmo com entrada inesperada"` → `"robustez"`
+- `"responde rápido usando pouca memória"` → `"eficiência"`
+- `"novato aprende a usar sozinho"` → `"usabilidade"`
+
+--- codigo
+function fatorISO(situacao) {
+  return "robustez";
+}
+
+console.log(fatorISO("roda em outro sistema operacional"));
+
+--- solucao
+function fatorISO(situacao) {
+  const fatores = {
+    "roda em outro sistema operacional": "portabilidade",
+    "troca dados com o ERP da empresa": "compatibilidade",
+    "funciona mesmo com entrada inesperada": "robustez",
+    "responde rápido usando pouca memória": "eficiência",
+    "novato aprende a usar sozinho": "usabilidade",
+  };
+  return fatores[situacao];
+}
+
+console.log(fatorISO("roda em outro sistema operacional"));
+
+--- testes
+fatorISO("roda em outro sistema operacional") ==> "portabilidade"
+fatorISO("troca dados com o ERP da empresa") ==> "compatibilidade"
+fatorISO("funciona mesmo com entrada inesperada") ==> "robustez"
+fatorISO("responde rápido usando pouca memória") ==> "eficiência"
+fatorISO("novato aprende a usar sozinho") ==> "usabilidade"
+
+--- dicas
+Monte um objeto com as cinco situações como chaves.
+
+--- explicacao
+As provas adoram trocar a definição de **robustez** (funcionar em condições não previstas, parte da confiabilidade) entre compatibilidade, portabilidade e eficiência. Lembre também: os fatores ISO **não levam necessariamente à medição direta**; dão base para medidas indiretas e uma lista de verificação.
+
+# =====================================================================
+# Processo de Teste e PMBOK
+# =====================================================================
+
+=== lab proc-fases
+tipo: parsons
+tema: Processo de Teste e PMBOK
+nivel: 1
+linguagem: texto
+titulo: Coloque o ciclo de vida de testes em ordem
+
+--- enunciado
+Monte as fases do ciclo de vida de testes na ordem, cada uma com o seu objetivo. Duas armadilhas trocam o objetivo de uma fase.
+
+--- linhas
+1. Planejamento — estratégia e plano de teste (escopo, prazos, recursos, riscos)
+2. Preparação — montar o ambiente: equipamentos, ferramentas, massa de dados, pessoas
+3. Especificação — elaborar e revisar os casos e roteiros de teste
+4. Execução — rodar os testes e registrar resultados e defeitos
+5. Entrega — encerramento, relatório final e lições aprendidas
+
+--- distratores
+2. Preparação — elaborar e revisar os casos e roteiros de teste
+3. Especificação — montar o ambiente: equipamentos, ferramentas, massa de dados, pessoas
+
+--- explicacao
+A pegadinha clássica: **preparação é do ambiente**; os **casos e roteiros** são da **especificação**, o "planejamento a fundo". Planejamento produz o plano de teste e entrega é o encerramento.
+
+=== lab proc-pmbok
+tipo: parsons
+tema: Processo de Teste e PMBOK
+nivel: 1
+linguagem: texto
+titulo: Os grupos de processos do projeto de testes
+
+--- enunciado
+Pelo PMBOK, o projeto de testes é **independente** do projeto de desenvolvimento e passa pelos cinco grupos de processos. Monte-os em ordem. Há uma armadilha.
+
+--- linhas
+Iniciação — objetivos do teste e autorização
+Planejamento — plano de teste, escopo (o que entra e o que fica fora)
+Execução — rodar os casos de teste
+Monitoramento e controle — comparar o realizado com o planejado e corrigir desvios
+Encerramento — relatório final e lições aprendidas
+
+--- distratores
+Monitoramento e controle — escrever os casos de teste
+
+--- explicacao
+"Avalia se as atividades estão conforme o planejado" é sempre **monitoramento e controle**. O **escopo** define o que entra **e o que fica fora**, evita atividades não planejadas e, se falhar, afeta cronograma, orçamento e aceitação.
+
+# =====================================================================
+# Documentação: IEEE 829
+# =====================================================================
+
+=== lab ieee-incidentes
+tipo: desafio
+tema: Documentação: IEEE 829
+nivel: 2
+linguagem: js
+titulo: Do log ao relatório de incidente
+
+--- enunciado
+O **log (diário)** de teste registra **tudo** o que foi executado. O **relatório de incidente** só traz o que **exige investigação**: os casos em que o obtido foi diferente do esperado.
+
+Escreva `incidentes(log)` que devolve a lista de **ids** dos casos que precisam virar incidente.
+
+--- codigo
+function incidentes(log) {
+  return log.map(c => c.id);
+}
+
+console.log(incidentes([
+  { id: "CT01", esperado: "aceita", obtido: "aceita" },
+  { id: "CT02", esperado: "rejeita", obtido: "aceita" },
+]));
+
+--- solucao
+function incidentes(log) {
+  return log.filter(c => c.obtido !== c.esperado).map(c => c.id);
+}
+
+console.log(incidentes([
+  { id: "CT01", esperado: "aceita", obtido: "aceita" },
+  { id: "CT02", esperado: "rejeita", obtido: "aceita" },
+]));
+
+--- testes
+incidentes([{ id: "CT01", esperado: "aceita", obtido: "aceita" }, { id: "CT02", esperado: "rejeita", obtido: "aceita" }]) ==> ["CT02"]
+incidentes([{ id: "CT10", esperado: "multa 0", obtido: "multa 0" }]) ==> []
+incidentes([{ id: "A", esperado: 1, obtido: 2 }, { id: "B", esperado: 3, obtido: 3 }, { id: "C", esperado: 4, obtido: 5 }]) ==> ["A", "C"]
+
+--- dicas
+Primeiro `filter` (só os que deram diferente), depois `map` (só o id).
+
+`return log.filter(c => c.obtido !== c.esperado).map(c => c.id);`
+
+--- explicacao
+Diário = "registro de bordo" (tudo, em ordem cronológica); incidente = "boletim de ocorrência" (o que exige investigação, canal formal **testador → desenvolvedor**). Na empresa do caso, os testes eram feitos mas os incidentes nunca chegavam aos desenvolvedores: defeito encontrado e não reportado é igual a defeito não encontrado.
+
+=== lab ieee-resumo
+tipo: desafio
+tema: Documentação: IEEE 829
+nivel: 3
+linguagem: js
+titulo: O relatório-resumo recomenda liberar?
+
+--- enunciado
+Escreva `resumo(resultados)` que consolida o ciclo, como o **relatório-resumo** da IEEE 829. Cada resultado tem `ok` (true/false) e `gravidade` (`"crítica"`, `"alta"` ou `"baixa"`, só importa quando falhou). Devolva:
+
+`{ total, passaram, falharam, liberar }`
+
+`liberar` é `true` só se **nenhuma falha for crítica**.
+
+--- codigo
+function resumo(resultados) {
+  return { total: resultados.length, passaram: 0, falharam: 0, liberar: true };
+}
+
+console.log(resumo([{ ok: true }, { ok: false, gravidade: "baixa" }]));
+
+--- solucao
+function resumo(resultados) {
+  const falhas = resultados.filter(r => !r.ok);
+  return {
+    total: resultados.length,
+    passaram: resultados.length - falhas.length,
+    falharam: falhas.length,
+    liberar: !falhas.some(f => f.gravidade === "crítica"),
+  };
+}
+
+console.log(resumo([{ ok: true }, { ok: false, gravidade: "baixa" }]));
+
+--- testes
+resumo([{ ok: true }, { ok: false, gravidade: "baixa" }]) ==> { total: 2, passaram: 1, falharam: 1, liberar: true }
+resumo([{ ok: true }, { ok: true }, { ok: false, gravidade: "crítica" }]) ==> { total: 3, passaram: 2, falharam: 1, liberar: false }
+resumo([{ ok: true }]) ==> { total: 1, passaram: 1, falharam: 0, liberar: true }
+
+--- dicas
+Separe as falhas com `filter(r => !r.ok)`. O resto sai da contagem.
+
+`some` responde "existe alguma falha crítica?". Liberar é o contrário disso.
+
+--- explicacao
+O **relatório-resumo** consolida o ciclo e **recomenda (ou não) a liberação**. Sem ele, gestores liberam versões com defeitos conhecidos. Um critério comum de saída do plano de teste é exatamente este: nenhum defeito crítico aberto.
+
+# =====================================================================
+# Casos de Uso e Casos de Teste
+# =====================================================================
+
+=== lab uc-biblioteca
+tipo: desafio
+tema: Casos de Uso e Casos de Teste
+nivel: 2
+linguagem: js
+titulo: Os três cenários da biblioteca
+
+--- enunciado
+Implemente o caso de uso **Controlar retirada de livro**. `retirar(disponivel, diasAteDevolver)` devolve um objeto com o resultado:
+
+- **FB** — livro disponível e devolvido em até 7 dias → `{ emprestado: true, multa: 0, listaEspera: false }`
+- **FA1** — livro indisponível → `{ emprestado: false, multa: 0, listaEspera: true }` (o segundo parâmetro é ignorado)
+- **FA2** — disponível, devolvido **depois** de 7 dias → `{ emprestado: true, multa: 10, listaEspera: false }`
+
+--- codigo
+function retirar(disponivel, diasAteDevolver) {
+  return { emprestado: true, multa: 0, listaEspera: false };
+}
+
+console.log(retirar(true, 8));
+
+--- solucao
+function retirar(disponivel, diasAteDevolver) {
+  if (!disponivel) return { emprestado: false, multa: 0, listaEspera: true };
+  return { emprestado: true, multa: diasAteDevolver > 7 ? 10 : 0, listaEspera: false };
+}
+
+console.log(retirar(true, 8));
+
+--- testes
+retirar(true, 3) ==> { emprestado: true, multa: 0, listaEspera: false }
+retirar(true, 7) ==> { emprestado: true, multa: 0, listaEspera: false }
+retirar(true, 8) ==> { emprestado: true, multa: 10, listaEspera: false }
+retirar(false, 0) ==> { emprestado: false, multa: 0, listaEspera: true }
+
+--- dicas
+Trate o fluxo alternativo FA1 primeiro, com um `return` antecipado.
+
+Cuidado com a borda: no 7º dia ainda **não** há multa. Use `> 7`, não `>= 7`.
+
+--- explicacao
+São **3 cenários** (FB, FB + FA1, FB + FA2): FA1 e FA2 não se combinam, porque sem empréstimo não há atraso. Os testes do 7º e do 8º dia são **valor-limite** aplicado ao cenário: é ali que um `>=` no lugar de `>` se esconde. Cada caso de teste derivado de caso de uso precisa de **pré-condições** (livro disponível?) e **pós-condições** (emprestado, multa).
+
+=== lab uc-resultado
+tipo: prever
+tema: Casos de Uso e Casos de Teste
+nivel: 1
+linguagem: js
+titulo: Caso de teste positivo ou negativo?
+alvo: ultima
+
+--- enunciado
+Cada caso de teste compara o **obtido** com o **esperado**. Preveja a última linha.
+
+--- codigo
+function multa(dias) { return dias >= 7 ? 10 : 0; }   // a regra diz: multa só DEPOIS de 7 dias
+
+const casos = [
+  { id: "CT-03a", dias: 7, esperado: 0 },
+  { id: "CT-03b", dias: 8, esperado: 10 },
+];
+for (const c of casos) {
+  const obtido = multa(c.dias);
+  console.log(c.id, obtido === c.esperado ? "positivo" : "negativo");
+}
+
+--- opcoes
+- CT-03b positivo
+- CT-03b negativo
+- CT-03a negativo
+- CT-03a positivo
+
+--- explicacao
+O CT-03a (7 dias) dá **negativo**: esperava 0 e veio 10, um defeito na borda. O CT-03b (8 dias) dá **positivo**: obtido igual ao esperado. A última linha impressa é a do CT-03b. Repare que **só** o teste no limite exato denunciou o `>=`.
+
+# =====================================================================
+# Técnicas de Caixa-Preta
+# =====================================================================
+
+=== lab cp-valor-limite
+tipo: desafio
+tema: Técnicas de Caixa-Preta
+nivel: 1
+linguagem: js
+titulo: Gere os valores-limite de uma faixa
+
+--- enunciado
+Escreva `valoresLimite(min, max)` que devolve os quatro valores da **análise de valor-limite** para uma faixa válida de `min` a `max`: logo abaixo do mínimo, o mínimo, o máximo e logo acima do máximo.
+
+Mês de 1 a 12 → `[0, 1, 12, 13]`.
+
+--- codigo
+function valoresLimite(min, max) {
+  return [min, max];
+}
+
+console.log(valoresLimite(1, 12));
+
+--- solucao
+function valoresLimite(min, max) {
+  return [min - 1, min, max, max + 1];
+}
+
+console.log(valoresLimite(1, 12));
+
+--- testes
+valoresLimite(1, 12) ==> [0, 1, 12, 13]
+valoresLimite(18, 65) ==> [17, 18, 65, 66]
+valoresLimite(99, 101) ==> [98, 99, 101, 102]
+
+--- dicas
+Testa-se nas bordas **dos dois lados**: o último valor inválido e o primeiro válido.
+
+--- explicacao
+Defeitos moram nas bordas (`<` × `<=`, laço que para uma vez antes). Por isso o valor-limite testa exatamente o limite e o vizinho de fora. No caso do sistema que travava no **99º produto**, testar 99, 100 e 101 teria pego a falha antes do cliente.
+
+=== lab cp-particao
+tipo: desafio
+tema: Técnicas de Caixa-Preta
+nivel: 2
+linguagem: js
+titulo: Um valor de cada partição
+
+--- enunciado
+Escreva `particoes(min, max)` que devolve **um valor de cada classe de equivalência** de uma faixa válida de `min` a `max`:
+
+1. inválida abaixo: `min - 1`
+2. válida: o meio da faixa, `Math.floor((min + max) / 2)`
+3. inválida acima: `max + 1`
+
+Ano de 1899 a 2019 → `[1898, 1959, 2020]` (o material usa 1987, que também serve: qualquer valor válido representa a classe).
+
+--- codigo
+function particoes(min, max) {
+  return [min, max];
+}
+
+console.log(particoes(1899, 2019));
+
+--- solucao
+function particoes(min, max) {
+  return [min - 1, Math.floor((min + max) / 2), max + 1];
+}
+
+console.log(particoes(1899, 2019));
+
+--- testes
+particoes(1899, 2019) ==> [1898, 1959, 2020]
+particoes(1, 12) ==> [0, 6, 13]
+particoes(0, 100) ==> [-1, 50, 101]
+
+--- dicas
+Três valores: um abaixo, um no meio, um acima.
+
+--- explicacao
+O **particionamento de equivalência** parte da ideia de que todos os valores de uma classe se comportam igual, então basta **um** de cada. O **valor-limite** complementa escolhendo as bordas. As duas são caixa-preta: vêm da especificação, não do código.
+
+=== lab cp-estados
+tipo: desafio
+tema: Técnicas de Caixa-Preta
+nivel: 2
+linguagem: js
+titulo: O relógio de três modos (transição de estados)
+
+--- enunciado
+Um relógio alterna entre os modos `"horário"` → `"cronômetro"` → `"despertador"` → `"horário"` a cada toque no botão **modo**. O botão **luz** acende o visor e **não muda** o modo.
+
+Escreva `proximo(estado, evento)` (evento `"modo"` ou `"luz"`) que devolve o próximo estado.
+
+--- codigo
+function proximo(estado, evento) {
+  return "cronômetro";
+}
+
+console.log(proximo("despertador", "modo"));
+
+--- solucao
+function proximo(estado, evento) {
+  if (evento !== "modo") return estado;
+  const ciclo = ["horário", "cronômetro", "despertador"];
+  return ciclo[(ciclo.indexOf(estado) + 1) % ciclo.length];
+}
+
+console.log(proximo("despertador", "modo"));
+
+--- testes
+proximo("horário", "modo") ==> "cronômetro"
+proximo("cronômetro", "modo") ==> "despertador"
+proximo("despertador", "modo") ==> "horário"
+proximo("cronômetro", "luz") ==> "cronômetro"
+
+--- dicas
+Coloque os modos num vetor e ande uma posição; o `%` faz o último voltar ao primeiro.
+
+--- explicacao
+**Transição de estados**: estado atual + evento → próximo estado. Os casos de teste cobrem cada transição válida e também os eventos que **não** devem mudar o estado (a luz). Para descontos por faixa, a técnica seria **tabela de decisão**; para faixas numéricas, **particionamento** e **valor-limite**.
+
+# =====================================================================
+# Tabela de Decisão
+# =====================================================================
+
+=== lab td-desconto
+tipo: desafio
+tema: Tabela de Decisão
+nivel: 2
+linguagem: js
+titulo: Implemente a tabela de decisão minimizada
+
+--- enunciado
+A tabela de decisão já minimizada tem três regras (colunas):
+
+- **R1** — cadastrado = V, compra > R$ 500 = V → desconto **10**%
+- **R2** — cadastrado = V, compra > R$ 500 = F → desconto **5**%
+- **R3** — cadastrado = F, compra > R$ 500 = – (indiferente) → desconto **0**%
+
+Escreva `desconto(cadastrado, valor)` que devolve o percentual.
+
+--- codigo
+function desconto(cadastrado, valor) {
+  if (valor > 500) return 10;
+  return 5;
+}
+
+console.log(desconto(false, 800));
+
+--- solucao
+function desconto(cadastrado, valor) {
+  if (!cadastrado) return 0;
+  return valor > 500 ? 10 : 5;
+}
+
+console.log(desconto(false, 800));
+
+--- testes
+desconto(true, 800) ==> 10
+desconto(true, 200) ==> 5
+desconto(false, 800) ==> 0
+desconto(false, 200) ==> 0
+desconto(true, 500) ==> 5
+
+--- dicas
+Na regra R3 o valor da compra é **indiferente** (–): se não é cadastrado, nem olhe o valor.
+
+--- explicacao
+A regra R3 nasceu da **minimização**: as duas colunas "não cadastrado" tinham a mesma ação (0%), então foram **mescladas** com a condição do valor marcada como indiferente. Cada coluna vira um caso de teste (R1, R2, R3), e o teste com exatamente R$ 500 é um bônus de valor-limite.
+
+=== lab td-combinacoes
+tipo: desafio
+tema: Tabela de Decisão
+nivel: 3
+linguagem: js
+titulo: Gere todas as colunas da tabela (2ⁿ)
+
+--- enunciado
+Antes de minimizar, a tabela precisa estar **completa**: com `n` condições sim/não há `2ⁿ` combinações.
+
+Escreva `combinacoes(n)` que devolve todas elas como vetores de `true`/`false`, nesta ordem (como a contagem binária, com `true` primeiro):
+
+`combinacoes(2)` → `[[true, true], [true, false], [false, true], [false, false]]`
+
+--- codigo
+function combinacoes(n) {
+  return [];
+}
+
+console.log(combinacoes(2).length);
+
+--- solucao
+function combinacoes(n) {
+  if (n === 0) return [[]];
+  const resto = combinacoes(n - 1);
+  return [
+    ...resto.map(c => [true, ...c]),
+    ...resto.map(c => [false, ...c]),
+  ];
+}
+
+console.log(combinacoes(2).length);
+
+--- testes
+combinacoes(1) ==> [[true], [false]]
+combinacoes(2) ==> [[true, true], [true, false], [false, true], [false, false]]
+combinacoes(3).length ==> 8
+combinacoes(0) ==> [[]]
+
+--- dicas
+Recursão: as combinações de `n` são as de `n - 1` com `true` na frente, seguidas das de `n - 1` com `false` na frente.
+
+Caso-base: com 0 condições existe exatamente uma combinação, a vazia: `[[]]`.
+
+--- explicacao
+Com 3 condições, **8** colunas; com 4, 16. Gerar todas garante a **completude** (nenhuma combinação esquecida) e permite checar a **consistência** (a mesma combinação não pode levar a ações diferentes). Só depois vem a minimização, e então **cada coluna restante vira um caso de teste**.
+
+# =====================================================================
+# Técnicas de Caixa-Branca
+# =====================================================================
+
+=== lab cb-mccabe
+tipo: desafio
+tema: Técnicas de Caixa-Branca
+nivel: 1
+linguagem: js
+titulo: Complexidade ciclomática pelo grafo
+
+--- enunciado
+Escreva `vg(arestas, nos)` que devolve a complexidade ciclomática de McCabe de um grafo de fluxo: `V(G) = E − N + 2`.
+
+--- codigo
+function vg(arestas, nos) {
+  return arestas - nos;
+}
+
+console.log(vg(9, 7));
+
+--- solucao
+function vg(arestas, nos) {
+  return arestas - nos + 2;
+}
+
+console.log(vg(9, 7));
+
+--- testes
+vg(9, 7) ==> 4
+vg(3, 3) ==> 2
+vg(12, 10) ==> 4
+vg(1, 2) ==> 1
+
+--- dicas
+E = arestas, N = nós. Não esqueça o `+ 2`.
+
+--- explicacao
+V(G) é o número de **caminhos independentes** do conjunto-base, ou seja, o mínimo de casos de teste para percorrer todos eles. Também vale `V(G) = decisões + 1` e `V(G) = número de regiões` do grafo. Acima de 10, o código fica difícil de testar e manter.
+
+=== lab cb-decisoes
+tipo: desafio
+tema: Técnicas de Caixa-Branca
+nivel: 3
+linguagem: js
+titulo: Conte as decisões e calcule V(G) a partir do código
+
+--- enunciado
+Escreva `ciclomatica(codigo)` que recebe o código como texto e devolve `decisões + 1`. Conte como decisão cada ocorrência de `if`, `while`, `for`, `case`, `&&` e `||`.
+
+Use a expressão regular `/\bif\b|\bwhile\b|\bfor\b|\bcase\b|&&|\|\|/g`.
+
+--- codigo
+function ciclomatica(codigo) {
+  const ifs = codigo.match(/\bif\b/g) || [];
+  return ifs.length;
+}
+
+console.log(ciclomatica("if (a) x(); if (b && c) y();"));
+
+--- solucao
+function ciclomatica(codigo) {
+  const decisoes = codigo.match(/\bif\b|\bwhile\b|\bfor\b|\bcase\b|&&|\|\|/g) || [];
+  return decisoes.length + 1;
+}
+
+console.log(ciclomatica("if (a) x(); if (b && c) y();"));
+
+--- testes
+ciclomatica("return 0;") ==> 1
+ciclomatica("if (diasAtraso <= 7) return 0; else return 10;") ==> 2
+ciclomatica("if (a) x(); if (b && c) y();") ==> 4
+ciclomatica("for (i = 0; i < n; i++) { while (ok || tenta) {} }") ==> 4
+
+--- dicas
+`match` com a flag `g` devolve todas as ocorrências (ou `null`, daí o `|| []`).
+
+Não esqueça o `+ 1` no final.
+
+--- explicacao
+Cada `&&` e `||` conta porque esconde **uma decisão a mais**: `if (b && c)` tem dois pontos em que o fluxo pode desviar. É por isso que o **teste de condição** exercita cada parte das expressões compostas, e não só o `if` inteiro. O `calcularMulta` do material tem uma decisão, então V(G) = 2: testar 7 e 8 dias.
+
+=== lab cb-cobertura
+tipo: prever
+tema: Técnicas de Caixa-Branca
+nivel: 2
+linguagem: js
+titulo: Que ramos esses testes cobriram?
+alvo: ultima
+
+--- enunciado
+A função tem três ramos. Instrumentamos cada um para saber se foi executado (é o que ferramentas como o **JaCoCo** fazem). Preveja a última linha.
+
+--- codigo
+const cobertos = new Set();
+function classificaIMC(imc) {
+  if (imc < 18.5) { cobertos.add("baixo"); return "abaixo"; }
+  if (imc < 25)   { cobertos.add("normal"); return "normal"; }
+  cobertos.add("acima"); return "acima";
+}
+
+// casos de teste escritos pela equipe
+classificaIMC(22);
+classificaIMC(30);
+classificaIMC(24.9);
+
+console.log("cobertura de ramos:", cobertos.size + "/3");
+
+--- opcoes
+- cobertura de ramos: 1/3
+- cobertura de ramos: 2/3
+- cobertura de ramos: 3/3
+- cobertura de ramos: 0/3
+
+--- experimentos
+- Acrescente o caso que falta para chegar a 3/3.
+- Quantos casos de teste a complexidade ciclomática (decisões + 1) indica como mínimo?
+
+--- explicacao
+22 e 24,9 caem no mesmo ramo ("normal"), e 30 no "acima": **2/3**. O ramo "abaixo" nunca rodou, e um defeito lá passaria despercebido. Com 2 decisões, V(G) = 3: são necessários **pelo menos 3** casos, um por caminho independente. Mais casos não significam mais cobertura se caírem no mesmo caminho.
+
+=== lab cb-multa-junit
+tipo: parsons
+tema: Técnicas de Caixa-Branca
+nivel: 2
+linguagem: java
+titulo: Um teste por caminho do calcularMulta
+
+--- enunciado
+`calcularMulta(int diasAtraso)` devolve 0 até 7 dias e 10.0 depois disso: V(G) = 2. Monte a classe de teste JUnit 5 com **um teste por caminho**, usando os valores-limite. Duas armadilhas.
+
+--- linhas
+class MultaTest {
+    @Test
+    void semMultaNoSetimoDia() {
+        assertEquals(0.0, new Biblioteca().calcularMulta(7), 0.001);
+    }
+    @Test
+    void comMultaNoOitavoDia() {
+        assertEquals(10.0, new Biblioteca().calcularMulta(8), 0.001);
+    }
+}
+
+--- distratores
+        assertEquals(10.0, new Biblioteca().calcularMulta(7), 0.001);
+    @Before
+
+--- explicacao
+Dois caminhos independentes → dois casos de teste, escolhidos **na borda** (7 e 8). Em JUnit 5 cada teste é um método `@Test`; `@Before` é do JUnit 4 e serve para preparação, não para marcar teste. O terceiro argumento do `assertEquals` com `double` é a tolerância.
+
+# =====================================================================
+# Testes Exploratórios
+# =====================================================================
+
+=== lab exp-oraculo
+tipo: prever
+tema: Testes Exploratórios
+nivel: 2
+linguagem: js
+titulo: Test oracle: o módulo novo bate com o antigo?
+alvo: ultima
+
+--- enunciado
+O novo módulo de frete deve se comportar **exatamente** como o antigo. O testador usa o antigo como **oráculo** e compara os dois numa porção de entradas. Preveja a última linha.
+
+--- codigo
+function freteAntigo(kg) { return kg <= 1 ? 15 : 15 + Math.ceil(kg - 1) * 5; }
+function freteNovo(kg)   { return kg <= 1 ? 15 : 15 + Math.floor(kg - 1) * 5; }
+
+const divergencias = [];
+for (const kg of [0.5, 1, 2, 3, 2.5, 10]) {
+  if (freteNovo(kg) !== freteAntigo(kg)) divergencias.push(kg);
+}
+console.log("divergências:", divergencias.join(", ") || "nenhuma");
+
+--- opcoes
+- divergências: nenhuma
+- divergências: 2.5
+- divergências: 0.5, 2.5
+- divergências: 2, 3, 10
+
+--- experimentos
+- Acrescente 1.1 e 9.99 à lista. O que muda?
+- Qual técnica **heurística** teria sugerido testar valores quebrados de peso?
+
+--- explicacao
+Para pesos inteiros, `ceil` e `floor` dão o mesmo resultado. Só o **2,5 kg** diverge: o antigo arredonda para cima (R$ 25), o novo para baixo (R$ 20). **Test oracle** é comparar com uma referência confiável do resultado certo; aqui, o módulo antigo. As outras técnicas exploratórias: **heurística** (experiência, limites, ambientes), **Checklist Phoenix** (lista de perguntas) e **porquês**.
+
+=== lab exp-tecnica
+tipo: desafio
+tema: Testes Exploratórios
+nivel: 1
+linguagem: js
+titulo: Qual técnica exploratória?
+
+--- enunciado
+Escreva `tecnica(pista)` que devolve a técnica ou estratégia exploratória indicada pela pista:
+
+- `"comparar com o módulo antigo"` → `"test oracle"`
+- `"experiência, limites e todos os ambientes"` → `"heurística"`
+- `"lista de perguntas: o problema, os detalhes, quem resolve"` → `"checklist phoenix"`
+- `"charter e tempo definido"` → `"session based"`
+- `"liberdade total e documentação mínima"` → `"free style"`
+
+--- codigo
+function tecnica(pista) {
+  return "heurística";
+}
+
+console.log(tecnica("charter e tempo definido"));
+
+--- solucao
+function tecnica(pista) {
+  const mapa = {
+    "comparar com o módulo antigo": "test oracle",
+    "experiência, limites e todos os ambientes": "heurística",
+    "lista de perguntas: o problema, os detalhes, quem resolve": "checklist phoenix",
+    "charter e tempo definido": "session based",
+    "liberdade total e documentação mínima": "free style",
+  };
+  return mapa[pista];
+}
+
+console.log(tecnica("charter e tempo definido"));
+
+--- testes
+tecnica("comparar com o módulo antigo") ==> "test oracle"
+tecnica("experiência, limites e todos os ambientes") ==> "heurística"
+tecnica("lista de perguntas: o problema, os detalhes, quem resolve") ==> "checklist phoenix"
+tecnica("charter e tempo definido") ==> "session based"
+tecnica("liberdade total e documentação mínima") ==> "free style"
+
+--- dicas
+Um objeto com as cinco pistas como chaves resolve.
+
+--- explicacao
+No exploratório, aprender, projetar e executar acontecem **ao mesmo tempo**, e o testador precisa ser **curioso, criativo, crítico e autogerenciável**. **Session based** organiza o trabalho em sessões com charter e time-box, encerradas por um debriefing; **free style** é livre, registrando só erros e soluções.
+
+# =====================================================================
+# Teste de Unidade, TDD e JUnit
+# =====================================================================
+
+=== lab tdd-red-green
+tipo: desafio
+tema: Teste de Unidade, TDD e JUnit
+nivel: 1
+linguagem: js
+titulo: TDD: os testes já existem, faça ficar verde
+
+--- enunciado
+No TDD o teste vem **antes** do código. Os testes abaixo já foram escritos e estão **vermelhos** (Red). Escreva o código mínimo para deixá-los **verdes** (Green):
+
+`isPar(dias)` devolve `true` se a quantidade de dias de hospedagem for par. Atenção ao zero e aos negativos.
+
+--- codigo
+function isPar(dias) {
+  return false;
+}
+
+console.log(isPar(4));
+
+--- solucao
+function isPar(dias) {
+  return dias % 2 === 0;
+}
+
+console.log(isPar(4));
+
+--- testes
+isPar(4) ==> true
+isPar(7) ==> false
+isPar(0) ==> true
+isPar(1) ==> false
+isPar(-2) ==> true
+
+--- dicas
+O resto da divisão por 2 de um número par é zero.
+
+--- explicacao
+**Red → Green → Refactor**: o teste falha primeiro (prova que ele testa algo), o código mínimo o faz passar, e a refatoração acontece protegida pelos testes. TDD é **técnica de desenvolvimento** do XP (Kent Beck), não ciclo de vida nem ferramenta. Os testes que ficam viram a suíte de **regressão**.
+
+=== lab tdd-junit
+tipo: parsons
+tema: Teste de Unidade, TDD e JUnit
+nivel: 2
+linguagem: java
+titulo: Monte a classe de teste JUnit 5
+
+--- enunciado
+Monte `ValidaDiasHospedagemTest` em JUnit 5: o validador é criado **antes de cada teste**, e há um teste para par e um para ímpar. Três armadilhas.
+
+--- linhas
+public class ValidaDiasHospedagemTest {
+    private ValidaDiasHospedagem validador;
+    @BeforeEach
+    void setUp() { validador = new ValidaDiasHospedagem(); }
+    @Test
+    void deveRetornarVerdadeiroQuandoForPar() { assertTrue(validador.isPar(4)); }
+    @Test
+    void deveRetornarFalsoQuandoForImpar() { assertFalse(validador.isPar(7)); }
+}
+
+--- distratores
+    @AfterEach
+    void deveRetornarFalsoQuandoForImpar() { assertTrue(validador.isPar(7)); }
+    void deveRetornarVerdadeiroQuandoForPar() { assertEquals(validador.isPar(4)); }
+
+--- explicacao
+`@BeforeEach` roda antes de cada teste (no JUnit 4 é `@Before`); `@AfterEach` libera recursos **depois**. Para ímpar, o certo é `assertFalse`. E `assertEquals` precisa de **dois** argumentos: esperado e obtido. Os imports são `org.junit.jupiter.api.*` e `static org.junit.jupiter.api.Assertions.*`.
+
+=== lab tdd-elementos
+tipo: desafio
+tema: Teste de Unidade, TDD e JUnit
+nivel: 2
+linguagem: js
+titulo: Os elementos do teste de unidade
+
+--- enunciado
+Escreva `elemento(verificacao)` que devolve qual elemento do teste de unidade (Pressman) cuida daquela verificação:
+
+- `"dados gravados certo ao incluir, alterar e excluir"` → `"estrutura de dados locais"`
+- `"mensagem de erro orienta sem travar o sistema"` → `"caminhos de manipulação de erro"`
+- `"valores extremos"` → `"condições-limite"`
+- `"entrada e saída de dados da unidade"` → `"interface"`
+- `"todos os caminhos executados"` → `"caminhos independentes"`
+
+--- codigo
+function elemento(verificacao) {
+  return "interface";
+}
+
+console.log(elemento("valores extremos"));
+
+--- solucao
+function elemento(verificacao) {
+  const mapa = {
+    "dados gravados certo ao incluir, alterar e excluir": "estrutura de dados locais",
+    "mensagem de erro orienta sem travar o sistema": "caminhos de manipulação de erro",
+    "valores extremos": "condições-limite",
+    "entrada e saída de dados da unidade": "interface",
+    "todos os caminhos executados": "caminhos independentes",
+  };
+  return mapa[verificacao];
+}
+
+console.log(elemento("valores extremos"));
+
+--- testes
+elemento("dados gravados certo ao incluir, alterar e excluir") ==> "estrutura de dados locais"
+elemento("mensagem de erro orienta sem travar o sistema") ==> "caminhos de manipulação de erro"
+elemento("valores extremos") ==> "condições-limite"
+elemento("entrada e saída de dados da unidade") ==> "interface"
+elemento("todos os caminhos executados") ==> "caminhos independentes"
+
+--- dicas
+Mais uma vez, um objeto-tabela.
+
+--- explicacao
+O teste de unidade é feito pelos **programadores**, sem envolver o módulo ou o sistema como um todo. Automatizado, ele facilita a integração, evita erros novos em partes prontas e **documenta** o comportamento esperado de cada unidade.
+
+# =====================================================================
+# Ferramentas e Automação
+# =====================================================================
+
+=== lab fer-robot
+tipo: parsons
+tema: Ferramentas e Automação
+nivel: 2
+linguagem: texto
+titulo: Monte um teste de login no Robot Framework
+
+--- enunciado
+Monte o arquivo `.robot`: a biblioteca do Selenium, a variável com a URL, o caso de teste e a keyword de login. Três armadilhas.
+
+--- linhas
+*** Settings ***
+Library    SeleniumLibrary
+*** Variables ***
+${URL}    https://sistema.com/login
+*** Test Cases ***
+Login Com Credenciais Validas
+    Open Browser    ${URL}    firefox
+    Fazer Login     samuel    senha123
+    Page Should Contain    Bem-vindo
+*** Keywords ***
+Fazer Login
+    [Arguments]    ${usuario}    ${senha}
+    Input Text        id=usuario    ${usuario}
+    Input Password    id=senha      ${senha}
+    Click Button      Entrar
+
+--- distratores
+$(URL)    https://sistema.com/login
+*** Documentation ***
+    Open Browser    $(URL)    firefox
+
+--- explicacao
+A seção **obrigatória** é `*** Test Cases ***`. Documentation **não é seção**: vai em Settings ou em `[Documentation]`. Variáveis usam **chaves**: `${escalar}`, `@{lista}`, `&{dicionário}` — nunca parênteses. A SeleniumLibrary usa o **WebDriver** por baixo.
+
+=== lab fer-automatizar
+tipo: desafio
+tema: Ferramentas e Automação
+nivel: 2
+linguagem: js
+titulo: Vale automatizar?
+
+--- enunciado
+Escreva `automatizar(teste)` que devolve `true` se vale automatizar e `false` se é melhor manter manual. O objeto tem um campo `tipo`:
+
+- Automatizar: `"regressão"`, `"carga"`, `"desempenho"`, `"repetitivo"`
+- Manual: `"exploratório"`, `"usabilidade"`, `"funcionalidade nova"`
+
+Além disso, mesmo de um tipo automatizável, um teste com `instavel: true` (a funcionalidade ainda muda toda semana) fica **manual**.
+
+--- codigo
+function automatizar(teste) {
+  return teste.tipo !== "exploratório";
+}
+
+console.log(automatizar({ tipo: "usabilidade" }));
+
+--- solucao
+function automatizar(teste) {
+  if (teste.instavel) return false;
+  return ["regressão", "carga", "desempenho", "repetitivo"].includes(teste.tipo);
+}
+
+console.log(automatizar({ tipo: "usabilidade" }));
+
+--- testes
+automatizar({ tipo: "regressão" }) ==> true
+automatizar({ tipo: "carga" }) ==> true
+automatizar({ tipo: "exploratório" }) ==> false
+automatizar({ tipo: "usabilidade" }) ==> false
+automatizar({ tipo: "funcionalidade nova" }) ==> false
+automatizar({ tipo: "regressão", instavel: true }) ==> false
+
+--- dicas
+Trate o `instavel` primeiro. Depois, uma lista com `includes`.
+
+--- explicacao
+Automação compensa onde o teste é **repetido muitas vezes** (regressão) ou **impossível à mão** (centenas de usuários simultâneos: JMeter, k6, Gatling). Script de funcionalidade instável quebra a cada mudança e vira custo de manutenção. Exploratório e usabilidade dependem do olhar humano.
+
+=== lab fer-selenium
+tipo: desafio
+tema: Ferramentas e Automação
+nivel: 1
+linguagem: js
+titulo: Qual componente do Selenium?
+
+--- enunciado
+Escreva `componente(necessidade)` que devolve o componente do Selenium:
+
+- `"gravar e reproduzir sem programar"` → `"IDE"`
+- `"controlar o navegador por um driver nativo"` → `"WebDriver"`
+- `"rodar em paralelo em várias máquinas"` → `"Grid"`
+- `"versão antiga com servidor intermediário"` → `"RC"`
+
+--- codigo
+function componente(necessidade) {
+  return "WebDriver";
+}
+
+console.log(componente("rodar em paralelo em várias máquinas"));
+
+--- solucao
+function componente(necessidade) {
+  const mapa = {
+    "gravar e reproduzir sem programar": "IDE",
+    "controlar o navegador por um driver nativo": "WebDriver",
+    "rodar em paralelo em várias máquinas": "Grid",
+    "versão antiga com servidor intermediário": "RC",
+  };
+  return mapa[necessidade];
+}
+
+console.log(componente("rodar em paralelo em várias máquinas"));
+
+--- testes
+componente("gravar e reproduzir sem programar") ==> "IDE"
+componente("controlar o navegador por um driver nativo") ==> "WebDriver"
+componente("rodar em paralelo em várias máquinas") ==> "Grid"
+componente("versão antiga com servidor intermediário") ==> "RC"
+
+--- dicas
+Objeto-tabela de novo. Macete: IDE **G**rava, WebDriver **D**irige, Grid **G**ira em paralelo, RC é **R**elíquia.
+
+--- explicacao
+**IDE**: plugin do navegador com record-and-playback. **RC**: primeira versão programável, injetava JavaScript por um servidor intermediário; descontinuado. **WebDriver**: driver específico (ChromeDriver, GeckoDriver), várias linguagens, padrão W3C. **Grid**: hub e nodes executando em paralelo. Para muitas combinações de navegadores: WebDriver + Grid.
+
+# =====================================================================
+# Gerenciamento de Problemas e Defeitos
+# =====================================================================
+
+=== lab def-ciclo
+tipo: desafio
+tema: Gerenciamento de Problemas e Defeitos
+nivel: 3
+linguagem: js
+titulo: A máquina de estados do bug
+
+--- enunciado
+Escreva `transicao(estado, evento)` com o ciclo de vida do defeito. Transições válidas:
+
+- `"nova"` + `"atribuir"` → `"designação"`; `"nova"` + `"invalido"` → `"rejeição"`
+- `"designação"` + `"corrigir"` → `"teste"`; `"designação"` + `"adiar"` → `"adiado"`
+- `"teste"` + `"passou"` → `"verificação"`; `"teste"` + `"falhou"` → `"reabertura"`
+- `"verificação"` + `"ok"` → `"conclusão"`; `"verificação"` + `"voltou"` → `"reabertura"`
+- `"reabertura"` + `"atribuir"` → `"designação"`
+
+Qualquer outra combinação devolve `"inválida"`.
+
+--- codigo
+function transicao(estado, evento) {
+  if (estado === "nova" && evento === "atribuir") return "designação";
+  return "inválida";
+}
+
+console.log(transicao("teste", "falhou"));
+
+--- solucao
+function transicao(estado, evento) {
+  const regras = {
+    nova: { atribuir: "designação", invalido: "rejeição" },
+    "designação": { corrigir: "teste", adiar: "adiado" },
+    teste: { passou: "verificação", falhou: "reabertura" },
+    "verificação": { ok: "conclusão", voltou: "reabertura" },
+    reabertura: { atribuir: "designação" },
+  };
+  return (regras[estado] && regras[estado][evento]) || "inválida";
+}
+
+console.log(transicao("teste", "falhou"));
+
+--- testes
+transicao("nova", "atribuir") ==> "designação"
+transicao("nova", "invalido") ==> "rejeição"
+transicao("designação", "adiar") ==> "adiado"
+transicao("teste", "falhou") ==> "reabertura"
+transicao("verificação", "ok") ==> "conclusão"
+transicao("reabertura", "atribuir") ==> "designação"
+transicao("conclusão", "atribuir") ==> "inválida"
+
+--- dicas
+Um objeto de objetos: `regras[estado][evento]`. Proteja o caso em que `regras[estado]` não existe.
+
+--- explicacao
+Fluxo normal: **Nova → Designação → Teste → Verificação → Conclusão**. Desvios: **Reabertura** (a correção não resolveu), **Rejeição** (não é um defeito válido) e **Adiado** (defeito reconhecido, corrigido numa versão futura). Uma ferramenta de gestão de defeitos (Jira, Mantis, Bugzilla) implementa exatamente essa máquina de estados.
+
+=== lab def-duas-falhas
+tipo: passo
+tema: Gerenciamento de Problemas e Defeitos
+nivel: 2
+linguagem: js
+titulo: Acompanhe duas falhas pelo ciclo de vida
+pergunta: Em que estado a falha 2 termina?
+resposta: adiado
+
+--- enunciado
+É a sequência do exercício do material: NOVA – DESIGNAÇÃO – TESTE – VERIFICAÇÃO (falha 1) – REABERTURA (falha 2) – CONCLUSÃO (falha 1) – DESIGNAÇÃO (falha 2) – ? (falha 2). Avance e acompanhe o objeto `estado`.
+
+--- codigo
+const estado = {};
+function mover(falha, novo) { estado[falha] = novo; }
+
+mover("falha 1", "nova");
+mover("falha 1", "designação");
+mover("falha 1", "teste");
+mover("falha 1", "verificação");
+mover("falha 2", "reabertura");   // a falha 2 voltou a acontecer
+mover("falha 1", "conclusão");
+mover("falha 2", "designação");
+mover("falha 2", "adiado");       // reconhecida, mas fica para a próxima versão
+console.log(estado);
+
+--- opcoes
+- conclusão
+- rejeição
+- adiado
+- reabertura
+
+--- explicacao
+A falha 1 fez o caminho feliz até a **conclusão**. A falha 2 foi **reaberta**, **designada** de novo e, por decisão da equipe, **adiada**: é um defeito válido, mas a correção vai para uma versão futura. Se não fosse um defeito válido, o estado seria **rejeição**.
+
+=== lab def-contorno
+tipo: prever
+tema: Gerenciamento de Problemas e Defeitos
+nivel: 1
+linguagem: js
+titulo: Contorno primeiro, definitiva depois
+alvo: ultima
+
+--- enunciado
+O cadastro trava depois do 99º produto. A equipe aplica uma **solução de contorno** e, depois, a **solução definitiva**. Preveja a última linha.
+
+--- codigo
+let limite = 99;                     // o defeito: limite fixo no código
+const cadastro = [];
+function cadastrar(p) {
+  if (cadastro.length >= limite) return "travou";
+  cadastro.push(p); return "ok";
+}
+
+for (let i = 1; i <= 99; i++) cadastrar("produto " + i);
+console.log("produto 100:", cadastrar("produto 100"));
+
+// contorno: arquivar os antigos para liberar espaço (o limite continua lá)
+cadastro.splice(0, 50);
+console.log("depois do contorno:", cadastrar("produto 100"), "| limite:", limite);
+
+// definitiva: atacar a causa raiz
+limite = Infinity;
+for (let i = 101; i <= 200; i++) cadastrar("produto " + i);
+console.log("depois da definitiva:", cadastro.length, "produtos");
+
+--- opcoes
+- depois da definitiva: 99 produtos
+- depois da definitiva: 150 produtos
+- depois da definitiva: 200 produtos
+- depois da definitiva: travou
+
+--- experimentos
+- Comente a linha `limite = Infinity` e rode de novo: em que produto o sistema volta a travar?
+
+--- explicacao
+O contorno **restabeleceu o serviço** (o 100º entrou), mas o limite continuou no código: é provisório e não ataca a causa. A definitiva remove a causa raiz, e as 100 inclusões seguintes cabem: 49 restantes + 1 + 100 = **150**. Pelo material, a definitiva vem depois que o contorno é validado e aceito (etapa 6). E quem deveria ter pego o defeito antes do cliente era o **testador**, com valor-limite (99, 100, 101).
