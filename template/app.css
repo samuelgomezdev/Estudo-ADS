@@ -315,6 +315,60 @@ h3{font-size:.95rem;margin:20px 0 9px;color:var(--tx2)}
   .res-h{min-height:52px}
   .arq{min-height:48px}
 }
+/* ---------- imprimir ---------- */
+.imp-nota{font-size:.8rem;color:var(--tx3);margin:-2px 0 8px}
+.imp-op{display:flex;flex-wrap:wrap;gap:10px 22px}
+.imp-tg{display:inline-flex;align-items:center;gap:8px;font-size:.88rem;color:var(--tx2);cursor:pointer;min-height:32px}
+.imp-tg input{width:17px;height:17px;accent-color:var(--cf,var(--ac));cursor:pointer}
+/* a prévia é a folha: papel branco na tela, igual ao que sai na impressora */
+.impressao{background:#fff;color:#1a1a1a;border-radius:var(--rs);padding:36px 40px;margin-top:6px;
+  font-size:14px;line-height:1.5;box-shadow:0 6px 30px rgba(0,0,0,.35)}
+.impressao.imp-vazia{text-align:center;color:#666;padding:48px 20px}
+.impressao code{background:#f1f1f1;color:#1a1a1a}
+.impressao pre{background:#f6f6f6;color:#1a1a1a;border-color:#ddd}
+.impressao h2{font-size:1.3rem;margin:0;color:#000}
+.impressao h3{color:#000;font-size:1rem;margin:16px 0 6px}
+.impressao h4{color:#000;margin:10px 0 4px}
+.impressao ul,.impressao ol{padding-left:22px}
+.impressao p{margin:0 0 7px}
+.imp-sec+.imp-sec{margin-top:34px;padding-top:30px;border-top:2px dashed #ccc}
+.imp-h{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;
+  border-bottom:2px solid #1a1a1a;padding-bottom:6px;margin-bottom:14px}
+.imp-m{font-size:.8rem;color:#555}
+.imp-aluno{display:flex;gap:18px;margin:0 0 18px;font-size:.9rem}
+.imp-aluno span{display:flex;align-items:flex-end;gap:6px}
+.imp-aluno i{flex:1;border-bottom:1px solid #333;min-width:40px;height:1.2em}
+.impressao .imp-nota{color:#555;margin:0 0 12px}
+.imp-res{break-inside:avoid-page}
+.imp-res h3{border-left:4px solid var(--c,#333);padding-left:8px}
+.imp-q>li{margin:0 0 14px;break-inside:avoid}
+.imp-qt{font-weight:600;margin-bottom:5px}
+.impressao .imp-ops{list-style:none;padding-left:4px}
+.imp-ops li{margin:2px 0}
+.imp-gab-grade{display:grid;grid-template-columns:repeat(auto-fill,minmax(58px,1fr));gap:4px 10px;margin:4px 0 14px;
+  font-variant-numeric:tabular-nums}
+.imp-exp li{margin:0 0 6px;font-size:.92em}
+.imp-fc{width:100%;border-collapse:collapse}
+.imp-fc td{width:50%;border:1px dashed #888;padding:12px 14px;vertical-align:middle}
+.imp-fc td:first-child{font-weight:600}
+.imp-fc small{display:block;font-weight:400;font-size:.72rem;color:#666;text-transform:uppercase;letter-spacing:.4px}
+.imp-fc tr{break-inside:avoid}
+.imp-lista li{margin:0 0 8px;break-inside:avoid}
+.imp-linhas i{display:block;height:1.9em;border-bottom:1px solid #aaa}
+.imp-folha{margin-top:22px;break-inside:avoid}
+.imp-folha-g{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:6px 18px}
+.imp-folha-g div{display:flex;align-items:center;gap:6px;font-size:.85rem}
+.imp-folha-g b{width:24px;text-align:right}
+.imp-folha-g span{width:20px;height:20px;border:1px solid #444;border-radius:50%;display:grid;place-items:center;
+  font-size:.68rem}
+.imp-colas{columns:2 300px;column-gap:22px}
+.imp-cola{break-inside:avoid;border:1px solid #bbb;border-left:4px solid var(--c,#333);border-radius:6px;
+  padding:8px 12px;margin:0 0 12px;font-size:.88em}
+.imp-cola h4{margin-top:0}
+.imp-mn{background:#f2f2f2;padding:4px 8px;border-radius:4px;font-style:italic}
+.imp-cola ul{padding-left:18px}
+@media(max-width:640px){.impressao{padding:22px 18px}.imp-aluno{flex-wrap:wrap}}
+
 /* CORREÇÃO NC-20: as colas são o material com mais chance de virar papel antes
    da prova, e saíam com fundo escuro — ilegíveis em impressora monocromática. */
 @media print{
@@ -338,6 +392,14 @@ h3{font-size:.95rem;margin:20px 0 9px;color:var(--tx2)}
   .res-b{display:block!important}
   pre,code{background:#f4f4f4;color:#000;border-color:#ccc}
   a{color:#000;text-decoration:none}
+
+  /* aba Imprimir: só a folha montada, cada parte começando em página nova */
+  body.modo-imp .mat-head,body.modo-imp .tabs,body.modo-imp .imp-cfg{display:none!important}
+  .impressao{padding:0;margin:0;border-radius:0;box-shadow:none;font-size:10.5pt;color:#000}
+  .imp-sec+.imp-sec{break-before:page;margin-top:0;padding-top:0;border-top:none}
+  .imp-cola{border:1px solid #999;border-left:3px solid #555}
+  .imp-res h3{border-left-color:#555}
+  @page{margin:14mm 13mm}
 }
 
 @media(prefers-reduced-motion:reduce){

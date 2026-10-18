@@ -62,6 +62,10 @@
       "html": "<ul>\n<li><b>Selenium:</b> automação web, open source, várias linguagens, multinavegador; exige programação.\n<ul>\n<li><b>IDE:</b> plugin do navegador, <b>record-and-playback</b> (gravar, salvar e reproduzir), sem programação.</li>\n<li><b>RC:</b> primeira versão programável, servidor intermediário injetando JavaScript; <b>descontinuado</b>.</li>\n<li><b>WebDriver:</b> envia comandos ao navegador por um <b>driver específico</b> (ChromeDriver, GeckoDriver); padrão W3C.</li>\n<li><b>Grid:</b> execução <b>em paralelo</b> em várias máquinas e navegadores (hub e nodes).</li>\n</ul></li>\n<li><b>Cypress / Playwright:</b> E2E web com JavaScript/TypeScript.</li>\n<li><b>TestLink:</b> <b>gerenciamento</b> de testes (casos, planos, testadores, relatórios) — não é ferramenta de carga.</li>\n<li><b>JMeter / k6 / Gatling:</b> carga e desempenho.</li>\n<li><b>IBM Rational Functional Tester:</b> automação funcional <b>comercial</b>.</li>\n<li><b>Katalon Studio:</b> baseado no Selenium, low-code, relatórios HTML/CSV/PDF, Test Suites atribuídas via TestOps.</li>\n</ul>\n<p><b>Robot Framework:</b> seções <code>*** Settings ***</code>, <code>*** Variables ***</code>, <code>*** Test Cases ***</code> (<b>obrigatória</b>), <code>*** Keywords ***</code>. Variáveis: <code>${escalar}</code>, <code>@{lista}</code>, <code>&amp;{dicionário}</code>.</p>\n<p><b>Ferramentas contribuem</b> com previsibilidade da verificação, registros formais e <b>arquivos de log</b> com evidências.</p>\n<p><b>Automatizar:</b> regressão, <b>carga/desempenho</b>, tarefas repetitivas, funcionalidades críticas. <b>Manual:</b> exploratório, usabilidade, funcionalidades novas ou instáveis.</p>"
     },
     {
+      "tema": "Testes Automatizados e Regressão",
+      "html": "<p><small>Baseado no vídeo do <b>Fabio Akita</b>, trecho de <b>0:48:14 a 0:56:00</b>.</small></p>\n<p><b>Testes automatizados</b> são fundamentais em engenharia de software para evitar a <b>regressão</b>: quando uma funcionalidade nova acaba <b>quebrando algo que já funcionava</b>.</p>\n<h4>O problema do teste manual</h4>\n<p>Testar tudo <b>“na mão”</b> a cada alteração é <b>lento</b> e <b>propenso a erros</b>. O desenvolvedor entra num ciclo de <b>“um passo para frente e dois para trás”</b>: vive corrigindo bugs que reaparecem.</p>\n<h4>Como funciona a automação</h4>\n<p>O objetivo é <b>codificar os cenários de teste</b>. Se uma combinação de <b>dados de entrada</b> deve gerar um <b>resultado específico</b> (num site, num jogo ou num app), você escreve um script que valida esse comportamento sozinho. Se o código mudar e o resultado mudar junto, <b>o teste falha</b> e avisa o desenvolvedor na hora.</p>\n<pre><code>// entrada conhecida → resultado esperado\ntest('frete grátis acima de R$ 200', () =&gt; {\n  expect(calcularFrete(250)).toBe(0);\n});</code></pre>\n<h4>Prevenção de regressão</h4>\n<p>Uma <b>suíte de testes</b> garante que <b>bugs corrigidos no passado não voltem</b>. O desenvolvimento avança com segurança, sem precisar navegar pelo projeto inteiro manualmente a cada alteração (≈ 0:53:51).</p>\n<h4>Uso com IA</h4>\n<p>Com agentes de IA (Claude, Codex), dá para instruí-los a <b>criar um teste de regressão toda vez que um bug é corrigido</b>. A manutenção fica mais eficiente e confiável: o bug vira um teste, e o teste impede que ele volte.</p>\n<p><b>Em uma frase:</b> corrigiu um bug? Escreva o teste que reproduz o bug <b>antes</b> de corrigir; ele falha, você corrige, ele passa — e fica na suíte para sempre.</p>"
+    },
+    {
       "tema": "Gerenciamento de Problemas e Defeitos",
       "html": "<p><b>Gerenciamento de problemas:</b> planejar, acompanhar e testar em cada etapa para evitar erros que causem falhas. Melhorias: garantia de funcionamento do todo, atendimento dos requisitos, redução de erros e <b>aumento da proatividade</b>.</p>\n<p><b>Reativo × proativo:</b> reativo só percebe depois que o problema atingiu o cliente; proativo antecipa com testes planejados.</p>\n<ul>\n<li><b>Base de erros conhecidos:</b> registra erros e soluções de contorno → cerca de <b>80% resolvidos no primeiro nível</b>, evitando reincidência.</li>\n<li><b>Solução de contorno (workaround):</b> <b>provisória</b>, restabelece o serviço sem apontar nem eliminar a causa.</li>\n<li><b>Solução definitiva:</b> atua na <b>causa raiz</b>; aplicada depois que a de contorno é validada e aceita (etapa 6).</li>\n</ul>\n<p><b>Triagem:</b> antes de abrir chamado, confirmar se é defeito (impressora \"não conectada\" com LED de energia apagado → não abrir: é desinformação do usuário).</p>\n<p><b>Ciclo de vida do defeito:</b> Nova → Designação → Teste → Verificação → Conclusão, com desvios para <b>Reabertura</b>, <b>Rejeição</b> (não é defeito válido) e <b>Adiado</b> (reconhecido, corrigido numa versão futura).</p>\n<p><b>Caso do produto 99:</b> o sistema travava após o 99º cadastro. Quem deveria ter pego: o <b>testador</b>, com valor-limite (99, 100, 101) e teste de volume.</p>"
     }
@@ -361,6 +365,41 @@
       "tema": "Ferramentas e Automação",
       "p": "O que vale automatizar?",
       "r": "Regressão, carga/desempenho, tarefas repetitivas, funcionalidades críticas. Manual: exploratório, usabilidade, funcionalidades novas."
+    },
+    {
+      "tema": "Testes Automatizados e Regressão",
+      "p": "O que é regressão em software?",
+      "r": "Quando uma alteração ou funcionalidade nova quebra algo que já funcionava antes."
+    },
+    {
+      "tema": "Testes Automatizados e Regressão",
+      "p": "Por que o teste manual não escala, segundo o Akita?",
+      "r": "Testar tudo na mão a cada alteração é lento e propenso a erros; o desenvolvedor vive “um passo para frente e dois para trás”, corrigindo bugs que reaparecem."
+    },
+    {
+      "tema": "Testes Automatizados e Regressão",
+      "p": "O que significa “codificar um cenário de teste”?",
+      "r": "Escrever um script que aplica uma entrada conhecida e confere se o resultado é o esperado — automaticamente, sem ninguém clicar."
+    },
+    {
+      "tema": "Testes Automatizados e Regressão",
+      "p": "O que acontece quando o código muda e o comportamento testado muda junto?",
+      "r": "O teste falha e avisa o desenvolvedor imediatamente, antes de o erro chegar ao usuário."
+    },
+    {
+      "tema": "Testes Automatizados e Regressão",
+      "p": "Para que serve uma suíte de testes de regressão?",
+      "r": "Garantir que bugs já corrigidos não voltem e permitir avançar sem revisar o projeto inteiro manualmente a cada mudança."
+    },
+    {
+      "tema": "Testes Automatizados e Regressão",
+      "p": "Como usar agentes de IA (Claude, Codex) a favor da regressão?",
+      "r": "Instruí-los a criar um teste de regressão automaticamente toda vez que um bug é corrigido."
+    },
+    {
+      "tema": "Testes Automatizados e Regressão",
+      "p": "Qual a ordem recomendada ao corrigir um bug com teste?",
+      "r": "1) Escrever o teste que reproduz o bug (ele falha); 2) corrigir o código; 3) o teste passa e fica na suíte."
     },
     {
       "tema": "Gerenciamento de Problemas e Defeitos",
@@ -1625,6 +1664,84 @@
       "exp": "O WebDriver controla o navegador de verdade e o Grid distribui as permutações entre máquinas e navegadores. A DatabaseLibrary pode validar o banco."
     },
     {
+      "tema": "Testes Automatizados e Regressão",
+      "q": "No contexto de testes, o que é regressão?",
+      "op": [
+        "A melhoria de desempenho obtida depois de refatorar o código.",
+        "A volta para uma versão anterior do sistema no controle de versão.",
+        "Uma alteração ou funcionalidade nova que quebra algo que já funcionava.",
+        "Um teste executado apenas pelo cliente na fase de aceitação.",
+        "A técnica estatística usada para prever a quantidade de defeitos."
+      ],
+      "r": 2,
+      "exp": "Regressão é o software “regredir”: algo que funcionava deixa de funcionar por causa de uma mudança. Reverter versão (git revert) é outra coisa."
+    },
+    {
+      "tema": "Testes Automatizados e Regressão",
+      "q": "Akita descreve o teste feito “na mão” a cada alteração como um ciclo de “um passo para frente e dois para trás”. Por quê?",
+      "op": [
+        "Porque o teste manual exige escrever o dobro de código de produção.",
+        "Porque o teste manual só pode ser feito depois da entrega ao cliente.",
+        "Porque ferramentas de teste manual são pagas e atrasam o projeto.",
+        "Porque o teste manual impede o uso de controle de versão.",
+        "Porque é lento e propenso a erros, e o desenvolvedor vive corrigindo bugs que reaparecem."
+      ],
+      "r": 4,
+      "exp": "Sem automação, cada mudança pode reabrir bugs antigos que ninguém reteste — o tempo vai para corrigir de novo o que já estava pronto."
+    },
+    {
+      "tema": "Testes Automatizados e Regressão",
+      "q": "Qual é a ideia central de automatizar um cenário de teste?",
+      "op": [
+        "Escrever um script que aplica uma entrada conhecida e confere se sai o resultado esperado, falhando quando o comportamento muda.",
+        "Gravar um vídeo da tela enquanto o testador usa o sistema.",
+        "Pedir que o cliente teste cada versão antes da publicação.",
+        "Documentar o cenário em planilha para ser repetido manualmente.",
+        "Rodar o sistema em produção e esperar os usuários reportarem erros."
+      ],
+      "r": 0,
+      "exp": "Entrada conhecida → resultado esperado, verificado por código. Se o resultado mudar, o teste falha e avisa na hora."
+    },
+    {
+      "tema": "Testes Automatizados e Regressão",
+      "q": "Um time corrigiu um bug no cálculo de frete e, duas versões depois, o mesmo bug voltou. Qual prática teria evitado isso?",
+      "op": [
+        "Aumentar o tempo de testes exploratórios antes de cada entrega.",
+        "Proibir alterações no módulo de frete depois da correção.",
+        "Revisar manualmente todas as telas do sistema a cada versão.",
+        "Criar um teste automatizado que reproduz o bug e mantê-lo na suíte de regressão.",
+        "Trocar a linguagem de programação do módulo de frete."
+      ],
+      "r": 3,
+      "exp": "Bug corrigido vira teste. Enquanto o teste estiver na suíte, o bug não volta sem que alguém veja a falha."
+    },
+    {
+      "tema": "Testes Automatizados e Regressão",
+      "q": "Segundo o Akita, como agentes de IA como Claude ou Codex podem ajudar na manutenção do software?",
+      "op": [
+        "Substituindo completamente a necessidade de testes.",
+        "Sendo instruídos a criar um teste de regressão automaticamente toda vez que um bug é corrigido.",
+        "Testando o sistema manualmente no lugar do desenvolvedor.",
+        "Removendo os testes antigos que deixaram de falhar.",
+        "Gerando a documentação IEEE 829 no lugar dos testes."
+      ],
+      "r": 1,
+      "exp": "A IA não elimina os testes: ela ajuda a escrevê-los. A regra “corrigiu, testou” vira hábito automático do agente."
+    },
+    {
+      "tema": "Testes Automatizados e Regressão",
+      "q": "Qual benefício uma suíte de testes automatizados traz ao desenvolvimento contínuo?",
+      "op": [
+        "Garante que o software não tem nenhum defeito.",
+        "Dispensa revisões de código e testes de aceitação.",
+        "Permite avançar com segurança, sem navegar pelo projeto inteiro manualmente a cada alteração.",
+        "Faz o código rodar mais rápido em produção.",
+        "Elimina a necessidade de corrigir bugs."
+      ],
+      "r": 2,
+      "exp": "Testes mostram a presença de defeitos, não a ausência (Dijkstra). O ganho é confiança para mudar: a suíte vigia o que já funcionava."
+    },
+    {
       "tema": "Gerenciamento de Problemas e Defeitos",
       "q": "Quais melhorias o gerenciamento de problemas traz para o desenvolvimento?",
       "op": [
@@ -1819,6 +1936,16 @@
       "r": "a) Selenium IDE: plugin do navegador com record-and-playback, sem programação e limitado. Selenium RC: primeira versão programável, com servidor intermediário injetando JavaScript; descontinuado. Selenium WebDriver: envia comandos ao navegador por driver nativo (ChromeDriver, GeckoDriver), várias linguagens, padrão W3C. Selenium Grid: execução em paralelo em várias máquinas e navegadores (hub e nodes). b) WebDriver + Grid integrados ao Robot Framework: a SeleniumLibrary usa o WebDriver, o Grid paraleliza o grande número de permutações e a DatabaseLibrary valida o banco."
     },
     {
+      "tema": "Testes Automatizados e Regressão",
+      "q": "Explique o que é regressão e por que testar manualmente a cada alteração não resolve o problema, usando a ideia de “um passo para frente e dois para trás” do Akita.",
+      "r": "Regressão é quando uma mudança quebra algo que já funcionava. Testar tudo na mão a cada alteração é lento e propenso a erro: na prática ninguém reteste o sistema inteiro, então bugs antigos reaparecem sem ser notados. O desenvolvedor avança um passo com a funcionalidade nova e volta dois corrigindo o que quebrou. A saída é automatizar: codificar os cenários (entrada → resultado esperado) numa suíte que roda sozinha e falha na hora em que o comportamento muda."
+    },
+    {
+      "tema": "Testes Automatizados e Regressão",
+      "q": "Descreva um fluxo de correção de bug que use testes automatizados e um agente de IA, e diga como ele previne regressões futuras.",
+      "r": "1) Reproduzir o bug num teste automatizado — ele falha. 2) Corrigir o código até o teste passar. 3) Manter o teste na suíte de regressão, que roda a cada mudança. Com um agente de IA (Claude, Codex), a instrução é: “toda correção de bug vem com um teste que o reproduz”. Assim cada bug corrigido vira uma proteção permanente; se alguém reintroduzir o erro, o teste falha antes da entrega."
+    },
+    {
       "tema": "Casos de Uso e Casos de Teste",
       "q": "Monte os fluxos e os cenários do caso de uso \"Controlar retirada de livro\" de uma biblioteca: o aluno pede o livro; se disponível, recebe e devolve em até 7 dias; se indisponível, entra na lista de espera; após 7 dias, paga multa de R$ 10,00.",
       "r": "Atores: Aluno e Bibliotecária. Fluxo básico: 1) o aluno pede o livro; 2) a bibliotecária verifica a disponibilidade; 3) o livro é entregue; 4) o aluno devolve em até 7 dias; 5) o livro volta a ficar disponível. FA1 (do passo 2): livro indisponível → nome na lista de espera → fim sem empréstimo. FA2 (do passo 4): devolução após 7 dias → multa de R$ 10,00 → volta ao passo 5. Cenários: C1 = FB (sem multa); C2 = FB + FA1 (lista de espera); C3 = FB + FA2 (multa). FA1 e FA2 não se combinam. Casos de valor-limite: devolução no 7º dia (sem multa) e no 8º (com multa). Lacuna de requisito: o que acontece com quem está na lista de espera quando o livro volta? Esclarecer antes de testar."
@@ -1939,6 +2066,18 @@
         "Katalon: low-code, relatórios CSV/PDF, Test Suites.",
         "Robot: *** Test Cases *** obrigatória; variável ${nome}.",
         "Automatizar: regressão, carga/desempenho, repetitivos. Manual: exploratório, usabilidade."
+      ]
+    },
+    {
+      "titulo": "Testes automatizados (Akita)",
+      "mnemonico": "Mnemônico: \"Bug corrigido vira teste\" — corrigiu, testou, nunca mais voltou.",
+      "pontos": [
+        "**Regressão:** mudança nova quebra o que já funcionava.",
+        "**Manual:** lento + propenso a erro → “1 passo pra frente, 2 pra trás”.",
+        "**Automação:** codificar cenário (entrada → resultado esperado); mudou o resultado → teste falha na hora.",
+        "**Suíte de regressão:** bugs antigos não voltam; avança sem revisar tudo na mão.",
+        "**IA (Claude/Codex):** mandar criar teste de regressão a cada bug corrigido.",
+        "Fonte: vídeo do Akita, 0:48:14 – 0:56:00."
       ]
     },
     {

@@ -16,7 +16,11 @@
     ["simulado", "Simulado", function (m) { return m.questoes.length >= 5 ? m.questoes.length : 0; }],
     ["disc", "Discursivas", function (m) { return m.discursivas.length; }],
     ["colas", "Colas", function (m) { return m.colas.length; }],
-    ["material", "Material", function (m) { return m.arquivos.length + (m.links || []).length; }]
+    ["material", "Material", function (m) { return m.arquivos.length + (m.links || []).length; }],
+    // quarto item = não mostrar o número na aba (a contagem só decide se ela aparece)
+    ["imprimir", "Imprimir", function (m) {
+      return m.resumos.length + m.flashcards.length + m.questoes.length + m.discursivas.length + m.colas.length;
+    }, true]
   ];
 
   // ------------------------------------------------------------ util
@@ -195,6 +199,7 @@
       mostrar("materia");
       window.scrollTo(0, 0);
     } else {
+      document.body.classList.remove("modo-imp");
       renderHome();
       mostrar("home");
       if (rota.perdido != null) {
@@ -421,7 +426,7 @@
       t.href = "#/m/" + encodeURIComponent(m.id) + "/" + a[0];
       t.appendChild(document.createTextNode(a[1]));
       var n = a[2](m);
-      if (n) t.appendChild(el("small", null, String(n)));
+      if (n && !a[3]) t.appendChild(el("small", null, String(n)));
       tb.appendChild(t);
     });
     // CORREÇÃO NC-21: scrollIntoView herdava o scroll-behavior:smooth da página
@@ -434,9 +439,11 @@
     }
 
     ABAS.forEach(function (a) { $("#pane-" + a[0]).classList.toggle("on", a[0] === aba); });
+    // na aba Imprimir a impressora leva só a folha montada, sem cabeçalho nem abas
+    document.body.classList.toggle("modo-imp", aba === "imprimir");
 
     ({ resumo: renderResumo, lab: renderLab, cards: renderCards, quiz: telaQuiz, simulado: telaSimulado,
-       disc: renderDisc, colas: renderColas, material: renderMaterial })[aba](m);
+       disc: renderDisc, colas: renderColas, material: renderMaterial, imprimir: renderImprimir })[aba](m);
   }
 
   // ---------------------------------------------------------- resumos
@@ -1152,6 +1159,379 @@
       d.appendChild(ul);
       h.appendChild(d);
     });
+  }
+
+  // ---------------------------------------------------------- imprimir
+  // Monta uma folha só com o que o aluno escolheu e manda para a impressora
+  // (ou "Salvar como PDF"). A prévia na tela é a própria folha: o @media print
+  // esconde o resto da página. As escolhas ficam guardadas neste navegador.
+  var CHAVE_IMP = "estudo-ads-imp";
+  var LETRAS = ["A", "B", "C", "D", "E", "F"];
+  var TIPOS_IMP = [
+    ["resumos", "Resumos", function (m) { return m.resumos.length; }],
+    ["cards", "Flashcards", function (m) { return m.flashcards.length; }],
+    ["questoes", "Questões", function (m) { return m.questoes.length; }],
+    ["simulado", "Simulado", function (m) { return m.questoes.length >= 5 ? m.questoes.length : 0; }],
+    ["disc", "Discursivas", function (m) { return m.discursivas.length; }],
+    ["colas", "Colas", function (m) { return m.colas.length; }]
+  ];
+  var impTemas = { mid: null, sel: null };   // sel null = todos os temas
+  var sorteios = {};                         // ordem embaralhada fica fixa até "Sortear de novo"
+
+  function cfgImp() {
+    var c = lerLS(CHAVE_IMP, null) || {};
+    return {
+      tipos: Array.isArray(c.tipos) ? c.tipos : ["resumos", "questoes", "colas"],
+      gabarito: /^(secao|fim|nao)$/.test(c.gabarito) ? c.gabarito : "secao",
+      explicacao: c.explicacao !== false,
+      embaralhar: !!c.embaralhar,
+      simQtd: Number(c.simQtd) || 20,
+      cardsModo: c.cardsModo === "lista" ? "lista" : "recortar",
+      linhas: c.linhas != null ? Number(c.linhas) : 8,
+      cabecalho: c.cabecalho !== false
+    };
+  }
+
+  function sorteado(chave, lista, n) {
+    var s = sorteios[chave];
+    if (!s || s.length !== Math.min(n, lista.length) ||
+        s.some(function (q) { return lista.indexOf(q) < 0; })) {
+      s = sorteios[chave] = shuffle(lista).slice(0, n);
+    }
+    return s;
+  }
+
+  function renderImprimir(m) {
+    var h = $("#pane-imprimir"); h.innerHTML = "";
+    var cfg = cfgImp();
+    if (impTemas.mid !== m.id) impTemas = { mid: m.id, sel: null };
+    var disp = TIPOS_IMP.filter(function (t) { return t[2](m) > 0; });
+    var temas = temasDe([].concat(m.resumos, m.flashcards, m.questoes, m.discursivas));
+
+    var box = el("div", "box imp-cfg");
+    box.appendChild(el("h2", null, "Montar material para imprimir"));
+    box.appendChild(el("p", "sub", "Escolha o que entra na folha. A prévia abaixo é exatamente o que sai — " +
+      "para gerar PDF, escolha “Salvar como PDF” como impressora."));
+
+    // chips de várias escolhas (sel = lista) ou de uma só (sel = valor)
+    function grupo(titulo, opcoes, multi, valor, onMuda) {
+      box.appendChild(el("h3", null, titulo));
+      var c = el("div", "chips");
+      function pinta() {
+        c.innerHTML = "";
+        opcoes.forEach(function (o) {
+          var on = multi ? valor.indexOf(o[0]) >= 0 : valor === o[0];
+          var b = el("button", "chip" + (on ? " on" : ""));
+          b.setAttribute("aria-pressed", on ? "true" : "false");
+          b.appendChild(document.createTextNode(o[1]));
+          if (o[2] != null) b.appendChild(el("b", null, String(o[2])));
+          b.onclick = function () {
+            if (multi) {
+              var i = valor.indexOf(o[0]);
+              if (i >= 0) valor.splice(i, 1); else valor.push(o[0]);
+            } else valor = o[0];
+            pinta();
+            onMuda(valor);
+          };
+          c.appendChild(b);
+        });
+      }
+      pinta();
+      box.appendChild(c);
+    }
+    function muda() { gravarLS(CHAVE_IMP, cfg); atualiza(); }
+
+    var tiposSel = cfg.tipos.filter(function (t) { return disp.some(function (d) { return d[0] === t; }); });
+    grupo("O que imprimir", disp.map(function (t) { return [t[0], t[1], t[2](m)]; }), true, tiposSel,
+      function (v) { cfg.tipos = v; muda(); });
+
+    if (temas.length > 1) {
+      var temasSel = impTemas.sel ? impTemas.sel.slice() : [];
+      box.appendChild(el("h3", null, "Temas"));
+      box.appendChild(el("p", "imp-nota", "Nenhum marcado = todos. As colas não têm tema e saem sempre inteiras."));
+      var ct = el("div", "chips");
+      temas.forEach(function (t) {
+        var b = el("button", "chip" + (temasSel.indexOf(t) >= 0 ? " on" : ""), t);
+        b.setAttribute("aria-pressed", temasSel.indexOf(t) >= 0 ? "true" : "false");
+        b.onclick = function () {
+          var i = temasSel.indexOf(t);
+          if (i >= 0) temasSel.splice(i, 1); else temasSel.push(t);
+          b.classList.toggle("on", i < 0);
+          b.setAttribute("aria-pressed", i < 0 ? "true" : "false");
+          impTemas.sel = temasSel.length ? temasSel.slice() : null;
+          atualiza();
+        };
+        ct.appendChild(b);
+      });
+      box.appendChild(ct);
+    }
+
+    grupo("Gabarito", [["secao", "Depois de cada parte"], ["fim", "Tudo no final"], ["nao", "Sem gabarito"]],
+      false, cfg.gabarito, function (v) { cfg.gabarito = v; muda(); });
+
+    var opQtd = [10, 20, 30, 50].filter(function (v) { return v < m.questoes.length; })
+      .map(function (v) { return [v, v + " questões"]; });
+    opQtd.push([999, "Todas (" + m.questoes.length + ")"]);
+    if (m.questoes.length >= 5) {
+      grupo("Questões no simulado", opQtd, false, cfg.simQtd >= m.questoes.length ? 999 : cfg.simQtd,
+        function (v) { cfg.simQtd = v; muda(); });
+    }
+    if (m.flashcards.length) {
+      grupo("Flashcards", [["recortar", "Para recortar (frente | verso)"], ["lista", "Lista corrida"]],
+        false, cfg.cardsModo, function (v) { cfg.cardsModo = v; muda(); });
+    }
+    if (m.discursivas.length) {
+      grupo("Linhas para responder as discursivas", [[0, "Nenhuma"], [5, "5"], [8, "8"], [12, "12"]],
+        false, cfg.linhas, function (v) { cfg.linhas = v; muda(); });
+    }
+
+    box.appendChild(el("h3", null, "Opções"));
+    var ops = el("div", "imp-op");
+    [["explicacao", "Explicação das questões no gabarito"],
+     ["embaralhar", "Embaralhar as questões"],
+     ["cabecalho", "Campos de nome, data e nota"]].forEach(function (o) {
+      var lb = el("label", "imp-tg");
+      var cb = el("input");
+      cb.type = "checkbox"; cb.checked = !!cfg[o[0]];
+      cb.onchange = function () { cfg[o[0]] = cb.checked; muda(); };
+      lb.appendChild(cb);
+      lb.appendChild(document.createTextNode(o[1]));
+      ops.appendChild(lb);
+    });
+    box.appendChild(ops);
+
+    var acoes = el("div", "row acoes-fim");
+    var bImp = el("button", "btn pri", "Imprimir / salvar PDF");
+    bImp.onclick = function () { window.print(); };
+    var bSort = el("button", "btn", "Sortear de novo");
+    bSort.title = "Novo sorteio do simulado e nova ordem das questões embaralhadas";
+    bSort.onclick = function () { sorteios = {}; atualiza(); };
+    var resumoFolha = el("span", "dica");
+    acoes.appendChild(bImp); acoes.appendChild(bSort); acoes.appendChild(resumoFolha);
+    box.appendChild(acoes);
+    h.appendChild(box);
+
+    var host = el("div");
+    h.appendChild(host);
+
+    function atualiza() {
+      host.innerHTML = "";
+      var r = folhaImp(m, cfg, impTemas.sel);
+      host.appendChild(r.folha);
+      bImp.disabled = !r.itens;
+      bSort.hidden = !(cfg.tipos.indexOf("simulado") >= 0 || (cfg.embaralhar && cfg.tipos.indexOf("questoes") >= 0));
+      resumoFolha.textContent = r.itens ? plural(r.itens, "item", "itens") + " na folha" : "";
+    }
+    atualiza();
+  }
+
+  function folhaImp(m, cfg, temasSel) {
+    var folha = el("div", "impressao");
+    var itens = 0;
+    var gabs = [];
+    function filtra(lista) {
+      return temasSel ? lista.filter(function (x) { return temasSel.indexOf(x.tema) >= 0; }) : lista;
+    }
+    function tem(t) { return cfg.tipos.indexOf(t) >= 0; }
+    function cabeca(s, titulo, info) {
+      var hd = el("header", "imp-h");
+      hd.appendChild(el("h2", null, titulo));
+      hd.appendChild(el("div", "imp-m", m.sigla + " · " + m.nome + (info ? " · " + info : "")));
+      s.appendChild(hd);
+    }
+    function secao(titulo, info, aluno) {
+      var s = el("section", "imp-sec");
+      cabeca(s, titulo, info);
+      if (aluno && cfg.cabecalho) {
+        var d = el("div", "imp-aluno");
+        [["Nome", 3], ["Data", 1], ["Nota", 1]].forEach(function (x) {
+          var c = el("span"); c.style.flex = x[1];
+          c.appendChild(el("b", null, x[0] + ":"));
+          c.appendChild(el("i"));
+          d.appendChild(c);
+        });
+        s.appendChild(d);
+      }
+      folha.appendChild(s);
+      return s;
+    }
+    function gabarito(titulo, montar) {
+      if (cfg.gabarito === "nao") return;
+      var s = el("section", "imp-sec imp-gab");
+      if (cfg.gabarito === "secao") { cabeca(s, "Gabarito — " + titulo); folha.appendChild(s); }
+      else { s.className = "imp-gab-parte"; s.appendChild(el("h3", null, titulo)); gabs.push(s); }
+      montar(s);
+    }
+    function questoesEm(s, lista) {
+      var ol = el("ol", "imp-q");
+      lista.forEach(function (q) {
+        var li = el("li");
+        li.appendChild(el("div", "imp-qt", q.q));
+        var ops = el("ol", "imp-ops");
+        q.op.forEach(function (o, i) {
+          var op = el("li");
+          op.appendChild(el("b", null, LETRAS[i] + ")"));
+          op.appendChild(document.createTextNode(" " + o));
+          ops.appendChild(op);
+        });
+        li.appendChild(ops);
+        ol.appendChild(li);
+      });
+      s.appendChild(ol);
+    }
+    function gabaritoQuestoes(s, lista) {
+      var g = el("div", "imp-gab-grade");
+      lista.forEach(function (q, i) {
+        var c = el("span");
+        c.appendChild(el("b", null, (i + 1) + "."));
+        c.appendChild(document.createTextNode(" " + LETRAS[q.r]));
+        g.appendChild(c);
+      });
+      s.appendChild(g);
+      if (!cfg.explicacao) return;
+      var ol = el("ol", "imp-exp");
+      lista.forEach(function (q) {
+        var li = el("li");
+        li.appendChild(el("b", null, LETRAS[q.r] + ") " + q.op[q.r]));
+        if (q.exp) li.appendChild(document.createTextNode(" — " + q.exp));
+        ol.appendChild(li);
+      });
+      s.appendChild(ol);
+    }
+
+    // ---- resumos
+    var resumos = tem("resumos") ? filtra(m.resumos) : [];
+    if (resumos.length) {
+      var sR = secao("Resumo", plural(resumos.length, "tema", "temas"));
+      resumos.forEach(function (r) {
+        var d = el("div", "imp-res");
+        d.appendChild(el("h3", null, r.tema));
+        d.appendChild(sanitizarHtml(r.html));
+        sR.appendChild(d);
+      });
+      itens += resumos.length;
+    }
+
+    // ---- flashcards
+    var cards = tem("cards") ? filtra(m.flashcards) : [];
+    if (cards.length) {
+      var sF = secao("Flashcards", plural(cards.length, "card", "cards"));
+      if (cfg.cardsModo === "recortar") {
+        sF.appendChild(el("p", "imp-nota", "Recorte na linha tracejada e dobre ao meio: pergunta de um lado, resposta do outro."));
+        var tb = el("table", "imp-fc");
+        cards.forEach(function (c) {
+          var tr = el("tr");
+          var f = el("td");
+          f.appendChild(el("small", null, c.tema));
+          f.appendChild(el("div", null, c.p));
+          tr.appendChild(f);
+          tr.appendChild(el("td", null, c.r));
+          tb.appendChild(tr);
+        });
+        sF.appendChild(tb);
+      } else {
+        var ol = el("ol", "imp-lista");
+        cards.forEach(function (c) {
+          var li = el("li");
+          li.appendChild(el("b", null, c.p));
+          li.appendChild(el("div", null, c.r));
+          ol.appendChild(li);
+        });
+        sF.appendChild(ol);
+      }
+      itens += cards.length;
+    }
+
+    // ---- questões
+    var qs = tem("questoes") ? filtra(m.questoes) : [];
+    if (qs.length) {
+      if (cfg.embaralhar) qs = sorteado("q:" + m.id + ":" + (temasSel || []).join("|"), qs, qs.length);
+      var sQ = secao("Questões", plural(qs.length, "questão", "questões"), true);
+      questoesEm(sQ, qs);
+      gabarito("Questões", function (s) { gabaritoQuestoes(s, qs); });
+      itens += qs.length;
+    }
+
+    // ---- simulado
+    var base = tem("simulado") ? filtra(m.questoes) : [];
+    if (base.length) {
+      var sim = sorteado("s:" + m.id + ":" + (temasSel || []).join("|"), base, Math.min(cfg.simQtd, base.length));
+      var min = Math.ceil(sim.length * 1.5);
+      var sS = secao("Simulado de prova", sim.length + " questões · " + min + " min", true);
+      sS.appendChild(el("p", "imp-nota", "Tempo sugerido: " + min + " minutos (1min30 por questão). " +
+        "Marque uma alternativa por questão e passe para a folha de respostas no final."));
+      questoesEm(sS, sim);
+      var fr = el("div", "imp-folha");
+      fr.appendChild(el("h3", null, "Folha de respostas"));
+      var grade = el("div", "imp-folha-g");
+      sim.forEach(function (q, i) {
+        var lin = el("div");
+        lin.appendChild(el("b", null, String(i + 1)));
+        q.op.forEach(function (_, k) { lin.appendChild(el("span", null, LETRAS[k])); });
+        grade.appendChild(lin);
+      });
+      fr.appendChild(grade);
+      sS.appendChild(fr);
+      gabarito("Simulado", function (s) { gabaritoQuestoes(s, sim); });
+      itens += sim.length;
+    }
+
+    // ---- discursivas
+    var disc = tem("disc") ? filtra(m.discursivas) : [];
+    if (disc.length) {
+      var sD = secao("Questões discursivas", plural(disc.length, "questão", "questões"), true);
+      var olD = el("ol", "imp-q");
+      disc.forEach(function (d) {
+        var li = el("li");
+        li.appendChild(el("div", "imp-qt", d.q));
+        if (cfg.linhas) {
+          var ln = el("div", "imp-linhas");
+          for (var k = 0; k < cfg.linhas; k++) ln.appendChild(el("i"));
+          li.appendChild(ln);
+        }
+        olD.appendChild(li);
+      });
+      sD.appendChild(olD);
+      gabarito("Discursivas", function (s) {
+        var ol = el("ol", "imp-exp");
+        disc.forEach(function (d) { ol.appendChild(el("li", null, d.r)); });
+        s.appendChild(ol);
+      });
+      itens += disc.length;
+    }
+
+    // ---- colas (sem tema: saem sempre inteiras)
+    if (tem("colas") && m.colas.length) {
+      var sC = secao("Colas", "revisão de última hora");
+      var g = el("div", "imp-colas");
+      m.colas.forEach(function (c) {
+        var d = el("div", "imp-cola");
+        d.appendChild(el("h4", null, c.titulo));
+        if (c.mnemonico) d.appendChild(el("p", "imp-mn", c.mnemonico));
+        var ul = el("ul");
+        (c.pontos || []).forEach(function (p) {
+          var li = el("li");
+          li.innerHTML = esc(p).replace(/\*\*(.+?)\*\*/g, "<b>$1</b>");
+          ul.appendChild(li);
+        });
+        d.appendChild(ul);
+        g.appendChild(d);
+      });
+      sC.appendChild(g);
+      itens += m.colas.length;
+    }
+
+    if (gabs.length) {
+      var sG = secao("Gabarito");
+      gabs.forEach(function (p) { sG.appendChild(p); });
+    }
+    if (!itens) {
+      folha.className = "impressao imp-vazia";
+      folha.appendChild(el("p", null, temasSel
+        ? "Nada desses tipos nos temas marcados. Marque outro tipo ou outro tema."
+        : "Marque acima o que você quer imprimir."));
+    }
+    return { folha: folha, itens: itens };
   }
 
   // ---------------------------------------------------------- material
