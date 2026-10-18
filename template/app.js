@@ -1311,10 +1311,40 @@
     var resumoFolha = el("span", "dica");
     acoes.appendChild(bImp); acoes.appendChild(bSort); acoes.appendChild(resumoFolha);
     box.appendChild(acoes);
+    var pags = el("div", "imp-pags");
+    pags.setAttribute("aria-live", "polite");
+    box.appendChild(pags);
     h.appendChild(box);
 
     var host = el("div");
     h.appendChild(host);
+
+    function mostraPaginas(r) {
+      pags.innerHTML = "";
+      Array.prototype.forEach.call(r.folha.querySelectorAll(".imp-pg"), function (x) { x.remove(); });
+      if (!r.itens) return;
+      var partes = contarPaginas(r.folha);
+      var total = partes.length ? partes[partes.length - 1].ate : 0;
+      var topo = el("div", "imp-pags-t");
+      topo.appendChild(el("b", null, "≈ " + plural(total, "página", "páginas") + " A4"));
+      topo.appendChild(document.createTextNode(" · " + plural(Math.ceil(total / 2), "folha", "folhas") +
+        " em frente e verso"));
+      pags.appendChild(topo);
+      var lista = el("div", "imp-pags-l");
+      partes.forEach(function (p) {
+        var faixa = p.de === p.ate ? "pág. " + p.de : "págs. " + p.de + "–" + p.ate;
+        var c = el("span");
+        c.appendChild(el("b", null, p.titulo));
+        c.appendChild(document.createTextNode(" " + faixa));
+        lista.appendChild(c);
+        // a mesma faixa aparece no cabeçalho de cada parte da prévia (não sai no papel)
+        p.no.appendChild(el("span", "imp-pg", faixa));
+      });
+      pags.appendChild(lista);
+      pags.appendChild(el("p", "imp-nota", "Estimativa para A4 com as margens padrão. Para imprimir só uma parte, " +
+        "digite a faixa em “Páginas” na janela de impressão (ex.: " +
+        (partes.length > 1 ? partes[1].de + "-" + partes[1].ate : "1-" + total) + ")."));
+    }
 
     var vez = 0;
     function atualiza() {
@@ -1325,6 +1355,7 @@
       bSort.hidden = !(cfg.tipos.indexOf("simulado") >= 0 || cfg.tipos.indexOf("lab") >= 0 ||
         (cfg.embaralhar && cfg.tipos.indexOf("questoes") >= 0));
       resumoFolha.textContent = r.itens ? plural(r.itens, "item", "itens") + " na folha" : "";
+      mostraPaginas(r);
       // o gabarito do "prever" sai de rodar o código: segura a impressão até chegar
       if (r.pendente) {
         var esta = ++vez;
@@ -1334,10 +1365,57 @@
           if (esta !== vez) return;
           bImp.disabled = !r.itens;
           resumoFolha.textContent = plural(r.itens, "item", "itens") + " na folha";
+          mostraPaginas(r);   // as respostas chegaram: o gabarito pode ter crescido
         });
       } else vez++;
     }
     atualiza();
+  }
+
+  // Quantas páginas sai: diagrama uma cópia da folha fora da tela com a largura
+  // útil do A4 (210 − 2×13 mm) e a fonte da impressão, e divide cada parte pela
+  // altura útil (297 − 2×14 mm). Cada parte começa em página nova (@media print).
+  var MM = 96 / 25.4;
+  function contarPaginas(folha) {
+    var copia = folha.cloneNode(true);
+    copia.className += " imp-medir";
+    Array.prototype.forEach.call(copia.querySelectorAll(".imp-pg"), function (x) { x.remove(); });
+    document.body.appendChild(copia);
+    var altura = 269 * MM;
+    var partes = [], pag = 0;
+    var secs = copia.querySelectorAll(".imp-sec");
+    var originais = folha.querySelectorAll(".imp-sec");
+    Array.prototype.forEach.call(secs, function (s, i) {
+      var n = paginasDaParte(s, altura);
+      var h2 = $("h2", s);
+      partes.push({ titulo: h2 ? h2.textContent : "Parte", de: pag + 1, ate: pag + n,
+                    no: $(".imp-h", originais[i]) });
+      pag += n;
+    });
+    copia.remove();
+    return partes;
+  }
+  // Paginação como a impressora faz: texto corrido quebra em qualquer linha, mas
+  // os blocos com break-inside:avoid (questão, card, folha de respostas…) que não
+  // cabem no resto da página pulam inteiros para a próxima.
+  var INTEIROS = ".imp-q>li,.imp-res,.imp-fc tr,.imp-lista>li,.imp-folha";
+  function paginasDaParte(s, altura) {
+    var topo = s.getBoundingClientRect().top;
+    var paginas = 1, fim = altura;
+    var ultimo = null;
+    Array.prototype.forEach.call(s.querySelectorAll(INTEIROS), function (b) {
+      if (ultimo && ultimo.contains(b)) return;           // bloco dentro de outro bloco
+      ultimo = b;
+      var r = b.getBoundingClientRect();
+      var cima = r.top - topo, baixo = r.bottom - topo;
+      while (cima >= fim) { paginas++; fim += altura; }
+      if (baixo <= fim) return;
+      if (baixo - cima <= altura) { paginas++; fim = cima + altura; }
+      else while (baixo > fim) { paginas++; fim += altura; }
+    });
+    var total = s.offsetHeight;
+    while (total > fim) { paginas++; fim += altura; }
+    return paginas;
   }
 
   function folhaImp(m, cfg, temasSel) {

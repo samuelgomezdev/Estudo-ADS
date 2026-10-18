@@ -381,6 +381,17 @@ h3{font-size:.95rem;margin:20px 0 9px;color:var(--tx2)}
 .imp-lab-exp{font-size:.92em;color:#333;margin-top:4px}
 .imp-lab-exp p{margin:0 0 4px}
 .imp-calc{color:#888;font-style:italic}
+.imp-pags{margin-top:16px;padding:12px 14px;border:1px solid var(--line);border-radius:var(--rs);background:var(--bg2)}
+.imp-pags-t{font-size:.95rem;margin-bottom:6px}
+.imp-pags-t b{color:var(--tx);font-size:1.05rem}
+.imp-pags-l{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:.84rem;color:var(--tx2);margin-bottom:8px}
+.imp-pags-l b{color:var(--tx);font-weight:600}
+.imp-pags .imp-nota{margin:0}
+.imp-pg{font-size:.72rem;font-weight:600;color:#fff;background:#555;border-radius:10px;padding:1px 9px;margin-left:auto}
+/* cópia invisível usada só para contar páginas: mesma largura e fonte do papel */
+.impressao.imp-medir{position:absolute;left:-10000px;top:0;visibility:hidden;width:184mm;padding:0;
+  border-radius:0;box-shadow:none;font-size:10.5pt}
+.imp-medir .imp-sec+.imp-sec{margin-top:0;padding-top:0;border-top:none}
 @media(max-width:640px){.impressao{padding:22px 18px}.imp-aluno{flex-wrap:wrap}}
 
 /* CORREÇÃO NC-20: as colas são o material com mais chance de virar papel antes
@@ -408,12 +419,12 @@ h3{font-size:.95rem;margin:20px 0 9px;color:var(--tx2)}
   a{color:#000;text-decoration:none}
 
   /* aba Imprimir: só a folha montada, cada parte começando em página nova */
-  body.modo-imp .mat-head,body.modo-imp .tabs,body.modo-imp .imp-cfg{display:none!important}
+  body.modo-imp .mat-head,body.modo-imp .tabs,body.modo-imp .imp-cfg,.imp-pg{display:none!important}
   .impressao{padding:0;margin:0;border-radius:0;box-shadow:none;font-size:10.5pt;color:#000}
   .imp-sec+.imp-sec{break-before:page;margin-top:0;padding-top:0;border-top:none}
   .imp-cola{border:1px solid #999;border-left:3px solid #555}
   .imp-res h3{border-left-color:#555}
-  @page{margin:14mm 13mm}
+  @page{size:A4;margin:14mm 13mm}
 }
 
 @media(prefers-reduced-motion:reduce){
