@@ -1173,10 +1173,12 @@
     ["questoes", "Questões", function (m) { return m.questoes.length; }],
     ["simulado", "Simulado", function (m) { return m.questoes.length >= 5 ? m.questoes.length : 0; }],
     ["disc", "Discursivas", function (m) { return m.discursivas.length; }],
-    ["colas", "Colas", function (m) { return m.colas.length; }]
+    ["colas", "Colas", function (m) { return m.colas.length; }],
+    ["lab", "Laboratório", function (m) { return (m.labs || []).length; }]
   ];
   var impTemas = { mid: null, sel: null };   // sel null = todos os temas
   var sorteios = {};                         // ordem embaralhada fica fixa até "Sortear de novo"
+  var respostasLab = {};                     // "mid#lab" → Promise do índice certo no prever
 
   function cfgImp() {
     var c = lerLS(CHAVE_IMP, null) || {};
@@ -1206,7 +1208,7 @@
     var cfg = cfgImp();
     if (impTemas.mid !== m.id) impTemas = { mid: m.id, sel: null };
     var disp = TIPOS_IMP.filter(function (t) { return t[2](m) > 0; });
-    var temas = temasDe([].concat(m.resumos, m.flashcards, m.questoes, m.discursivas));
+    var temas = temasDe([].concat(m.resumos, m.flashcards, m.questoes, m.discursivas, m.labs || []));
 
     var box = el("div", "box imp-cfg");
     box.appendChild(el("h2", null, "Montar material para imprimir"));
@@ -1280,8 +1282,8 @@
       grupo("Flashcards", [["recortar", "Para recortar (frente | verso)"], ["lista", "Lista corrida"]],
         false, cfg.cardsModo, function (v) { cfg.cardsModo = v; muda(); });
     }
-    if (m.discursivas.length) {
-      grupo("Linhas para responder as discursivas", [[0, "Nenhuma"], [5, "5"], [8, "8"], [12, "12"]],
+    if (m.discursivas.length || (m.labs || []).length) {
+      grupo("Linhas para responder (discursivas e desafios do laboratório)", [[0, "Nenhuma"], [5, "5"], [8, "8"], [12, "12"]],
         false, cfg.linhas, function (v) { cfg.linhas = v; muda(); });
     }
 
@@ -1314,13 +1316,26 @@
     var host = el("div");
     h.appendChild(host);
 
+    var vez = 0;
     function atualiza() {
       host.innerHTML = "";
       var r = folhaImp(m, cfg, impTemas.sel);
       host.appendChild(r.folha);
       bImp.disabled = !r.itens;
-      bSort.hidden = !(cfg.tipos.indexOf("simulado") >= 0 || (cfg.embaralhar && cfg.tipos.indexOf("questoes") >= 0));
+      bSort.hidden = !(cfg.tipos.indexOf("simulado") >= 0 || cfg.tipos.indexOf("lab") >= 0 ||
+        (cfg.embaralhar && cfg.tipos.indexOf("questoes") >= 0));
       resumoFolha.textContent = r.itens ? plural(r.itens, "item", "itens") + " na folha" : "";
+      // o gabarito do "prever" sai de rodar o código: segura a impressão até chegar
+      if (r.pendente) {
+        var esta = ++vez;
+        bImp.disabled = true;
+        resumoFolha.textContent = "rodando os exercícios do laboratório para montar o gabarito…";
+        r.pendente.then(function () {
+          if (esta !== vez) return;
+          bImp.disabled = !r.itens;
+          resumoFolha.textContent = plural(r.itens, "item", "itens") + " na folha";
+        });
+      } else vez++;
     }
     atualiza();
   }
@@ -1521,6 +1536,113 @@
       itens += m.colas.length;
     }
 
+    // ---- laboratório
+    var pendente = null;
+    var labs = tem("lab") ? filtra(m.labs || []) : [];
+    if (labs.length) {
+      var sL = secao("Laboratório", plural(labs.length, "exercício", "exercícios"), true);
+      sL.appendChild(el("p", "imp-nota", "No papel, sem rodar: leia o código, responda e depois confira " +
+        "no site (aba Laboratório) rodando de verdade."));
+      var olL = el("ol", "imp-q imp-lab");
+      var montar = {};                       // id → blocos embaralhados do "montar"
+      labs.forEach(function (lab) {
+        var li = el("li");
+        var hd = el("div", "imp-qt", lab.titulo);
+        hd.appendChild(el("span", "imp-lab-tag", (LAB.NOMES_TIPO[lab.tipo] || lab.tipo) + " · " +
+          (LAB.NOMES_LING[lab.linguagem] || lab.linguagem) + " · nível " + lab.nivel));
+        li.appendChild(hd);
+        if (lab.enunciado) { var en = el("div", "imp-lab-en"); LAB.mdEm(en, lab.enunciado); li.appendChild(en); }
+
+        if (lab.tipo === "parsons") {
+          var blocos = sorteado("p:" + m.id + ":" + lab.id, (lab.linhas || []).concat(lab.distratores || []), 999);
+          montar[lab.id] = blocos;
+          if (lab.codigo) li.appendChild(el("pre", null, lab.codigo));
+          var nd = (lab.distratores || []).length;
+          li.appendChild(el("p", "imp-nota", "Numere os blocos na ordem certa" +
+            (nd ? "; " + plural(nd, "bloco é armadilha", "blocos são armadilhas") + " e fica" + (nd > 1 ? "m" : "") + " de fora (marque com ✕)." : ".")));
+          var ul = el("ul", "imp-blocos");
+          if (lab.linguagem !== "texto") ul.className += " imp-mono";
+          blocos.forEach(function (b) { ul.appendChild(el("li", null, b)); });
+          li.appendChild(ul);
+        } else {
+          if (lab.codigo) li.appendChild(el("pre", null, lab.codigo));
+        }
+
+        if (lab.tipo === "prever" || (lab.tipo === "passo" && lab.pergunta)) {
+          li.appendChild(el("div", "imp-lab-p", LAB.perguntaDe(lab)));
+          if (lab.opcoes && lab.opcoes.length) {
+            var ops = el("ol", "imp-ops");
+            lab.opcoes.forEach(function (o, i) {
+              var op = el("li");
+              op.appendChild(el("b", null, LETRAS[i] + ")"));
+              op.appendChild(el("span", "imp-mono", " " + o));
+              ops.appendChild(op);
+            });
+            li.appendChild(ops);
+          }
+        }
+        if (lab.tipo === "explorar" && lab.experimentos && lab.experimentos.length) {
+          li.appendChild(el("div", "imp-lab-p", "Experimente (e anote o que acha que muda):"));
+          var ex = el("ul");
+          lab.experimentos.forEach(function (x) { var e = el("li"); LAB.mdEm(e, x); ex.appendChild(e); });
+          li.appendChild(ex);
+        }
+        if (lab.tipo === "desafio" || (lab.tipo === "prever" && !(lab.opcoes || []).length)) {
+          if (cfg.linhas) {
+            var ln = el("div", "imp-linhas");
+            for (var k = 0; k < cfg.linhas; k++) ln.appendChild(el("i"));
+            li.appendChild(ln);
+          }
+        }
+        olL.appendChild(li);
+      });
+      sL.appendChild(olL);
+
+      var jobs = [];
+      gabarito("Laboratório", function (s) {
+        var ol = el("ol", "imp-exp imp-lab-gab");
+        labs.forEach(function (lab) {
+          var li = el("li");
+          li.appendChild(el("b", null, lab.titulo + ": "));
+          if (lab.tipo === "prever" && (lab.opcoes || []).length) {
+            var alvo = el("span", "imp-calc", "calculando…");
+            li.appendChild(alvo);
+            jobs.push(function () {
+              return respostaPrever(m, lab).then(function (i) {
+                alvo.className = "";
+                alvo.textContent = i >= 0 ? LETRAS[i] + ") " + lab.opcoes[i]
+                  : "rode no site para conferir";
+              });
+            });
+          } else if (lab.tipo === "passo" && lab.pergunta) {
+            var ip = LAB.indiceResposta(lab);
+            li.appendChild(document.createTextNode(ip >= 0 ? LETRAS[ip] + ") " + lab.opcoes[ip] : "rode no site para conferir"));
+          } else if (lab.tipo === "parsons") {
+            var certa = el("ol", "imp-blocos-ok" + (lab.linguagem !== "texto" ? " imp-mono" : ""));
+            (lab.linhas || []).forEach(function (l) { certa.appendChild(el("li", null, l)); });
+            li.appendChild(certa);
+            var arm = (lab.distratores || []).map(function (d) { return montar[lab.id].indexOf(d) + 1; });
+            if (arm.length) li.appendChild(el("div", null, "Armadilhas: bloco" + (arm.length > 1 ? "s " : " ") + arm.join(", ")));
+          } else if (lab.tipo === "desafio" && lab.solucao) {
+            li.appendChild(el("span", null, "uma solução possível:"));
+            li.appendChild(el("pre", null, lab.solucao));
+          } else {
+            li.appendChild(el("span", null, "exercício aberto — sem resposta única."));
+          }
+          if (cfg.explicacao && lab.explicacao) {
+            var e = el("div", "imp-lab-exp"); LAB.mdEm(e, lab.explicacao); li.appendChild(e);
+          }
+          ol.appendChild(li);
+        });
+        s.appendChild(ol);
+      });
+      // um de cada vez: os motores (Pyodide, Prolog, SQL) são pesados
+      if (jobs.length) {
+        pendente = jobs.reduce(function (p, j) { return p.then(j); }, Promise.resolve());
+      }
+      itens += labs.length;
+    }
+
     if (gabs.length) {
       var sG = secao("Gabarito");
       gabs.forEach(function (p) { sG.appendChild(p); });
@@ -1531,7 +1653,22 @@
         ? "Nada desses tipos nos temas marcados. Marque outro tipo ou outro tema."
         : "Marque acima o que você quer imprimir."));
     }
-    return { folha: folha, itens: itens };
+    return { folha: folha, itens: itens, pendente: pendente };
+  }
+
+  // A resposta certa do "prever" não está escrita no banco: é o que o código
+  // imprime de verdade. Roda uma vez no motor real e guarda.
+  function respostaPrever(m, lab) {
+    var chave = m.id + "#" + lab.id;
+    if (!respostasLab[chave]) {
+      respostasLab[chave] = LAB.executarLab(m, lab, lab.codigo || "", { comTestes: false })
+        .then(function (r) {
+          var real = LAB.normalizar(LAB.alvoDe(lab, r));
+          return lab.opcoes.map(LAB.normalizar).indexOf(real);
+        })
+        .catch(function () { delete respostasLab[chave]; return -1; });
+    }
+    return respostasLab[chave];
   }
 
   // ---------------------------------------------------------- material

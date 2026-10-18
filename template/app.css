@@ -367,6 +367,20 @@ h3{font-size:.95rem;margin:20px 0 9px;color:var(--tx2)}
 .imp-cola h4{margin-top:0}
 .imp-mn{background:#f2f2f2;padding:4px 8px;border-radius:4px;font-style:italic}
 .imp-cola ul{padding-left:18px}
+.impressao pre{white-space:pre-wrap;word-break:break-word;font-size:.82rem;margin:8px 0;padding:10px 12px}
+.imp-mono{font-family:var(--mono);font-size:.88em}
+.imp-lab-tag{display:inline-block;margin-left:8px;font-weight:400;font-size:.72rem;color:#555;
+  border:1px solid #bbb;border-radius:10px;padding:0 8px;vertical-align:1px}
+.imp-lab-en p{margin:0 0 6px}
+.imp-lab-p{font-weight:600;margin:8px 0 4px}
+.impressao .imp-blocos{list-style:none;padding-left:0}
+.imp-blocos li{border:1px solid #999;border-radius:4px;padding:4px 10px 4px 44px;margin:0 0 5px;position:relative;
+  white-space:pre-wrap;break-inside:avoid}
+.imp-blocos li::before{content:"";position:absolute;left:8px;top:4px;width:24px;height:1.3em;border:1px solid #666;border-radius:3px}
+.imp-blocos-ok{margin:4px 0;white-space:pre-wrap}
+.imp-lab-exp{font-size:.92em;color:#333;margin-top:4px}
+.imp-lab-exp p{margin:0 0 4px}
+.imp-calc{color:#888;font-style:italic}
 @media(max-width:640px){.impressao{padding:22px 18px}.imp-aluno{flex-wrap:wrap}}
 
 /* CORREÇÃO NC-20: as colas são o material com mais chance de virar papel antes
