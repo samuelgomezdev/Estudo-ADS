@@ -956,7 +956,7 @@
     var box = el("div", "box");
     var sc = el("div", "res-score");
     sc.appendChild(el("div", "res-pct " + (p >= 80 ? "pass" : "fail"), p + "%"));
-    sc.appendChild(el("div", "res-msg", acertos + " de " + total + " — " + mensagem(p)));
+    sc.appendChild(el("div", "res-msg", acertos + " de " + total + " — " + mensagem(p, total)));
     box.appendChild(sc);
 
     var acoes = el("div", "row acoes-centro");
@@ -1000,10 +1000,10 @@
     window.scrollTo(0, 0);
   }
 
-  function mensagem(p) {
+  function mensagem(p, total) {
     if (p === 100) return "Gabaritou. Pode avançar de tema com tranquilidade.";
     if (p >= 80) return "Aprovado no critério de 80%. Tema liberado.";
-    if (p >= 60) return "Perto. Releia o resumo do tema e refaça — a meta é 4 de 5.";
+    if (p >= 60) return "Perto. Releia o resumo do tema e refaça — a meta é " + Math.ceil(total * 0.8) + " de " + total + ".";
     if (p >= 40) return "Metade do caminho. Vale voltar ao resumo antes de tentar de novo.";
     return "Estude o resumo e os flashcards deste tema antes de repetir o quiz.";
   }
